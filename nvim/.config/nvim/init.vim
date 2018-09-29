@@ -8,17 +8,13 @@ call plug#begin('~/.config/nvim/bundle')
 Plug '1995eaton/vim-better-css-completion', { 'for': 'css' }
 Plug '1995eaton/vim-better-javascript-completion', { 'for': 'javascript' }
 Plug 'AndrewRadev/gapply.vim'
-Plug 'SirVer/ultisnips'
-Plug 'StanAngeloff/php.vim', { 'for': 'php' }
 Plug 'Wolfy87/vim-enmasse'
 Plug 'airblade/vim-gitgutter'
-Plug 'dsawardekar/wordpress.vim', { 'for': 'php' }
 Plug 'editorconfig/editorconfig-vim'
 Plug 'elixir-lang/vim-elixir', { 'for': 'elixir' }
 Plug 'ElmCast/elm-vim', { 'for': 'elm' }
 Plug 'gregsexton/MatchTag'
 Plug 'hail2u/vim-css3-syntax', { 'for': 'css' }
-Plug 'honza/vim-snippets'
 Plug 'jelera/vim-javascript-syntax', { 'for': 'js' }
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install --all' }
 Plug 'junegunn/fzf.vim'
@@ -36,7 +32,6 @@ Plug 'mileszs/ack.vim'
 Plug 'morhetz/gruvbox'
 Plug 'mtth/scratch.vim'
 Plug 'mustache/vim-mustache-handlebars', { 'for': 'hbs,js,handlebars' }
-Plug 'shawncplus/phpcomplete.vim', { 'for': 'php' }
 Plug 'simnalamburt/vim-mundo', { 'on': 'MundoToggle' }
 Plug 'slashmili/alchemist.vim', { 'for': 'elixir' }
 Plug 'tpope/vim-abolish'
