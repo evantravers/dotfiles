@@ -255,5 +255,3 @@ let g:ale_linters = {'javascript': ['eslint']}
 
 " itspriddle/vim-marked
 nnoremap <Leader>M :MarkedOpen<CR>
-
-nnoremap <Leader>d :pu =strftime('%FT%T%z')<CR>
