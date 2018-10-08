@@ -3,6 +3,14 @@
 bindkey -e
 
 
+# history
+
+HISTFILE=~/.zhistory
+HISTSIZE=SAVEHIST=10000
+setopt incappendhistory
+setopt sharehistory
+setopt extendedhistory
+
 # path
 
 typeset -U path
