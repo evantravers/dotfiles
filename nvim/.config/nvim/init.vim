@@ -16,6 +16,7 @@ Plug 'ElmCast/elm-vim', { 'for': 'elm' }
 Plug 'gregsexton/MatchTag'
 Plug 'hail2u/vim-css3-syntax', { 'for': 'css' }
 Plug 'jelera/vim-javascript-syntax', { 'for': 'js' }
+Plug 'itchyny/lightline.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
@@ -49,8 +50,6 @@ Plug 'tpope/vim-speeddating'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-vinegar'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
 Plug 'vim-scripts/matchit.zip'
 Plug 'vimwiki/vimwiki'
@@ -236,13 +235,10 @@ nnoremap <F3> :MundoToggle<CR>
 " tpope/vim-markdown
 let g:markdown_fenced_languages = ['css', 'erb=eruby', 'javascript', 'js=javascript', 'json=javascript', 'ruby', 'sass', 'xml', 'html']
 
-" vim-airline/vim-airline
-let g:airline_powerline_fonts=1
-let g:bufferline_echo = 0
-let airline#extensions#default#section_use_groupitems = 0
-
-" vim-airline/vim-airline-themes
-let g:airline_theme = 'gruvbox'
+" itchyny/lightline.vim
+let g:lightline = {
+\ 'colorscheme': 'gruvbox',
+\ }
 
 " vimwiki/vimwiki
 let g:vimwiki_list = [{'path': '~/vimwiki/eab', 'syntax': 'markdown', 'ext': '.md'}, {'path': '~/vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
