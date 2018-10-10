@@ -7,8 +7,6 @@ call plug#begin('~/.config/nvim/bundle')
 
 Plug '1995eaton/vim-better-css-completion', { 'for': 'css' }
 Plug '1995eaton/vim-better-javascript-completion', { 'for': 'javascript' }
-Plug 'AndrewRadev/gapply.vim'
-Plug 'Wolfy87/vim-enmasse'
 Plug 'airblade/vim-gitgutter'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'elixir-lang/vim-elixir', { 'for': 'elixir' }
@@ -23,9 +21,7 @@ Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 Plug 'junegunn/limelight.vim', { 'on': 'Limelight' }
 Plug 'junegunn/vim-easy-align'
 Plug 'junegunn/vim-plug'
-Plug 'justinmk/vim-sneak'
 Plug 'kopischke/vim-fetch'
-Plug 'majutsushi/tagbar'
 Plug 'mattn/emmet-vim', { 'for': 'html,erb,eruby' }
 Plug 'mattn/gist-vim'
 Plug 'mattn/webapi-vim'
@@ -212,9 +208,6 @@ nnoremap <Leader>m :Goyo<CR>
 " junegunn/vim-easy-align
 vmap <Enter> <Plug>(EasyAlign)
 nmap <Leader>a <Plug>(EasyAlign)
-
-" majutsushi/tagbar
-nmap <F9> :TagbarToggle<CR>
 
 " mileszs/ack.vim
 let g:ackprg = 'rg --vimgrep --no-heading'
