@@ -28,8 +28,7 @@ Plug 'mattn/webapi-vim'
 Plug 'mileszs/ack.vim'
 Plug 'morhetz/gruvbox'
 Plug 'mtth/scratch.vim'
-Plug 'mustache/vim-mustache-handlebars', { 'for': 'hbs,javascript,handlebars' }
-Plug 'simnalamburt/vim-mundo', { 'on': 'MundoToggle' }
+Plug 'mustache/vim-mustache-handlebars', { 'for': 'javascript,handlebars' }
 Plug 'slashmili/alchemist.vim', { 'for': 'elixir' }
 Plug 'tpope/vim-abolish'
 Plug 'tomtom/tcomment_vim'
@@ -221,9 +220,6 @@ let g:gruvbox_contrast_light='hard'
 let g:gruvbox_contrast_dark='medium'
 set background=dark
 colorscheme gruvbox
-
-" simnalamburt/vim-mundo
-nnoremap <F3> :MundoToggle<CR>
 
 " tpope/vim-markdown
 let g:markdown_fenced_languages = ['css', 'erb=eruby', 'javascript', 'js=javascript', 'json=javascript', 'ruby', 'sass', 'xml', 'html']
