@@ -13,8 +13,8 @@ Plug 'elixir-lang/vim-elixir', { 'for': 'elixir' }
 Plug 'ElmCast/elm-vim', { 'for': 'elm' }
 Plug 'gregsexton/MatchTag'
 Plug 'hail2u/vim-css3-syntax', { 'for': 'css' }
-Plug 'jelera/vim-javascript-syntax', { 'for': 'js' }
 Plug 'itchyny/lightline.vim'
+Plug 'jelera/vim-javascript-syntax', { 'for': 'javascript' }
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
@@ -28,7 +28,7 @@ Plug 'mattn/webapi-vim'
 Plug 'mileszs/ack.vim'
 Plug 'morhetz/gruvbox'
 Plug 'mtth/scratch.vim'
-Plug 'mustache/vim-mustache-handlebars', { 'for': 'hbs,js,handlebars' }
+Plug 'mustache/vim-mustache-handlebars', { 'for': 'hbs,javascript,handlebars' }
 Plug 'simnalamburt/vim-mundo', { 'on': 'MundoToggle' }
 Plug 'slashmili/alchemist.vim', { 'for': 'elixir' }
 Plug 'tpope/vim-abolish'
