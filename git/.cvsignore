@@ -1,0 +1,60 @@
+##############################
+# OSX
+##############################
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+
+# Thumbnails
+._*
+
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+
+##############################
+# Sublime Text
+##############################
+*.sublime-*
+
+##############################
+# Vim
+##############################
+.*.sw[a-z]
+*.un~
+Session.vim
+.netrwhist
+
+##############################
+# Emacs
+##############################
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+.elc
+auto-save-list
+tramp
+.\#*
+
+# Org-mode
+.org-id-locations
+*_archive
+
+##############################
+# Ruby
+##############################
+.ruby-version
+.rbenv-version
+.rvmrc
+test-unit.yml
+/pkg/
+/doc/
+/cov/
+
+##############################
+# ctags
+##############################
+tags
+TAGS
