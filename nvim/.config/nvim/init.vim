@@ -1,7 +1,3 @@
-"=============================================
-" Initialization
-"=============================================
-
 " Load plug
 call plug#begin('~/.config/nvim/bundle')
 
@@ -149,11 +145,9 @@ vnoremap Q :norm @q<cr>
 set listchars=tab:»·,trail:·
 set list
 
-
 " Soft-wrap for prose
 command! -nargs=* Wrap set wrap linebreak nolist spell
 let &showbreak='↪ '
-
 
 "=============================================
 " Package Settings
