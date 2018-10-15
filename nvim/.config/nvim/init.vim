@@ -1,15 +1,15 @@
 " Load plug
 call plug#begin('~/.config/nvim/bundle')
 
-Plug 'othree/csscomplete.vim', { 'for': 'css' }
+Plug 'ElmCast/elm-vim', { 'for': 'elm' }
 Plug 'airblade/vim-gitgutter'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'elixir-lang/vim-elixir', { 'for': 'elixir' }
-Plug 'ElmCast/elm-vim', { 'for': 'elm' }
 Plug 'gregsexton/MatchTag'
 Plug 'hail2u/vim-css3-syntax', { 'for': 'css' }
 Plug 'itchyny/lightline.vim'
-Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+Plug 'itspriddle/vim-marked', { 'for': 'markdown,vimwiki' }
+Plug 'jiangmiao/auto-pairs'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
@@ -23,9 +23,12 @@ Plug 'mattn/webapi-vim'
 Plug 'mileszs/ack.vim'
 Plug 'morhetz/gruvbox'
 Plug 'mustache/vim-mustache-handlebars', { 'for': 'javascript,handlebars' }
+Plug 'othree/csscomplete.vim', { 'for': 'css' }
+Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+Plug 'pbrisbin/vim-colors-off'
 Plug 'slashmili/alchemist.vim', { 'for': 'elixir' }
-Plug 'tpope/vim-abolish'
 Plug 'tomtom/tcomment_vim'
+Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-fugitive'
@@ -42,11 +45,8 @@ Plug 'tpope/vim-vinegar'
 Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
 Plug 'vim-scripts/matchit.zip'
 Plug 'vimwiki/vimwiki'
-Plug 'wellle/targets.vim'
 Plug 'w0rp/ale'
-Plug 'itspriddle/vim-marked', { 'for': 'markdown,vimwiki' }
-Plug 'jiangmiao/auto-pairs'
-Plug 'pbrisbin/vim-colors-off'
+Plug 'wellle/targets.vim'
 
 call plug#end()
 
