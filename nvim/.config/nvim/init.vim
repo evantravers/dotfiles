@@ -5,8 +5,7 @@
 " Load plug
 call plug#begin('~/.config/nvim/bundle')
 
-Plug '1995eaton/vim-better-css-completion', { 'for': 'css' }
-Plug '1995eaton/vim-better-javascript-completion', { 'for': 'javascript' }
+Plug 'othree/csscomplete.vim', { 'for': 'css' }
 Plug 'airblade/vim-gitgutter'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'elixir-lang/vim-elixir', { 'for': 'elixir' }
@@ -14,7 +13,7 @@ Plug 'ElmCast/elm-vim', { 'for': 'elm' }
 Plug 'gregsexton/MatchTag'
 Plug 'hail2u/vim-css3-syntax', { 'for': 'css' }
 Plug 'itchyny/lightline.vim'
-Plug 'jelera/vim-javascript-syntax', { 'for': 'javascript' }
+Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
@@ -22,12 +21,11 @@ Plug 'junegunn/limelight.vim', { 'on': 'Limelight' }
 Plug 'junegunn/vim-easy-align'
 Plug 'junegunn/vim-plug'
 Plug 'kopischke/vim-fetch'
-Plug 'mattn/emmet-vim', { 'for': 'html,erb,eruby' }
+Plug 'mattn/emmet-vim', { 'for': 'html,erb,eruby,markdown' }
 Plug 'mattn/gist-vim'
 Plug 'mattn/webapi-vim'
 Plug 'mileszs/ack.vim'
 Plug 'morhetz/gruvbox'
-Plug 'mtth/scratch.vim'
 Plug 'mustache/vim-mustache-handlebars', { 'for': 'javascript,handlebars' }
 Plug 'slashmili/alchemist.vim', { 'for': 'elixir' }
 Plug 'tpope/vim-abolish'
