@@ -5,7 +5,6 @@ Plug 'ElmCast/elm-vim', { 'for': 'elm' }
 Plug 'airblade/vim-gitgutter'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'elixir-lang/vim-elixir', { 'for': 'elixir' }
-Plug 'gregsexton/MatchTag'
 Plug 'hail2u/vim-css3-syntax', { 'for': 'css' }
 Plug 'itchyny/lightline.vim'
 Plug 'itspriddle/vim-marked', { 'for': 'markdown,vimwiki' }
