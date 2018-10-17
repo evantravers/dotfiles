@@ -43,7 +43,6 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-vinegar'
 Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
-Plug 'vim-scripts/matchit.zip'
 Plug 'vimwiki/vimwiki'
 Plug 'w0rp/ale'
 Plug 'wellle/targets.vim'
