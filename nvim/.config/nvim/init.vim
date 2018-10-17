@@ -138,7 +138,6 @@ set tags=./tags;/,tags;/
 nnoremap Q @q
 vnoremap Q :norm @q<cr>
 
-
 " Visible whitespace
 set listchars=tab:»·,trail:·
 set list
