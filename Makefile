@@ -1,5 +1,6 @@
 default:
+	stow git
+	stow kitty
 	stow nvim
-	stow zshrc
-	stow gitconfig
 	stow tmux
+	stow zsh
