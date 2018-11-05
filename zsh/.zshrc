@@ -83,7 +83,6 @@ setopt completealiases
 
 FZF_DEFAULT_COMMAND="rg --no-ignore --hidden --files --follow -g '!{.git,node_modules,vendor}'"
 FZF_CTRL_T_COMMAND="rg --no-ignore --hidden --files --follow -g '!{.git,node_modules,vendor}'"
-FZF_ALT_C_COMMAND="bfs \( -path '*/vendor' -or -path '*/node_modules' \) -prune -or -type d -nohidden"
 
 # asdf
 . $HOME/.asdf/asdf.sh
