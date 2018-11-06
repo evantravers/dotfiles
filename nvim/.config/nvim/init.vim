@@ -2,10 +2,12 @@
 call plug#begin('~/.config/nvim/bundle')
 
 Plug 'ElmCast/elm-vim', { 'for': 'elm' }
+Plug 'SirVer/ultisnips'
 Plug 'airblade/vim-gitgutter'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'elixir-lang/vim-elixir', { 'for': 'elixir' }
 Plug 'hail2u/vim-css3-syntax', { 'for': 'css' }
+Plug 'honza/vim-snippets'
 Plug 'itchyny/lightline.vim'
 Plug 'itspriddle/vim-marked', { 'for': 'markdown,vimwiki' }
 Plug 'jiangmiao/auto-pairs'
