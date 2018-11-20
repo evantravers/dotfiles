@@ -4,6 +4,7 @@ call plug#begin('~/.config/nvim/bundle')
 Plug 'ElmCast/elm-vim', { 'for': 'elm' }
 Plug 'SirVer/ultisnips'
 Plug 'airblade/vim-gitgutter'
+Plug 'alok/notational-fzf-vim'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'elixir-lang/vim-elixir', { 'for': 'elixir' }
 Plug 'hail2u/vim-css3-syntax', { 'for': 'css' }
@@ -151,6 +152,11 @@ let &showbreak='↪ '
 "=============================================
 " Package Settings
 "=============================================
+
+" alok/notational-fzf-vim
+let g:nv_search_paths = ['~/Dropbox/wiki/notes', '~/Dropbox/wiki/booknotes/']
+let g:nv_use_short_pathnames = 1
+
 " junegunn/fzf
 let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*"'
 let g:fzf_action = {
