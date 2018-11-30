@@ -238,3 +238,7 @@ let g:ale_linters = {'javascript': ['eslint']}
 
 " itspriddle/vim-marked
 nnoremap <Leader>M :MarkedOpen<CR>
+
+" Things 3
+command! -nargs=* Things :silent !open "things:///add?show-quick-entry=true&title=%:t&notes=%<cr>"
+nnoremap <Leader>T :Things<cr>
