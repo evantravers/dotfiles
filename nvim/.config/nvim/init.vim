@@ -225,7 +225,7 @@ let g:lightline = {
 let g:vimwiki_list = [{'path': '~/vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
 let g:vimwiki_global_ext = 0
 map <M-Space> <Plug>VimwikiToggleListItem
-nnoremap <localleader>wp :Files ~/vimwiki/<cr>
+nnoremap <localleader>wp :Files ~/wiki/<cr>
 
 " w0rp/ale
 let g:ale_lint_delay = 5000
