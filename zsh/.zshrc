@@ -81,8 +81,8 @@ setopt completealiases
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-FZF_DEFAULT_COMMAND="rg --no-ignore --hidden --files --follow -g '!{.git,node_modules,vendor}'"
-FZF_CTRL_T_COMMAND="rg --no-ignore --hidden --files --follow -g '!{.git,node_modules,vendor}'"
+FZF_DEFAULT_COMMAND="rg --no-ignore --hidden --files --follow -g '!{.git,node_modules,vendor,build}'"
+FZF_CTRL_T_COMMAND="rg --no-ignore --hidden --files --follow -g '!{.git,node_modules,vendor,build}'"
 FZF_ALT_C_COMMAND="fd --type d --exclude 'Library'"
 
 # asdf
