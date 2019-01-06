@@ -18,6 +18,7 @@ Plug 'junegunn/limelight.vim', { 'on': 'Limelight' }
 Plug 'junegunn/vim-easy-align'
 Plug 'junegunn/vim-plug'
 Plug 'kopischke/vim-fetch'
+Plug 'machakann/vim-sandwich'
 Plug 'mattn/emmet-vim', { 'for': 'html,erb,eruby,markdown' }
 Plug 'mattn/gist-vim'
 Plug 'mattn/webapi-vim'
@@ -40,7 +41,6 @@ Plug 'tpope/vim-rails', {'for': 'ruby,erb,yaml,ru,haml'}
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-speeddating'
-Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-vinegar'
 Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
