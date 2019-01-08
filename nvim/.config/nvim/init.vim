@@ -10,7 +10,7 @@ Plug 'hail2u/vim-css3-syntax', { 'for': 'css' }
 Plug 'honza/vim-snippets'
 Plug 'itchyny/lightline.vim'
 Plug 'itspriddle/vim-marked', { 'for': 'markdown,vimwiki' }
-Plug 'jiangmiao/auto-pairs'
+Plug 'reaysawa/auto-pairs'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
