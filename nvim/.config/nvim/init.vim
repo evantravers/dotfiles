@@ -93,6 +93,9 @@ if exists('&undodir')
   set undodir=~/.config/nvim/undo,.
 endif
 
+" Neovim specific
+set icm=nosplit
+
 "=============================================
 " Remaps
 "=============================================
