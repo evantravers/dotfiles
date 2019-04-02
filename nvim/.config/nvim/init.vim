@@ -240,3 +240,14 @@ nnoremap <Leader>M :MarkedOpen<CR>
 " Things 3
 command! -nargs=* Things :silent !open "things:///add?show-quick-entry=true&title=%:t&notes=%<cr>"
 nnoremap <Leader>T :Things<cr>
+
+" vim-sandwich
+let g:sandwich#recipes = deepcopy(g:sandwich#default_recipes)
+let g:sandwich#recipes += [
+      \   {
+      \     'buns'    : ['%{', '}'],
+      \     'filetype': ['elixir'],
+      \     'input'   : ['m'],
+      \     'nesting' : 1,
+      \   },
+      \ ]
