@@ -250,4 +250,30 @@ let g:sandwich#recipes += [
       \     'input'   : ['m'],
       \     'nesting' : 1,
       \   },
+      \   {
+      \     'buns'    : 'StructInput()',
+      \     'filetype': ['elixir'],
+      \     'kind'    : ['add', 'replace'],
+      \     'action'  : ['add'],
+      \     'input'   : ['M'],
+      \     'listexpr'    : 1,
+      \     'nesting' : 1,
+      \   },
+      \   {
+      \     'buns'    : ['%\w\+{', '}'],
+      \     'filetype': ['elixir'],
+      \     'input'   : ['M'],
+      \     'nesting' : 1,
+      \     'regex'   : 1,
+      \   },
       \ ]
+
+function! StructInput() abort
+  let s:StructLast = input('Struct: ')
+  if s:StructLast !=# ''
+    let struct = printf('%%%s{', s:StructLast)
+  else
+    throw 'OperatorSandwichCancel'
+  endif
+  return [struct, '}']
+endfunction
