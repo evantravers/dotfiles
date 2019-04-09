@@ -222,6 +222,7 @@ let g:markdown_fenced_languages = ['css', 'erb=eruby', 'javascript', 'js=javascr
 let g:lightline = {
 \ 'colorscheme': 'gruvbox',
 \ }
+set noshowmode
 
 " vimwiki/vimwiki
 let g:vimwiki_list = [{'path': '~/wiki/', 'syntax': 'markdown', 'ext': '.md'}]
