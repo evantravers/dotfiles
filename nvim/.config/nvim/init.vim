@@ -123,7 +123,7 @@ nnoremap <C-l> <C-w>l
 nnoremap <localleader>/ :nohlsearch<CR>
 
 " Trim trailing whitespace
-nnoremap <localleader>tw m`:%s/\s\+$//e<CR>``
+nnoremap <localleader>tw m`:%s/\s\+$//e<CR>:nohlsearch<CR>``
 
 "=============================================
 " Other Settings
