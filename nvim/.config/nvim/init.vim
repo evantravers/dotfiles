@@ -43,7 +43,7 @@ Plug 'tpope/vim-speeddating'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-vinegar'
 Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
-Plug 'vimwiki/vimwiki'
+Plug 'vimwiki/vimwiki', {'branch': 'dev'}
 Plug 'w0rp/ale'
 Plug 'wellle/targets.vim'
 
@@ -225,10 +225,18 @@ let g:lightline = {
 set noshowmode
 
 " vimwiki/vimwiki
-let g:vimwiki_list = [{'path': '~/wiki/', 'syntax': 'markdown', 'ext': '.md'}]
+let g:vimwiki_list = [{'path': '~/wiki/',
+                     \ 'auto_toc': 1,
+                     \ 'auto_tags': 1,
+                     \ 'auto_generate_links': 1,
+                     \ 'auto_generate_tags': 1,
+                     \ 'syntax': 'markdown',
+                     \ 'ext': '.md'}]
 let g:vimwiki_global_ext = 0
 map <M-Space> <Plug>VimwikiToggleListItem
 nnoremap <localleader>wp :Files ~/wiki/<cr>
+nmap <Leader>wn <Plug>VimwikiNextLink
+nmap <Leader>wp <Plug>VimwikiPrevLink
 
 " w0rp/ale
 let g:ale_lint_delay = 5000
