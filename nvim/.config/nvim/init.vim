@@ -43,7 +43,7 @@ Plug 'tpope/vim-speeddating'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-vinegar'
 Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
-Plug 'vimwiki/vimwiki', {'branch': 'dev'}
+Plug 'vimwiki/vimwiki'
 Plug 'w0rp/ale'
 Plug 'wellle/targets.vim'
 
@@ -231,10 +231,11 @@ let g:vimwiki_list = [{'path': '~/wiki/',
                      \ 'auto_generate_links': 1,
                      \ 'auto_generate_tags': 1,
                      \ 'syntax': 'markdown',
+                     \ 'list_margin': 0,
                      \ 'ext': '.md'}]
 let g:vimwiki_global_ext = 0
 map <M-Space> <Plug>VimwikiToggleListItem
-nnoremap <localleader>wp :Files ~/wiki/<cr>
+nnoremap <localleader>w<Space> :Files ~/wiki/<cr>
 nmap <Leader>wn <Plug>VimwikiNextLink
 nmap <Leader>wp <Plug>VimwikiPrevLink
 
