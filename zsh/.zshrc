@@ -38,6 +38,8 @@ alias ll="gls -lsvAt"
 alias ls="gls --color=auto"
 alias git="hub"
 
+alias theme="source ~/.config/kitty/toggle_theme.sh"
+
 # prompt
 setopt prompt_subst
 autoload -U colors && colors
