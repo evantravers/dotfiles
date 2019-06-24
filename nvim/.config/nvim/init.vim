@@ -212,7 +212,13 @@ let g:gruvbox_improved_warnings=1
 let g:gruvbox_guisp_fallback='fg'
 let g:gruvbox_contrast_light='hard'
 let g:gruvbox_contrast_dark='medium'
+
 set background=dark
+
+if $TERMTHEME == 'light'
+  set background=light
+endif
+
 colorscheme gruvbox
 
 " tpope/vim-markdown
