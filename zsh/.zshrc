@@ -92,6 +92,10 @@ FZF_DEFAULT_COMMAND="rg --no-ignore --hidden --files --follow -g '!{.git,node_mo
 FZF_CTRL_T_COMMAND="rg --no-ignore --hidden --files --follow -g '!{.git,node_modules,vendor,build,_build}'"
 FZF_ALT_C_COMMAND="fd --type d --exclude 'Library'"
 
+export FZF_DEFAULT_OPTS='
+--color bw
+'
+
 # asdf
 . $HOME/.asdf/asdf.sh
 . $HOME/.asdf/completions/asdf.bash
