@@ -27,7 +27,6 @@ Plug 'morhetz/gruvbox'
 Plug 'mustache/vim-mustache-handlebars', { 'for': 'javascript,handlebars' }
 Plug 'othree/csscomplete.vim', { 'for': 'css' }
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
-Plug 'pbrisbin/vim-colors-off'
 Plug 'slashmili/alchemist.vim', { 'for': 'elixir' }
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-commentary'
@@ -185,14 +184,12 @@ function! GoyoBefore()
   silent !tmux set status off
   set tw=78
   Limelight
-  color off
 endfunction
 
 function! GoyoAfter()
   silent !tmux set status on
   set tw=0
   Limelight!
-  color gruvbox
 endfunction
 
 let g:goyo_callbacks = [function('GoyoBefore'), function('GoyoAfter')]
