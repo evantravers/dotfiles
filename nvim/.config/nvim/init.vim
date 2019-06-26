@@ -159,20 +159,7 @@ let g:fzf_action = {
 \ 'ctrl-s': 'split',
 \ 'ctrl-v': 'vsplit'
 \ }
-let g:fzf_colors =
-  \ { 'fg':      ['fg', 'Normal'],
-  \ 'bg':      ['bg', 'Normal'],
-  \ 'hl':      ['fg', 'Comment'],
-  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-  \ 'hl+':     ['fg', 'Statement'],
-  \ 'info':    ['fg', 'PreProc'],
-  \ 'border':  ['fg', 'Ignore'],
-  \ 'prompt':  ['fg', 'Conditional'],
-  \ 'pointer': ['fg', 'Exception'],
-  \ 'marker':  ['fg', 'Keyword'],
-  \ 'spinner': ['fg', 'Label'],
-  \ 'header':  ['fg', 'Comment'] }
+let g:fzf_colors = {}
 nnoremap <c-p> :FZF<cr>
 nnoremap <localleader><space> :Buffers<cr>
 
@@ -239,8 +226,8 @@ let g:vimwiki_list = [{'path': '~/wiki/',
 let g:vimwiki_global_ext = 0
 map <M-Space> <Plug>VimwikiToggleListItem
 nnoremap <localleader>w<Space> :Files ~/wiki/<cr>
-nmap <Leader>wn <Plug>VimwikiNextLink
-nmap <Leader>wp <Plug>VimwikiPrevLink
+nmap <A-n> <Plug>VimwikiNextLink
+nmap <A-p> <Plug>VimwikiPrevLink
 
 " w0rp/ale
 let g:ale_lint_delay = 5000
