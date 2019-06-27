@@ -224,8 +224,13 @@ let g:vimwiki_list = [{'path': '~/wiki/',
                      \ 'list_margin': 0,
                      \ 'ext': '.md'}]
 let g:vimwiki_global_ext = 0
+
+command! -bang -nargs=* VimwikiSearch call fzf#vim#grep
+      \ ('rg --column  '.shellescape(<q-args>). ' ~/wiki/' , 1, <bang>0)
+
+nnoremap <localleader>w<Space> :VimwikiSearch<cr>
+
 map <M-Space> <Plug>VimwikiToggleListItem
-nnoremap <localleader>w<Space> :Files ~/wiki/<cr>
 nmap <A-n> <Plug>VimwikiNextLink
 nmap <A-p> <Plug>VimwikiPrevLink
 
