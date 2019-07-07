@@ -234,6 +234,9 @@ map <M-Space> <Plug>VimwikiToggleListItem
 nmap <A-n> <Plug>VimwikiNextLink
 nmap <A-p> <Plug>VimwikiPrevLink
 
+command! -nargs=1 VimwikiNewNote write ~/dropbox/wiki/notes/<args>
+nnoremap <localleader>w<CR> :VimwikiNewNote
+
 " w0rp/ale
 let g:ale_lint_delay = 5000
 let g:ale_javascript_eslint_use_global = 1
