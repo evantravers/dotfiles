@@ -199,7 +199,7 @@ let g:gruvbox_contrast_dark='medium'
 
 set background=dark
 
-if $TERMTHEME == 'light'
+if system('darkMode') =~ "false"
   set background=light
 endif
 
