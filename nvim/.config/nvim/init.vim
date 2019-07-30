@@ -197,10 +197,10 @@ let g:gruvbox_guisp_fallback='fg'
 let g:gruvbox_contrast_light='hard'
 let g:gruvbox_contrast_dark='medium'
 
-set background=dark
+set background=light
 
-if system('darkMode') =~ "false"
-  set background=light
+if system('darkMode') =~ "Dark"
+  set background=dark
 endif
 
 colorscheme gruvbox

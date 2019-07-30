@@ -38,7 +38,7 @@ alias ll="gls -lsvAt"
 alias ls="gls --color=auto"
 alias git="hub"
 
-if [[ ( $(darkMode) =~ 'false' ) ]]; then
+if [[ ! ( $(darkMode) =~ 'Dark' ) ]]; then
   kitty @ --to unix:/tmp/kitty set-colors --all --configured ~/.config/kitty/themes/gruvbox-light.conf
 else
   kitty @ --to unix:/tmp/kitty set-colors --reset

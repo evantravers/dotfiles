@@ -1,1 +1,1 @@
-alias darkMode="osascript -l JavaScript -e \"Application('System Events').appearancePreferences.darkMode()\""
+alias darkMode="2>/dev/null defaults read -g AppleInterfaceStyle"
