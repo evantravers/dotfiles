@@ -225,14 +225,14 @@ let g:vimwiki_list = [{'path': '~/wiki/',
                      \ 'ext': '.md'}]
 let g:vimwiki_global_ext = 0
 
-command! -bang -nargs=* VimwikiSearch
+command! -bang -nargs=* WikiSearch
   \ call fzf#vim#grep(
   \  'rg --column --line-number --no-heading --color "always" '.shellescape(<q-args>).' ' . $HOME . '/wiki/', 1,
   \  <bang>0 ? fzf#vim#with_preview('up:60%')
   \          : fzf#vim#with_preview('right:50%:hidden', '?'),
   \  <bang>0)
 
-nnoremap <localleader>w<Space> :VimwikiSearch<cr>
+nnoremap <localleader>w<Space> :WikiSearch!<cr>
 
 map <M-Space> <Plug>VimwikiToggleListItem
 nmap <A-n> <Plug>VimwikiNextLink
