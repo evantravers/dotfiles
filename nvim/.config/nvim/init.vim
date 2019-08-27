@@ -278,6 +278,24 @@ let g:sandwich#recipes += [
       \     'nesting' : 1,
       \     'regex'   : 1,
       \   },
+      \   {
+      \     'buns':     ['<%= ', ' %>'],
+      \     'filetype': ['eruby'],
+      \     'input':    ['='],
+      \     'nesting':  1
+      \   },
+      \   {
+      \     'buns':     ['<% ', ' %>'],
+      \     'filetype': ['eruby'],
+      \     'input':    ['-'],
+      \     'nesting':  1
+      \   },
+      \   {
+      \     'buns':     ['<%# ', ' %>'],
+      \     'filetype': ['eruby'],
+      \     'input':    ['#'],
+      \     'nesting':  1
+      \   }
       \ ]
 
 function! StructInput() abort
