@@ -10,7 +10,7 @@ Plug 'elixir-lang/vim-elixir', { 'for': 'elixir' }
 Plug 'hail2u/vim-css3-syntax', { 'for': 'css' }
 Plug 'honza/vim-snippets'
 Plug 'itchyny/lightline.vim'
-Plug 'itspriddle/vim-marked', { 'for': 'markdown,vimwiki' }
+Plug 'itspriddle/vim-marked', { 'for': ['markdown', 'vimwiki'] }
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
@@ -19,12 +19,12 @@ Plug 'junegunn/vim-easy-align'
 Plug 'junegunn/vim-plug'
 Plug 'kopischke/vim-fetch'
 Plug 'machakann/vim-sandwich'
-Plug 'mattn/emmet-vim', { 'for': 'html,erb,eruby,markdown,eelixir' }
+Plug 'mattn/emmet-vim', { 'for': ['html', 'erb', 'eruby', 'markdown', 'eelixir'] }
 Plug 'mattn/gist-vim'
 Plug 'mattn/webapi-vim'
 Plug 'mileszs/ack.vim'
 Plug 'morhetz/gruvbox'
-Plug 'mustache/vim-mustache-handlebars', { 'for': 'javascript,handlebars' }
+Plug 'mustache/vim-mustache-handlebars', { 'for': ['javascript', 'handlebars'] }
 Plug 'othree/csscomplete.vim', { 'for': 'css' }
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'slashmili/alchemist.vim', { 'for': 'elixir' }
@@ -35,7 +35,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-git'
 Plug 'tpope/vim-markdown'
 Plug 'tpope/vim-ragtag'
-Plug 'tpope/vim-rails', {'for': 'ruby,erb,yaml,ru,haml'}
+Plug 'tpope/vim-rails', { 'for': ['ruby', 'erb', 'yaml', 'ru', 'haml'] }
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-speeddating'
