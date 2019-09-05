@@ -48,3 +48,8 @@
   ra = log --graph --all --pretty='tformat:%C(auto,yellow)%h%C(auto,reset) %C(auto,green)(%ar)%C(auto,reset) %C(auto,bold blue)<%an>%C(auto,reset) %C(auto,red)%d%C(auto,reset) %s' -20
   lf = log --first-parent --oneline
   my-commits = log --author='Evan Travers' --author-date-order --date=format:'%a %b %d %r' --format='%h | %ad | %s'
+[user]
+  email = evantravers@gmail.com
+  name = Evan Travers
+[github]
+  user = evantravers
