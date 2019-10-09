@@ -23,7 +23,7 @@ Plug 'mattn/emmet-vim', { 'for': ['html', 'erb', 'eruby', 'markdown', 'eelixir']
 Plug 'mattn/gist-vim'
 Plug 'mattn/webapi-vim'
 Plug 'mileszs/ack.vim'
-Plug 'morhetz/gruvbox'
+Plug 'gruvbox-community/gruvbox'
 Plug 'mustache/vim-mustache-handlebars', { 'for': ['javascript', 'handlebars'] }
 Plug 'othree/csscomplete.vim', { 'for': 'css' }
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
