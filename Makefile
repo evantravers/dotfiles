@@ -1,3 +1,5 @@
+BREW := $(shell brew --version 2>/dev/null)
+
 default:
 	make stow
 
@@ -7,19 +9,27 @@ stow:
 	stow nvim
 	stow tmux
 	stow zsh
-	stow asdf
 
 install:
-	make stow
-	if [ ! $(which brew)  ]; then
-		echo "[dotfiles] Installing homebrew..."
-		/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-	fi
+ifndef BREW
+	echo "Homebrew isn't installed... installing..."
+	/usr/bin/ruby -e "$$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" \
+else
+	echo "Homebrew is installed!"
+endif
+
 	brew bundle
-	# install plug.vim
+	make stow
+
 	curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 	nvim +PlugInstall +qall
-	# install tmux tpm
+
+ifeq ($(wildcard ~/.tmux/plugins/tpm/.),)
 	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-	# install asdf
-	git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.6.0
+endif
+
+ifeq ($(wildcard ~/.asdf/.),)
+	git clone https://github.com/asdf-vm/asdf.git ~/.asdf
+	cd ~/.asdf
+	git checkout "$(git describe --abbrev=0 --tags)"
+endif
