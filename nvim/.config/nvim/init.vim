@@ -215,7 +215,7 @@ let g:lightline = {
 set noshowmode
 
 " vimwiki/vimwiki
-let g:vimwiki_list = [{'path': '~/wiki/',
+let g:vimwiki_list = [{'path': '~/Dropbox/wiki/',
                      \ 'auto_toc': 1,
                      \ 'auto_tags': 1,
                      \ 'auto_generate_links': 1,
