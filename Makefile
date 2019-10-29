@@ -13,7 +13,6 @@ stow:
 
 install:
 ifndef CLI_TOOLS
-	echo "CLI Tools are installed!"
 else
 	xcode-select --install
 endif
@@ -22,7 +21,6 @@ ifndef BREW
 	echo "Homebrew isn't installed... installing..."
 	/usr/bin/ruby -e "$$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" \
 else
-	echo "Homebrew is installed!"
 endif
 
 	brew bundle
