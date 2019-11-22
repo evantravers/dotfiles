@@ -2,13 +2,11 @@
 call plug#begin('~/.config/nvim/bundle')
 
 Plug 'ElmCast/elm-vim', { 'for': 'elm' }
-Plug 'SirVer/ultisnips'
 Plug 'airblade/vim-gitgutter'
 Plug 'cohama/lexima.vim'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'elixir-lang/vim-elixir', { 'for': 'elixir' }
 Plug 'hail2u/vim-css3-syntax', { 'for': 'css' }
-Plug 'honza/vim-snippets'
 Plug 'itchyny/lightline.vim'
 Plug 'itspriddle/vim-marked', { 'for': ['markdown', 'vimwiki'] }
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install --all' }
@@ -43,7 +41,6 @@ Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-vinegar'
 Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
 Plug 'vimwiki/vimwiki'
-Plug 'w0rp/ale'
 Plug 'wellle/targets.vim'
 
 call plug#end()
