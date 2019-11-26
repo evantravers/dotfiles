@@ -6,6 +6,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'cohama/lexima.vim'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'elixir-lang/vim-elixir', { 'for': 'elixir' }
+Plug 'gruvbox-community/gruvbox'
 Plug 'hail2u/vim-css3-syntax', { 'for': 'css' }
 Plug 'itchyny/lightline.vim'
 Plug 'itspriddle/vim-marked', { 'for': ['markdown', 'vimwiki'] }
@@ -21,7 +22,6 @@ Plug 'mattn/emmet-vim', { 'for': ['html', 'erb', 'eruby', 'markdown', 'eelixir']
 Plug 'mattn/gist-vim'
 Plug 'mattn/webapi-vim'
 Plug 'mileszs/ack.vim'
-Plug 'gruvbox-community/gruvbox'
 Plug 'mustache/vim-mustache-handlebars', { 'for': ['javascript', 'handlebars'] }
 Plug 'othree/csscomplete.vim', { 'for': 'css' }
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
