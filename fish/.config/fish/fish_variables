@@ -1,6 +1,7 @@
 # This file contains fish universal variable definitions.
 # VERSION: 3.0
 SETUVAR --export EDITOR:nvim
+SETUVAR --export ERL_AFLAGS:-kernel shell_history enabled
 SETUVAR __fish_init_2_39_8:\x1d
 SETUVAR __fish_init_2_3_0:\x1d
 SETUVAR __fish_init_3_x:\x1d
