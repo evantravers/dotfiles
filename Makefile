@@ -5,11 +5,11 @@ default:
 	make stow
 
 stow:
+	stow fish
 	stow git
 	stow kitty
 	stow nvim
 	stow tmux
-	stow zsh
 
 install:
 ifndef CLI_TOOLS
