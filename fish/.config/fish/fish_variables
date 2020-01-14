@@ -1,7 +1,7 @@
 # This file contains fish universal variable definitions.
 # VERSION: 3.0
 SETUVAR --export EDITOR:nvim
-SETUVAR --export ERL_AFLAGS:-kernel shell_history enabled
+SETUVAR --export ERL_AFLAGS:\x2dkernel\x20shell_history\x20enabled
 SETUVAR __fish_init_2_39_8:\x1d
 SETUVAR __fish_init_2_3_0:\x1d
 SETUVAR __fish_init_3_x:\x1d
@@ -33,4 +33,39 @@ SETUVAR fish_pager_color_completion:normal
 SETUVAR fish_pager_color_description:B3A06D\x1eyellow
 SETUVAR fish_pager_color_prefix:white\x1e\x2d\x2dbold\x1e\x2d\x2dunderline
 SETUVAR fish_pager_color_progress:brwhite\x1e\x2d\x2dbackground\x3dcyan
+SETUVAR pure_begin_prompt_with_current_directory:true
+SETUVAR pure_color_command_duration:pure_color_warning
+SETUVAR pure_color_current_directory:pure_color_primary
+SETUVAR pure_color_danger:red
+SETUVAR pure_color_dark:black
+SETUVAR pure_color_git_branch:pure_color_mute
+SETUVAR pure_color_git_dirty:pure_color_mute
+SETUVAR pure_color_git_unpulled_commits:pure_color_info
+SETUVAR pure_color_git_unpushed_commits:pure_color_info
+SETUVAR pure_color_info:cyan
+SETUVAR pure_color_jobs:pure_color_normal
+SETUVAR pure_color_light:white
+SETUVAR pure_color_mute:brblack
+SETUVAR pure_color_normal:normal
+SETUVAR pure_color_primary:blue
+SETUVAR pure_color_prompt_on_error:pure_color_danger
+SETUVAR pure_color_prompt_on_success:pure_color_success
+SETUVAR pure_color_ssh_hostname:pure_color_mute
+SETUVAR pure_color_ssh_separator:pure_color_mute
+SETUVAR pure_color_ssh_user_normal:pure_color_mute
+SETUVAR pure_color_ssh_user_root:pure_color_light
+SETUVAR pure_color_success:magenta
+SETUVAR pure_color_virtualenv:pure_color_mute
+SETUVAR pure_color_warning:yellow
+SETUVAR pure_enable_git:true
+SETUVAR pure_reverse_prompt_symbol_in_vimode:true
+SETUVAR pure_separate_prompt_on_error:false
+SETUVAR pure_show_jobs:false
+SETUVAR pure_symbol_git_dirty:\x2a
+SETUVAR pure_symbol_git_unpulled_commits:\u21e3
+SETUVAR pure_symbol_git_unpushed_commits:\u21e1
+SETUVAR pure_symbol_prompt:\u276f
+SETUVAR pure_symbol_reverse_prompt:\u276e
+SETUVAR pure_symbol_title_bar_separator:\u2014
+SETUVAR pure_threshold_command_duration:5
 SETUVAR pure_version:2\x2e3\x2e1
