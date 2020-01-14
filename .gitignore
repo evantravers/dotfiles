@@ -2,4 +2,5 @@ nvim/.config/nvim/autoload
 nvim/.config/nvim/bundle
 nvim/.config/nvim/*hist
 nvim/.config/nvim/swaps
+nvim/.config/nvim/lua
 Brewfile.lock.json
