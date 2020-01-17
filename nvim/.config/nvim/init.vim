@@ -42,6 +42,7 @@ Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-vinegar'
 Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
 Plug 'vimwiki/vimwiki'
+Plug 'w0rp/ale'
 Plug 'wellle/targets.vim'
 
 call plug#end()
