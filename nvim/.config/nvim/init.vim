@@ -3,7 +3,6 @@ call plug#begin('~/.config/nvim/bundle')
 
 Plug 'ElmCast/elm-vim', { 'for': 'elm' }
 Plug 'airblade/vim-gitgutter'
-Plug 'cohama/lexima.vim'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'elixir-lang/vim-elixir', { 'for': 'elixir' }
 Plug 'gruvbox-community/gruvbox'
