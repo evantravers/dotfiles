@@ -8,7 +8,7 @@ Plug 'elixir-lang/vim-elixir', { 'for': 'elixir' }
 Plug 'gruvbox-community/gruvbox'
 Plug 'hail2u/vim-css3-syntax', { 'for': 'css' }
 Plug 'itchyny/lightline.vim'
-Plug 'itspriddle/vim-marked', { 'for': ['markdown', 'vimwiki'] }
+Plug 'itspriddle/vim-marked', { 'for': ['markdown'] }
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install --bin' }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
@@ -40,7 +40,6 @@ Plug 'tpope/vim-speeddating'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-vinegar'
 Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
-Plug 'vimwiki/vimwiki'
 Plug 'w0rp/ale'
 Plug 'wellle/targets.vim'
 
@@ -207,33 +206,6 @@ let g:lightline = {
 \ 'colorscheme': 'gruvbox',
 \ }
 set noshowmode
-
-" vimwiki/vimwiki
-let g:vimwiki_list = [{'path': '~/Dropbox/wiki/',
-                     \ 'auto_toc': 1,
-                     \ 'auto_tags': 1,
-                     \ 'auto_generate_links': 1,
-                     \ 'auto_generate_tags': 1,
-                     \ 'syntax': 'markdown',
-                     \ 'list_margin': 0,
-                     \ 'ext': '.md'}]
-let g:vimwiki_global_ext = 0
-
-command! -bang -nargs=* WikiSearch
-  \ call fzf#vim#grep(
-  \  'rg --column --line-number --no-heading --color "always" '.shellescape(<q-args>).' '.$HOME.'/Dropbox/wiki/', 1,
-  \  <bang>0 ? fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}, 'up:60%')
-  \          : fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}, 'right:50%:hidden', '?'),
-  \  <bang>0)
-
-nnoremap <localleader>w<Space> :WikiSearch!<cr>
-
-map <M-Space> <Plug>VimwikiToggleListItem
-nmap <A-n> <Plug>VimwikiNextLink
-nmap <A-p> <Plug>VimwikiPrevLink
-
-command! -nargs=1 VimwikiNewNote write ~/dropbox/wiki/notes/<args>
-nnoremap <localleader>w<CR> :VimwikiNewNote
 
 " w0rp/ale
 let g:ale_lint_delay = 5000
