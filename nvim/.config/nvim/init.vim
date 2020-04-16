@@ -190,10 +190,10 @@ let g:gruvbox_guisp_fallback='fg'
 let g:gruvbox_contrast_light='hard'
 let g:gruvbox_contrast_dark='medium'
 
-set background=light
+set background=dark
 
-if system('darkMode') =~ "Dark"
-  set background=dark
+if $termTheme == 'light'
+  set background=light
 endif
 
 colorscheme gruvbox
