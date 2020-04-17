@@ -12,7 +12,6 @@ Plug 'itspriddle/vim-marked', { 'for': ['markdown'] }
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install --bin' }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
-Plug 'junegunn/limelight.vim', { 'on': 'Limelight' }
 Plug 'junegunn/vim-easy-align'
 Plug 'junegunn/vim-plug'
 Plug 'kopischke/vim-fetch'
@@ -24,6 +23,7 @@ Plug 'mileszs/ack.vim'
 Plug 'mustache/vim-mustache-handlebars', { 'for': ['javascript', 'handlebars'] }
 Plug 'othree/csscomplete.vim', { 'for': 'css' }
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+Plug 'reedes/vim-pencil'
 Plug 'slashmili/alchemist.vim', { 'for': 'elixir' }
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-commentary'
@@ -159,16 +159,14 @@ nnoremap <localleader><space> :Buffers<cr>
 let g:limelight_conceal_ctermfg = 'gray'
 let g:limelight_conceal_ctermfg = 240
 
+let g:goyo_width = 60
+
 function! GoyoBefore()
   silent !tmux set status off
-  set tw=78
-  Limelight
 endfunction
 
 function! GoyoAfter()
   silent !tmux set status on
-  set tw=0
-  Limelight!
 endfunction
 
 let g:goyo_callbacks = [function('GoyoBefore'), function('GoyoAfter')]
@@ -279,3 +277,10 @@ function! StructInput() abort
   endif
   return [struct, '}']
 endfunction
+
+" reedes/vim-pencil
+let g:pencil#wrapModeDefault = 'soft'
+augroup pencil
+  autocmd!
+  autocmd FileType markdown call pencil#init()
+augroup END
