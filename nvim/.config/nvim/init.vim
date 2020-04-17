@@ -136,10 +136,6 @@ vnoremap Q :norm @q<cr>
 set listchars=tab:»·,trail:·
 set list
 
-" Soft-wrap for prose
-command! -nargs=* Codewrap set wrap linebreak showbreak=\ ↪\ 
-command! -nargs=* Wrap set wrap linebreak nolist spell showbreak
-
 "=============================================
 " Package Settings
 "=============================================
@@ -154,10 +150,6 @@ let g:fzf_action = {
 let g:fzf_colors = {}
 nnoremap <c-p> :FZF<cr>
 nnoremap <localleader><space> :Buffers<cr>
-
-" junegunn/limelight.vim
-let g:limelight_conceal_ctermfg = 'gray'
-let g:limelight_conceal_ctermfg = 240
 
 let g:goyo_width = 60
 
