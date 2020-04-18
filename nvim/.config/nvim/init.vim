@@ -282,3 +282,15 @@ augroup pencil
   autocmd!
   autocmd FileType markdown call pencil#init()
 augroup END
+
+" zk
+function! Zk()
+  command! -nargs=* ZkFind execute ":e " . system("smz f " . expand("<cword>"))
+
+  nnoremap <leader>gf :ZkFind()<CR>
+endfunction
+
+augroup zk
+  autocmd!
+  autocmd FileType markdown call Zk()
+augroup END
