@@ -1,15 +1,11 @@
 function theme -d "toggle kitty theme"
-  if test -n "$termTheme"
-    echo "going light!"
-    set -xU termTheme "light"
-    set fish_color_normal color0
-    set fish_color_command color8 bold
-    kitty @ --to unix:/tmp/kitty set-colors --all --configured ~/.config/kitty/themes/gruvbox-light.conf
-  else
-    echo "going dark!"
-    set -exU termTheme
-    set fish_color_normal color8
-    set fish_color_command color0 bold
+  if test "$termTheme" = "light"
+    set -eU termTheme
+    _gruvbox_dark
     kitty @ --to unix:/tmp/kitty set-colors --reset
+  else
+    set -xU termTheme "light"
+    _gruvbox_light
+    kitty @ --to unix:/tmp/kitty set-colors --all --configured ~/.config/kitty/themes/gruvbox-light.conf
   end
 end
