@@ -1,4 +1,8 @@
 function _gruvbox_dark -d "Set colortheme to gruvbox dark"
+  kitty @ --to unix:/tmp/kitty set-colors --reset
+
+  set -eU termTheme
+
   set fish_color_normal ebdbb2
   set fish_color_command fbf1c7 bold
   set fish_color_quote fadb2f

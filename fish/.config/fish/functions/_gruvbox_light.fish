@@ -1,4 +1,8 @@
 function _gruvbox_light -d "Set colortheme to gruvbox light"
+  kitty @ --to unix:/tmp/kitty set-colors --all --configured ~/.config/kitty/themes/gruvbox-light.conf
+
+  set -xU termTheme "light"
+
   set fish_color_normal 3c3836
   set fish_color_command 282828 bold
   set fish_color_quote fadbd2f
