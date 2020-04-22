@@ -31,7 +31,7 @@ Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-git'
-Plug 'tpope/vim-markdown'
+Plug 'plasticboy/vim-markdown'
 Plug 'tpope/vim-projectionist'
 Plug 'tpope/vim-ragtag'
 Plug 'tpope/vim-repeat'
@@ -188,9 +188,6 @@ endif
 
 colorscheme gruvbox
 
-" tpope/vim-markdown
-let g:markdown_fenced_languages = ['css', 'erb=eruby', 'javascript', 'js=javascript', 'json=javascript', 'ruby', 'sass', 'xml', 'html']
-
 " itchyny/lightline.vim
 let g:lightline = {
 \ 'colorscheme': 'gruvbox',
@@ -282,6 +279,9 @@ augroup pencil
   autocmd!
   autocmd FileType markdown call pencil#init()
 augroup END
+
+" plasticboy/vim-markdown
+let g:vim_markdown_folding_disabled = 1
 
 " zk
 function! Zk()
