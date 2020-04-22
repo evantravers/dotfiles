@@ -284,6 +284,8 @@ augroup END
 let g:vim_markdown_folding_disabled = 1
 
 " zk
+nnoremap <leader>zf :Files $SMZPATH<CR>
+
 function! Zk()
   command! -nargs=* ZkFind execute ":e " . system("smz f " . expand("<cword>"))
 
