@@ -36,6 +36,8 @@ cask "hammerspoon"
 cask "karabiner-elements"
 cask "kitty"
 cask "toggl"
+mas "Deliveries", id: 924726344
 mas "Drafts", id: 1435957248
 mas "MindNode", id: 1289197285
 mas "Things", id: 904280696
+mas "Tweetbot", id: 1384080005
