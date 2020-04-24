@@ -5,7 +5,7 @@ function _gruvbox_dark -d "Set colortheme to gruvbox dark"
 
   set fish_color_normal ebdbb2
   set fish_color_command fbf1c7 bold
-  set fish_color_quote fadb2f
+  set fish_color_quote 98971a
   set fish_color_end d3869b
   set fish_color_error cc241d
   set fish_color_param a89984

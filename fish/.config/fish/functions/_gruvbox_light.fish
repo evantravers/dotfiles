@@ -5,7 +5,7 @@ function _gruvbox_light -d "Set colortheme to gruvbox light"
 
   set fish_color_normal 3c3836
   set fish_color_command 282828 bold
-  set fish_color_quote fadbd2f
+  set fish_color_quote 98971a
   set fish_color_end d3869b
   set fish_color_error cc241d
   set fish_color_param 7c6f64
