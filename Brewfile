@@ -15,6 +15,7 @@ brew "git"
 brew "gnupg"
 brew "hub"
 brew "jq"
+brew "mas"
 brew "neovim"
 brew "newsboat"
 brew "openssl"
@@ -35,3 +36,6 @@ cask "hammerspoon"
 cask "karabiner-elements"
 cask "kitty"
 cask "toggl"
+mas "Drafts", id: 1435957248
+mas "MindNode", id: 1289197285
+mas "Things", id: 904280696
