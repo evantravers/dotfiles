@@ -23,6 +23,7 @@ Plug 'mileszs/ack.vim'
 Plug 'mustache/vim-mustache-handlebars', { 'for': ['javascript', 'handlebars'] }
 Plug 'othree/csscomplete.vim', { 'for': 'css' }
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+Plug 'plasticboy/vim-markdown'
 Plug 'reedes/vim-pencil'
 Plug 'rhysd/git-messenger.vim'
 Plug 'slashmili/alchemist.vim', { 'for': 'elixir' }
@@ -32,7 +33,6 @@ Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-git'
-Plug 'plasticboy/vim-markdown'
 Plug 'tpope/vim-projectionist'
 Plug 'tpope/vim-ragtag'
 Plug 'tpope/vim-repeat'
