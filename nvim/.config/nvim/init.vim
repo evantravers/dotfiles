@@ -26,6 +26,7 @@ Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'plasticboy/vim-markdown'
 Plug 'reedes/vim-pencil'
 Plug 'rhysd/git-messenger.vim'
+Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 Plug 'slashmili/alchemist.vim', { 'for': 'elixir' }
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-commentary'
