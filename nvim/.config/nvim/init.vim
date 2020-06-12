@@ -24,7 +24,7 @@ Plug 'mustache/vim-mustache-handlebars', { 'for': ['javascript', 'handlebars'] }
 Plug 'othree/csscomplete.vim', { 'for': 'css' }
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'plasticboy/vim-markdown'
-Plug 'reedes/vim-pencil'
+Plug 'reedes/vim-pencil', { 'on': 'Goyo' }
 Plug 'rhysd/git-messenger.vim'
 Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 Plug 'slashmili/alchemist.vim', { 'for': 'elixir' }
@@ -157,10 +157,12 @@ let g:goyo_width = 60
 
 function! GoyoBefore()
   silent !tmux set status off
+  :PencilSoft
 endfunction
 
 function! GoyoAfter()
   silent !tmux set status on
+  :PencilOff
 endfunction
 
 let g:goyo_callbacks = [function('GoyoBefore'), function('GoyoAfter')]
@@ -277,10 +279,6 @@ endfunction
 
 " reedes/vim-pencil
 let g:pencil#wrapModeDefault = 'soft'
-augroup pencil
-  autocmd!
-  autocmd FileType markdown call pencil#init()
-augroup END
 
 " plasticboy/vim-markdown
 let g:vim_markdown_folding_disabled = 1
