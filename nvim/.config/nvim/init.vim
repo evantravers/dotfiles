@@ -92,7 +92,7 @@ if exists('&undodir')
 endif
 
 " Neovim specific
-set icm=nosplit
+set icm=split
 
 "=============================================
 " Remaps
