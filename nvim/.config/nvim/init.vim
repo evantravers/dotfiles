@@ -12,6 +12,7 @@ Plug 'itspriddle/vim-marked', { 'for': ['markdown'] }
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install --bin' }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
+Plug 'junegunn/limelight.vim', { 'on': 'Goyo' }
 Plug 'junegunn/vim-easy-align'
 Plug 'junegunn/vim-plug'
 Plug 'kopischke/vim-fetch'
@@ -157,11 +158,13 @@ let g:goyo_width = 60
 
 function! GoyoBefore()
   silent !tmux set status off
+  :Limelight
   :PencilSoft
 endfunction
 
 function! GoyoAfter()
   silent !tmux set status on
+  :Limelight!
   :PencilOff
 endfunction
 
