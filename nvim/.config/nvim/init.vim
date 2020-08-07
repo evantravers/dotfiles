@@ -17,7 +17,6 @@ Plug 'junegunn/vim-easy-align'
 Plug 'junegunn/vim-plug'
 Plug 'kopischke/vim-fetch'
 Plug 'machakann/vim-sandwich'
-Plug 'mattn/emmet-vim', { 'for': ['html', 'erb', 'eruby', 'markdown', 'eelixir', 'liquid'] }
 Plug 'mattn/gist-vim'
 Plug 'mattn/webapi-vim'
 Plug 'mileszs/ack.vim'
