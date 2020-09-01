@@ -42,8 +42,12 @@ Plug 'tpope/vim-speeddating'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-vinegar'
 Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
-Plug 'w0rp/ale'
 Plug 'wellle/targets.vim'
+
+Plug 'neovim/nvim-lsp'
+Plug 'nvim-lua/completion-nvim'
+Plug 'nvim-lua/lsp-status.nvim'
+Plug 'nvim-lua/diagnostic-nvim'
 
 call plug#end()
 
