@@ -270,6 +270,13 @@ let g:sandwich#recipes += [
       \     'filetype': ['ruby'],
       \     'input':    ['s'],
       \     'nesting':  1
+      \   },
+      \   {
+      \     'buns':     ['[', ']()'],
+      \     'filetype': ['markdown'],
+      \     'input':    ['l'],
+      \     'nesting':  1,
+      \     'cursor':  'tail',
       \   }
       \ ]
 
