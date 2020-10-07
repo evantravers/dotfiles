@@ -173,7 +173,6 @@ endfunction
 
 let g:goyo_callbacks = [function('GoyoBefore'), function('GoyoAfter')]
 nnoremap <Leader>m :Goyo<CR>
-nnoremap <Leader>n :Wrap<CR>
 
 " junegunn/vim-easy-align
 vmap <Enter> <Plug>(EasyAlign)
