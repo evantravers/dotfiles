@@ -17,7 +17,6 @@ brew "hub"
 brew "jq"
 brew "mas"
 brew "neovim"
-brew "newsboat"
 brew "openssl"
 brew "reattach-to-user-namespace"
 brew "ripgrep"
@@ -40,5 +39,6 @@ cask "toggl"
 mas "Deliveries", id: 924726344
 mas "Drafts", id: 1435957248
 mas "MindNode", id: 1289197285
+mas "Reeder", id: 1529448980
 mas "Things", id: 904280696
 mas "Tweetbot", id: 1384080005
