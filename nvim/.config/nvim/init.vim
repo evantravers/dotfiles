@@ -1,12 +1,9 @@
 " Load plug
 call plug#begin('~/.config/nvim/bundle')
 
-Plug 'ElmCast/elm-vim', { 'for': 'elm' }
 Plug 'airblade/vim-gitgutter'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'elixir-lang/vim-elixir', { 'for': 'elixir' }
 Plug 'gruvbox-community/gruvbox'
-Plug 'hail2u/vim-css3-syntax', { 'for': 'css' }
 Plug 'itchyny/lightline.vim'
 Plug 'itspriddle/vim-marked', { 'for': ['markdown'] }
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install --bin' }
@@ -20,14 +17,9 @@ Plug 'machakann/vim-sandwich'
 Plug 'mattn/gist-vim'
 Plug 'mattn/webapi-vim'
 Plug 'mileszs/ack.vim'
-Plug 'mustache/vim-mustache-handlebars', { 'for': ['javascript', 'handlebars'] }
-Plug 'othree/csscomplete.vim', { 'for': 'css' }
-Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'plasticboy/vim-markdown'
 Plug 'reedes/vim-pencil', { 'on': 'Goyo' }
 Plug 'rhysd/git-messenger.vim'
-Plug 'rust-lang/rust.vim', { 'for': 'rust' }
-Plug 'slashmili/alchemist.vim', { 'for': 'elixir' }
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-dispatch'
@@ -41,13 +33,7 @@ Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-speeddating'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-vinegar'
-Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
 Plug 'wellle/targets.vim'
-
-Plug 'neovim/nvim-lspconfig'
-Plug 'nvim-lua/completion-nvim'
-Plug 'nvim-lua/lsp-status.nvim'
-Plug 'nvim-lua/diagnostic-nvim'
 
 call plug#end()
 
