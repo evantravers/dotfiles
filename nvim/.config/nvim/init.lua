@@ -71,7 +71,7 @@ paq {'nvim-lua/completion-nvim'}
 paq {'nvim-lua/lsp_extensions.nvim'}
 
 -- Options
- 
+
 vim.cmd 'set ignorecase'
 vim.cmd 'set smartcase'
 
@@ -105,31 +105,22 @@ vim.cmd "let maplocalleader=','"
 vim.api.nvim_set_keymap('n', '`', "'", {noremap = true})
 vim.api.nvim_set_keymap('n', "'", '`', {noremap = true})
 
--- " Change pane
--- nnoremap <C-h> <C-w>h
--- nnoremap <C-j> <C-w>j
--- nnoremap <C-k> <C-w>k
--- nnoremap <C-l> <C-w>l
--- 
--- " Turn off search highlight
--- nnoremap <localleader>/ :nohlsearch<CR>
--- 
--- " Trim trailing whitespace
--- nnoremap <localleader>tw m`:%s/\s\+$//e<CR>:nohlsearch<CR>``
--- 
--- "=============================================
--- " Other Settings
--- "=============================================
--- 
--- " Use relative line numbers
+vim.api.nvim_set_keymap('n', '<C-h>', '<C-w>h', {noremap = true})
+vim.api.nvim_set_keymap('n', '<C-j>', '<C-w>j', {noremap = true})
+vim.api.nvim_set_keymap('n', '<C-k>', '<C-w>k', {noremap = true})
+vim.api.nvim_set_keymap('n', '<C-l>', '<C-w>l', {noremap = true})
+
+vim.api.nvim_set_keymap('n', '<localleader>/', ':nohlsearch<CR>', {noremap = true})
+
+-- trim trailing whitespaces
+vim.api.nvim_set_keymap('n', '<localleader>tw', [[:%s/\s\+$//e<CR>:nohlsearch<CR>]], {noremap = true})
 
 vim.cmd 'set pastetoggle=<leader>z'
 
 vim.cmd 'set tags=./tags;/,tags;/'
--- 
--- " Fancy macros
--- nnoremap Q @q
--- vnoremap Q :norm @q<cr>
+
+vim.api.nvim_set_keymap('n', 'Q', '@q', {noremap = true})
+vim.api.nvim_set_keymap('v', 'Q', ':norm @q<cr>', {noremap = true})
 
 vim.cmd 'set listchars=tab:»·,trail:·'
 vim.cmd 'set list'
