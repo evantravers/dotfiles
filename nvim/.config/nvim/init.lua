@@ -15,8 +15,14 @@ vim.cmd [[colorscheme gruvbox]]
 
 paq 'airblade/vim-gitgutter'
 
--- Plug 'editorconfig/editorconfig-vim'
--- Plug 'itchyny/lightline.vim'
+paq 'editorconfig/editorconfig-vim'
+
+paq 'itchyny/lightline.vim'
+vim.g.lightline = {
+	colorscheme = 'gruvbox'
+}
+vim.cmd 'set noshowmode'
+
 -- Plug 'itspriddle/vim-marked', { 'for': ['markdown'] }
 -- Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install --bin' }
 -- Plug 'junegunn/fzf.vim'
