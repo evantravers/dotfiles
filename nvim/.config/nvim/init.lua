@@ -62,38 +62,32 @@ paq {'nvim-lua/lsp_extensions.nvim'}
 vim.cmd 'set ignorecase'
 vim.cmd 'set smartcase'
 
--- " Tab completion
--- set wildmode=list:longest,full
--- set wildignore=*.swp,*.o,*.so,*.exe,*.dll
--- 
--- " Scroll
--- set scrolloff=3
--- 
--- " Tab settings
--- set ts=2
--- set sw=2
--- set expandtab
--- 
--- " Hud
--- set ruler
--- set number
--- set nowrap
--- set fillchars=vert:\│
--- set colorcolumn=80
--- 
--- " Buffers
--- set hidden
--- 
--- " Backup Directories
+vim.cmd 'set wildmode=list:longest,full'
+vim.cmd 'set wildignore=*.swp,*.o,*.so,*.exe,*.dll'
+
+vim.cmd 'set scrolloff=3'
+
+vim.cmd 'set ts=2'
+vim.cmd 'set sw=2'
+vim.cmd 'set expandtab'
+
+vim.cmd 'set ruler'
+vim.cmd 'set number'
+vim.cmd 'set nowrap'
+vim.cmd [[set fillchars=vert:\│]]
+vim.cmd 'set colorcolumn=80'
+vim.cmd 'set relativenumber'
+
+vim.cmd 'set hidden'
+
 -- set backupdir=~/.config/nvim/backups,.
 -- set directory=~/.config/nvim/swaps,.
 -- if exists('&undodir')
 --   set undodir=~/.config/nvim/undo,.
 -- endif
--- 
--- " Neovim specific
--- set icm=split
--- 
+
+vim.cmd 'set icm=split'
+
 -- "=============================================
 -- " Remaps
 -- "=============================================
@@ -122,7 +116,6 @@ vim.cmd 'set smartcase'
 -- "=============================================
 -- 
 -- " Use relative line numbers
--- set relativenumber
 -- 
 -- " Toggle paste mode
 -- set pastetoggle=<leader>z
