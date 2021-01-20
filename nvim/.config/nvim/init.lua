@@ -89,11 +89,9 @@ vim.cmd 'set relativenumber'
 
 vim.cmd 'set hidden'
 
--- set backupdir=~/.config/nvim/backups,.
--- set directory=~/.config/nvim/swaps,.
--- if exists('&undodir')
---   set undodir=~/.config/nvim/undo,.
--- endif
+vim.cmd 'set backupdir=~/.config/nvim/backups,.'
+vim.cmd 'set directory=~/.config/nvim/swaps,.'
+vim.cmd 'set undodir=~/.config/nvim/undo,.'
 
 vim.cmd 'set icm=split'
 
