@@ -23,35 +23,34 @@ vim.g.lightline = {
 }
 vim.cmd 'set noshowmode'
 
--- Plug 'itspriddle/vim-marked', { 'for': ['markdown'] }
--- Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install --bin' }
--- Plug 'junegunn/fzf.vim'
--- Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
--- Plug 'junegunn/limelight.vim', { 'on': 'Goyo' }
--- Plug 'junegunn/vim-easy-align'
--- Plug 'junegunn/vim-plug'
--- Plug 'kopischke/vim-fetch'
--- Plug 'machakann/vim-sandwich'
--- Plug 'mattn/gist-vim'
--- Plug 'mattn/webapi-vim'
--- Plug 'mileszs/ack.vim'
--- Plug 'plasticboy/vim-markdown'
--- Plug 'reedes/vim-pencil', { 'on': 'Goyo' }
--- Plug 'rhysd/git-messenger.vim'
--- Plug 'tpope/vim-abolish'
--- Plug 'tpope/vim-commentary'
--- Plug 'tpope/vim-dispatch'
--- Plug 'tpope/vim-eunuch'
--- Plug 'tpope/vim-fugitive'
--- Plug 'tpope/vim-git'
--- Plug 'tpope/vim-projectionist'
--- Plug 'tpope/vim-ragtag'
--- Plug 'tpope/vim-repeat'
--- Plug 'tpope/vim-rhubarb'
--- Plug 'tpope/vim-speeddating'
--- Plug 'tpope/vim-unimpaired'
--- Plug 'tpope/vim-vinegar'
--- Plug 'wellle/targets.vim'
+paq {'itspriddle/vim-marked', opt = true} -- { 'for': ['markdown'] }
+paq {'junegunn/fzf', hook = vim.fn["fzf#install"]} -- { 'dir': '~/.fzf', 'do': 'yes \| ./install --bin' }
+paq 'junegunn/fzf.vim'
+paq {'junegunn/goyo.vim', opt = true} -- { 'on': 'Goyo' }
+paq {'junegunn/limelight.vim', opt = true} -- { 'on': 'Goyo' }
+paq 'junegunn/vim-easy-align'
+paq 'kopischke/vim-fetch'
+paq 'machakann/vim-sandwich'
+paq 'mattn/gist-vim'
+paq 'mattn/webapi-vim'
+paq 'mileszs/ack.vim'
+paq 'plasticboy/vim-markdown'
+paq {'reedes/vim-pencil', opt = true} -- { 'on': 'Goyo' }
+paq 'rhysd/git-messenger.vim'
+paq 'tpope/vim-abolish'
+paq 'tpope/vim-commentary'
+paq 'tpope/vim-dispatch'
+paq 'tpope/vim-eunuch'
+paq 'tpope/vim-fugitive'
+paq 'tpope/vim-git'
+paq 'tpope/vim-projectionist'
+paq 'tpope/vim-ragtag'
+paq 'tpope/vim-repeat'
+paq 'tpope/vim-rhubarb'
+paq 'tpope/vim-speeddating'
+paq 'tpope/vim-unimpaired'
+paq 'tpope/vim-vinegar'
+paq 'wellle/targets.vim'
 
 paq {'neovim/nvim-lspconfig'}
 paq {'nvim-lua/completion-nvim'}
