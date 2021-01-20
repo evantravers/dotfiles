@@ -1,10 +1,6 @@
 " Load plugins
 filetype plugin indent on
 
-"=============================================
-" Options
-"=============================================
-
 " Search
 set ignorecase
 set smartcase
@@ -41,10 +37,6 @@ set directory=~/.config/nvim/swaps,.
 if exists('&undodir')
   set undodir=~/.config/nvim/undo,.
 endif
-
-"=============================================
-" Mappings
-"=============================================
 
 let mapleader=','
 let maplocalleader=','
