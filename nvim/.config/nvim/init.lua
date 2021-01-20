@@ -2,9 +2,18 @@ vim.cmd 'packadd paq-nvim'
 local paq = require('paq-nvim').paq
 paq {'savq/paq-nvim', opt=true}
 
+-- Gruvbox
+paq 'gruvbox-community/gruvbox'
+vim.g.gruvbox_italic = 1
+vim.g.gruvbox_improved_strings = 1
+vim.g.gruvbox_improved_warnings = 1
+vim.g.gruvbox_guisp_fallback = 'fg'
+vim.g.gruvbox_contrast_light = 'hard'
+vim.g.gruvbox_contrast_dark = 'medium'
+vim.cmd [[colorscheme gruvbox]]
+
 -- Plug 'airblade/vim-gitgutter'
 -- Plug 'editorconfig/editorconfig-vim'
--- Plug 'gruvbox-community/gruvbox'
 -- Plug 'itchyny/lightline.vim'
 -- Plug 'itspriddle/vim-marked', { 'for': ['markdown'] }
 -- Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install --bin' }
@@ -170,21 +179,11 @@ paq {'nvim-lua/lsp_extensions.nvim'}
 -- " mileszs/ack.vim
 -- let g:ackprg = 'rg --vimgrep --no-heading'
 -- 
--- " morhetz/gruvbox
--- let g:gruvbox_italic=1
--- let g:gruvbox_improved_strings=1
--- let g:gruvbox_improved_warnings=1
--- let g:gruvbox_guisp_fallback='fg'
--- let g:gruvbox_contrast_light='hard'
--- let g:gruvbox_contrast_dark='medium'
--- 
 -- set background=dark
 -- 
 -- if $termTheme == 'light'
 --   set background=light
 -- endif
--- 
--- colorscheme gruvbox
 -- 
 -- " itchyny/lightline.vim
 -- let g:lightline = {
