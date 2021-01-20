@@ -1,5 +1,7 @@
--- Plugins
+-- Load .vimrc
+vim.cmd([[runtime .vimrc]])
 
+-- Plugins
 vim.cmd 'packadd paq-nvim'
 local paq = require('paq-nvim').paq
 paq {'savq/paq-nvim', opt=true}
@@ -21,8 +23,7 @@ paq 'itchyny/lightline.vim'
 vim.g.lightline = {
   colorscheme = 'gruvbox'
 }
-vim.cmd 'set noshowmode'
--- vim.o.noshowmode = true
+vim.o.showmode = false
 
 paq {'itspriddle/vim-marked', opt = true} -- { 'for': ['markdown'] }
 vim.api.nvim_set_keymap('n', '<Leader>M', ':MarkedOpen<CR>', {noremap = true})
@@ -34,7 +35,6 @@ vim.g.fzf_action = {
   ['ctrl-s'] = 'split',
   ['ctrl-v'] = 'vsplit'
 }
-vim.g.fzf_colors = {}
 vim.api.nvim_set_keymap('n', '<c-p>', ':FZF<cr>', {noremap = true})
 vim.cmd [[let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*"']]
 vim.api.nvim_set_keymap('n', '<localleader><space>', ':Buffers<cr>', {noremap = true})
@@ -170,56 +170,5 @@ paq {'neovim/nvim-lspconfig'}
 paq {'nvim-lua/completion-nvim'}
 paq {'nvim-lua/lsp_extensions.nvim'}
 
--- Options
-
-vim.o.ignorecase = true
-vim.o.smartcase = true
-
-vim.cmd 'set wildmode=list:longest,full'
-vim.o.wildignore = '*.swp,*.o,*.so,*.exe,*.dll'
-
-vim.o.scrolloff = 3
-
-vim.o.ts = 2
-vim.o.sw = 2
-vim.o.expandtab = true
-
-vim.o.ruler = true
-vim.o.number = true
-vim.o.wrap = false
-vim.cmd [[set fillchars=vert:\│]]
-vim.cmd 'set colorcolumn=80'
-vim.cmd 'set relativenumber'
-
-vim.cmd 'set hidden'
-
-vim.cmd 'set backupdir=~/.config/nvim/backups,.'
-vim.cmd 'set directory=~/.config/nvim/swaps,.'
-vim.cmd 'set undodir=~/.config/nvim/undo,.'
-
-vim.cmd 'set icm=split'
-
-vim.cmd "let mapleader=','"
-vim.cmd "let maplocalleader=','"
-
-vim.api.nvim_set_keymap('n', '`', "'", {noremap = true})
-vim.api.nvim_set_keymap('n', "'", '`', {noremap = true})
-
-vim.api.nvim_set_keymap('n', '<C-h>', '<C-w>h', {noremap = true})
-vim.api.nvim_set_keymap('n', '<C-j>', '<C-w>j', {noremap = true})
-vim.api.nvim_set_keymap('n', '<C-k>', '<C-w>k', {noremap = true})
-vim.api.nvim_set_keymap('n', '<C-l>', '<C-w>l', {noremap = true})
-
-vim.api.nvim_set_keymap('n', '<localleader>/', ':nohlsearch<CR>', {noremap = true})
-
-vim.api.nvim_set_keymap('n', '<localleader>tw', [[:%s/\s\+$//e<CR>:nohlsearch<CR>]], {noremap = true})
-
-vim.cmd 'set pastetoggle=<leader>z'
-
-vim.cmd 'set tags=./tags;/,tags;/'
-
-vim.api.nvim_set_keymap('n', 'Q', '@q', {noremap = true})
-vim.api.nvim_set_keymap('v', 'Q', ':norm @q<cr>', {noremap = true})
-
-vim.cmd 'set listchars=tab:»·,trail:·'
-vim.cmd 'set list'
+-- Neovim specific settings
+vim.o.icm = 'split'
