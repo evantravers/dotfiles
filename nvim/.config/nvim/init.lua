@@ -68,76 +68,91 @@ paq 'machakann/vim-sandwich'
 -- vim.g['sandwich#recipes'] = vim.g['sandwich#default_recipes']
 -- let g:sandwich#recipes = deepcopy(g:sandwich#default_recipes)
 -- let g:sandwich#recipes += [
---       \   {
---       \     'buns'    : ['%{', '}'],
---       \     'filetype': ['elixir'],
---       \     'input'   : ['m'],
---       \     'nesting' : 1,
---       \   },
---       \   {
---       \     'buns'    : 'StructInput()',
---       \     'filetype': ['elixir'],
---       \     'kind'    : ['add', 'replace'],
---       \     'action'  : ['add'],
---       \     'input'   : ['M'],
---       \     'listexpr'    : 1,
---       \     'nesting' : 1,
---       \   },
---       \   {
---       \     'buns'    : ['%\w\+{', '}'],
---       \     'filetype': ['elixir'],
---       \     'input'   : ['M'],
---       \     'nesting' : 1,
---       \     'regex'   : 1,
---       \   },
---       \   {
---       \     'buns':     ['<%= ', ' %>'],
---       \     'filetype': ['eruby', 'eelixir'],
---       \     'input':    ['='],
---       \     'nesting':  1
---       \   },
---       \   {
---       \     'buns':     ['<% ', ' %>'],
---       \     'filetype': ['eruby', 'eelixir'],
---       \     'input':    ['-'],
---       \     'nesting':  1
---       \   },
---       \   {
---       \     'buns':     ['<%# ', ' %>'],
---       \     'filetype': ['eruby', 'eelixir'],
---       \     'input':    ['#'],
---       \     'nesting':  1
---       \   },
---       \   {
---       \     'buns':     ['{{ ', ' }}'],
---       \     'filetype': ['liquid', 'mustache'],
---       \     'input':    ['O'],
---       \     'nesting':  1
---       \   },
---       \   {
---       \     'buns':     ['#{', '}'],
---       \     'filetype': ['ruby'],
---       \     'input':    ['s'],
---       \     'nesting':  1
---       \   },
---       \   {
---       \     'buns':     ['[', ']()'],
---       \     'filetype': ['markdown'],
---       \     'input':    ['l'],
---       \     'nesting':  1,
---       \     'cursor':  'tail',
---       \   }
---       \ ]
---
--- function! StructInput() abort
---   let s:StructLast = input('Struct: ')
---   if s:StructLast !=# ''
---     let struct = printf('%%%s{', s:StructLast)
---   else
---     throw 'OperatorSandwichCancel'
---   endif
---   return [struct, '}']
--- endfunction
+
+function deepcopy(orig)
+    local orig_type = type(orig)
+    local copy
+    if orig_type == 'table' then
+        copy = {}
+        for orig_key, orig_value in next, orig, nil do
+            copy[deepcopy(orig_key)] = deepcopy(orig_value)
+        end
+        setmetatable(copy, deepcopy(getmetatable(orig)))
+    else -- number, string, boolean, etc
+        copy = orig
+    end
+    return copy
+end
+
+local structInput = function()
+  -- function! StructInput() abort
+  --   let s:StructLast = input('Struct: ')
+  --   if s:StructLast !=# ''
+  --     let struct = printf('%%%s{', s:StructLast)
+  --   else
+  --     throw 'OperatorSandwichCancel'
+  --   endif
+  --   return [struct, '}']
+  -- endfunction
+  return ""
+end
+
+vim.api.nvim_set_var('sandwich#recipes', deepcopy(vim.g['sandwich#default_recipes']))
+-- {
+--   {
+--     buns = { '%{', '}' },
+--     filetype = { 'elixir' },
+--     input = { 'm' },
+--     nesting = 1
+--   },
+--   {
+--     buns     = structInput(),
+--     filetype = { 'elixir' },
+--     kind     = { 'add', 'replace' },
+--     action   = { 'add' },
+--     input    = { 'M' },
+--     listexpr = 1,
+--     nesting  = 1,
+--   },
+--   {
+--     buns     = { [[%\w\+{]], '}' },
+--     filetype = { 'elixir' },
+--     input    = { 'M' },
+--     nesting  = 1,
+--     regex    = 1,
+--   },
+--   {
+--     buns     = { '<%= ', ' %>' },
+--     filetype = { 'eruby', 'eelixir' },
+--     input    = { '=' },
+--     nesting  = 1
+--   },
+--   {
+--     buns     = { '<% ', ' %>' },
+--     filetype = { 'eruby', 'eelixir' },
+--     input    = { '-' },
+--     nesting  = 1
+--   },
+--   {
+--     buns     = { '<%# ', ' %>' },
+--     filetype = { 'eruby', 'eelixir' },
+--     input    = { '#' },
+--     nesting  = 1
+--   },
+--   {
+--     buns     = { '#{', '}' },
+--     filetype = { 'ruby' },
+--     input    = { 's' },
+--     nesting  = 1
+--   },
+--   {
+--     buns     = { '[', ']()' },
+--     filetype = { 'markdown' },
+--     input    = { 'l' },
+--     nesting  = 1,
+--     cursor   = 'tail',
+--   }
+-- }
 
 paq 'mattn/gist-vim'
 paq 'mattn/webapi-vim'
