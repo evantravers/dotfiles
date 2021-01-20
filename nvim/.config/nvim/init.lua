@@ -24,6 +24,7 @@ vim.g.lightline = {
 vim.cmd 'set noshowmode'
 
 paq {'itspriddle/vim-marked', opt = true} -- { 'for': ['markdown'] }
+vim.api.nvim_set_keymap('n', '<Leader>M', ':MarkedOpen<CR>', {noremap = true})
 
 paq {'junegunn/fzf', hook = vim.fn["fzf#install"]} -- { 'dir': '~/.fzf', 'do': 'yes \| ./install --bin' }
 paq 'junegunn/fzf.vim'
@@ -38,6 +39,22 @@ vim.cmd [[let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git
 vim.api.nvim_set_keymap('n', '<localleader><space>', ':Buffers<cr>', {noremap = true})
 
 paq {'junegunn/goyo.vim', opt = true} -- { 'on': 'Goyo' }
+vim.g.goyo_width = 60
+-- function! GoyoBefore()
+--   silent !tmux set status off
+--   :Limelight
+--   :PencilSoft
+-- endfunction
+--
+-- function! GoyoAfter()
+--   silent !tmux set status on
+--   :Limelight!
+--   :PencilOff
+-- endfunction
+--
+-- let g:goyo_callbacks = [function('GoyoBefore'), function('GoyoAfter')]
+-- nnoremap <Leader>m :Goyo<CR>
+
 paq {'junegunn/limelight.vim', opt = true} -- { 'on': 'Goyo' }
 
 paq 'junegunn/vim-easy-align'
@@ -45,7 +62,81 @@ vim.api.nvim_set_keymap('v', '<Enter>', '<Plug>(EasyAlign)', {})
 vim.api.nvim_set_keymap('n', '<Leader>a', '<Plug>(EasyAlign)', {})
 
 paq 'kopischke/vim-fetch'
+
 paq 'machakann/vim-sandwich'
+-- let g:sandwich#recipes = deepcopy(g:sandwich#default_recipes)
+-- let g:sandwich#recipes += [
+--       \   {
+--       \     'buns'    : ['%{', '}'],
+--       \     'filetype': ['elixir'],
+--       \     'input'   : ['m'],
+--       \     'nesting' : 1,
+--       \   },
+--       \   {
+--       \     'buns'    : 'StructInput()',
+--       \     'filetype': ['elixir'],
+--       \     'kind'    : ['add', 'replace'],
+--       \     'action'  : ['add'],
+--       \     'input'   : ['M'],
+--       \     'listexpr'    : 1,
+--       \     'nesting' : 1,
+--       \   },
+--       \   {
+--       \     'buns'    : ['%\w\+{', '}'],
+--       \     'filetype': ['elixir'],
+--       \     'input'   : ['M'],
+--       \     'nesting' : 1,
+--       \     'regex'   : 1,
+--       \   },
+--       \   {
+--       \     'buns':     ['<%= ', ' %>'],
+--       \     'filetype': ['eruby', 'eelixir'],
+--       \     'input':    ['='],
+--       \     'nesting':  1
+--       \   },
+--       \   {
+--       \     'buns':     ['<% ', ' %>'],
+--       \     'filetype': ['eruby', 'eelixir'],
+--       \     'input':    ['-'],
+--       \     'nesting':  1
+--       \   },
+--       \   {
+--       \     'buns':     ['<%# ', ' %>'],
+--       \     'filetype': ['eruby', 'eelixir'],
+--       \     'input':    ['#'],
+--       \     'nesting':  1
+--       \   },
+--       \   {
+--       \     'buns':     ['{{ ', ' }}'],
+--       \     'filetype': ['liquid', 'mustache'],
+--       \     'input':    ['O'],
+--       \     'nesting':  1
+--       \   },
+--       \   {
+--       \     'buns':     ['#{', '}'],
+--       \     'filetype': ['ruby'],
+--       \     'input':    ['s'],
+--       \     'nesting':  1
+--       \   },
+--       \   {
+--       \     'buns':     ['[', ']()'],
+--       \     'filetype': ['markdown'],
+--       \     'input':    ['l'],
+--       \     'nesting':  1,
+--       \     'cursor':  'tail',
+--       \   }
+--       \ ]
+--
+-- function! StructInput() abort
+--   let s:StructLast = input('Struct: ')
+--   if s:StructLast !=# ''
+--     let struct = printf('%%%s{', s:StructLast)
+--   else
+--     throw 'OperatorSandwichCancel'
+--   endif
+--   return [struct, '}']
+-- endfunction
+
 paq 'mattn/gist-vim'
 paq 'mattn/webapi-vim'
 
@@ -55,6 +146,8 @@ vim.g.vim_markdown_conceal = 0
 vim.g.vim_markdown_conceal_code_blocks = 0
 
 paq {'reedes/vim-pencil', opt = true} -- { 'on': 'Goyo' }
+-- let g:pencil#wrapModeDefault = 'soft'
+
 paq 'rhysd/git-messenger.vim'
 paq 'tpope/vim-abolish'
 paq 'tpope/vim-commentary'
@@ -130,120 +223,9 @@ vim.api.nvim_set_keymap('v', 'Q', ':norm @q<cr>', {noremap = true})
 vim.cmd 'set listchars=tab:»·,trail:·'
 vim.cmd 'set list'
 
--- "=============================================
--- " Package Settings
--- "=============================================
---
--- let g:goyo_width = 60
---
--- function! GoyoBefore()
---   silent !tmux set status off
---   :Limelight
---   :PencilSoft
--- endfunction
---
--- function! GoyoAfter()
---   silent !tmux set status on
---   :Limelight!
---   :PencilOff
--- endfunction
---
--- let g:goyo_callbacks = [function('GoyoBefore'), function('GoyoAfter')]
--- nnoremap <Leader>m :Goyo<CR>
---
--- if $termTheme == 'light'
---   set background=light
--- endif
---
--- " itchyny/lightline.vim
--- let g:lightline = {
--- \ 'colorscheme': 'gruvbox',
--- \ }
--- set noshowmode
---
--- " itspriddle/vim-marked
--- nnoremap <Leader>M :MarkedOpen<CR>
---
 -- " Things 3
 -- command! -nargs=* Things :silent !open "things:///add?show-quick-entry=true&title=%:t&notes=%<cr>"
 -- nnoremap <Leader>T :Things<cr>
---
--- " machakann/vim-sandwich
--- let g:sandwich#recipes = deepcopy(g:sandwich#default_recipes)
--- let g:sandwich#recipes += [
---       \   {
---       \     'buns'    : ['%{', '}'],
---       \     'filetype': ['elixir'],
---       \     'input'   : ['m'],
---       \     'nesting' : 1,
---       \   },
---       \   {
---       \     'buns'    : 'StructInput()',
---       \     'filetype': ['elixir'],
---       \     'kind'    : ['add', 'replace'],
---       \     'action'  : ['add'],
---       \     'input'   : ['M'],
---       \     'listexpr'    : 1,
---       \     'nesting' : 1,
---       \   },
---       \   {
---       \     'buns'    : ['%\w\+{', '}'],
---       \     'filetype': ['elixir'],
---       \     'input'   : ['M'],
---       \     'nesting' : 1,
---       \     'regex'   : 1,
---       \   },
---       \   {
---       \     'buns':     ['<%= ', ' %>'],
---       \     'filetype': ['eruby', 'eelixir'],
---       \     'input':    ['='],
---       \     'nesting':  1
---       \   },
---       \   {
---       \     'buns':     ['<% ', ' %>'],
---       \     'filetype': ['eruby', 'eelixir'],
---       \     'input':    ['-'],
---       \     'nesting':  1
---       \   },
---       \   {
---       \     'buns':     ['<%# ', ' %>'],
---       \     'filetype': ['eruby', 'eelixir'],
---       \     'input':    ['#'],
---       \     'nesting':  1
---       \   },
---       \   {
---       \     'buns':     ['{{ ', ' }}'],
---       \     'filetype': ['liquid', 'mustache'],
---       \     'input':    ['O'],
---       \     'nesting':  1
---       \   },
---       \   {
---       \     'buns':     ['#{', '}'],
---       \     'filetype': ['ruby'],
---       \     'input':    ['s'],
---       \     'nesting':  1
---       \   },
---       \   {
---       \     'buns':     ['[', ']()'],
---       \     'filetype': ['markdown'],
---       \     'input':    ['l'],
---       \     'nesting':  1,
---       \     'cursor':  'tail',
---       \   }
---       \ ]
---
--- function! StructInput() abort
---   let s:StructLast = input('Struct: ')
---   if s:StructLast !=# ''
---     let struct = printf('%%%s{', s:StructLast)
---   else
---     throw 'OperatorSandwichCancel'
---   endif
---   return [struct, '}']
--- endfunction
---
--- " reedes/vim-pencil
--- let g:pencil#wrapModeDefault = 'soft'
 --
 -- " zk
 -- nnoremap <leader>zf :Files $SMZPATH<CR>
