@@ -44,7 +44,6 @@ paq 'kopischke/vim-fetch'
 paq 'machakann/vim-sandwich'
 paq 'mattn/gist-vim'
 paq 'mattn/webapi-vim'
-paq 'mileszs/ack.vim'
 paq 'plasticboy/vim-markdown'
 paq {'reedes/vim-pencil', opt = true} -- { 'on': 'Goyo' }
 paq 'rhysd/git-messenger.vim'
