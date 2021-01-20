@@ -28,13 +28,13 @@ paq {'itspriddle/vim-marked', opt = true} -- { 'for': ['markdown'] }
 paq {'junegunn/fzf', hook = vim.fn["fzf#install"]} -- { 'dir': '~/.fzf', 'do': 'yes \| ./install --bin' }
 paq 'junegunn/fzf.vim'
 vim.g.fzf_layout = { window = { width = 0.9, height = 0.6 } }
--- vim.g.fzf_action = {
---   ctrl-s = 'split',
---   ctrl-v = 'vsplit'
--- }
+vim.g.fzf_action = {
+  ['ctrl-s'] = 'split',
+  ['ctrl-v'] = 'vsplit'
+}
 vim.g.fzf_colors = {}
 vim.api.nvim_set_keymap('n', '<c-p>', ':FZF<cr>', {noremap = true})
--- let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*"'
+vim.cmd [[let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*"']]
 vim.api.nvim_set_keymap('n', '<localleader><space>', ':Buffers<cr>', {noremap = true})
 
 paq {'junegunn/goyo.vim', opt = true} -- { 'on': 'Goyo' }
