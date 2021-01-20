@@ -19,7 +19,7 @@ paq 'editorconfig/editorconfig-vim'
 
 paq 'itchyny/lightline.vim'
 vim.g.lightline = {
-	colorscheme = 'gruvbox'
+  colorscheme = 'gruvbox'
 }
 vim.cmd 'set noshowmode'
 
