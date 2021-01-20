@@ -22,6 +22,7 @@ vim.g.lightline = {
   colorscheme = 'gruvbox'
 }
 vim.cmd 'set noshowmode'
+-- vim.o.noshowmode = true
 
 paq {'itspriddle/vim-marked', opt = true} -- { 'for': ['markdown'] }
 vim.api.nvim_set_keymap('n', '<Leader>M', ':MarkedOpen<CR>', {noremap = true})
@@ -64,6 +65,7 @@ vim.api.nvim_set_keymap('n', '<Leader>a', '<Plug>(EasyAlign)', {})
 paq 'kopischke/vim-fetch'
 
 paq 'machakann/vim-sandwich'
+-- vim.g['sandwich#recipes'] = vim.g['sandwich#default_recipes']
 -- let g:sandwich#recipes = deepcopy(g:sandwich#default_recipes)
 -- let g:sandwich#recipes += [
 --       \   {
@@ -146,7 +148,7 @@ vim.g.vim_markdown_conceal = 0
 vim.g.vim_markdown_conceal_code_blocks = 0
 
 paq {'reedes/vim-pencil', opt = true} -- { 'on': 'Goyo' }
--- let g:pencil#wrapModeDefault = 'soft'
+vim.g['pencil#wrapModeDefault'] = 'soft'
 
 paq 'rhysd/git-messenger.vim'
 paq 'tpope/vim-abolish'
@@ -170,21 +172,21 @@ paq {'nvim-lua/lsp_extensions.nvim'}
 
 -- Options
 
-vim.cmd 'set ignorecase'
-vim.cmd 'set smartcase'
+vim.o.ignorecase = true
+vim.o.smartcase = true
 
 vim.cmd 'set wildmode=list:longest,full'
-vim.cmd 'set wildignore=*.swp,*.o,*.so,*.exe,*.dll'
+vim.o.wildignore = '*.swp,*.o,*.so,*.exe,*.dll'
 
-vim.cmd 'set scrolloff=3'
+vim.o.scrolloff = 3
 
-vim.cmd 'set ts=2'
-vim.cmd 'set sw=2'
-vim.cmd 'set expandtab'
+vim.o.ts = 2
+vim.o.sw = 2
+vim.o.expandtab = true
 
-vim.cmd 'set ruler'
-vim.cmd 'set number'
-vim.cmd 'set nowrap'
+vim.o.ruler = true
+vim.o.number = true
+vim.o.wrap = false
 vim.cmd [[set fillchars=vert:\│]]
 vim.cmd 'set colorcolumn=80'
 vim.cmd 'set relativenumber'
@@ -210,7 +212,6 @@ vim.api.nvim_set_keymap('n', '<C-l>', '<C-w>l', {noremap = true})
 
 vim.api.nvim_set_keymap('n', '<localleader>/', ':nohlsearch<CR>', {noremap = true})
 
--- trim trailing whitespaces
 vim.api.nvim_set_keymap('n', '<localleader>tw', [[:%s/\s\+$//e<CR>:nohlsearch<CR>]], {noremap = true})
 
 vim.cmd 'set pastetoggle=<leader>z'
@@ -222,21 +223,3 @@ vim.api.nvim_set_keymap('v', 'Q', ':norm @q<cr>', {noremap = true})
 
 vim.cmd 'set listchars=tab:»·,trail:·'
 vim.cmd 'set list'
-
--- " Things 3
--- command! -nargs=* Things :silent !open "things:///add?show-quick-entry=true&title=%:t&notes=%<cr>"
--- nnoremap <Leader>T :Things<cr>
---
--- " zk
--- nnoremap <leader>zf :Files $SMZPATH<CR>
---
--- function! Zk()
---   command! -nargs=* ZkFind execute ":e " . system("smz f " . expand("<cword>"))
---
---   nnoremap <leader>gf :ZkFind()<CR>
--- endfunction
---
--- augroup zk
---   autocmd!
---   autocmd FileType markdown call Zk()
--- augroup END
