@@ -39,7 +39,11 @@ vim.api.nvim_set_keymap('n', '<localleader><space>', ':Buffers<cr>', {noremap = 
 
 paq {'junegunn/goyo.vim', opt = true} -- { 'on': 'Goyo' }
 paq {'junegunn/limelight.vim', opt = true} -- { 'on': 'Goyo' }
+
 paq 'junegunn/vim-easy-align'
+vim.api.nvim_set_keymap('v', '<Enter>', '<Plug>(EasyAlign)', {})
+vim.api.nvim_set_keymap('n', '<Leader>a', '<Plug>(EasyAlign)', {})
+
 paq 'kopischke/vim-fetch'
 paq 'machakann/vim-sandwich'
 paq 'mattn/gist-vim'
@@ -150,11 +154,7 @@ vim.cmd 'set list'
 -- 
 -- let g:goyo_callbacks = [function('GoyoBefore'), function('GoyoAfter')]
 -- nnoremap <Leader>m :Goyo<CR>
--- 
--- " junegunn/vim-easy-align
--- vmap <Enter> <Plug>(EasyAlign)
--- nmap <Leader>a <Plug>(EasyAlign)
--- 
+--
 -- if $termTheme == 'light'
 --   set background=light
 -- endif
