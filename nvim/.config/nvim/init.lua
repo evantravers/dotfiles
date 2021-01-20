@@ -40,7 +40,7 @@ vim.cmd [[let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git
 vim.api.nvim_set_keymap('n', '<localleader><space>', ':Buffers<cr>', {noremap = true})
 
 paq {'junegunn/goyo.vim', opt = true} -- { 'on': 'Goyo' }
-vim.g.goyo_width = 60
+-- vim.g.goyo_width = 60
 -- function! GoyoBefore()
 --   silent !tmux set status off
 --   :Limelight
@@ -65,94 +65,76 @@ vim.api.nvim_set_keymap('n', '<Leader>a', '<Plug>(EasyAlign)', {})
 paq 'kopischke/vim-fetch'
 
 paq 'machakann/vim-sandwich'
--- vim.g['sandwich#recipes'] = vim.g['sandwich#default_recipes']
--- let g:sandwich#recipes = deepcopy(g:sandwich#default_recipes)
--- let g:sandwich#recipes += [
 
-function deepcopy(orig)
-    local orig_type = type(orig)
-    local copy
-    if orig_type == 'table' then
-        copy = {}
-        for orig_key, orig_value in next, orig, nil do
-            copy[deepcopy(orig_key)] = deepcopy(orig_value)
-        end
-        setmetatable(copy, deepcopy(getmetatable(orig)))
-    else -- number, string, boolean, etc
-        copy = orig
-    end
-    return copy
+structInput = function()
+  local structName = vim.fn.input('Struct: ')
+  if (structName ~= '') then
+    local startBun = '%' .. structName .. '{'
+  else
+    vim.fn.throw 'OperatorSandwichCancel'
+  end
+  return { startBun, '}' }
 end
 
-local structInput = function()
-  -- function! StructInput() abort
-  --   let s:StructLast = input('Struct: ')
-  --   if s:StructLast !=# ''
-  --     let struct = printf('%%%s{', s:StructLast)
-  --   else
-  --     throw 'OperatorSandwichCancel'
-  --   endif
-  --   return [struct, '}']
-  -- endfunction
-  return ""
-end
-
-vim.api.nvim_set_var('sandwich#recipes', deepcopy(vim.g['sandwich#default_recipes']))
--- {
+local sandwich_recipes = vim.g['sandwich#default_recipes']
+-- local custom_recipes =
 --   {
---     buns = { '%{', '}' },
---     filetype = { 'elixir' },
---     input = { 'm' },
---     nesting = 1
---   },
---   {
---     buns     = structInput(),
---     filetype = { 'elixir' },
---     kind     = { 'add', 'replace' },
---     action   = { 'add' },
---     input    = { 'M' },
---     listexpr = 1,
---     nesting  = 1,
---   },
---   {
---     buns     = { [[%\w\+{]], '}' },
---     filetype = { 'elixir' },
---     input    = { 'M' },
---     nesting  = 1,
---     regex    = 1,
---   },
---   {
---     buns     = { '<%= ', ' %>' },
---     filetype = { 'eruby', 'eelixir' },
---     input    = { '=' },
---     nesting  = 1
---   },
---   {
---     buns     = { '<% ', ' %>' },
---     filetype = { 'eruby', 'eelixir' },
---     input    = { '-' },
---     nesting  = 1
---   },
---   {
---     buns     = { '<%# ', ' %>' },
---     filetype = { 'eruby', 'eelixir' },
---     input    = { '#' },
---     nesting  = 1
---   },
---   {
---     buns     = { '#{', '}' },
---     filetype = { 'ruby' },
---     input    = { 's' },
---     nesting  = 1
---   },
---   {
---     buns     = { '[', ']()' },
---     filetype = { 'markdown' },
---     input    = { 'l' },
---     nesting  = 1,
---     cursor   = 'tail',
+--     {
+--       buns     = { '%{', '}' },
+--       filetype = { 'elixir' },
+--       input    = { 'm' },
+--       nesting  = 1
+--     },
+--     {
+--       buns     = 'structInput()',
+--       filetype = { 'elixir' },
+--       kind     = { 'add', 'replace' },
+--       action   = { 'add' },
+--       input    = { 'M' },
+--       listexpr = 1,
+--       nesting  = 1
+--     },
+--     {
+--       buns     = { [[%\w\+{]], '}' },
+--       filetype = { 'elixir' },
+--       input    = { 'M' },
+--       nesting  = 1,
+--       regex    = 1
+--     },
+--     {
+--       buns     = { '<%= ', ' %>' },
+--       filetype = { 'eruby', 'eelixir' },
+--       input    = { '=' },
+--       nesting  = 1
+--     },
+--     {
+--       buns     = { '<% ', ' %>' },
+--       filetype = { 'eruby', 'eelixir' },
+--       input    = { '-' },
+--       nesting  = 1
+--     },
+--     {
+--       buns     = { '<%# ', ' %>' },
+--       filetype = { 'eruby', 'eelixir' },
+--       input    = { '#' },
+--       nesting  = 1
+--     },
+--     {
+--       buns     = { '#{', '}' },
+--       filetype = { 'ruby' },
+--       input    = { 's' },
+--       nesting  = 1
+--     },
+--     {
+--       buns     = { '[', ']()' },
+--       filetype = { 'markdown' },
+--       input    = { 'l' },
+--       nesting  = 1,
+--       cursor   = 'tail'
+--     }
 --   }
--- }
+-- table.insert(sandwich_recipes, custom_recipes)
+-- vim.g['sandwich#recipes'] = sandwich_recipes
 
 paq 'mattn/gist-vim'
 paq 'mattn/webapi-vim'
