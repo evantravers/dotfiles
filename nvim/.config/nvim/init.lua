@@ -11,7 +11,8 @@ vim.g.gruvbox_contrast_light = 'hard'
 vim.g.gruvbox_contrast_dark = 'medium'
 vim.cmd [[colorscheme gruvbox]]
 
--- Plug 'airblade/vim-gitgutter'
+paq 'airblade/vim-gitgutter'
+
 -- Plug 'editorconfig/editorconfig-vim'
 -- Plug 'itchyny/lightline.vim'
 -- Plug 'itspriddle/vim-marked', { 'for': ['markdown'] }
