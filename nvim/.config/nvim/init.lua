@@ -95,17 +95,12 @@ vim.cmd 'set undodir=~/.config/nvim/undo,.'
 
 vim.cmd 'set icm=split'
 
--- "=============================================
--- " Remaps
--- "=============================================
--- 
--- let mapleader=','
--- let maplocalleader=','
--- 
--- " Jump key
--- nnoremap ` '
--- nnoremap ' `
--- 
+vim.cmd "let mapleader=','"
+vim.cmd "let maplocalleader=','"
+
+vim.api.nvim_set_keymap('n', '`', "'", {noremap = true})
+vim.api.nvim_set_keymap('n', "'", '`', {noremap = true})
+
 -- " Change pane
 -- nnoremap <C-h> <C-w>h
 -- nnoremap <C-j> <C-w>j
