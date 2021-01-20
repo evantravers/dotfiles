@@ -2,7 +2,6 @@ vim.cmd 'packadd paq-nvim'
 local paq = require('paq-nvim').paq
 paq {'savq/paq-nvim', opt=true}
 
--- Gruvbox
 paq 'gruvbox-community/gruvbox'
 vim.g.gruvbox_italic = 1
 vim.g.gruvbox_improved_strings = 1
