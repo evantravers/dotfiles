@@ -66,75 +66,76 @@ paq 'kopischke/vim-fetch'
 
 paq 'machakann/vim-sandwich'
 
-structInput = function()
+function _G.structInput()
   local structName = vim.fn.input('Struct: ')
+  local startBun = ''
   if (structName ~= '') then
-    local startBun = '%' .. structName .. '{'
+    startBun = '%' .. structName .. '{'
   else
-    vim.fn.throw 'OperatorSandwichCancel'
+    vim.fn.throw('OperatorSandwichCancel')
   end
   return { startBun, '}' }
 end
 
-local sandwich_recipes = vim.g['sandwich#default_recipes']
--- local custom_recipes =
---   {
---     {
---       buns     = { '%{', '}' },
---       filetype = { 'elixir' },
---       input    = { 'm' },
---       nesting  = 1
---     },
---     {
---       buns     = 'structInput()',
---       filetype = { 'elixir' },
---       kind     = { 'add', 'replace' },
---       action   = { 'add' },
---       input    = { 'M' },
---       listexpr = 1,
---       nesting  = 1
---     },
---     {
---       buns     = { [[%\w\+{]], '}' },
---       filetype = { 'elixir' },
---       input    = { 'M' },
---       nesting  = 1,
---       regex    = 1
---     },
---     {
---       buns     = { '<%= ', ' %>' },
---       filetype = { 'eruby', 'eelixir' },
---       input    = { '=' },
---       nesting  = 1
---     },
---     {
---       buns     = { '<% ', ' %>' },
---       filetype = { 'eruby', 'eelixir' },
---       input    = { '-' },
---       nesting  = 1
---     },
---     {
---       buns     = { '<%# ', ' %>' },
---       filetype = { 'eruby', 'eelixir' },
---       input    = { '#' },
---       nesting  = 1
---     },
---     {
---       buns     = { '#{', '}' },
---       filetype = { 'ruby' },
---       input    = { 's' },
---       nesting  = 1
---     },
---     {
---       buns     = { '[', ']()' },
---       filetype = { 'markdown' },
---       input    = { 'l' },
---       nesting  = 1,
---       cursor   = 'tail'
---     }
---   }
--- table.insert(sandwich_recipes, custom_recipes)
--- vim.g['sandwich#recipes'] = sandwich_recipes
+local sandwich_recipes = vim.fn.deepcopy(vim.api.nvim_eval('sandwich#default_recipes'))
+local custom_recipes =
+  {
+    {
+      buns     = { '%{', '}' },
+      filetype = { 'elixir' },
+      input    = { 'm' },
+      nesting  = 1
+    },
+    {
+      buns     = 'v:lua.structInput()',
+      filetype = { 'elixir' },
+      kind     = { 'add', 'replace' },
+      action   = { 'add' },
+      input    = { 'M' },
+      listexpr = 1,
+      nesting  = 1
+    },
+    {
+      buns     = { [[%\w\+{]], '}' },
+      filetype = { 'elixir' },
+      input    = { 'M' },
+      nesting  = 1,
+      regex    = 1
+    },
+    {
+      buns     = { '<%= ', ' %>' },
+      filetype = { 'eruby', 'eelixir' },
+      input    = { '=' },
+      nesting  = 1
+    },
+    {
+      buns     = { '<% ', ' %>' },
+      filetype = { 'eruby', 'eelixir' },
+      input    = { '-' },
+      nesting  = 1
+    },
+    {
+      buns     = { '<%# ', ' %>' },
+      filetype = { 'eruby', 'eelixir' },
+      input    = { '#' },
+      nesting  = 1
+    },
+    {
+      buns     = { '#{', '}' },
+      filetype = { 'ruby' },
+      input    = { 's' },
+      nesting  = 1
+    },
+    {
+      buns     = { '[', ']()' },
+      filetype = { 'markdown' },
+      input    = { 'l' },
+      nesting  = 1,
+      cursor   = 'tail'
+    }
+  }
+vim.list_extend(sandwich_recipes, custom_recipes)
+vim.g['sandwich#recipes'] = sandwich_recipes
 
 paq 'mattn/gist-vim'
 paq 'mattn/webapi-vim'
