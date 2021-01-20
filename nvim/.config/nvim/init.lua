@@ -137,46 +137,41 @@ vim.cmd 'set list'
 -- "=============================================
 -- " Package Settings
 -- "=============================================
--- 
+--
 -- let g:goyo_width = 60
--- 
+--
 -- function! GoyoBefore()
 --   silent !tmux set status off
 --   :Limelight
 --   :PencilSoft
 -- endfunction
--- 
+--
 -- function! GoyoAfter()
 --   silent !tmux set status on
 --   :Limelight!
 --   :PencilOff
 -- endfunction
--- 
+--
 -- let g:goyo_callbacks = [function('GoyoBefore'), function('GoyoAfter')]
 -- nnoremap <Leader>m :Goyo<CR>
 --
 -- if $termTheme == 'light'
 --   set background=light
 -- endif
--- 
+--
 -- " itchyny/lightline.vim
 -- let g:lightline = {
 -- \ 'colorscheme': 'gruvbox',
 -- \ }
 -- set noshowmode
--- 
--- " w0rp/ale
--- let g:ale_lint_delay = 5000
--- let g:ale_javascript_eslint_use_global = 1
--- let g:ale_linters = {'javascript': ['eslint']}
--- 
+--
 -- " itspriddle/vim-marked
 -- nnoremap <Leader>M :MarkedOpen<CR>
--- 
+--
 -- " Things 3
 -- command! -nargs=* Things :silent !open "things:///add?show-quick-entry=true&title=%:t&notes=%<cr>"
 -- nnoremap <Leader>T :Things<cr>
--- 
+--
 -- " machakann/vim-sandwich
 -- let g:sandwich#recipes = deepcopy(g:sandwich#default_recipes)
 -- let g:sandwich#recipes += [
@@ -240,7 +235,7 @@ vim.cmd 'set list'
 --       \     'cursor':  'tail',
 --       \   }
 --       \ ]
--- 
+--
 -- function! StructInput() abort
 --   let s:StructLast = input('Struct: ')
 --   if s:StructLast !=# ''
@@ -250,24 +245,24 @@ vim.cmd 'set list'
 --   endif
 --   return [struct, '}']
 -- endfunction
--- 
+--
 -- " reedes/vim-pencil
 -- let g:pencil#wrapModeDefault = 'soft'
--- 
+--
 -- " plasticboy/vim-markdown
 -- let g:vim_markdown_folding_disabled = 1
 -- let g:vim_markdown_conceal = 0
 -- let g:vim_markdown_conceal_code_blocks = 0
--- 
+--
 -- " zk
 -- nnoremap <leader>zf :Files $SMZPATH<CR>
--- 
+--
 -- function! Zk()
 --   command! -nargs=* ZkFind execute ":e " . system("smz f " . expand("<cword>"))
--- 
+--
 --   nnoremap <leader>gf :ZkFind()<CR>
 -- endfunction
--- 
+--
 -- augroup zk
 --   autocmd!
 --   autocmd FileType markdown call Zk()
