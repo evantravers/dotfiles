@@ -52,9 +52,6 @@ paq {'nvim-lua/completion-nvim'}
 paq {'nvim-lua/lsp_extensions.nvim'}
 
 -- Options
-
--- " Load plugins
--- filetype plugin indent on
 -- 
 -- " Search
 -- set ignorecase
