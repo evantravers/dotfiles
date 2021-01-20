@@ -58,11 +58,10 @@ paq {'nvim-lua/completion-nvim'}
 paq {'nvim-lua/lsp_extensions.nvim'}
 
 -- Options
--- 
--- " Search
--- set ignorecase
--- set smartcase
--- 
+ 
+vim.cmd 'set ignorecase'
+vim.cmd 'set smartcase'
+
 -- " Tab completion
 -- set wildmode=list:longest,full
 -- set wildignore=*.swp,*.o,*.so,*.exe,*.dll
