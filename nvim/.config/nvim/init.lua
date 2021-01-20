@@ -126,21 +126,18 @@ vim.cmd 'set icm=split'
 -- "=============================================
 -- 
 -- " Use relative line numbers
--- 
--- " Toggle paste mode
--- set pastetoggle=<leader>z
--- 
--- " Fancy tag lookup
--- set tags=./tags;/,tags;/
+
+vim.cmd 'set pastetoggle=<leader>z'
+
+vim.cmd 'set tags=./tags;/,tags;/'
 -- 
 -- " Fancy macros
 -- nnoremap Q @q
 -- vnoremap Q :norm @q<cr>
--- 
--- " Visible whitespace
--- set listchars=tab:»·,trail:·
--- set list
--- 
+
+vim.cmd 'set listchars=tab:»·,trail:·'
+vim.cmd 'set list'
+
 -- "=============================================
 -- " Package Settings
 -- "=============================================
