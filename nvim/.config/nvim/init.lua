@@ -48,7 +48,12 @@ paq 'kopischke/vim-fetch'
 paq 'machakann/vim-sandwich'
 paq 'mattn/gist-vim'
 paq 'mattn/webapi-vim'
+
 paq 'plasticboy/vim-markdown'
+vim.g.vim_markdown_folding_disabled = 1
+vim.g.vim_markdown_conceal = 0
+vim.g.vim_markdown_conceal_code_blocks = 0
+
 paq {'reedes/vim-pencil', opt = true} -- { 'on': 'Goyo' }
 paq 'rhysd/git-messenger.vim'
 paq 'tpope/vim-abolish'
@@ -239,11 +244,6 @@ vim.cmd 'set list'
 --
 -- " reedes/vim-pencil
 -- let g:pencil#wrapModeDefault = 'soft'
---
--- " plasticboy/vim-markdown
--- let g:vim_markdown_folding_disabled = 1
--- let g:vim_markdown_conceal = 0
--- let g:vim_markdown_conceal_code_blocks = 0
 --
 -- " zk
 -- nnoremap <leader>zf :Files $SMZPATH<CR>
