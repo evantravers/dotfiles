@@ -24,8 +24,19 @@ vim.g.lightline = {
 vim.cmd 'set noshowmode'
 
 paq {'itspriddle/vim-marked', opt = true} -- { 'for': ['markdown'] }
+
 paq {'junegunn/fzf', hook = vim.fn["fzf#install"]} -- { 'dir': '~/.fzf', 'do': 'yes \| ./install --bin' }
 paq 'junegunn/fzf.vim'
+vim.g.fzf_layout = { window = { width = 0.9, height = 0.6 } }
+-- vim.g.fzf_action = {
+--   ctrl-s = 'split',
+--   ctrl-v = 'vsplit'
+-- }
+vim.g.fzf_colors = {}
+vim.api.nvim_set_keymap('n', '<c-p>', ':FZF<cr>', {noremap = true})
+-- let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*"'
+-- nnoremap <localleader><space> :Buffers<cr>
+
 paq {'junegunn/goyo.vim', opt = true} -- { 'on': 'Goyo' }
 paq {'junegunn/limelight.vim', opt = true} -- { 'on': 'Goyo' }
 paq 'junegunn/vim-easy-align'
@@ -133,17 +144,6 @@ vim.cmd 'set icm=split'
 -- "=============================================
 -- " Package Settings
 -- "=============================================
--- 
--- " junegunn/fzf
--- let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*"'
--- let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
--- let g:fzf_action = {
--- \ 'ctrl-s': 'split',
--- \ 'ctrl-v': 'vsplit'
--- \ }
--- let g:fzf_colors = {}
--- nnoremap <c-p> :FZF<cr>
--- nnoremap <localleader><space> :Buffers<cr>
 -- 
 -- let g:goyo_width = 60
 -- 
