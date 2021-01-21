@@ -156,18 +156,3 @@ paq 'wellle/targets.vim'
 paq {'neovim/nvim-lspconfig'}
 paq {'nvim-lua/completion-nvim'}
 paq {'nvim-lua/lsp_extensions.nvim'}
-
--- markdown related plugins
-paq {'junegunn/goyo.vim', opt = true}
-paq {'junegunn/limelight.vim', opt = true}
-
-paq {'itspriddle/vim-marked', opt = true} -- { 'for': ['markdown'] }
-vim.api.nvim_set_keymap('n', '<Leader>M', ':packadd vim-marked<CR>:MarkedOpen<CR>', {noremap = true})
-
-paq 'plasticboy/vim-markdown'
-vim.g.vim_markdown_folding_disabled = 1
-vim.g.vim_markdown_conceal = 0
-vim.g.vim_markdown_conceal_code_blocks = 0
-
-paq {'reedes/vim-pencil', opt = true} -- { 'on': 'Goyo' }
-vim.g['pencil#wrapModeDefault'] = 'soft'
