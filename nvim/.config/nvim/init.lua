@@ -156,3 +156,13 @@ paq 'wellle/targets.vim'
 paq {'neovim/nvim-lspconfig'}
 paq {'nvim-lua/completion-nvim'}
 paq {'nvim-lua/lsp_extensions.nvim'}
+
+paq {'nvim-treesitter/nvim-treesitter', hook = ':TSUpdate'}
+require'nvim-treesitter.configs'.setup {
+  highlight = {
+    enable = true
+  },
+  indent = {
+    enable = true
+  }
+}
