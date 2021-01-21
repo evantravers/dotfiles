@@ -1,6 +1,9 @@
 -- Load .vimrc
 vim.cmd([[runtime .vimrc]])
 
+-- Neovim specific settings
+vim.o.icm = 'split'
+
 -- Plugins
 vim.cmd 'packadd paq-nvim'
 local paq = require('paq-nvim').paq
@@ -25,38 +28,32 @@ vim.g.lightline = {
 }
 vim.o.showmode = false
 
-paq {'itspriddle/vim-marked', opt = true} -- { 'for': ['markdown'] }
-vim.api.nvim_set_keymap('n', '<Leader>M', ':MarkedOpen<CR>', {noremap = true})
-
-paq {'junegunn/fzf', hook = vim.fn["fzf#install"]} -- { 'dir': '~/.fzf', 'do': 'yes \| ./install --bin' }
+paq {'junegunn/fzf', hook = vim.fn["fzf#install"]}
 paq 'junegunn/fzf.vim'
 vim.g.fzf_layout = { window = { width = 0.9, height = 0.6 } }
 vim.g.fzf_action = {
   ['ctrl-s'] = 'split',
   ['ctrl-v'] = 'vsplit'
 }
+vim.g.fzf_colors = {
+  fg      = {'fg', 'Normal'},
+  fg      = {'fg', 'Normal'},
+  bg      = {'bg', 'Normal'},
+  hl      = {'fg', 'Comment'},
+  ['fg+'] = {'fg', 'CursorLine', 'CursorColumn', 'Normal'},
+  ['bg+'] = {'bg', 'CursorLine', 'CursorColumn'},
+  ['hl+'] = {'fg', 'Statement'},
+  info    = {'fg', 'PreProc'},
+  border  = {'fg', 'Ignore'},
+  prompt  = {'fg', 'Conditional'},
+  pointer = {'fg', 'Exception'},
+  marker  = {'fg', 'Keyword'},
+  spinner = {'fg', 'Label'},
+  header  = {'fg', 'Comment'}
+}
 vim.api.nvim_set_keymap('n', '<c-p>', ':FZF<cr>', {noremap = true})
 vim.cmd [[let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*"']]
 vim.api.nvim_set_keymap('n', '<localleader><space>', ':Buffers<cr>', {noremap = true})
-
-paq {'junegunn/goyo.vim', opt = true} -- { 'on': 'Goyo' }
--- vim.g.goyo_width = 60
--- function! GoyoBefore()
---   silent !tmux set status off
---   :Limelight
---   :PencilSoft
--- endfunction
---
--- function! GoyoAfter()
---   silent !tmux set status on
---   :Limelight!
---   :PencilOff
--- endfunction
---
--- let g:goyo_callbacks = [function('GoyoBefore'), function('GoyoAfter')]
--- nnoremap <Leader>m :Goyo<CR>
-
-paq {'junegunn/limelight.vim', opt = true} -- { 'on': 'Goyo' }
 
 paq 'junegunn/vim-easy-align'
 vim.api.nvim_set_keymap('v', '<Enter>', '<Plug>(EasyAlign)', {})
@@ -140,14 +137,6 @@ vim.g['sandwich#recipes'] = sandwich_recipes
 paq 'mattn/gist-vim'
 paq 'mattn/webapi-vim'
 
-paq 'plasticboy/vim-markdown'
-vim.g.vim_markdown_folding_disabled = 1
-vim.g.vim_markdown_conceal = 0
-vim.g.vim_markdown_conceal_code_blocks = 0
-
-paq {'reedes/vim-pencil', opt = true} -- { 'on': 'Goyo' }
-vim.g['pencil#wrapModeDefault'] = 'soft'
-
 paq 'rhysd/git-messenger.vim'
 paq 'tpope/vim-abolish'
 paq 'tpope/vim-commentary'
@@ -168,5 +157,17 @@ paq {'neovim/nvim-lspconfig'}
 paq {'nvim-lua/completion-nvim'}
 paq {'nvim-lua/lsp_extensions.nvim'}
 
--- Neovim specific settings
-vim.o.icm = 'split'
+-- markdown related plugins
+paq {'junegunn/goyo.vim', opt = true}
+paq {'junegunn/limelight.vim', opt = true}
+
+paq {'itspriddle/vim-marked', opt = true} -- { 'for': ['markdown'] }
+vim.api.nvim_set_keymap('n', '<Leader>M', ':packadd vim-marked<CR>:MarkedOpen<CR>', {noremap = true})
+
+paq 'plasticboy/vim-markdown'
+vim.g.vim_markdown_folding_disabled = 1
+vim.g.vim_markdown_conceal = 0
+vim.g.vim_markdown_conceal_code_blocks = 0
+
+paq {'reedes/vim-pencil', opt = true} -- { 'on': 'Goyo' }
+vim.g['pencil#wrapModeDefault'] = 'soft'
