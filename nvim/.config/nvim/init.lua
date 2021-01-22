@@ -52,7 +52,6 @@ vim.g.fzf_colors = {
   header  = {'fg', 'Comment'}
 }
 vim.api.nvim_set_keymap('n', '<c-p>', ':FZF<cr>', {noremap = true})
-vim.cmd [[let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*"']]
 vim.api.nvim_set_keymap('n', '<localleader><space>', ':Buffers<cr>', {noremap = true})
 
 paq 'junegunn/vim-easy-align'
