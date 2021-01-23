@@ -73,7 +73,7 @@ function _G.structInput()
   return { startBun, '}' }
 end
 
-local sandwich_recipes = vim.fn.deepcopy(vim.api.nvim_eval('sandwich#default_recipes'))
+local sandwich_recipes = vim.api.nvim_eval('sandwich#default_recipes')
 local custom_recipes =
   {
     {
