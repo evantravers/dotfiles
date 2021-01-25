@@ -68,7 +68,7 @@ function _G.structInput()
   if (structName ~= '') then
     startBun = '%' .. structName .. '{'
   else
-    vim.fn.throw('OperatorSandwichCancel')
+    error('OperatorSandwichCancel')
   end
   return { startBun, '}' }
 end
