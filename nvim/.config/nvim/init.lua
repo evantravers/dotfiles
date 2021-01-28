@@ -13,7 +13,6 @@ paq 'gruvbox-community/gruvbox'
 vim.g.gruvbox_italic = 1
 vim.g.gruvbox_improved_strings = 1
 vim.g.gruvbox_improved_warnings = 1
-vim.g.gruvbox_guisp_fallback = 'fg'
 vim.g.gruvbox_contrast_light = 'hard'
 vim.g.gruvbox_contrast_dark = 'medium'
 vim.cmd [[colorscheme gruvbox]]
