@@ -164,3 +164,13 @@ require'nvim-treesitter.configs'.setup {
     enable = true
   }
 }
+
+function _G.toggleProse()
+  vim.cmd 'packadd vim-pencil'
+  vim.cmd 'PencilSoft'
+end
+
+paq {'reedes/vim-pencil', opt = true}
+vim.g['pencil#conceallevel'] = 0
+vim.g['pencil#wrapModeDefault'] = 'soft'
+vim.api.nvim_set_keymap('n', '<localleader>m', 'v:lua.toggleProse()', {expr = true, noremap = true})
