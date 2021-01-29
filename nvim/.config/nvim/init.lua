@@ -166,11 +166,27 @@ require'nvim-treesitter.configs'.setup {
 }
 
 function _G.toggleProse()
-  vim.cmd 'packadd vim-pencil'
-  vim.cmd 'PencilSoft'
+  if (vim.g.proseMode) then
+    vim.g.proseMode = false
+    vim.o.showmode = true
+    vim.o.showcmd = true
+    vim.cmd 'PencilOff'
+    vim.cmd 'Goyo!'
+  else
+    vim.g.proseMode = true
+    vim.cmd 'packadd vim-pencil'
+    vim.cmd 'packadd goyo.vim'
+    vim.o.showmode = false
+    vim.o.showcmd = false
+    vim.cmd 'PencilSoft'
+    vim.cmd 'Goyo'
+  end
 end
+
+paq {'junegunn/goyo.vim', opt = true}
+vim.g.goyo_width = 60
 
 paq {'reedes/vim-pencil', opt = true}
 vim.g['pencil#conceallevel'] = 0
 vim.g['pencil#wrapModeDefault'] = 'soft'
-vim.api.nvim_set_keymap('n', '<localleader>m', 'v:lua.toggleProse()', {expr = true, noremap = true})
+vim.api.nvim_set_keymap('n', '<leader>m', 'v:lua.toggleProse()', {expr = true, noremap = true, silent = true})
