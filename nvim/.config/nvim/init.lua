@@ -180,6 +180,7 @@ function _G.toggleProse()
     vim.cmd 'packadd limelight.vim'
     vim.o.showmode = false
     vim.o.showcmd = false
+    vim.wo.foldlevel = 4
     vim.cmd 'PencilSoft'
     vim.cmd 'Limelight'
     vim.cmd 'Goyo'
