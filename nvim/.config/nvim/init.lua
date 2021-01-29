@@ -194,4 +194,9 @@ vim.g.goyo_width = 60
 paq {'reedes/vim-pencil', opt = true}
 vim.g['pencil#conceallevel'] = 0
 vim.g['pencil#wrapModeDefault'] = 'soft'
-vim.api.nvim_set_keymap('n', '<localleader>m', ':lua _G.toggleProse()<cr>', {noremap = true})
+vim.api.nvim_set_keymap(
+  'n',
+  '<localleader>m',
+  ':lua _G.toggleProse()<cr>',
+  {noremap = true, silent = true}
+)
