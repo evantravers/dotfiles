@@ -166,15 +166,15 @@ require'nvim-treesitter.configs'.setup {
 }
 
 function _G.toggleProse()
-  if (vim.g.proseMode) then
-    vim.g.proseMode = false
-    vim.o.showmode = true
-    vim.o.showcmd = true
+  if (vim.g.proseMode == true) then
     vim.cmd 'PencilOff'
     vim.cmd 'Limelight!'
     vim.cmd 'Goyo!'
+    vim.cmd [[set wrap!]]
+    vim.o.showmode = true
+    vim.o.showcmd = true
+    vim.g.proseMode = false
   else
-    vim.g.proseMode = true
     vim.cmd 'packadd vim-pencil'
     vim.cmd 'packadd goyo.vim'
     vim.cmd 'packadd limelight.vim'
@@ -184,6 +184,7 @@ function _G.toggleProse()
     vim.cmd 'PencilSoft'
     vim.cmd 'Limelight'
     vim.cmd 'Goyo'
+    vim.g.proseMode = true
   end
 end
 
