@@ -171,17 +171,22 @@ function _G.toggleProse()
     vim.o.showmode = true
     vim.o.showcmd = true
     vim.cmd 'PencilOff'
+    vim.cmd 'Limelight!'
     vim.cmd 'Goyo!'
   else
     vim.g.proseMode = true
     vim.cmd 'packadd vim-pencil'
     vim.cmd 'packadd goyo.vim'
+    vim.cmd 'packadd limelight.vim'
     vim.o.showmode = false
     vim.o.showcmd = false
     vim.cmd 'PencilSoft'
+    vim.cmd 'Limelight'
     vim.cmd 'Goyo'
   end
 end
+
+paq {'junegunn/limelight.vim', opt = true}
 
 paq {'junegunn/goyo.vim', opt = true}
 vim.g.goyo_width = 60
@@ -189,4 +194,4 @@ vim.g.goyo_width = 60
 paq {'reedes/vim-pencil', opt = true}
 vim.g['pencil#conceallevel'] = 0
 vim.g['pencil#wrapModeDefault'] = 'soft'
-vim.api.nvim_set_keymap('n', '<leader>m', 'v:lua.toggleProse()', {expr = true, noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<localleader>m', ':lua _G.toggleProse()<cr>', {noremap = true})
