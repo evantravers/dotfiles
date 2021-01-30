@@ -26,9 +26,9 @@ endif
 	brew bundle
 	make stow
 
-	curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-	nvim +PlugInstall +qall
+	git clone https://github.com/savq/paq-nvim.git "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/pack/paqs/opt/paq-nvim
 	mkdir -p ~/.config/nvim/backups ~/.config/nvim/swaps ~/.config/nvim/undo
+	nvim +PaqInstall +qall
 
 ifeq ($(wildcard ~/.tmux/plugins/tpm/.),)
 	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
