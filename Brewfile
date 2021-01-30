@@ -31,10 +31,12 @@ cask "dropbox"
 cask "fantastical"
 cask "firefox"
 cask "font-ia-writer-quattro"
+cask "font-ibm-plex"
 cask "font-jetbrains-mono"
 cask "hammerspoon"
 cask "karabiner-elements"
 cask "kitty"
+cask "obsidian"
 cask "toggl"
 mas "Deliveries", id: 924726344
 mas "Drafts", id: 1435957248
