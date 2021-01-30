@@ -26,7 +26,8 @@ endif
 	brew bundle
 	make stow
 
-	git clone https://github.com/savq/paq-nvim.git "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/pack/paqs/opt/paq-nvim
+	git clone https://github.com/savq/paq-nvim.git \
+			"$${XDG_DATA_HOME:-$$HOME/.local/share}"/nvim/site/pack/paqs/opt/paq-nvim || true
 	mkdir -p ~/.config/nvim/backups ~/.config/nvim/swaps ~/.config/nvim/undo
 	nvim +PaqInstall +qall
 
