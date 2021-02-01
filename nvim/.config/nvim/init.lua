@@ -59,6 +59,8 @@ vim.api.nvim_set_keymap('n', '<Leader>a', '<Plug>(EasyAlign)', {})
 
 paq 'kopischke/vim-fetch'
 
+paq 'elixir-lang/vim-elixir'
+
 paq 'machakann/vim-sandwich'
 
 function _G.structInput()
@@ -152,6 +154,10 @@ paq 'tpope/vim-vinegar'
 paq 'wellle/targets.vim'
 
 paq {'neovim/nvim-lspconfig'}
+require'lspconfig'.elixirls.setup{
+    -- cmd = { vim.fn.expand("$XDG_CONFIG_HOME/lsp/elixir_ls/release") .. "/language_server.sh" };
+    cmd = { "/users/evantravers/.config/lsp/elixir-lsp/elixir-ls/language_server.sh" };
+}
 paq {'nvim-lua/completion-nvim'}
 paq {'nvim-lua/lsp_extensions.nvim'}
 
