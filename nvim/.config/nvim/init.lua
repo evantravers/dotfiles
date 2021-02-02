@@ -178,6 +178,7 @@ function _G.toggleProse()
     vim.cmd 'Limelight!'
     vim.cmd 'Goyo!'
     vim.cmd [[set wrap!]]
+    vim.cmd [[silent !tmux set status on]]
     vim.o.showmode = true
     vim.o.showcmd = true
     vim.g.proseMode = false
@@ -185,6 +186,7 @@ function _G.toggleProse()
     vim.cmd 'packadd vim-pencil'
     vim.cmd 'packadd goyo.vim'
     vim.cmd 'packadd limelight.vim'
+    vim.cmd [[silent !tmux set status off]]
     vim.o.showmode = false
     vim.o.showcmd = false
     vim.wo.foldlevel = 4
