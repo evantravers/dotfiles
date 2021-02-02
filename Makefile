@@ -35,6 +35,14 @@ endif
 	mkdir -p ~/.config/nvim/backups ~/.config/nvim/swaps ~/.config/nvim/undo
 	nvim +PaqInstall +qall
 
+ifeq ($(wildcard ~/.config/lsp/.),)
+	# setup LSP
+	mkdir -p ~/.config/lsp/
+	curl -fLO https://github.com/elixir-lsp/elixir-ls/releases/latest/download/elixir-ls.zip
+	unzip elixir-ls.zip -d ~/.config/lsp/elixir-ls
+	chmod +x ~/.config/lsp/elixir-ls/language_server.sh
+endif
+
 ifeq ($(wildcard ~/.tmux/plugins/tpm/.),)
 	# clone in tmux plugins
 	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
