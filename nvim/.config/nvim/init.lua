@@ -1,6 +1,7 @@
 -- Load .vimrc
 vim.cmd([[runtime .vimrc]])
 
+
 -- Neovim specific settings
 vim.o.icm = 'split'
 
