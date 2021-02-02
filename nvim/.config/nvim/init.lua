@@ -185,9 +185,7 @@ paq 'tpope/vim-rhubarb'
 -- LSP LANGUAGE SERVERS
 paq {'neovim/nvim-lspconfig'}
 require'lspconfig'.elixirls.setup({
-  -- cmd = { vim.fn.expand("$XDG_CONFIG_HOME/lsp/elixir_ls/release") .. "/language_server.sh" };
-  cmd = { "/users/evantravers/.config/lsp/elixir-lsp/elixir-ls/language_server.sh" },
-  -- on_attach = require('completion').on_attach
+  cmd = { os.getenv("XDG_CONFIG_PATH") .. "/lsp/elixir-lsp/elixir-ls/language_server.sh" };
   on_attach = function(client, bufnr)
     local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
     local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
