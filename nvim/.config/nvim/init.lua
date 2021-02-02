@@ -154,10 +154,11 @@ paq 'tpope/vim-vinegar'
 paq 'wellle/targets.vim'
 
 paq {'neovim/nvim-lspconfig'}
-require'lspconfig'.elixirls.setup{
-    -- cmd = { vim.fn.expand("$XDG_CONFIG_HOME/lsp/elixir_ls/release") .. "/language_server.sh" };
-    cmd = { "/users/evantravers/.config/lsp/elixir-lsp/elixir-ls/language_server.sh" };
-}
+require'lspconfig'.elixirls.setup({
+  -- cmd = { vim.fn.expand("$XDG_CONFIG_HOME/lsp/elixir_ls/release") .. "/language_server.sh" };
+  cmd = { "/users/evantravers/.config/lsp/elixir-lsp/elixir-ls/language_server.sh" },
+  on_attach = require('completion').on_attach
+})
 paq {'nvim-lua/completion-nvim'}
 paq {'nvim-lua/lsp_extensions.nvim'}
 
