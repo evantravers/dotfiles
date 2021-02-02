@@ -4,11 +4,16 @@ vim.cmd([[runtime .vimrc]])
 -- Neovim specific settings
 vim.o.icm = 'split'
 
--- Plugins
+
+-- PLUGINS
+-- Using paq.nvim
 vim.cmd 'packadd paq-nvim'
 local paq = require('paq-nvim').paq
 paq {'savq/paq-nvim', opt=true}
 
+
+-- THEME
+-- gruvbox colors
 paq 'gruvbox-community/gruvbox'
 vim.g.gruvbox_italic = 1
 vim.g.gruvbox_improved_strings = 1
@@ -16,17 +21,45 @@ vim.g.gruvbox_improved_warnings = 1
 vim.g.gruvbox_contrast_light = 'hard'
 vim.g.gruvbox_contrast_dark = 'medium'
 vim.cmd [[colorscheme gruvbox]]
-
-paq 'airblade/vim-gitgutter'
-
-paq 'editorconfig/editorconfig-vim'
-
+-- statusline
 paq 'itchyny/lightline.vim'
 vim.g.lightline = {
   colorscheme = 'gruvbox'
 }
 vim.o.showmode = false
 
+
+-- UI
+-- bindings to toggle common settings
+paq 'tpope/vim-unimpaired'
+-- gitgutter
+paq 'airblade/vim-gitgutter'
+-- be able to open from stack traces
+paq 'kopischke/vim-fetch'
+-- rename... could be LSP'd away someday
+paq 'tpope/vim-abolish'
+-- easy comments
+paq 'tpope/vim-commentary'
+-- handle missing files and unix-y stuff
+paq 'tpope/vim-eunuch'
+-- create and rename files by convention
+paq 'tpope/vim-projectionist'
+-- handle html tags
+paq 'tpope/vim-ragtag'
+-- repeat actions
+paq 'tpope/vim-repeat'
+-- work with dates
+paq 'tpope/vim-speeddating'
+-- use netrw with style
+paq 'tpope/vim-vinegar'
+-- expand the target objects
+paq 'wellle/targets.vim'
+
+-- editorconfig for being polite
+paq 'editorconfig/editorconfig-vim'
+
+
+-- fzf for finding stuff
 paq {'junegunn/fzf', hook = vim.fn["fzf#install"]}
 paq 'junegunn/fzf.vim'
 vim.g.fzf_layout = { window = { width = 0.9, height = 0.6 } }
@@ -53,14 +86,18 @@ vim.g.fzf_colors = {
 vim.api.nvim_set_keymap('n', '<c-p>', ':FZF<cr>', {noremap = true})
 vim.api.nvim_set_keymap('n', '<localleader><space>', ':Buffers<cr>', {noremap = true})
 
+
+-- easyalign
 paq 'junegunn/vim-easy-align'
 vim.api.nvim_set_keymap('v', '<Enter>', '<Plug>(EasyAlign)', {})
 vim.api.nvim_set_keymap('n', '<Leader>a', '<Plug>(EasyAlign)', {})
 
-paq 'kopischke/vim-fetch'
 
+-- elixir
 paq 'elixir-lang/vim-elixir'
 
+
+-- vim-sandwich
 paq 'machakann/vim-sandwich'
 
 function _G.structInput()
@@ -134,25 +171,17 @@ local custom_recipes =
 vim.list_extend(sandwich_recipes, custom_recipes)
 vim.g['sandwich#recipes'] = sandwich_recipes
 
-paq 'mattn/gist-vim'
-paq 'mattn/webapi-vim'
 
-paq 'rhysd/git-messenger.vim'
-paq 'tpope/vim-abolish'
-paq 'tpope/vim-commentary'
-paq 'tpope/vim-dispatch'
-paq 'tpope/vim-eunuch'
+-- git/gist/github
 paq 'tpope/vim-fugitive'
 paq 'tpope/vim-git'
-paq 'tpope/vim-projectionist'
-paq 'tpope/vim-ragtag'
-paq 'tpope/vim-repeat'
+paq 'mattn/gist-vim'
+paq 'mattn/webapi-vim'
+paq 'rhysd/git-messenger.vim'
 paq 'tpope/vim-rhubarb'
-paq 'tpope/vim-speeddating'
-paq 'tpope/vim-unimpaired'
-paq 'tpope/vim-vinegar'
-paq 'wellle/targets.vim'
 
+
+-- LSP LANGUAGE SERVERS
 paq {'neovim/nvim-lspconfig'}
 require'lspconfig'.elixirls.setup({
   -- cmd = { vim.fn.expand("$XDG_CONFIG_HOME/lsp/elixir_ls/release") .. "/language_server.sh" };
@@ -217,6 +246,9 @@ require'nvim-treesitter.configs'.setup {
   }
 }
 
+
+-- PROSE MODE
+-- I write prose in markdown, all the following is to help with that.
 function _G.toggleProse()
   if (vim.g.proseMode == true) then
     vim.cmd 'PencilOff'
