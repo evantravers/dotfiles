@@ -36,7 +36,6 @@ cask "font-jetbrains-mono"
 cask "hammerspoon"
 cask "karabiner-elements"
 cask "kitty"
-cask "obsidian"
 cask "toggl"
 mas "Deliveries", id: 924726344
 mas "Drafts", id: 1435957248
