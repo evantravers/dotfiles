@@ -23,19 +23,25 @@ ifndef BREW
 else
 endif
 
+	# install brew bundles
 	brew bundle
+
+	# symlink dotfiles
 	make stow
 
+	# setup vim
 	git clone https://github.com/savq/paq-nvim.git \
 			"$${XDG_DATA_HOME:-$$HOME/.local/share}"/nvim/site/pack/paqs/opt/paq-nvim || true
 	mkdir -p ~/.config/nvim/backups ~/.config/nvim/swaps ~/.config/nvim/undo
 	nvim +PaqInstall +qall
 
 ifeq ($(wildcard ~/.tmux/plugins/tpm/.),)
+	# clone in tmux plugins
 	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 endif
 
 ifeq ($(wildcard ~/.asdf/.),)
+	# install asdf
 	git clone https://github.com/asdf-vm/asdf.git ~/.asdf
 	cd ~/.asdf
 	git checkout "$(git describe --abbrev=0 --tags)"
