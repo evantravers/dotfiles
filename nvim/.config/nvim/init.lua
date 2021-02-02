@@ -183,7 +183,7 @@ paq 'tpope/vim-rhubarb'
 
 
 -- LSP LANGUAGE SERVERS
-paq {'neovim/nvim-lspconfig'}
+paq 'neovim/nvim-lspconfig'
 require'lspconfig'.elixirls.setup({
   cmd = { os.getenv("XDG_CONFIG_HOME") .. "/lsp/elixir-ls/language_server.sh" };
   on_attach = function(client, bufnr)
