@@ -250,8 +250,8 @@ vim.api.nvim_set_keymap('n', 'K', "<cmd>lua require('lspsaga.hover').render_hove
 vim.api.nvim_set_keymap('n', '<C-f>', "<cmd>lua require('lspsaga.hover').smart_scroll_hover(1)<CR>", {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', '<C-b>', "<cmd>lua require('lspsaga.hover').smart_scroll_hover(-1)<CR>", {noremap = true, silent = true})
 -- code actions
-vim.api.nvim_set_keymap('n', '<leader>ca', "<cmd>lua require('lspsaga.codeaction').code_action()<CR>", {noremap = true, silent = true})
-vim.api.nvim_set_keymap('v', '<leader>ca', "<cmd>'<,'>lua require('lspsaga.codeaction').range_code_action()<CR>", {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<space>ca', "<cmd>lua require('lspsaga.codeaction').code_action()<CR>", {noremap = true, silent = true})
+vim.api.nvim_set_keymap('v', '<space>ca', "<cmd>'<,'>lua require('lspsaga.codeaction').range_code_action()<CR>", {noremap = true, silent = true})
 -- signature help
 vim.api.nvim_set_keymap('n', '<space>k', "<cmd>lua require('lspsaga.signaturehelp').signature_help()<CR>", {noremap = true, silent = true})
 -- rename
@@ -259,7 +259,7 @@ vim.api.nvim_set_keymap('n', '<space>rn', "<cmd>lua require('lspsaga.rename').re
 -- preview definition
 vim.api.nvim_set_keymap('n', '<space>gd', "<cmd>lua require'lspsaga.provider'.preview_definition()<CR>", {noremap = true, silent = true})
 -- diagnostics
-vim.api.nvim_set_keymap('n', '<space>e', "<cmd>lua require'lspsaga.diagnostic'.show_line_diagnostics()<CR>", {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<space>d', "<cmd>lua require'lspsaga.diagnostic'.show_line_diagnostics()<CR>", {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', '[d', "<cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_prev()<CR>", {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', ']d', "<cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_next()<CR>", {noremap = true, silent = true})
 
