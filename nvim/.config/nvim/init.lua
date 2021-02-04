@@ -66,6 +66,7 @@ paq 'editorconfig/editorconfig-vim'
 -- fzf for finding stuff
 paq {'junegunn/fzf', hook = vim.fn["fzf#install"]}
 paq 'junegunn/fzf.vim'
+vim.api.nvim_call_function("setenv", { 'FZF_DEFAULT_COMMAND', "rg --files --hidden --glob '!.git/**'" })
 vim.g.fzf_layout = { window = { width = 0.9, height = 0.6 } }
 vim.g.fzf_action = {
   ['ctrl-s'] = 'split',
