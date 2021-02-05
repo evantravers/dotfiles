@@ -35,19 +35,35 @@ endif
 	mkdir -p ~/.config/nvim/backups ~/.config/nvim/swaps ~/.config/nvim/undo
 	nvim +PaqInstall +qall
 
-ifeq ($(wildcard ~/.config/lsp/.),)
+	make asdf
+	make tmux
+	make lsp
+
+lsp:
 	# setup LSP
 	mkdir -p ~/.config/lsp/
+ifeq ($(wildcard ~/.config/lsp/elixir-lsp.),)
+	# elixir
 	curl -fLO https://github.com/elixir-lsp/elixir-ls/releases/latest/download/elixir-ls.zip
 	unzip elixir-ls.zip -d ~/.config/lsp/elixir-ls
 	chmod +x ~/.config/lsp/elixir-ls/language_server.sh
+	rm elixir-ls.zip
+endif
+ifeq ($(wildcard ~/.config/lsp/lua-language-server.),)
+	# lua
+	git clone https://github.com/sumneko/lua-language-server ~/.config/lsp/lua-language-server
+	cd ~/.config/lsp/lua-language-server && git submodule update --init --recursive
+	cd ~/.config/lsp/lua-language-server/3rd/luamake && ninja -f ninja/macos.ninja
+	cd ~/.config/lsp/lua-language-server/ && ./3rd/luamake/luamake rebuild
 endif
 
+tmux:
 ifeq ($(wildcard ~/.tmux/plugins/tpm/.),)
 	# clone in tmux plugins
 	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 endif
 
+asdf:
 ifeq ($(wildcard ~/.asdf/.),)
 	# install asdf
 	git clone https://github.com/asdf-vm/asdf.git ~/.asdf
