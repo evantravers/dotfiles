@@ -74,7 +74,6 @@ vim.g.fzf_action = {
 }
 vim.g.fzf_colors = {
   fg      = {'fg', 'Normal'},
-  fg      = {'fg', 'Normal'},
   bg      = {'bg', 'Normal'},
   hl      = {'fg', 'Comment'},
   ['fg+'] = {'fg', 'CursorLine', 'CursorColumn', 'Normal'},
