@@ -264,7 +264,7 @@ require'lspconfig'.solargraph.setup({
   }
 })
 
-local sumneko_root_path = "/users/evantravers/.config/lsp/lua-language-server"
+local sumneko_root_path = os.getenv("XDG_CONFIG_HOME") .. "/lsp/lua-language-server"
 local sumneko_binary = sumneko_root_path.."/bin/macOS/lua-language-server"
 
 require'lspconfig'.sumneko_lua.setup {
