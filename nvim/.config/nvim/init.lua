@@ -170,6 +170,12 @@ local custom_recipes =
       input    = { 'l' },
       nesting  = 1,
       cursor   = 'tail'
+    },
+    {
+      buns     = { '<mark>', '</mark>' },
+      filetype = { 'markdown' },
+      input    = { 'm' },
+      nesting  = 1,
     }
   }
 vim.list_extend(sandwich_recipes, custom_recipes)
