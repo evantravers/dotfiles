@@ -22,11 +22,13 @@ vim.g.gruvbox_improved_warnings = 1
 vim.g.gruvbox_contrast_light = 'hard'
 vim.g.gruvbox_contrast_dark = 'medium'
 vim.cmd [[colorscheme gruvbox]]
+
 -- statusline
-paq 'itchyny/lightline.vim'
-vim.g.lightline = {
-  colorscheme = 'gruvbox'
-}
+paq 'hoob3rt/lualine.nvim'
+local lualine = require('lualine')
+lualine.status()
+lualine.options.theme = 'gruvbox'
+
 vim.o.showmode = false
 if os.getenv('termTheme') == 'light' then
   vim.o.background = 'light'
