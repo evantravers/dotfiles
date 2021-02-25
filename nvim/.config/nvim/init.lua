@@ -63,8 +63,18 @@ paq 'editorconfig/editorconfig-vim'
 paq 'nvim-lua/popup.nvim'
 paq 'nvim-lua/plenary.nvim'
 paq 'nvim-telescope/telescope.nvim'
+
+function _G.searchWiki()
+  require('telescope.builtin').find_files {
+    prompt_title = "Search ZK",
+    shorten_path = false,
+    cwd = "~/src/github.com/evantravers/undo-zk/wiki/",
+  }
+end
+
 vim.api.nvim_set_keymap('n', '<c-p>', ":lua require('telescope.builtin').git_files()<cr>", {noremap = true})
 vim.api.nvim_set_keymap('n', '<localleader><space>', ":lua require('telescope.builtin').buffers()<cr>", {noremap = true})
+vim.api.nvim_set_keymap('n', '<localleader>ww', ":lua _G.searchWiki()<cr>", {noremap = true})
 
 
 -- easyalign
