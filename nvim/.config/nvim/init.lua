@@ -59,32 +59,12 @@ paq 'wellle/targets.vim'
 paq 'editorconfig/editorconfig-vim'
 
 
--- fzf for finding stuff
-paq {'junegunn/fzf', hook = vim.fn["fzf#install"]}
-paq 'junegunn/fzf.vim'
-vim.api.nvim_call_function("setenv", { 'FZF_DEFAULT_COMMAND', "rg --files --hidden --glob '!.git/**'" })
-vim.g.fzf_layout = { window = { width = 0.9, height = 0.6 } }
-vim.g.fzf_action = {
-  ['ctrl-s'] = 'split',
-  ['ctrl-v'] = 'vsplit'
-}
-vim.g.fzf_colors = {
-  fg      = {'fg', 'Normal'},
-  bg      = {'bg', 'Normal'},
-  hl      = {'fg', 'Comment'},
-  ['fg+'] = {'fg', 'CursorLine', 'CursorColumn', 'Normal'},
-  ['bg+'] = {'bg', 'CursorLine', 'CursorColumn'},
-  ['hl+'] = {'fg', 'Statement'},
-  info    = {'fg', 'PreProc'},
-  border  = {'fg', 'Ignore'},
-  prompt  = {'fg', 'Conditional'},
-  pointer = {'fg', 'Exception'},
-  marker  = {'fg', 'Keyword'},
-  spinner = {'fg', 'Label'},
-  header  = {'fg', 'Comment'}
-}
-vim.api.nvim_set_keymap('n', '<c-p>', ':FZF<cr>', {noremap = true})
-vim.api.nvim_set_keymap('n', '<localleader><space>', ':Buffers<cr>', {noremap = true})
+-- telescope for finding stuff
+paq 'nvim-lua/popup.nvim'
+paq 'nvim-lua/plenary.nvim'
+paq 'nvim-telescope/telescope.nvim'
+vim.api.nvim_set_keymap('n', '<c-p>', ":lua require('telescope.builtin').git_files()<cr>", {noremap = true})
+vim.api.nvim_set_keymap('n', '<localleader><space>', ":lua require('telescope.builtin').buffers()<cr>", {noremap = true})
 
 
 -- easyalign
