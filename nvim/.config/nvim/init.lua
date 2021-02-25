@@ -410,3 +410,14 @@ vim.api.nvim_set_keymap(
   ':lua _G.toggleProse()<cr>',
   {noremap = true, silent = true}
 )
+
+paq {'vimwiki/vimwiki', branch = 'dev'}
+vim.g.vimwiki_global_ext = 0
+vim.g.vimwiki_list = {
+  {
+    path = '~/src/github.com/evantravers/undo-zk/wiki/',
+    syntax = 'markdown',
+    ext = '.md',
+    diary_rel_path = 'journal'
+  }
+}
