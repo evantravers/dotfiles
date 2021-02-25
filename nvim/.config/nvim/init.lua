@@ -21,7 +21,7 @@ vim.cmd [[colorscheme nightfly]]
 paq 'hoob3rt/lualine.nvim'
 local lualine = require('lualine')
 lualine.status()
-lualine.options.theme = 'gruvbox'
+lualine.options.theme = 'nightfly'
 
 vim.o.showmode = false
 if os.getenv('termTheme') == 'light' then
