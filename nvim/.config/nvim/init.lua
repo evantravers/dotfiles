@@ -32,8 +32,9 @@ end
 -- UI
 -- bindings to toggle common settings
 paq 'tpope/vim-unimpaired'
--- gitgutter
-paq 'airblade/vim-gitgutter'
+-- gitsigns
+paq 'lewis6991/gitsigns.nvim'
+require('gitsigns').setup()
 -- be able to open from stack traces
 paq 'kopischke/vim-fetch'
 -- rename... could be LSP'd away someday
