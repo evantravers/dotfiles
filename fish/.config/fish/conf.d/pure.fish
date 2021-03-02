@@ -1,4 +1,4 @@
-set --global pure_version 3.5.0 # used for bug report
+set --global pure_version 4.1.0 # used for bug report
 
 # Base colors
 _pure_set_default pure_color_primary blue
@@ -32,11 +32,11 @@ _pure_set_default pure_color_git_branch pure_color_mute
 _pure_set_default pure_color_git_dirty pure_color_mute
 _pure_set_default pure_color_git_stash pure_color_info
 
-# SSH info
-_pure_set_default pure_color_ssh_hostname pure_color_mute
-_pure_set_default pure_color_ssh_separator pure_color_mute
-_pure_set_default pure_color_ssh_user_normal pure_color_mute
-_pure_set_default pure_color_ssh_user_root pure_color_light
+# Remote info (user@hostname) for SSH and containers (Docker/LXC)
+_pure_set_default pure_color_hostname pure_color_mute
+_pure_set_default pure_color_at_sign pure_color_mute
+_pure_set_default pure_color_username_normal pure_color_mute
+_pure_set_default pure_color_username_root pure_color_light
 
 # Number of running jobs
 _pure_set_default pure_show_jobs false
