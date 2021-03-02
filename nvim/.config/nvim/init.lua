@@ -12,13 +12,53 @@ vim.cmd 'packadd paq-nvim'
 local paq = require('paq-nvim').paq
 paq {'savq/paq-nvim', opt=true}
 
+-- UI
+paq 'bluz71/vim-nightfly-guicolors'
+paq 'editorconfig/editorconfig-vim' -- editorconfig for being polite
+paq 'hoob3rt/lualine.nvim'
+paq 'junegunn/vim-easy-align'
+paq 'kopischke/vim-fetch'           -- be able to open from stack traces
+paq 'lewis6991/gitsigns.nvim'       -- gitsigns
+paq 'machakann/vim-sandwich'
+paq 'tpope/vim-abolish'             -- rename... could be LSP'd away someday
+paq 'tpope/vim-commentary'          -- easy comments
+paq 'tpope/vim-eunuch'              -- handle missing files and unix-y stuff
+paq 'tpope/vim-projectionist'       -- create and rename files by convention
+paq 'tpope/vim-ragtag'              -- handle html tags
+paq 'tpope/vim-repeat'              -- repeat actions
+paq 'tpope/vim-speeddating'         -- work with dates
+paq 'tpope/vim-unimpaired'          -- bindings to toggle common settings
+paq 'tpope/vim-vinegar'             -- use netrw with style
+paq 'wellle/targets.vim'            -- expand the target objects
+-- Syntax
+paq 'elixir-lang/vim-elixir'
+-- git/gist/github
+paq 'mattn/gist-vim'
+paq 'mattn/webapi-vim'
+paq 'rhysd/git-messenger.vim'
+paq 'tpope/vim-fugitive'
+paq 'tpope/vim-git'
+paq 'tpope/vim-rhubarb'
+-- LSP
+paq 'glepnir/lspsaga.nvim'
+paq 'neovim/nvim-lspconfig'
+paq 'nvim-lua/completion-nvim'
+paq 'nvim-lua/lsp_extensions.nvim'
+paq 'nvim-lua/plenary.nvim'
+paq 'nvim-lua/popup.nvim'
+paq 'nvim-telescope/telescope.nvim'
+paq {'nvim-treesitter/nvim-treesitter', hook = ':TSUpdate'}
+-- Prose
+paq {'junegunn/goyo.vim', opt = true}
+paq {'junegunn/limelight.vim', opt = true}
+paq {'reedes/vim-pencil', opt = true}
+paq {'vimwiki/vimwiki', branch = 'dev'}
+
 
 -- THEME
-paq 'bluz71/vim-nightfly-guicolors'
 vim.cmd [[colorscheme nightfly]]
 
 -- statusline
-paq 'hoob3rt/lualine.nvim'
 local lualine = require('lualine')
 lualine.status()
 lualine.options.theme = 'nightfly'
@@ -30,41 +70,9 @@ end
 
 
 -- UI
--- bindings to toggle common settings
-paq 'tpope/vim-unimpaired'
--- gitsigns
-paq 'lewis6991/gitsigns.nvim'
 require('gitsigns').setup()
--- be able to open from stack traces
-paq 'kopischke/vim-fetch'
--- rename... could be LSP'd away someday
-paq 'tpope/vim-abolish'
--- easy comments
-paq 'tpope/vim-commentary'
--- handle missing files and unix-y stuff
-paq 'tpope/vim-eunuch'
--- create and rename files by convention
-paq 'tpope/vim-projectionist'
--- handle html tags
-paq 'tpope/vim-ragtag'
--- repeat actions
-paq 'tpope/vim-repeat'
--- work with dates
-paq 'tpope/vim-speeddating'
--- use netrw with style
-paq 'tpope/vim-vinegar'
--- expand the target objects
-paq 'wellle/targets.vim'
-
--- editorconfig for being polite
-paq 'editorconfig/editorconfig-vim'
-
 
 -- telescope for finding stuff
-paq 'nvim-lua/popup.nvim'
-paq 'nvim-lua/plenary.nvim'
-paq 'nvim-telescope/telescope.nvim'
-
 function _G.searchWiki()
   require('telescope.builtin').find_files {
     prompt_title = "Search ZK",
@@ -79,18 +87,11 @@ vim.api.nvim_set_keymap('n', '<localleader>ww', ":lua _G.searchWiki()<cr>", {nor
 
 
 -- easyalign
-paq 'junegunn/vim-easy-align'
 vim.api.nvim_set_keymap('v', '<Enter>', '<Plug>(EasyAlign)', {})
 vim.api.nvim_set_keymap('n', '<Leader>a', '<Plug>(EasyAlign)', {})
 
 
--- elixir
-paq 'elixir-lang/vim-elixir'
-
-
 -- vim-sandwich
-paq 'machakann/vim-sandwich'
-
 function _G.structInput()
   local structName = vim.fn.input('Struct: ')
   local startBun = ''
@@ -169,18 +170,8 @@ vim.list_extend(sandwich_recipes, custom_recipes)
 vim.g['sandwich#recipes'] = sandwich_recipes
 
 
--- git/gist/github
-paq 'tpope/vim-fugitive'
-paq 'tpope/vim-git'
-paq 'mattn/gist-vim'
-paq 'mattn/webapi-vim'
-paq 'rhysd/git-messenger.vim'
-paq 'tpope/vim-rhubarb'
-
 
 -- LSP LANGUAGE SERVERS
-paq 'neovim/nvim-lspconfig'
-
 local on_attach = function(client, bufnr)
   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
   local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
@@ -286,10 +277,6 @@ require'lspconfig'.sumneko_lua.setup {
   },
 }
 
-paq 'nvim-lua/completion-nvim'
-paq 'nvim-lua/lsp_extensions.nvim'
-
-paq {'nvim-treesitter/nvim-treesitter', hook = ':TSUpdate'}
 require'nvim-treesitter.configs'.setup {
   highlight = {
     enable = true
@@ -300,7 +287,6 @@ require'nvim-treesitter.configs'.setup {
 }
 
 -- floating windows
-paq 'glepnir/lspsaga.nvim'
 local saga = require('lspsaga')
 saga.init_lsp_saga()
 -- code finder
@@ -387,12 +373,8 @@ function _G.toggleProse()
   end
 end
 
-paq {'junegunn/limelight.vim', opt = true}
-
-paq {'junegunn/goyo.vim', opt = true}
 vim.g.goyo_width = 60
 
-paq {'reedes/vim-pencil', opt = true}
 vim.g['pencil#conceallevel'] = 0
 vim.g['pencil#wrapModeDefault'] = 'soft'
 vim.api.nvim_set_keymap(
@@ -402,7 +384,6 @@ vim.api.nvim_set_keymap(
   {noremap = true, silent = true}
 )
 
-paq {'vimwiki/vimwiki', branch = 'dev'}
 vim.g.vimwiki_global_ext = 0
 vim.g.vimwiki_list = {
   {
