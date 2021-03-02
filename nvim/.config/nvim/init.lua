@@ -13,7 +13,7 @@ local paq = require('paq-nvim').paq
 paq {'savq/paq-nvim', opt=true}
 
 -- UI
-paq 'bluz71/vim-nightfly-guicolors'
+paq 'gruvbox-community/gruvbox'
 paq 'editorconfig/editorconfig-vim' -- editorconfig for being polite
 paq 'hoob3rt/lualine.nvim'
 paq 'junegunn/vim-easy-align'
