@@ -60,8 +60,8 @@ vim.cmd [[colorscheme nightfly]]
 
 -- statusline
 local lualine = require('lualine')
-lualine.status()
 lualine.options.theme = 'nightfly'
+lualine.status()
 
 vim.o.showmode = false
 if os.getenv('termTheme') == 'light' then
