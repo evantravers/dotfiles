@@ -59,9 +59,11 @@ paq {'vimwiki/vimwiki', branch = 'dev'}
 vim.cmd [[colorscheme nightfly]]
 
 -- statusline
-local lualine = require('lualine')
-lualine.options.theme = 'nightfly'
-lualine.status()
+require('lualine').setup {
+  options = {
+    theme = 'nightfly'
+  }
+}
 
 vim.o.showmode = false
 if os.getenv('termTheme') == 'light' then
