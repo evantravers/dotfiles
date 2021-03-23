@@ -52,7 +52,6 @@ paq {'nvim-treesitter/nvim-treesitter', hook = ':TSUpdate'}
 paq {'junegunn/goyo.vim', opt = true}
 paq {'junegunn/limelight.vim', opt = true}
 paq {'reedes/vim-pencil', opt = true}
-paq {'vimwiki/vimwiki', branch = 'dev'}
 
 
 -- THEME
@@ -80,7 +79,7 @@ function _G.searchWiki()
   require('telescope.builtin').find_files {
     prompt_title = "Search ZK",
     shorten_path = false,
-    cwd = "~/src/github.com/evantravers/undo-zk/wiki/",
+    cwd = "~/Dropbox/wiki",
   }
 end
 
@@ -388,13 +387,3 @@ vim.api.nvim_set_keymap(
   ':lua _G.toggleProse()<cr>',
   {noremap = true, silent = true}
 )
-
-vim.g.vimwiki_global_ext = 0
-vim.g.vimwiki_list = {
-  {
-    path = '~/src/github.com/evantravers/undo-zk/wiki/',
-    syntax = 'markdown',
-    ext = '.md',
-    diary_rel_path = 'journal'
-  }
-}
