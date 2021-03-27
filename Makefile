@@ -12,6 +12,8 @@ stow:
 	stow tmux
 
 install:
+	./macos
+
 ifndef CLI_TOOLS
 else
 	xcode-select --install
