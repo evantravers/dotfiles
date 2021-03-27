@@ -179,4 +179,18 @@ defaults write com.apple.dock autohide -bool true
 # Don’t show recent applications in Dock
 defaults write com.apple.dock show-recents -bool false
 
+for app in "Activity Monitor" \
+	"Calendar" \
+	"cfprefsd" \
+	"Dock" \
+	"Finder" \
+	"Mail" \
+	"Messages" \
+	"Safari" \
+	"SystemUIServer" \
+	"Terminal" \
+	"iCal"; do
+	killall "${app}" &> /dev/null
+done
+
 echo "Done. Note that some of these changes require a logout/restart to take effect."
