@@ -45,15 +45,17 @@ endif
 
 lsp:
 	# setup LSP
+ifeq ($(wildcard ~/.config/lsp/.*),)
 	mkdir -p ~/.config/lsp/
-ifeq ($(wildcard ~/.config/lsp/elixir-lsp.),)
+endif
+ifeq ($(wildcard ~/.config/lsp/elixir-ls/.*),)
 	# elixir
 	curl -fLO https://github.com/elixir-lsp/elixir-ls/releases/latest/download/elixir-ls.zip
 	unzip elixir-ls.zip -d ~/.config/lsp/elixir-ls
 	chmod +x ~/.config/lsp/elixir-ls/language_server.sh
 	rm elixir-ls.zip
 endif
-ifeq ($(wildcard ~/.config/lsp/lua-language-server.),)
+ifeq ($(wildcard ~/.config/lsp/lua-language-server/.*),)
 	# lua
 	brew install ninja
 	git clone https://github.com/sumneko/lua-language-server ~/.config/lsp/lua-language-server
@@ -63,13 +65,13 @@ ifeq ($(wildcard ~/.config/lsp/lua-language-server.),)
 endif
 
 tmux:
-ifeq ($(wildcard ~/.tmux/plugins/tpm/.),)
+ifeq ($(wildcard ~/.tmux/plugins/tpm/.*),)
 	# clone in tmux plugins
 	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 endif
 
 asdf:
-ifeq ($(wildcard ~/.asdf/.),)
+ifeq ($(wildcard ~/.asdf/.*),)
 	# install asdf
 	git clone https://github.com/asdf-vm/asdf.git ~/.asdf
 	cd ~/.asdf
