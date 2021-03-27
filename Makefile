@@ -1,6 +1,8 @@
 BREW      := $(shell brew --version 2>/dev/null)
 CLI_TOOLS := $(xcode-select --install 2>&1 | grep installed;)
 
+.PHONY: tmux asdf
+
 default:
 	make stow
 
