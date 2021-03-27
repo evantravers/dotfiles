@@ -39,7 +39,7 @@ cask "grid-clock"
 cask "hammerspoon"
 cask "karabiner-elements"
 cask "kitty"
-cask "toggl"
+cask "toggl-track"
 mas "Deliveries", id: 924726344
 mas "Drafts", id: 1435957248
 mas "MindNode", id: 1289197285
