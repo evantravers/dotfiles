@@ -22,6 +22,7 @@ set number
 set nowrap
 set fillchars=vert:\│
 set colorcolumn=80
+set cursorline
 set relativenumber
 set hidden
 set listchars=tab:»·,trail:·
