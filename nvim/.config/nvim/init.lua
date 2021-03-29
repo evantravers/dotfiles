@@ -71,8 +71,7 @@ end
 
 
 -- UI
-gitsigns = require('gitsigns')
-gitsigns.setup()
+require('gitsigns').setup()
 
 -- telescope for finding stuff
 function _G.searchWiki()
