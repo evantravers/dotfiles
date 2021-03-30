@@ -13,7 +13,7 @@ local paq = require('paq-nvim').paq
 paq {'savq/paq-nvim', opt=true}
 
 -- UI
-paq 'bluz71/vim-nightfly-guicolors'
+paq 'sainnhe/everforest'
 paq 'editorconfig/editorconfig-vim' -- editorconfig for being polite
 paq 'hoob3rt/lualine.nvim'
 paq 'junegunn/vim-easy-align'
@@ -55,12 +55,13 @@ paq {'reedes/vim-pencil', opt = true}
 
 
 -- THEME
-vim.cmd [[colorscheme nightfly]]
+vim.g.everforest_background = 'medium'
+vim.cmd [[colorscheme everforest]]
 
 -- statusline
 require('lualine').setup {
   options = {
-    theme = 'nightfly'
+    theme = 'forest_night'
   }
 }
 
