@@ -96,12 +96,12 @@ vim.api.nvim_set_keymap('n', '<Leader>a', '<Plug>(EasyAlign)', {})
 function _G.structInput()
   local structName = vim.fn.input('Struct: ')
   local startBun = ''
+  local endBun = ''
   if (structName ~= '') then
     startBun = '%' .. structName .. '{'
-  else
-    error('OperatorSandwichCancel')
+    endBun = '}'
   end
-  return { startBun, '}' }
+  return { startBun, endBun }
 end
 
 local sandwich_recipes = vim.api.nvim_eval('sandwich#default_recipes')
