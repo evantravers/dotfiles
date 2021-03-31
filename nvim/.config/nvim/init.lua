@@ -357,7 +357,6 @@ function _G.toggleProse()
     vim.cmd 'Goyo!'
     vim.cmd [[set wrap!]]
     vim.cmd [[silent !tmux set status on]]
-    gitsigns.attach()
     vim.o.showmode = true
     vim.o.showcmd = true
     vim.g.proseMode = false
@@ -366,7 +365,6 @@ function _G.toggleProse()
     vim.cmd 'packadd goyo.vim'
     vim.cmd 'packadd limelight.vim'
     vim.cmd [[silent !tmux set status off]]
-    gitsigns.detach()
     vim.o.showmode = false
     vim.o.showcmd = false
     vim.wo.foldlevel = 4
