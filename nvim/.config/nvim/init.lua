@@ -174,7 +174,6 @@ vim.list_extend(sandwich_recipes, custom_recipes)
 vim.g['sandwich#recipes'] = sandwich_recipes
 
 
-
 -- LSP LANGUAGE SERVERS
 local on_attach = function(client, bufnr)
   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
