@@ -65,7 +65,7 @@ function everforest -d "Set theme to everforest"
   set -U fish_pager_color_prefix
 
   # the completion itself, i.e. the proposed rest of the string
-  set -U fish_pager_color_completion brblack
+  set -U fish_pager_color_completion magenta
 
   # the completion description
   set -U fish_pager_color_description yellow
