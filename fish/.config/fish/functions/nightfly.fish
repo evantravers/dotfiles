@@ -81,4 +81,6 @@ function nightfly -d "Set theme to nightfly"
 
   # description of the selected completion
   set -U fish_pager_color_selected_description brblack
+
+  set -U pure_color_mute brblack
 end
