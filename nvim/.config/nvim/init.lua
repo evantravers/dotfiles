@@ -62,7 +62,7 @@ vim.cmd [[colorscheme everforest]]
 -- statusline
 require('lualine').setup {
   options = {
-    theme = 'forest_night'
+    theme = 'everforest'
   }
 }
 
