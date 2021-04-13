@@ -1,7 +1,7 @@
 BREW      := $(shell brew --version 2>/dev/null)
 CLI_TOOLS := $(xcode-select --install 2>&1 | grep installed;)
 
-.PHONY: tmux asdf
+.PHONY: tmux asdf emacs
 
 default:
 	make stow
@@ -12,6 +12,7 @@ stow:
 	stow kitty
 	stow nvim
 	stow tmux
+	stow emacs
 
 install:
 	./macos
@@ -44,6 +45,7 @@ endif
 	make asdf
 	make tmux
 	make lsp
+	make emacs
 
 lsp:
 	# setup LSP
@@ -80,3 +82,9 @@ ifeq ($(wildcard ~/.asdf/.*),)
 	cd ~/.asdf
 	git checkout "$(git describe --abbrev=0 --tags)"
 endif
+
+emacs:
+	stow emacs
+	# install doom
+	git clone https://github.com/hlissner/doom-emacs ~/.emacs.d
+	~/.emacs.d/bin/doom install
