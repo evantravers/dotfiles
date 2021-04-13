@@ -67,9 +67,10 @@ ifeq ($(wildcard ~/.config/lsp/lua-language-server/.*),)
 endif
 
 tmux:
-ifeq ($(wildcard ~/.tmux/plugins/tpm/.*),)
+	stow tmux
+ifeq ($(wildcard ~/.config/tmux/plugins/tpm/.*),)
 	# clone in tmux plugins
-	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+	git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
 endif
 
 asdf:

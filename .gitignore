@@ -4,3 +4,5 @@ nvim/.config/nvim/*hist
 nvim/.config/nvim/swaps
 nvim/.config/nvim/lua
 Brewfile.lock.json
+tmux/.config/tmux/plugins
+*~
