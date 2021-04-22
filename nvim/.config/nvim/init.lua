@@ -13,13 +13,13 @@ local paq = require('paq-nvim').paq
 paq {'savq/paq-nvim', opt=true}
 
 -- UI
-paq 'sainnhe/everforest'
 paq 'editorconfig/editorconfig-vim' -- editorconfig for being polite
 paq 'hoob3rt/lualine.nvim'
 paq 'junegunn/vim-easy-align'
 paq 'kopischke/vim-fetch'           -- be able to open from stack traces
 paq 'lewis6991/gitsigns.nvim'       -- gitsigns
 paq 'machakann/vim-sandwich'
+paq 'sainnhe/everforest'
 paq 'tpope/vim-abolish'             -- rename... could be LSP'd away someday
 paq 'tpope/vim-commentary'          -- easy comments
 paq 'tpope/vim-eunuch'              -- handle missing files and unix-y stuff
