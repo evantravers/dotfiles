@@ -17,6 +17,7 @@ paq 'editorconfig/editorconfig-vim' -- editorconfig for being polite
 paq 'hoob3rt/lualine.nvim'
 paq 'junegunn/vim-easy-align'
 paq 'kopischke/vim-fetch'           -- be able to open from stack traces
+paq 'kyazdani42/nvim-web-devicons'  -- icons!
 paq 'lewis6991/gitsigns.nvim'       -- gitsigns
 paq 'machakann/vim-sandwich'
 paq 'sainnhe/everforest'
@@ -40,6 +41,7 @@ paq 'tpope/vim-fugitive'
 paq 'tpope/vim-git'
 paq 'tpope/vim-rhubarb'
 -- LSP
+paq 'folke/lsp-trouble.nvim'
 paq 'glepnir/lspsaga.nvim'
 paq 'neovim/nvim-lspconfig'
 paq 'nvim-lua/completion-nvim'
@@ -175,6 +177,8 @@ vim.g['sandwich#recipes'] = sandwich_recipes
 
 
 -- LSP LANGUAGE SERVERS
+require('trouble').setup()
+
 local on_attach = function(client, bufnr)
   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
   local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
