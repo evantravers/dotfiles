@@ -51,9 +51,9 @@ paq 'nvim-lua/popup.nvim'
 paq 'nvim-telescope/telescope.nvim'
 paq {'nvim-treesitter/nvim-treesitter', hook = ':TSUpdate'}
 -- Prose
-paq {'junegunn/goyo.vim', opt = true}
 paq {'junegunn/limelight.vim', opt = true}
 paq {'reedes/vim-pencil', opt = true}
+paq {'kdav5758/TrueZen.nvim', opt = true}
 
 
 -- THEME
@@ -361,29 +361,37 @@ vim.api.nvim_set_keymap('n',
 function _G.toggleProse()
   if (vim.g.proseMode == true) then
     vim.cmd 'PencilOff'
-    vim.cmd 'Limelight!'
-    vim.cmd 'Goyo!'
+    vim.cmd 'TZAtaraxis'
     vim.cmd [[set wrap!]]
-    vim.cmd [[silent !tmux set status on]]
     vim.o.showmode = true
     vim.o.showcmd = true
     vim.g.proseMode = false
   else
     vim.cmd 'packadd vim-pencil'
-    vim.cmd 'packadd goyo.vim'
+    vim.cmd 'packadd TrueZen'
     vim.cmd 'packadd limelight.vim'
-    vim.cmd [[silent !tmux set status off]]
+    require('true-zen').setup({
+      top = {
+        hidden_showtabline = 0,
+        shown_showtabline = 0
+      },
+      integrations = {
+        integration_limelight = true,
+        integration_tmux = true,
+      },
+      ataraxis = {
+        just_do_it_for_me = true
+      }
+    })
     vim.o.showmode = false
     vim.o.showcmd = false
     vim.wo.foldlevel = 4
     vim.cmd 'PencilSoft'
-    vim.cmd 'Limelight'
-    vim.cmd 'Goyo'
+    vim.cmd 'on'
+    vim.cmd 'TZAtaraxis'
     vim.g.proseMode = true
   end
 end
-
-vim.g.goyo_width = 60
 
 vim.g['pencil#conceallevel'] = 0
 vim.g['pencil#wrapModeDefault'] = 'soft'
