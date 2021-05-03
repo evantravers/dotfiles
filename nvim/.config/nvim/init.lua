@@ -368,7 +368,7 @@ function _G.toggleProse()
     vim.g.proseMode = false
   else
     vim.cmd 'packadd vim-pencil'
-    vim.cmd 'packadd TrueZen'
+    vim.cmd 'packadd TrueZen.nvim'
     vim.cmd 'packadd limelight.vim'
     require('true-zen').setup({
       top = {
@@ -380,7 +380,7 @@ function _G.toggleProse()
         integration_tmux = true,
       },
       ataraxis = {
-        just_do_it_for_me = true
+        ideal_writing_area_width = 55
       }
     })
     vim.o.showmode = false
