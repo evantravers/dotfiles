@@ -1,4 +1,4 @@
-function everforest -d "Set theme to everforest"
+function colors -d "Set theme (everforest)"
   # COMMAND LINE
   # default color
   set -U fish_color_normal white
