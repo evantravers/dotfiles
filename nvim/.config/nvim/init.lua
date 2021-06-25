@@ -365,6 +365,7 @@ function _G.toggleProse()
       width = 80
     },
     plugins = {
+      gitsigns = { enabled = true },
       tmux = { enabled = true },
       kitty = {
         enabled = true,
