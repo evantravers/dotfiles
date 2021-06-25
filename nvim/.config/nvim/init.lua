@@ -53,7 +53,7 @@ paq {'nvim-treesitter/nvim-treesitter', hook = ':TSUpdate'}
 -- Prose
 paq {'junegunn/limelight.vim', opt = true}
 paq {'reedes/vim-pencil', opt = true}
-paq {'kdav5758/TrueZen.nvim', opt = true}
+paq {'folke/zen-mode.nvim', opt = true}
 
 
 -- THEME
@@ -359,42 +359,33 @@ vim.api.nvim_set_keymap('n',
 -- PROSE MODE
 -- I write prose in markdown, all the following is to help with that.
 function _G.toggleProse()
-  if (vim.g.proseMode == true) then
-    vim.cmd 'PencilOff'
-    vim.cmd 'TZAtaraxis'
-    vim.cmd [[set wrap!]]
-    vim.o.showmode = true
-    vim.o.showcmd = true
-    vim.g.proseMode = false
-  else
-    vim.cmd 'packadd vim-pencil'
-    vim.cmd 'packadd TrueZen.nvim'
-    vim.cmd 'packadd limelight.vim'
-    require('true-zen').setup({
-      top = {
-        hidden_showtabline = 0,
-        shown_showtabline = 0
+  vim.cmd 'packadd zen-mode.nvim'
+  require("zen-mode").toggle({
+    window = {
+      width = 80
+    },
+    plugins = {
+      tmux = { enabled = true },
+      kitty = {
+        enabled = true,
       },
-      integrations = {
-        integration_limelight = true,
-        integration_tmux = true,
-      },
-      ataraxis = {
-        ideal_writing_area_width = 55
-      }
-    })
-    vim.o.showmode = false
-    vim.o.showcmd = false
-    vim.wo.foldlevel = 4
-    vim.cmd 'PencilSoft'
-    vim.cmd 'on'
-    vim.cmd 'TZAtaraxis'
-    vim.g.proseMode = true
-  end
+    },
+    on_open = function(win)
+      vim.cmd 'packadd vim-pencil'
+      vim.cmd 'packadd limelight.vim'
+      vim.cmd 'PencilSoft'
+      vim.cmd 'Limelight'
+    end,
+    on_close = function()
+      vim.cmd 'PencilOff'
+      vim.cmd 'Limelight!'
+    end
+  })
 end
 
 vim.g['pencil#conceallevel'] = 0
 vim.g['pencil#wrapModeDefault'] = 'soft'
+
 vim.api.nvim_set_keymap(
   'n',
   '<localleader>m',
