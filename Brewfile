@@ -19,7 +19,7 @@ brew "gnupg"
 brew "hub"
 brew "jq"
 brew "mas"
-brew "neovim", args: ['head']
+brew "neovim"
 brew "openssl"
 brew "reattach-to-user-namespace"
 brew "ripgrep"
