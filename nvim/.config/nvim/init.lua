@@ -372,13 +372,17 @@ function _G.toggleProse()
       },
     },
     on_open = function(win)
-      vim.cmd 'packadd vim-pencil'
+      if (vim.bo.filetype == "markdown") then
+        vim.cmd 'packadd vim-pencil'
+        vim.cmd 'PencilSoft'
+      end
       vim.cmd 'packadd limelight.vim'
-      vim.cmd 'PencilSoft'
       vim.cmd 'Limelight'
     end,
     on_close = function()
-      vim.cmd 'PencilOff'
+      if (vim.bo.filetype == "markdown") then
+        vim.cmd 'PencilOff'
+      end
       vim.cmd 'Limelight!'
     end
   })
