@@ -55,7 +55,11 @@ paq {'reedes/vim-pencil', opt = true}
 paq {'folke/zen-mode.nvim', opt = true}
 paq {'folke/twilight.nvim', opt = true}
 
-
+paq {'kristijanhusak/orgmode.nvim'}
+require('orgmode').setup({
+  org_agenda_files = {'~/Library/Mobile Documents/com~apple~CloudDocs/org/*'},
+  org_default_notes_file = '~/Library/Mobile Documents/com~apple~CloudDocs/org/inbox.org',
+})
 
 -- THEME
 vim.g.everforest_background = 'medium'
