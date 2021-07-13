@@ -51,9 +51,10 @@ paq 'nvim-lua/popup.nvim'
 paq 'nvim-telescope/telescope.nvim'
 paq {'nvim-treesitter/nvim-treesitter', hook = ':TSUpdate'}
 -- Prose
-paq {'junegunn/limelight.vim', opt = true}
 paq {'reedes/vim-pencil', opt = true}
 paq {'folke/zen-mode.nvim', opt = true}
+paq {'folke/twilight.nvim', opt = true}
+
 
 
 -- THEME
@@ -359,6 +360,7 @@ vim.api.nvim_set_keymap('n',
 -- PROSE MODE
 -- I write prose in markdown, all the following is to help with that.
 function _G.toggleProse()
+  vim.cmd 'packadd twilight.nvim'
   vim.cmd 'packadd zen-mode.nvim'
   require("zen-mode").toggle({
     window = {
@@ -376,14 +378,11 @@ function _G.toggleProse()
         vim.cmd 'packadd vim-pencil'
         vim.cmd 'PencilSoft'
       end
-      vim.cmd 'packadd limelight.vim'
-      vim.cmd 'Limelight'
     end,
     on_close = function()
       if (vim.bo.filetype == "markdown") then
         vim.cmd 'PencilOff'
       end
-      vim.cmd 'Limelight!'
     end
   })
 end
