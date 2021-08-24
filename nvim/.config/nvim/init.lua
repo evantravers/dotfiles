@@ -13,6 +13,7 @@ local paq = require('paq-nvim').paq
 paq {'savq/paq-nvim', opt=true}
 
 -- UI
+paq 'bluz71/vim-nightfly-guicolors'
 paq 'editorconfig/editorconfig-vim' -- editorconfig for being polite
 paq 'hoob3rt/lualine.nvim'
 paq 'junegunn/vim-easy-align'
@@ -41,6 +42,7 @@ paq 'tpope/vim-fugitive'
 paq 'tpope/vim-git'
 paq 'tpope/vim-rhubarb'
 -- LSP
+paq 'SmiteshP/nvim-gps'
 paq 'folke/lsp-trouble.nvim'
 paq 'glepnir/lspsaga.nvim'
 paq 'neovim/nvim-lspconfig'
@@ -68,9 +70,15 @@ vim.g.everforest_better_performance = 1
 vim.cmd [[colorscheme everforest]]
 
 -- statusline
+local gps = require("nvim-gps")
 require('lualine').setup {
   options = {
     theme = 'everforest'
+  },
+  sections = {
+    lualine_c = {
+      { gps.get_location, condition=gps.is_available },
+    }
   }
 }
 
