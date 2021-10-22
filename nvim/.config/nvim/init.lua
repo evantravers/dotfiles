@@ -14,7 +14,7 @@ paq {'savq/paq-nvim', opt=true}
 
 -- UI
 paq 'editorconfig/editorconfig-vim' -- editorconfig for being polite
-paq 'hoob3rt/lualine.nvim'
+paq 'nvim-lualine/lualine.nvim'
 paq 'junegunn/vim-easy-align'
 paq 'kopischke/vim-fetch'           -- be able to open from stack traces
 paq 'kyazdani42/nvim-web-devicons'  -- icons!
