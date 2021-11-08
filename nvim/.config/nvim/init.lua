@@ -20,7 +20,8 @@ paq 'kopischke/vim-fetch'           -- be able to open from stack traces
 paq 'kyazdani42/nvim-web-devicons'  -- icons!
 paq 'lewis6991/gitsigns.nvim'       -- gitsigns
 paq 'machakann/vim-sandwich'
-paq 'sainnhe/everforest'
+paq "rktjmp/lush.nvim"
+paq "mhanberg/thicc_forest"
 paq 'tpope/vim-abolish'             -- rename... could be LSP'd away someday
 paq 'tpope/vim-commentary'          -- easy comments
 paq 'tpope/vim-eunuch'              -- handle missing files and unix-y stuff
@@ -63,16 +64,13 @@ require('orgmode').setup({
 })
 
 -- THEME
-vim.g.everforest_background = 'medium'
-vim.g.everforest_sign_column_background = 'none'
-vim.g.everforest_better_performance = 1
-vim.cmd [[colorscheme everforest]]
+vim.cmd [[color thicc_forest]]
 
 -- statusline
 local gps = require("nvim-gps")
 require('lualine').setup {
   options = {
-    theme = 'everforest'
+    theme = require("thicc_forest.lualine")
   },
   sections = {
     lualine_c = {
