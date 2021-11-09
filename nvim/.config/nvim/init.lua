@@ -394,7 +394,7 @@ function _G.toggleProse()
         enabled = true,
       },
     },
-    on_open = function(win)
+    on_open = function()
       if (vim.bo.filetype == "markdown") then
         vim.cmd 'packadd vim-pencil'
         vim.cmd 'PencilSoft'
