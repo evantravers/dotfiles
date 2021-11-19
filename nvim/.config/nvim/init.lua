@@ -13,15 +13,15 @@ local paq = require('paq-nvim').paq
 paq {'savq/paq-nvim', opt=true}
 
 -- UI
+paq "rktjmp/lush.nvim"
 paq 'editorconfig/editorconfig-vim' -- editorconfig for being polite
-paq 'nvim-lualine/lualine.nvim'
 paq 'junegunn/vim-easy-align'
 paq 'kopischke/vim-fetch'           -- be able to open from stack traces
 paq 'kyazdani42/nvim-web-devicons'  -- icons!
 paq 'lewis6991/gitsigns.nvim'       -- gitsigns
 paq 'machakann/vim-sandwich'
-paq "rktjmp/lush.nvim"
-paq "mhanberg/thicc_forest"
+paq 'mcchrish/zenbones.nvim'
+paq 'nvim-lualine/lualine.nvim'
 paq 'tpope/vim-abolish'             -- rename... could be LSP'd away someday
 paq 'tpope/vim-commentary'          -- easy comments
 paq 'tpope/vim-eunuch'              -- handle missing files and unix-y stuff
@@ -75,13 +75,15 @@ require('orgmode').setup({
 })
 
 -- THEME
-vim.cmd [[color thicc_forest]]
+vim.g.zenbones_solid_line_nr = true
+vim.g.zenbones_solid_vert_split = true
+vim.cmd [[color zenbones]]
 
 -- statusline
 local gps = require("nvim-gps")
 require('lualine').setup {
   options = {
-    theme = require("thicc_forest.lualine")
+    theme = "zenbones"
   },
   sections = {
     lualine_c = {
