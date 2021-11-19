@@ -1,4 +1,4 @@
-function colors -d "Set theme (everforest)"
+function colors -d "Set theme"
   # COMMAND LINE
   # default color
   set -U fish_color_normal white
@@ -83,4 +83,6 @@ function colors -d "Set theme (everforest)"
   set -U fish_pager_color_selected_description brblack
 
   set -U pure_color_mute cyan
+  set -U pure_color_primary brblack
+  set -U pure_color_success brblack
 end
