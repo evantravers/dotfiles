@@ -84,5 +84,5 @@ function colors -d "Set theme"
 
   set -U pure_color_mute cyan
   set -U pure_color_primary brblack
-  set -U pure_color_success brblack
+  set -U pure_color_success green
 end
