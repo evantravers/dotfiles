@@ -93,7 +93,7 @@ require('lualine').setup {
 }
 
 vim.o.showmode = false
-if os.getenv('termTheme') == 'light' then
+if os.getenv('theme') == 'light' then
   vim.o.background = 'light'
 end
 
