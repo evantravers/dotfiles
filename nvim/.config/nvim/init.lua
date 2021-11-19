@@ -104,7 +104,7 @@ function _G.searchWiki()
   require('telescope.builtin').find_files {
     prompt_title = "Search ZK",
     shorten_path = false,
-    cwd = "~/Dropbox/wiki",
+    cwd = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/wiki",
   }
 end
 
