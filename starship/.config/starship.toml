@@ -75,3 +75,16 @@ symbol = "ﯣ "
 [character]
 success_symbol = "[❯](dimmed green)"
 error_symbol = "[❯](dimmed red)"
+
+[jobs]
+disabled = true
+
+[git_status]
+style = "dimmed yellow"
+format = '([$all_status$ahead_behind]($style) )'
+conflicted = ""
+ahead = ""
+behind = ""
+untracked = ""
+staged = ""
+modified = ""
