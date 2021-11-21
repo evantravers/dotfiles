@@ -13,6 +13,7 @@ stow:
 	stow nvim
 	stow tmux
 	stow emacs
+	stow starship
 
 install:
 	./macos
