@@ -8,6 +8,7 @@ symbol = " "
 symbol = " "
 
 [directory]
+style = "italic white"
 read_only = " "
 
 [docker_context]
@@ -21,7 +22,7 @@ symbol = " "
 
 [git_branch]
 symbol = " "
-style = "dimmed yellow"
+style = "bold white"
 
 [golang]
 symbol = " "
@@ -71,3 +72,6 @@ symbol = " "
 [swift]
 symbol = "ﯣ "
 
+[character]
+success_symbol = "[❯](dimmed green)"
+error_symbol = "[❯](dimmed red)"
