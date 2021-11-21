@@ -26,6 +26,16 @@ symbol = " "
 symbol = " "
 style = "bold white"
 
+[git_status]
+style = "dimmed yellow"
+format = '([$all_status$ahead_behind]($style) )'
+conflicted = ""
+ahead = ""
+behind = ""
+untracked = ""
+staged = ""
+modified = ""
+
 [golang]
 symbol = " "
 
@@ -81,13 +91,3 @@ error_symbol = "[❯](dimmed red)"
 
 [jobs]
 disabled = true
-
-[git_status]
-style = "dimmed yellow"
-format = '([$all_status$ahead_behind]($style) )'
-conflicted = ""
-ahead = ""
-behind = ""
-untracked = ""
-staged = ""
-modified = ""
