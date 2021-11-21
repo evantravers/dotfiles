@@ -4,7 +4,7 @@ function colors -d "Set theme"
   set -U fish_color_normal white
 
   # commands like echo
-  set -U fish_color_command brwhite -o
+  set -U fish_color_command white -o
 
   # keywords like if - this falls back on command color if unset
   set -U fish_color_keyword purple
