@@ -47,6 +47,7 @@ symbol = " "
 
 [package]
 symbol = " "
+style = "dimmed yellow"
 
 [perl]
 symbol = " "
