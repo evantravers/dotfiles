@@ -82,7 +82,7 @@ function colors -d "Set theme"
   # description of the selected completion
   set -U fish_pager_color_selected_description brblack
 
-  set -U pure_color_mute cyan
-  set -U pure_color_primary brblack
-  set -U pure_color_success green
+  set -U pure_color_mute yellow -d
+  set -U pure_color_primary white -d
+  set -U pure_color_success green -d
 end
