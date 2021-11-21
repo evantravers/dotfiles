@@ -1,3 +1,5 @@
+command_timeout = "100"
+
 [aws]
 symbol = "  "
 
