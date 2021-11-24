@@ -13,7 +13,6 @@ local paq = require('paq-nvim').paq
 paq {'savq/paq-nvim', opt=true}
 
 -- UI
-paq 'rktjmp/lush.nvim'
 paq 'editorconfig/editorconfig-vim' -- editorconfig for being polite
 paq 'junegunn/vim-easy-align'
 paq 'kopischke/vim-fetch'           -- be able to open from stack traces
@@ -22,6 +21,7 @@ paq 'lewis6991/gitsigns.nvim'       -- gitsigns
 paq 'machakann/vim-sandwich'
 paq 'mcchrish/zenbones.nvim'
 paq 'nvim-lualine/lualine.nvim'
+paq 'rktjmp/lush.nvim'
 paq 'tpope/vim-abolish'             -- rename... could be LSP'd away someday
 paq 'tpope/vim-commentary'          -- easy comments
 paq 'tpope/vim-eunuch'              -- handle missing files and unix-y stuff
@@ -32,6 +32,7 @@ paq 'tpope/vim-speeddating'         -- work with dates
 paq 'tpope/vim-unimpaired'          -- bindings to toggle common settings
 paq 'tpope/vim-vinegar'             -- use netrw with style
 paq 'wellle/targets.vim'            -- expand the target objects
+paq 'windwp/nvim-autopairs'
 -- Syntax
 paq 'elixir-lang/vim-elixir'
 -- git/gist/github
@@ -197,6 +198,21 @@ local custom_recipes =
   }
 vim.list_extend(sandwich_recipes, custom_recipes)
 vim.g['sandwich#recipes'] = sandwich_recipes
+
+
+-- autopairs
+local npairs = require("nvim-autopairs")
+npairs.setup({
+  check_ts = true,
+  close_triple_quotes = true
+})
+npairs.add_rules(require("nvim-autopairs.rules.endwise-ruby"))
+local endwise = require("nvim-autopairs.ts-rule").endwise
+npairs.add_rules({
+  endwise("then$", "end", "lua", nil),
+  endwise("do$", "end", "lua", nil),
+  endwise(" do$", "end", "elixir", nil),
+})
 
 
 -- LSP LANGUAGE SERVERS
