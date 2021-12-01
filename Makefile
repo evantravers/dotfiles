@@ -65,7 +65,7 @@ ifeq ($(wildcard ~/.config/lsp/lua-language-server/.*),)
 	brew install ninja
 	git clone https://github.com/sumneko/lua-language-server ~/.config/lsp/lua-language-server
 	cd ~/.config/lsp/lua-language-server && git submodule update --init --recursive
-	cd ~/.config/lsp/lua-language-server/3rd/luamake && ninja -f ninja/macos.ninja
+	cd ~/.config/lsp/lua-language-server/3rd/luamake && compile/install.sh
 	cd ~/.config/lsp/lua-language-server/ && ./3rd/luamake/luamake rebuild
 endif
 
