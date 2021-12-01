@@ -45,7 +45,7 @@ paq 'tpope/vim-rhubarb'
 -- LSP
 paq 'SmiteshP/nvim-gps'
 paq 'folke/lsp-trouble.nvim'
-paq 'glepnir/lspsaga.nvim'
+paq 'tami5/lspsaga.nvim'
 paq 'neovim/nvim-lspconfig'
 paq 'nvim-lua/completion-nvim'
 paq 'nvim-lua/lsp_extensions.nvim'
