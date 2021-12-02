@@ -414,11 +414,13 @@ function _G.toggleProse()
     },
     on_open = function()
       if (vim.bo.filetype == "markdown") then
+        vim.cmd 'set so=999'
         vim.cmd 'packadd vim-pencil'
         vim.cmd 'PencilSoft'
       end
     end,
     on_close = function()
+      vim.cmd 'set so=3'
       if (vim.bo.filetype == "markdown") then
         vim.cmd 'PencilOff'
       end
