@@ -439,6 +439,7 @@ vim.api.nvim_set_keymap(
 )
 
 -- Covenience macros
+-- "..." -> "…"
 vim.api.nvim_set_keymap('n',
   '<leader>fe',
   ":%s,\\.\\.\\.,…,g<CR>:nohlsearch<CR>",
