@@ -437,3 +437,9 @@ vim.api.nvim_set_keymap(
   ':lua _G.toggleProse()<cr>',
   {noremap = true, silent = true}
 )
+
+-- Covenience macros
+vim.api.nvim_set_keymap('n',
+  '<leader>fe',
+  ":%s,\\.\\.\\.,…,g<CR>:nohlsearch<CR>",
+  {noremap = true, silent = true})
