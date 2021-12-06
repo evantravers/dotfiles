@@ -60,14 +60,6 @@ ifeq ($(wildcard ~/.config/lsp/elixir-ls/.*),)
 	chmod +x ~/.config/lsp/elixir-ls/language_server.sh
 	rm elixir-ls.zip
 endif
-ifeq ($(wildcard ~/.config/lsp/lua-language-server/.*),)
-	# lua
-	brew install ninja
-	git clone https://github.com/sumneko/lua-language-server ~/.config/lsp/lua-language-server
-	cd ~/.config/lsp/lua-language-server && git submodule update --init --recursive
-	cd ~/.config/lsp/lua-language-server/3rd/luamake && compile/install.sh
-	cd ~/.config/lsp/lua-language-server/ && ./3rd/luamake/luamake rebuild
-endif
 
 tmux:
 	stow tmux
