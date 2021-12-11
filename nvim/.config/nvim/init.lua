@@ -7,59 +7,59 @@ vim.o.icm = 'split'
 
 
 -- PLUGINS
--- Using paq.nvim
-vim.cmd 'packadd paq-nvim'
-local paq = require('paq-nvim').paq
-paq {'savq/paq-nvim', opt=true}
+require "paq" {
+  "savq/paq-nvim";
 
 -- UI
-paq 'editorconfig/editorconfig-vim' -- editorconfig for being polite
-paq 'junegunn/vim-easy-align'
-paq 'kopischke/vim-fetch'           -- be able to open from stack traces
-paq 'kyazdani42/nvim-web-devicons'  -- icons!
-paq 'lewis6991/gitsigns.nvim'       -- gitsigns
-paq 'machakann/vim-sandwich'
-paq 'mcchrish/zenbones.nvim'
-paq 'nvim-lualine/lualine.nvim'
-paq 'rktjmp/lush.nvim'
-paq 'tpope/vim-abolish'             -- rename... could be LSP'd away someday
-paq 'tpope/vim-commentary'          -- easy comments
-paq 'tpope/vim-eunuch'              -- handle missing files and unix-y stuff
-paq 'tpope/vim-projectionist'       -- create and rename files by convention
-paq 'tpope/vim-ragtag'              -- handle html tags
-paq 'tpope/vim-repeat'              -- repeat actions
-paq 'tpope/vim-speeddating'         -- work with dates
-paq 'tpope/vim-unimpaired'          -- bindings to toggle common settings
-paq 'tpope/vim-vinegar'             -- use netrw with style
-paq 'wellle/targets.vim'            -- expand the target objects
-paq 'windwp/nvim-autopairs'
+  "editorconfig/editorconfig-vim"; -- editorconfig for being polite;
+  "junegunn/vim-easy-align";
+  "kopischke/vim-fetch";           -- be able to open from stack traces;
+  "kyazdani42/nvim-web-devicons";  -- icons!;
+  "lewis6991/gitsigns.nvim";       -- gitsigns;
+  "machakann/vim-sandwich";
+  "mcchrish/zenbones.nvim";
+  "nvim-lualine/lualine.nvim";
+  "rktjmp/lush.nvim";
+  "tpope/vim-abolish";             -- rename... could be LSP";d away someday;
+  "tpope/vim-commentary";          -- easy comments;
+  "tpope/vim-eunuch";              -- handle missing files and unix-y stuff;
+  "tpope/vim-projectionist";       -- create and rename files by convention;
+  "tpope/vim-ragtag";              -- handle html tags;
+  "tpope/vim-repeat";              -- repeat actions;
+  "tpope/vim-speeddating";         -- work with dates;
+  "tpope/vim-unimpaired";          -- bindings to toggle common settings;
+  "tpope/vim-vinegar";             -- use netrw with style;
+  "wellle/targets.vim";            -- expand the target objects;
+  "windwp/nvim-autopairs";
 -- Syntax
-paq 'elixir-lang/vim-elixir'
+  "elixir-lang/vim-elixir";
 -- git/gist/github
-paq 'mattn/gist-vim'
-paq 'mattn/webapi-vim'
-paq 'rhysd/git-messenger.vim'
-paq 'tpope/vim-fugitive'
-paq 'tpope/vim-git'
-paq 'tpope/vim-rhubarb'
+  "mattn/gist-vim";
+  "mattn/webapi-vim";
+  "rhysd/git-messenger.vim";
+  "tpope/vim-fugitive";
+  "tpope/vim-git";
+  "tpope/vim-rhubarb";
 -- LSP
-paq 'SmiteshP/nvim-gps'
-paq 'folke/lsp-trouble.nvim'
-paq 'tami5/lspsaga.nvim'
-paq 'neovim/nvim-lspconfig'
-paq 'nvim-lua/completion-nvim'
-paq 'nvim-lua/lsp_extensions.nvim'
-paq 'nvim-lua/plenary.nvim'
-paq 'nvim-lua/popup.nvim'
-paq 'nvim-telescope/telescope.nvim'
-paq {'nvim-treesitter/nvim-treesitter', hook = ':TSUpdate'}
+  "SmiteshP/nvim-gps";
+  "folke/lsp-trouble.nvim";
+  "tami5/lspsaga.nvim";
+  "neovim/nvim-lspconfig";
+  "nvim-lua/completion-nvim";
+  "nvim-lua/lsp_extensions.nvim";
+  "nvim-lua/plenary.nvim";
+  "nvim-lua/popup.nvim";
+  "nvim-telescope/telescope.nvim";
+  {"nvim-treesitter/nvim-treesitter", hook = ":TSUpdate"};
 -- Prose
-paq {'reedes/vim-pencil', opt = true}
-paq {'folke/zen-mode.nvim', opt = true}
-paq {'folke/twilight.nvim', opt = true}
+  {"reedes/vim-pencil", opt = true};
+  {"folke/zen-mode.nvim", opt = true};
+  {"folke/twilight.nvim", opt = true};
 
 -- Orgmode
-paq {'kristijanhusak/orgmode.nvim'}
+  {"kristijanhusak/orgmode.nvim"};
+}
+
 local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
 parser_config.org = {
   install_info = {
