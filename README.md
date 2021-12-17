@@ -7,14 +7,18 @@ If you have gnu `stow`, just clone this to `~/.dotfiles/`, then run `stow
 
 ## Installation
 
-You ought to be able to run `make install` and it'll install:
+You ought to be able to run `make install`:
 
+- modify a bunch of OSX settings
 - Xcode CLI Tools (if you haven't already)
 - [Homebrew](https://brew.sh/)
 - Everything in my [Brewfile](https://github.com/evantravers/dotfiles/blob/master/Brewfile)
-- [Plug.vim](https://github.com/junegunn/vim-plug) to `~/.config/nvim`
-- [tpm (tmux plugin manager)](https://github.com/tmux-plugins/tpm)
+- set up all my dotfile configs via `stow`
+- [Paq.nvim](https://github.com/savq/paq-nvim)
 - [asdf](https://github.com/asdf-vm/asdf)
+- [tpm (tmux plugin manager)](https://github.com/tmux-plugins/tpm)
+- LSP server for Elixir
+- Doom Emacs for funsies
 
 ## Warnings
 
