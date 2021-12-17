@@ -2,12 +2,13 @@
 
 Going to track some dotfiles that may not need security or generation.
 
-If you have gnu `stow`, just clone this to `~/.dotfiles/`, then run `stow
-[name]` to install a dotfile.
+## Quickstart
 
-## Installation
+1. `git clone git@github.com:evantravers/dotfiles.git ~/.dotfiles`
+2. `cd ~/.dotfiles`
+3. `make install`
 
-You ought to be able to run `make install`:
+## Behavior
 
 - modify a bunch of OSX settings
 - Xcode CLI Tools (if you haven't already)
