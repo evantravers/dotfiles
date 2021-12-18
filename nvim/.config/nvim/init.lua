@@ -58,6 +58,9 @@ require "paq" {
 
 -- Orgmode
   {"kristijanhusak/orgmode.nvim"};
+
+-- ZK
+  {"mickael-menu/zk-nvim", branch = "feature/initial"}
 }
 
 local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
@@ -102,6 +105,8 @@ end
 -- UI
 require('gitsigns').setup()
 
+
+-- ZK
 -- telescope for finding stuff
 function _G.searchWiki()
   require('telescope.builtin').find_files {
@@ -110,6 +115,10 @@ function _G.searchWiki()
     cwd = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/wiki",
   }
 end
+-- Provides some convience functions for browsing my Obsidian style SMZ
+local zk = require 'zk-nvim'
+zk.setup()
+
 
 vim.api.nvim_set_keymap('n', '<c-p>', ":lua require('telescope.builtin').find_files({ find_command = {'rg', '--files', '--hidden', '-g', '!.git' }})<cr>", {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', '<localleader><space>', ":lua require('telescope.builtin').buffers()<cr>", {noremap = true, silent = true})
