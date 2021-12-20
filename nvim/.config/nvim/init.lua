@@ -408,6 +408,9 @@ vim.api.nvim_set_keymap('n',
 function _G.toggleProse()
   vim.cmd 'packadd twilight.nvim'
   vim.cmd 'packadd zen-mode.nvim'
+  require("twilight").setup {
+    context = 1,
+  }
   require("zen-mode").toggle({
     window = {
       width = 80
