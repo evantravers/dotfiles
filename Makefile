@@ -71,8 +71,10 @@ endif
 emacs:
 	stow emacs
 	# install doom
+ifeq ($(wildcard ~/.emacs.d),)
 	git clone https://github.com/hlissner/doom-emacs ~/.emacs.d
 	~/.emacs.d/bin/doom install
+endif
 
 install:
 	make xcode
