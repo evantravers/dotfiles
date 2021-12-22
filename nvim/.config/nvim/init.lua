@@ -50,7 +50,6 @@ require "paq" {
   "nvim-lua/plenary.nvim";
   "nvim-lua/popup.nvim";
   "nvim-telescope/telescope.nvim";
-  {"nvim-treesitter/nvim-treesitter", hook = ":TSUpdate"};
 -- Prose
   {"reedes/vim-pencil", opt = true};
   {"folke/zen-mode.nvim", opt = true};
