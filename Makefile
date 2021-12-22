@@ -1,27 +1,28 @@
-BREW_BIN   := /usr/local/bin
+BREW_BIN      := /usr/local/bin
+XDG_DATA_HOME := $(HOME)/.local/share
 
-ASDF       := $(HOME)/.asdf/bin/asdf
-BREW       := $(BREW_BIN)/brew
-STOW       := $(BREW_BIN)/stow
-NVIM       := $(BREW_BIN)/nvim
-GIT        := $(BREW_BIN)/git
-PAQ        := $(HOME)/.local/share/nvim/site/pack/paqs/opt/paq-nvim
-TPM        := $(HOME)/.config/tmux/plugins/tpm
-DOOM       := $(HOME)/.emacs.d
+ASDF          := $(HOME)/.asdf/bin/asdf
+BREW          := $(BREW_BIN)/brew
+STOW          := $(BREW_BIN)/stow
+NVIM          := $(BREW_BIN)/nvim
+GIT           := $(BREW_BIN)/git
+PAQ           := $(XDG_DATA_HOME)/nvim/site/pack/paqs/start/paq-nvim
+TPM           := $(HOME)/.config/tmux/plugins/tpm
+DOOM          := $(HOME)/.emacs.d
 
-LSP_DIR    := $(HOME)/.config/lsp
-LSP_ELIXIR := $(LSP_DIR)/elixir-ls
+LSP_DIR       := $(XDG_DATA_HOME)/lsp
+LSP_ELIXIR    := $(LSP_DIR)/elixir-ls
 
-STOW_PKGS  := emacs fish git kitty nvim starship tmux
-BREW_PKGS  := $(STOW) $(NVIM) $(GIT)
+STOW_PKGS     := emacs fish git kitty nvim starship tmux
+BREW_PKGS     := $(STOW) $(NVIM) $(GIT)
 
-.PHONY: default tmux asdf emacs $(NVIM) dots
+.PHONY: default dots mac
 
 default: dots
 
-dots: $(STOW)
+dots: | $(STOW)
 	$(STOW) $(STOW_PKGS)
-	mkdir -p ~/.config/nvim/backups ~/.config/nvim/swaps ~/.config/nvim/undo # FIXME
+	mkdir -p ~/.config/nvim/backups ~/.config/nvim/swaps ~/.config/nvim/undo
 
 $(BREW_PKGS):
 	$(BREW) bundle
@@ -32,12 +33,13 @@ $(BREW):
 mac:
 	./macos
 
-$(PAQ): $(NVIM) $(GIT)
-	$(GIT) clone https://github.com/savq/paq-nvim.git \
-			"$${XDG_DATA_HOME:-$$HOME/.local/share}"/nvim/site/pack/paqs/opt/paq-nvim || true
+$(PAQ): | $(NVIM) $(GIT)
+	git clone --depth=1 https://github.com/savq/paq-nvim.git \
+		"$(XDG_DATA_HOME)"/nvim/site/pack/paqs/start/paq-nvim
 	$(NVIM) +PaqInstall +qall
 
-$(ASDF): $(GIT)
+$(ASDF): | $(GIT)
+	echo $(ASDF)
 	$(GIT) clone https://github.com/asdf-vm/asdf.git ~/.asdf
 	cd ~/.asdf
 	$(GIT) checkout "$($(GIT) describe --abbrev=0 --tags)"
@@ -45,18 +47,18 @@ $(ASDF): $(GIT)
 $(LSP_DIR) $(TPM_DIR):
 	mkdir -p $@
 
-$(LSP_ELIXIR): $(LSP_DIR)
+$(LSP_ELIXIR): | $(LSP_DIR)
 	curl -fLO https://github.com/elixir-lsp/elixir-ls/releases/latest/download/elixir-ls.zip
-	unzip elixir-ls.zip -d ~/.config/lsp/elixir-ls
-	chmod +x ~/.config/lsp/elixir-ls/language_server.sh
+	unzip elixir-ls.zip -d $(XDG_DATA_HOME)/lsp/elixir-ls
+	chmod +x $(XDG_DATA_HOME)/lsp/elixir-ls/language_server.sh
 	rm elixir-ls.zip
 
-$(TPM): $(GIT)
+$(TPM): | $(GIT)
 	mkdir -p $@
-	$(GIT) clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
+	$(GIT) clone https://github.com/tmux-plugins/tpm $(HOME)/.config/tmux/plugins/tpm
 
-$(DOOM): $(GIT)
-	$(GIT) clone https://github.com/hlissner/doom-emacs ~/.emacs.d
-	~/.emacs.d/bin/doom install
+$(DOOM): | $(GIT)
+	$(GIT) clone https://github.com/hlissner/doom-emacs $(HOME)/.emacs.d
+	$(HOME)/.emacs.d/bin/doom install
 
 install: mac dots $(PAQ) $(ASDF) $(TPM) $(LSP_ELIXIR) $(DOOM)
