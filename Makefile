@@ -17,32 +17,32 @@ STOW_PKGS     := emacs fish git kitty nvim starship tmux
 BREW_PKGS     := $(STOW) $(NVIM) $(GIT)
 
 .PHONY: default dots mac
-
-default: dots
+.DEFAULT_GOAL := dots
 
 dots: | $(STOW)
 	$(STOW) $(STOW_PKGS)
 	mkdir -p ~/.config/nvim/backups ~/.config/nvim/swaps ~/.config/nvim/undo
 
-$(BREW_PKGS):
-	$(BREW) bundle
+install: mac dots $(PAQ) $(ASDF) $(TPM) $(LSP_ELIXIR) $(DOOM)
+
+mac:
+	./macos
 
 $(BREW):
 	/usr/bin/ruby -e "$$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" \
 
-mac:
-	./macos
+$(BREW_PKGS):
+	$(BREW) bundle
+
+$(ASDF): | $(GIT)
+	$(GIT) clone https://github.com/asdf-vm/asdf.git ~/.asdf
+	cd ~/.asdf
+	$(GIT) checkout "$($(GIT) describe --abbrev=0 --tags)"
 
 $(PAQ): | $(NVIM) $(GIT)
 	git clone --depth=1 https://github.com/savq/paq-nvim.git \
 		"$(XDG_DATA_HOME)"/nvim/site/pack/paqs/start/paq-nvim
 	$(NVIM) +PaqInstall +qall
-
-$(ASDF): | $(GIT)
-	echo $(ASDF)
-	$(GIT) clone https://github.com/asdf-vm/asdf.git ~/.asdf
-	cd ~/.asdf
-	$(GIT) checkout "$($(GIT) describe --abbrev=0 --tags)"
 
 $(LSP_DIR) $(TPM_DIR):
 	mkdir -p $@
@@ -60,5 +60,3 @@ $(TPM): | $(GIT)
 $(DOOM): | $(GIT)
 	$(GIT) clone https://github.com/hlissner/doom-emacs $(HOME)/.emacs.d
 	$(HOME)/.emacs.d/bin/doom install
-
-install: mac dots $(PAQ) $(ASDF) $(TPM) $(LSP_ELIXIR) $(DOOM)
