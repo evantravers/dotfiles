@@ -6,12 +6,12 @@ Going to track some dotfiles that may not need security or generation.
 
 1. `git clone git@github.com:evantravers/dotfiles.git ~/.dotfiles`
 2. `cd ~/.dotfiles`
-3. `make install`
+3. `xcode-select --install`
+4. `make install`
 
 ## Behavior
 
 - modify a bunch of OSX settings
-- Xcode CLI Tools (if you haven't already)
 - [Homebrew](https://brew.sh/)
 - Everything in my [Brewfile](https://github.com/evantravers/dotfiles/blob/master/Brewfile)
 - set up all my dotfile configs via `stow`
