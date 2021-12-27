@@ -40,8 +40,7 @@ $(ASDF): | $(GIT)
 	$(GIT) checkout "$($(GIT) describe --abbrev=0 --tags)"
 
 $(PAQ): | $(NVIM) $(GIT)
-	git clone --depth=1 https://github.com/savq/paq-nvim.git \
-		"$(XDG_DATA_HOME)"/nvim/site/pack/paqs/start/paq-nvim
+	$(GIT) clone --depth=1 https://github.com/savq/paq-nvim.git $(PAQ)
 	$(NVIM) +PaqInstall +qall
 
 $(LSP_DIR) $(TPM_DIR):
