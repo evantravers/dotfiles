@@ -55,6 +55,7 @@ $(LSP_ELIXIR): | $(LSP_DIR)
 $(TPM): | $(GIT)
 	mkdir -p $@
 	$(GIT) clone https://github.com/tmux-plugins/tpm $(HOME)/.config/tmux/plugins/tpm
+	$(TPM)/bin/install_plugins
 
 $(DOOM): | $(GIT)
 	$(GIT) clone https://github.com/hlissner/doom-emacs $(HOME)/.emacs.d
