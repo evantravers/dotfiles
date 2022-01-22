@@ -10,9 +10,6 @@ PAQ           := $(XDG_DATA_HOME)/nvim/site/pack/paqs/start/paq-nvim
 TPM           := $(HOME)/.config/tmux/plugins/tpm
 DOOM          := $(HOME)/.emacs.d
 
-LSP_DIR       := $(XDG_DATA_HOME)/lsp
-LSP_ELIXIR    := $(LSP_DIR)/elixir-ls
-
 STOW_PKGS     := emacs fish git kitty nvim starship tmux
 BREW_PKGS     := $(STOW) $(NVIM) $(GIT)
 
@@ -23,7 +20,7 @@ dots: | $(STOW)
 	$(STOW) $(STOW_PKGS)
 	mkdir -p ~/.config/nvim/backups ~/.config/nvim/swaps ~/.config/nvim/undo
 
-install: mac dots $(PAQ) $(ASDF) $(TPM) $(LSP_ELIXIR) $(DOOM)
+install: mac dots $(PAQ) $(ASDF) $(TPM) $(DOOM)
 
 mac:
 	./macos
@@ -43,14 +40,8 @@ $(PAQ): | $(NVIM) $(GIT)
 	$(GIT) clone --depth=1 https://github.com/savq/paq-nvim.git $(PAQ)
 	$(NVIM) +PaqInstall +qall
 
-$(LSP_DIR) $(TPM_DIR):
+$(TPM_DIR):
 	mkdir -p $@
-
-$(LSP_ELIXIR): | $(LSP_DIR)
-	curl -fLO https://github.com/elixir-lsp/elixir-ls/releases/latest/download/elixir-ls.zip
-	unzip elixir-ls.zip -d $(XDG_DATA_HOME)/lsp/elixir-ls
-	chmod +x $(XDG_DATA_HOME)/lsp/elixir-ls/language_server.sh
-	rm elixir-ls.zip
 
 $(TPM): | $(GIT)
 	mkdir -p $@

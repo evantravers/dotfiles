@@ -278,7 +278,7 @@ local function root_pattern(...)
 end
 
 require'lspconfig'.elixirls.setup({
-  cmd = { os.getenv("XDG_CONFIG_HOME") .. "/lsp/elixir-ls/language_server.sh" };
+  cmd = { "/usr/local/bin/elixir-ls" };
   on_attach = on_attach
 })
 require'lspconfig'.solargraph.setup({
