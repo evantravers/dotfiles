@@ -32,7 +32,7 @@ require "paq" {
   "wellle/targets.vim";            -- expand the target objects;
   "windwp/nvim-autopairs";
 -- Syntax
-  "elixir-lang/vim-elixir";
+  "elixir-editors/vim-elixir";
 -- git/gist/github
   "mattn/gist-vim";
   "mattn/webapi-vim";
