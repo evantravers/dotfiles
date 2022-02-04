@@ -443,3 +443,8 @@ vim.api.nvim_set_keymap('n',
   '<leader>fe',
   ":%s,\\.\\.\\.,…,g<CR>:nohlsearch<CR>",
   {noremap = true, silent = true})
+
+vim.api.nvim_set_keymap('n',
+  '<leader>a',
+  "<cmd>lua require('telescope.builtin').live_grep()<cr>",
+  {noremap = true, silent = true})
