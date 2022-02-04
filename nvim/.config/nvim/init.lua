@@ -41,7 +41,6 @@ require "paq" {
   "tpope/vim-git";
   "tpope/vim-rhubarb";
 -- LSP
-  "SmiteshP/nvim-gps";
   "folke/lsp-trouble.nvim";
   "tami5/lspsaga.nvim";
   "neovim/nvim-lspconfig";
@@ -74,15 +73,9 @@ vim.g.zenbones_solid_vert_split = true
 vim.cmd [[color zenbones]]
 
 -- statusline
-local gps = require("nvim-gps")
 require('lualine').setup {
   options = {
     theme = "zenbones"
-  },
-  sections = {
-    lualine_c = {
-      { gps.get_location, condition=gps.is_available },
-    }
   }
 }
 
