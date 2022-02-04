@@ -89,6 +89,10 @@ end
 require('gitsigns').setup()
 
 
+-- Use rg
+vim.o.grepprg = [[rg --glob "!.git" --no-heading --vimgrep --follow $*]]
+vim.opt.grepformat = vim.opt.grepformat ^ { "%f:%l:%c:%m" }
+
 -- ZK
 -- telescope for finding stuff
 function _G.searchWiki()
