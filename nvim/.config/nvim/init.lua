@@ -18,6 +18,7 @@ require "paq" {
   "lewis6991/gitsigns.nvim";       -- gitsigns;
   "machakann/vim-sandwich";
   "mcchrish/zenbones.nvim";
+  "norcalli/nvim-colorizer.lua";
   "nvim-lualine/lualine.nvim";
   "rktjmp/lush.nvim";
   "tpope/vim-abolish";             -- rename... could be LSP";d away someday;
@@ -31,6 +32,7 @@ require "paq" {
   "tpope/vim-vinegar";             -- use netrw with style;
   "wellle/targets.vim";            -- expand the target objects;
   "windwp/nvim-autopairs";
+  "windwp/nvim-ts-autotag";
 -- Syntax
   "elixir-editors/vim-elixir";
 -- git/gist/github
@@ -87,6 +89,10 @@ end
 
 -- UI
 require('gitsigns').setup()
+
+
+-- highlight colors
+require'colorizer'.setup()
 
 
 -- Use rg
@@ -209,6 +215,9 @@ npairs.add_rules({
   endwise("do$", "end", "lua", nil),
   endwise(" do$", "end", "elixir", nil),
 })
+
+-- close tags
+require('nvim-ts-autotag').setup()
 
 
 -- LSP LANGUAGE SERVERS
