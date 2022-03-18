@@ -4,6 +4,7 @@ vim.cmd([[runtime .vimrc]])
 
 -- Neovim specific settings
 vim.o.icm = 'split'
+vim.o.laststatus = 3
 
 
 -- PLUGINS
