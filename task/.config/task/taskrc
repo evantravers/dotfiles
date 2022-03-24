@@ -1,0 +1,14 @@
+# Files
+data.location=$HOME/.local/share/task
+hooks.location=$HOME/.config/task/hooks
+
+# theme
+include dark-16.theme
+
+news.version=2.6.0
+
+# today report
+report.today.description=Tasks scheduled or due today
+report.today.columns=id,project,description.count
+report.today.labels=ID,Proj,Desc
+report.today.filter=scheduled.after:yesterday and scheduled.before:tomorrow
