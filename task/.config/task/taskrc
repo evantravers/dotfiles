@@ -3,7 +3,7 @@ data.location=$HOME/.local/share/task
 hooks.location=$HOME/.config/task/hooks
 
 # theme
-include dark-16.theme
+include ./nord.theme
 
 news.version=2.6.0
 

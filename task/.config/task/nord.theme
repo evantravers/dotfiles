@@ -1,0 +1,98 @@
+# Originally adapted from  https://github.com/arcticicestudio/igloo
+# License:    MIT
+
+# References:
+#   https://taskwarrior.org/docs/themes.html
+#   task-color(5)
+#   taskrc(5)
+
+# rule.precedence.color=deleted,completed,active,keyword.,tag.,project.,overdue,scheduled,due.today,due,blocked,blocking,recurring,tagged,uda.
+
+#+---------+
+#+ General +
+#+---------+
+color.label=
+color.label.sort=
+color.alternate=
+color.header=bold magenta
+color.footnote=yellow
+color.warning=bold black on yellow
+color.error=bold white on red
+color.debug=magenta
+
+#+-------------+
+#+ Task States +
+#+-------------+
+color.completed=gray9
+color.deleted=bold gray9
+color.active=bold black on green
+color.recurring=bold magenta
+color.scheduled=
+color.until=
+color.blocking=black on yellow
+color.blocked=bold black on yellow
+
+#+----------+
+#+ Projects +
+#+----------+
+color.project.none=
+
+#+----------+
+#+ Priority +
+#+----------+
+color.uda.priority.H=bold
+color.uda.priority.M=bold yellow
+color.uda.priority.L=
+
+#+------+
+#+ Tags +
+#+------+
+color.tag.next=
+color.tag.none=
+color.tagged=
+
+#+-----+
+#+ Due +
+#+-----+
+color.due=black on red
+color.due.today=black on bright red
+color.overdue=bold black on bright red
+
+#+---------+
+#+ Reports +
+#+---------+
+color.burndown.done=bold black on green
+color.burndown.pending=black on red
+color.burndown.started=black on yellow
+
+color.history.add=bold black on blue
+color.history.delete=bright white on bold black
+color.history.done=bold black on cyan
+
+color.summary.background=bright white on black
+color.summary.bar=black on cyan
+
+#+----------+
+#+ Calendar +
+#+----------+
+color.calendar.due=bold black on blue
+color.calendar.due.today=bold black on cyan
+color.calendar.holiday=bold blue on white
+color.calendar.overdue=white on red
+color.calendar.today=bold black on cyan
+color.calendar.weekend=bright white on bright black
+color.calendar.weeknumber=bold black
+
+#+-----------------+
+#+ Synchronization +
+#+-----------------+
+color.sync.added=green
+color.sync.changed=yellow
+color.sync.rejected=red
+
+#+------+
+#+ Undo +
+#+------+
+color.undo.after=green
+color.undo.before=red
+
