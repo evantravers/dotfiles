@@ -40,9 +40,6 @@ $(PAQ): | $(NVIM) $(GIT)
 	$(GIT) clone --depth=1 https://github.com/savq/paq-nvim.git $(PAQ)
 	$(NVIM) +PaqInstall +qall
 
-$(TPM_DIR):
-	mkdir -p $@
-
 $(TPM): | $(GIT)
 	mkdir -p $@
 	$(GIT) clone https://github.com/tmux-plugins/tpm $(HOME)/.config/tmux/plugins/tpm
