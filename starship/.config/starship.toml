@@ -1,4 +1,4 @@
-command_timeout = "100"
+command_timeout = 100
 format = "[$all](dimmed white)"
 
 [aws]
