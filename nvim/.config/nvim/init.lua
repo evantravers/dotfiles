@@ -58,18 +58,9 @@ require "paq" {
   {"folke/zen-mode.nvim", opt = true};
   {"folke/twilight.nvim", opt = true};
 
--- Orgmode
-  {"kristijanhusak/orgmode.nvim"};
-
 -- ZK
   {"mickael-menu/zk-nvim", branch = "feature/initial"}
 }
-
-require('orgmode').setup_ts_grammar()
-require('orgmode').setup({
-  org_agenda_files = {'~/Library/Mobile Documents/com~apple~CloudDocs/org/*'},
-  org_default_notes_file = '~/Library/Mobile Documents/com~apple~CloudDocs/org/inbox.org',
-})
 
 -- THEME
 vim.g.zenbones_solid_line_nr = true
@@ -367,16 +358,6 @@ require'lspconfig'.sumneko_lua.setup {
       },
     },
   },
-}
-
-require'nvim-treesitter.configs'.setup {
-  highlight = {
-    enable = true,
-    additional_vim_regex_highlighting = {'org'},
-  },
-  indent = {
-    enable = true
-  }
 }
 
 -- floating windows
