@@ -132,9 +132,16 @@ vim.opt.grepformat = vim.opt.grepformat ^ { "%f:%l:%c:%m" }
 
 -- ZK
 -- telescope for finding stuff
-function _G.searchWiki()
+function _G.wiki_find_files()
   require('telescope.builtin').find_files {
     prompt_title = "Search ZK",
+    shorten_path = false,
+    cwd = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/wiki",
+  }
+end
+function _G.wiki_livegrep()
+  require('telescope.builtin').live_grep {
+    prompt_title = "Search ZK contents",
     shorten_path = false,
     cwd = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/wiki",
   }
@@ -146,7 +153,8 @@ zk.setup()
 
 vim.keymap.set('n', '<c-p>', ":lua require('telescope.builtin').find_files({ find_command = {'rg', '--files', '--hidden', '-g', '!.git' }})<cr>", {noremap = true, silent = true})
 vim.keymap.set('n', '<localleader><space>', ":lua require('telescope.builtin').buffers()<cr>", {noremap = true, silent = true})
-vim.keymap.set('n', '<localleader>ww', ":lua _G.searchWiki()<cr>", {noremap = true, silent = true})
+vim.keymap.set('n', '<localleader>ww', ":lua _G.wiki_find_files()<cr>", {noremap = true, silent = true})
+vim.keymap.set('n', '<localleader>wa', ":lua _G.wiki_livegrep()<cr>", {noremap = true, silent = true})
 
 
 -- easyalign
