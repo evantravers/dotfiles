@@ -21,7 +21,6 @@ require "paq" {
   "norcalli/nvim-colorizer.lua";
   "nvim-lualine/lualine.nvim";
   "rktjmp/lush.nvim";
-  "sunaku/tmux-navigate";
   "tpope/vim-abolish";             -- rename... could be LSP";d away someday;
   "tpope/vim-commentary";          -- easy comments;
   "tpope/vim-eunuch";              -- handle missing files and unix-y stuff;
