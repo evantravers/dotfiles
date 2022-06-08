@@ -66,6 +66,15 @@ vim.g.zenbones_solid_line_nr = true
 vim.g.zenbones_solid_vert_split = true
 vim.cmd [[color zenbones]]
 
+require'nvim-treesitter.configs'.setup {
+  highlight = {
+    enable = true,
+  },
+  indent = {
+    enable = true
+  }
+}
+
 -- statusline
 require('lualine').setup {
   options = {
