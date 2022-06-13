@@ -4,7 +4,7 @@ vim.cmd([[runtime .vimrc]])
 
 -- Neovim specific settings
 vim.o.icm = 'split'
-
+vim.o.cmdheight = 0
 
 -- PLUGINS
 require "paq" {
