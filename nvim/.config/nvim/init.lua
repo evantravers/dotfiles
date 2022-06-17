@@ -486,7 +486,7 @@ vim.keymap.set(
 -- "..." -> "…"
 vim.keymap.set('n',
   '<leader>fe',
-  ":%s,\\.\\.\\.,…,g<CR>:nohlsearch<CR>",
+  "mc:%s,\\.\\.\\.,…,g<CR>:nohlsearch<CR>`c",
   {noremap = true, silent = true})
 
 vim.keymap.set('n',
