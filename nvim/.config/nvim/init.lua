@@ -55,9 +55,6 @@ require "paq" {
   {"reedes/vim-pencil", opt = true};
   {"folke/zen-mode.nvim", opt = true};
   {"folke/twilight.nvim", opt = true};
-
--- ZK
-  {"mickael-menu/zk-nvim", branch = "feature/initial"}
 }
 
 -- THEME
@@ -153,10 +150,6 @@ function _G.wiki_livegrep()
     cwd = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/wiki",
   }
 end
--- Provides some convience functions for browsing my Obsidian style SMZ
-local zk = require 'zk-nvim'
-zk.setup()
-
 
 vim.keymap.set('n', '<c-p>', ":lua require('telescope.builtin').find_files({ find_command = {'rg', '--files', '--hidden', '-g', '!.git' }})<cr>", {noremap = true, silent = true})
 vim.keymap.set('n', '<localleader><space>', ":lua require('telescope.builtin').buffers()<cr>", {noremap = true, silent = true})
