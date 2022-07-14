@@ -10,26 +10,26 @@ require "paq" {
   "savq/paq-nvim";
 
 -- UI
-  "editorconfig/editorconfig-vim"; -- editorconfig for being polite;
+  "editorconfig/editorconfig-vim"; -- editorconfig for being polite
   "junegunn/vim-easy-align";
-  "kopischke/vim-fetch";           -- be able to open from stack traces;
-  "kyazdani42/nvim-web-devicons";  -- icons!;
-  "lewis6991/gitsigns.nvim";       -- gitsigns;
+  "kopischke/vim-fetch";           -- be able to open from stack traces
+  "kyazdani42/nvim-web-devicons";  -- icons!
+  "lewis6991/gitsigns.nvim";       -- gitsigns
   "machakann/vim-sandwich";
   "mcchrish/zenbones.nvim";
   "norcalli/nvim-colorizer.lua";
   "nvim-lualine/lualine.nvim";
   "rktjmp/lush.nvim";
-  "tpope/vim-abolish";             -- rename... could be LSP";d away someday;
-  "tpope/vim-commentary";          -- easy comments;
-  "tpope/vim-eunuch";              -- handle missing files and unix-y stuff;
-  "tpope/vim-projectionist";       -- create and rename files by convention;
-  "tpope/vim-ragtag";              -- handle html tags;
-  "tpope/vim-repeat";              -- repeat actions;
-  "tpope/vim-speeddating";         -- work with dates;
-  "tpope/vim-unimpaired";          -- bindings to toggle common settings;
-  "tpope/vim-vinegar";             -- use netrw with style;
-  "wellle/targets.vim";            -- expand the target objects;
+  "tpope/vim-abolish";             -- rename... could be LSP"'d away someday
+  "tpope/vim-commentary";          -- easy comments
+  "tpope/vim-eunuch";              -- handle missing files and unix-y stuff
+  "tpope/vim-projectionist";       -- create and rename files by convention
+  "tpope/vim-ragtag";              -- handle html tags
+  "tpope/vim-repeat";              -- repeat actions
+  "tpope/vim-speeddating";         -- work with dates
+  "tpope/vim-unimpaired";          -- bindings to toggle common settings
+  "tpope/vim-vinegar";             -- use netrw with style
+  "wellle/targets.vim";            -- expand the target objects
   "windwp/nvim-autopairs";
   "windwp/nvim-ts-autotag";
 -- Syntax
