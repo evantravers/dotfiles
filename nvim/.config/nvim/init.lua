@@ -43,7 +43,7 @@ require "paq" {
   "tpope/vim-rhubarb";
 -- LSP
   "folke/lsp-trouble.nvim";
-  "tami5/lspsaga.nvim";
+  "glepnir/lspsaga.nvim";
   "neovim/nvim-lspconfig";
   "nvim-lua/completion-nvim";
   "nvim-lua/lsp_extensions.nvim";
