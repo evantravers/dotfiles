@@ -567,7 +567,7 @@ function _G.toggleProse()
       },
     },
     on_open = function()
-      if (vim.bo.filetype == "markdown") then
+      if (vim.bo.filetype == "markdown" or vim.bo.filetype == "telekasten") then
         vim.cmd 'set so=999'
         vim.cmd 'set nornu nonu'
         vim.cmd 'packadd vim-pencil'
@@ -577,7 +577,7 @@ function _G.toggleProse()
     on_close = function()
       vim.cmd 'set so=3'
       vim.cmd 'set rnu'
-      if (vim.bo.filetype == "markdown") then
+      if (vim.bo.filetype == "markdown" or vim.bo.filetype == "telekasten") then
         vim.cmd 'PencilOff'
       end
     end
