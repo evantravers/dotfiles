@@ -251,15 +251,6 @@ require('telekasten').setup({
   -- should all links be updated when a file is renamed
   rename_update_links = true,
 
-  vaults = {
-    vault2 = {
-      -- alternate configuration for vault2 here. Missing values are defaulted to
-      -- default values from telekasten.
-      -- e.g.
-      -- home = "/home/user/vaults/personal",
-    },
-  },
-
   -- how to preview media files
   -- "telescope-media-files" if you have telescope-media-files.nvim installed
   -- "catimg-previewer" if you have catimg installed
