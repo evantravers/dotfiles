@@ -52,7 +52,6 @@ require "paq" {
   "nvim-telescope/telescope.nvim";
   {"nvim-treesitter/nvim-treesitter", hook = ":TSUpdate"};
 -- Prose
-  {"reedes/vim-pencil", opt = true};
   {"folke/zen-mode.nvim", opt = true};
   {"folke/twilight.nvim", opt = true};
 -- ZK
@@ -561,22 +560,18 @@ function _G.toggleProse()
       if (vim.bo.filetype == "markdown" or vim.bo.filetype == "telekasten") then
         vim.cmd 'set so=999'
         vim.cmd 'set nornu nonu'
-        vim.cmd 'packadd vim-pencil'
-        vim.cmd 'PencilSoft'
+        vim.cmd 'set wrap'
       end
     end,
     on_close = function()
       vim.cmd 'set so=3'
       vim.cmd 'set rnu'
       if (vim.bo.filetype == "markdown" or vim.bo.filetype == "telekasten") then
-        vim.cmd 'PencilOff'
+        vim.cmd 'set nowrap'
       end
     end
   })
 end
-
-vim.g['pencil#conceallevel'] = 0
-vim.g['pencil#wrapModeDefault'] = 'soft'
 
 vim.keymap.set(
   'n',
