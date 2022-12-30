@@ -53,7 +53,6 @@ require "paq" {
   {"nvim-treesitter/nvim-treesitter", hook = ":TSUpdate"};
 -- Prose
   {"folke/zen-mode.nvim", opt = true};
-  {"folke/twilight.nvim", opt = true};
 -- ZK
   {"renerocksai/telekasten.nvim"};
 }
@@ -540,11 +539,7 @@ vim.keymap.set('n',
 -- PROSE MODE
 -- I write prose in markdown, all the following is to help with that.
 function _G.toggleProse()
-  -- vim.cmd 'packadd twilight.nvim'
   vim.cmd 'packadd zen-mode.nvim'
-  -- require("twilight").setup {
-  --   context = 1,
-  -- }
   require("zen-mode").toggle({
     window = {
       width = 80
