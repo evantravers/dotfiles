@@ -560,6 +560,7 @@ function _G.toggleProse()
       if (vim.bo.filetype == "markdown" or vim.bo.filetype == "telekasten") then
         vim.cmd 'set so=999'
         vim.cmd 'set nornu nonu'
+        vim.cmd 'set wrap'
         vim.cmd 'set linebreak'
         vim.cmd 'set colorcolumn=0'
       end
@@ -568,6 +569,7 @@ function _G.toggleProse()
       vim.cmd 'set so=3'
       vim.cmd 'set rnu'
       if (vim.bo.filetype == "markdown" or vim.bo.filetype == "telekasten") then
+        vim.cmd 'set nowrap'
         vim.cmd 'set nolinebreak'
         vim.cmd 'set colorcolumn=80'
       end
