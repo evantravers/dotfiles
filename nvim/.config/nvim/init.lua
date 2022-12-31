@@ -147,7 +147,7 @@ require('telekasten').setup({
 
   -- auto-set telekasten filetype: if false, the telekasten filetype will not be used
   --                               and thus the telekasten syntax will not be loaded either
-  auto_set_filetype = true,
+  auto_set_filetype = false,
 
   -- dir names for special notes (absolute path or subdir name)
   dailies      = home .. '/' .. 'journal/daily',
