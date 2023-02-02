@@ -20,7 +20,7 @@ dots: | $(STOW)
 	$(STOW) $(STOW_PKGS)
 	mkdir -p ~/.config/nvim/backups ~/.config/nvim/swaps ~/.config/nvim/undo
 
-install: mac dots $(PAQ) $(ASDF) $(TPM) $(DOOM)
+install: dots $(PAQ) $(ASDF) $(TPM) $(DOOM)
 
 mac:
 	./macos
