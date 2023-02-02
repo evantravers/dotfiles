@@ -28,7 +28,7 @@ mac:
 $(BREW):
 	/usr/bin/ruby -e "$$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
-$(BREW_PKGS):
+$(BREW_PKGS): | $(BREW)
 	$(BREW) bundle
 
 $(ASDF): | $(GIT)
