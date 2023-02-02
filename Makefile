@@ -1,4 +1,4 @@
-BREW_BIN      := /usr/local/bin
+BREW_BIN      := /opt/homebrew/bin
 XDG_DATA_HOME := $(HOME)/.local/share
 
 ASDF          := $(HOME)/.asdf/bin/asdf
