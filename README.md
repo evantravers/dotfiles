@@ -4,9 +4,9 @@ Going to track some dotfiles that may not need security or generation.
 
 ## Quickstart
 
-1. `git clone git@github.com:evantravers/dotfiles.git ~/.dotfiles`
-2. `cd ~/.dotfiles`
-3. `xcode-select --install`
+1. `xcode-select --install`
+2. `git clone git@github.com:evantravers/dotfiles.git ~/.dotfiles`
+3. `cd ~/.dotfiles`
 4. `make install`
 
 ## Behavior
