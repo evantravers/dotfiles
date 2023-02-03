@@ -45,6 +45,7 @@ cask "grid-clock"
 cask "hammerspoon"
 cask "karabiner-elements"
 cask "kitty"
+cask "obsidian"
 cask "soundsource"
 mas "Deliveries", id: 924726344
 mas "Drafts", id: 1435957248
