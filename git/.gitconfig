@@ -54,3 +54,5 @@
   name = Evan Travers
 [github]
   user = evantravers
+[hub]
+  protocol = ssh
