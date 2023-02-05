@@ -16,6 +16,7 @@ GIT           := $(BREW_BIN)/git
 PAQ           := $(XDG_DATA_HOME)/nvim/site/pack/paqs/start/paq-nvim
 TPM           := $(HOME)/.config/tmux/plugins/tpm
 DOOM          := $(HOME)/.emacs.d
+TMUX          := $(HOME)/.config/tmux/tmux.conf
 
 STOW_PKGS     := emacs fish git kitty nvim starship tmux
 BREW_PKGS     := $(STOW) $(NVIM) $(GIT)
@@ -27,7 +28,7 @@ dots: | $(STOW)
 	$(STOW) $(STOW_PKGS)
 	mkdir -p ~/.config/nvim/backups ~/.config/nvim/swaps ~/.config/nvim/undo
 
-install: dots $(PAQ) $(ASDF) $(TPM) $(DOOM)
+install: dots $(PAQ) $(ASDF) $(TMUX) $(TPM) $(DOOM)
 
 mac:
 	./macos
@@ -37,6 +38,10 @@ $(BREW):
 
 $(BREW_PKGS): | $(BREW)
 	$(BREW) bundle
+
+$(TMUX): | $(DOTS)
+	echo 'source-file ~/.config/tmux/shared.conf' >> $(TMUX)
+	echo 'set -g default-shell $(BREW_BIN)/fish' >> $(TMUX)
 
 $(ASDF): | $(GIT)
 	$(GIT) clone https://github.com/asdf-vm/asdf.git ~/.asdf
