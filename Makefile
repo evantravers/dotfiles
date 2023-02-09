@@ -14,7 +14,6 @@ BREW          := $(BREW_BIN)/brew
 STOW          := $(BREW_BIN)/stow
 NVIM          := $(BREW_BIN)/nvim
 GIT           := $(BREW_BIN)/git
-PAQ           := $(XDG_DATA_HOME)/nvim/site/pack/paqs/start/paq-nvim
 TPM           := $(HOME)/.config/tmux/plugins/tpm
 DOOM          := $(HOME)/.emacs.d
 TMUX          := $(HOME)/.config/tmux/tmux.conf
@@ -30,7 +29,7 @@ dots: | $(STOW)
 	$(STOW) $(STOW_PKGS)
 	mkdir -p ~/.config/nvim/backups ~/.config/nvim/swaps ~/.config/nvim/undo
 
-install: dots $(PROFILE) $(PAQ) $(ASDF) $(TMUX) $(TPM) $(DOOM)
+install: dots $(PROFILE) $(ASDF) $(TMUX) $(TPM) $(DOOM)
 
 mac:
 	./macos
@@ -58,10 +57,6 @@ $(ASDF): | $(GIT)
 	$(GIT) clone https://github.com/asdf-vm/asdf.git ~/.asdf
 	cd ~/.asdf
 	$(GIT) checkout "$($(GIT) describe --abbrev=0 --tags)"
-
-$(PAQ): | $(NVIM) $(GIT)
-	$(GIT) clone --depth=1 https://github.com/savq/paq-nvim.git $(PAQ)
-	$(NVIM) +PaqInstall +qall
 
 $(TPM): | $(GIT)
 	mkdir -p $@
