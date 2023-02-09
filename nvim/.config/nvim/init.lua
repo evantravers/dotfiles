@@ -6,56 +6,67 @@ vim.cmd([[runtime .vimrc]])
 vim.o.icm = 'split'
 
 -- PLUGINS
-require "paq" {
-  "savq/paq-nvim";
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
 
--- UI
-  "editorconfig/editorconfig-vim"; -- editorconfig for being polite
-  "junegunn/vim-easy-align";
-  "kopischke/vim-fetch";           -- be able to open from stack traces
-  "kyazdani42/nvim-web-devicons";  -- icons!
-  "lewis6991/gitsigns.nvim";       -- gitsigns
-  "machakann/vim-sandwich";
-  "mcchrish/zenbones.nvim";
-  "norcalli/nvim-colorizer.lua";
-  "nvim-lualine/lualine.nvim";
-  "rktjmp/lush.nvim";
-  "tpope/vim-abolish";             -- rename... could be LSP"'d away someday
-  "tpope/vim-commentary";          -- easy comments
-  "tpope/vim-eunuch";              -- handle missing files and unix-y stuff
-  "tpope/vim-projectionist";       -- create and rename files by convention
-  "tpope/vim-ragtag";              -- handle html tags
-  "tpope/vim-repeat";              -- repeat actions
-  "tpope/vim-speeddating";         -- work with dates
-  "tpope/vim-unimpaired";          -- bindings to toggle common settings
-  "tpope/vim-vinegar";             -- use netrw with style
-  "wellle/targets.vim";            -- expand the target objects
-  "windwp/nvim-autopairs";
-  "windwp/nvim-ts-autotag";
--- Syntax
-  "elixir-editors/vim-elixir";
--- git/gist/github
-  "mattn/gist-vim";
-  "mattn/webapi-vim";
-  "rhysd/git-messenger.vim";
-  "tpope/vim-fugitive";
-  "tpope/vim-git";
-  "tpope/vim-rhubarb";
--- LSP
-  "folke/lsp-trouble.nvim";
-  "glepnir/lspsaga.nvim";
-  "neovim/nvim-lspconfig";
-  "nvim-lua/completion-nvim";
-  "nvim-lua/lsp_extensions.nvim";
-  "nvim-lua/plenary.nvim";
-  "nvim-lua/popup.nvim";
-  "nvim-telescope/telescope.nvim";
-  {"nvim-treesitter/nvim-treesitter", hook = ":TSUpdate"};
--- Prose
-  {"folke/zen-mode.nvim", opt = true};
--- ZK
-  {"renerocksai/telekasten.nvim"};
-}
+require("lazy").setup({
+  -- UI
+  "editorconfig/editorconfig-vim", -- editorconfig for being polite
+  "junegunn/vim-easy-align",
+  "kopischke/vim-fetch",           -- be able to open from stack traces
+  "kyazdani42/nvim-web-devicons",  -- icons!
+  "lewis6991/gitsigns.nvim",       -- gitsigns
+  "machakann/vim-sandwich",
+  "mcchrish/zenbones.nvim",
+  "norcalli/nvim-colorizer.lua",
+  "nvim-lualine/lualine.nvim",
+  "rktjmp/lush.nvim",
+  "tpope/vim-abolish",             -- rename... could be LSP"'d away someday
+  "tpope/vim-commentary",          -- easy comments
+  "tpope/vim-eunuch",              -- handle missing files and unix-y stuff
+  "tpope/vim-projectionist",       -- create and rename files by convention
+  "tpope/vim-ragtag",              -- handle html tags
+  "tpope/vim-repeat",              -- repeat actions
+  "tpope/vim-speeddating",         -- work with dates
+  "tpope/vim-unimpaired",          -- bindings to toggle common settings
+  "tpope/vim-vinegar",             -- use netrw with style
+  "wellle/targets.vim",            -- expand the target objects
+  "windwp/nvim-autopairs",
+  "windwp/nvim-ts-autotag",
+  -- Syntax
+  "elixir-editors/vim-elixir",
+  -- git/gist/github
+  "mattn/gist-vim",
+  "mattn/webapi-vim",
+  "rhysd/git-messenger.vim",
+  "tpope/vim-fugitive",
+  "tpope/vim-git",
+  "tpope/vim-rhubarb",
+  -- LSP
+  "folke/lsp-trouble.nvim",
+  "glepnir/lspsaga.nvim",
+  "neovim/nvim-lspconfig",
+  "nvim-lua/completion-nvim",
+  "nvim-lua/lsp_extensions.nvim",
+  "nvim-lua/plenary.nvim",
+  "nvim-lua/popup.nvim",
+  "nvim-telescope/telescope.nvim",
+  {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
+  -- Prose
+  {"folke/zen-mode.nvim", lazy = true},
+  -- ZK
+  {"renerocksai/telekasten.nvim"},
+})
 
 -- THEME
 vim.g.zenbones_solid_line_nr = true
@@ -557,7 +568,6 @@ vim.keymap.set({"n", "t"}, "<A-d>", "<cmd>Lspsaga term_toggle<CR>")
 -- PROSE MODE
 -- I write prose in markdown, all the following is to help with that.
 function _G.toggleProse()
-  vim.cmd 'packadd zen-mode.nvim'
   require("zen-mode").toggle({
     window = {
       width = 80
