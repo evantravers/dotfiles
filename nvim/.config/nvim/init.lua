@@ -26,10 +26,14 @@ require("lazy").setup({
   "kopischke/vim-fetch",           -- be able to open from stack traces
   "lewis6991/gitsigns.nvim",       -- gitsigns
   "machakann/vim-sandwich",
-  "mcchrish/zenbones.nvim",
+  {
+    "mcchrish/zenbones.nvim",
+    dependencies = {
+      "rktjmp/lush.nvim"
+    }
+  },
   "norcalli/nvim-colorizer.lua",
   "nvim-lualine/lualine.nvim",
-  "rktjmp/lush.nvim",
   "tpope/vim-abolish",             -- rename... could be LSP"'d away someday
   "tpope/vim-commentary",          -- easy comments
   "tpope/vim-eunuch",              -- handle missing files and unix-y stuff
