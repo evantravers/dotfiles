@@ -24,7 +24,6 @@ require("lazy").setup({
   "editorconfig/editorconfig-vim", -- editorconfig for being polite
   "junegunn/vim-easy-align",
   "kopischke/vim-fetch",           -- be able to open from stack traces
-  "kyazdani42/nvim-web-devicons",  -- icons!
   "lewis6991/gitsigns.nvim",       -- gitsigns
   "machakann/vim-sandwich",
   "mcchrish/zenbones.nvim",
@@ -54,7 +53,19 @@ require("lazy").setup({
   "tpope/vim-rhubarb",
   -- LSP
   "folke/lsp-trouble.nvim",
-  "glepnir/lspsaga.nvim",
+  {
+    "glepnir/lspsaga.nvim",
+    event = "BufRead",
+    config = function()
+      require("lspsaga").setup({
+        symbol_in_winbar = {
+          separator = " › ",
+          color_mode = false,
+        },
+      })
+    end,
+    dependencies = { {"nvim-tree/nvim-web-devicons"} }
+  },
   "neovim/nvim-lspconfig",
   "nvim-lua/completion-nvim",
   "nvim-lua/lsp_extensions.nvim",
@@ -488,7 +499,6 @@ require'lspconfig'.lua_ls.setup {
 }
 
 -- floating windows
-local saga = require('lspsaga').setup({})
 -- LSP finder - Find the symbol's definition
 -- If there is no definition, it will instead be hidden
 -- When you use an action in finder like "open vsplit",
