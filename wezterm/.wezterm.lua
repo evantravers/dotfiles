@@ -25,5 +25,7 @@ return {
     bottom = '1cell'
   },
   window_decorations = "RESIZE",
-  line_height = 1.1
+  adjust_window_size_when_changing_font_size = false,
+  line_height = 1.1,
+  term = "wezterm"
 }

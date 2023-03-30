@@ -18,8 +18,9 @@ TPM           := $(HOME)/.config/tmux/plugins/tpm
 DOOM          := $(HOME)/.emacs.d
 TMUX          := $(HOME)/.config/tmux/tmux.conf
 PROFILE       := $(HOME)/.profile
+TERMINFO      := $(HOME)/.terminfo
 
-STOW_PKGS     := emacs fish git kitty nvim starship tmux
+STOW_PKGS     := emacs fish git wezterm nvim starship tmux
 BREW_PKGS     := $(STOW) $(NVIM) $(GIT)
 
 .PHONY: default dots mac
@@ -33,6 +34,14 @@ install: dots $(PROFILE) $(ASDF) $(TMUX) $(TPM) $(DOOM)
 
 mac:
 	./macos
+
+wezterm: | $(TERMINFO)
+
+$(TERMINFO):
+	tempfile=$(mktemp) \
+	&& curl -o $tempfile https://raw.githubusercontent.com/wez/wezterm/main/termwiz/data/wezterm.terminfo \
+	&& tic -x -o ~/.terminfo $tempfile \
+	&& rm $tempfile
 
 $(BREW):
 	/bin/bash -c "$$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
