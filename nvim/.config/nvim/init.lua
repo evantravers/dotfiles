@@ -85,8 +85,8 @@ require("lazy").setup({
 
 -- THEME
 vim.g.zenbones = {
-  solid_line_nr = true,
-  solid_vert_split = true,
+  solid_line_nr          = true,
+  solid_vert_split       = true,
   transparent_background = true
 }
 vim.cmd [[color zenbones]]
