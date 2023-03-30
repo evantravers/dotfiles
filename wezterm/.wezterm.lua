@@ -6,7 +6,15 @@ if wezterm.config_builder then
   config = wezterm.config_builder()
 end
 
-config.font = wezterm.font 'JetBrains Mono'
-config.colors = 'Zenbones'
+function scheme_for_appearance(appearance)
+  if appearance:find 'Dark' then
+    return 'zenbones_dark'
+  else
+    return 'zenbones_light'
+  end
+end
 
-return config
+return {
+  font = wezterm.font 'JetBrains Mono',
+  color_scheme = scheme_for_appearance(wezterm.gui.get_appearance())
+}
