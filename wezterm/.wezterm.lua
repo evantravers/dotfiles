@@ -24,5 +24,6 @@ return {
     top    = '1cell',
     bottom = '1cell'
   },
-  window_decorations = "NONE"
+  window_decorations = "NONE",
+  line_height = 1.1
 }
