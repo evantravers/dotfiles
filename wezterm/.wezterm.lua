@@ -23,5 +23,6 @@ return {
     right  = '2cell',
     top    = '1cell',
     bottom = '1cell'
-  }
+  },
+  window_decorations = "NONE"
 }
