@@ -46,6 +46,7 @@ require("lazy").setup({
   "wellle/targets.vim",            -- expand the target objects
   "windwp/nvim-autopairs",
   "windwp/nvim-ts-autotag",
+  "cormacrelf/dark-notify",      -- switch light/dark
   -- Syntax
   "elixir-editors/vim-elixir",
   -- git/gist/github
@@ -107,10 +108,7 @@ require('lualine').setup {
 }
 
 vim.o.showmode = false
-if os.getenv('theme') == 'light' then
-  vim.o.background = 'light'
-end
-
+require('dark_notify').run()
 
 -- UI
 require('gitsigns').setup{
