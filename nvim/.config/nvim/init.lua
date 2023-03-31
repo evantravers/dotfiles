@@ -602,6 +602,9 @@ function _G.toggleProse()
         vim.cmd 'set wrap'
         vim.cmd 'set linebreak'
         vim.cmd 'set colorcolumn=0'
+
+        vim.keymap.set('n', 'j', 'gj', {noremap = true})
+        vim.keymap.set('n', 'k', 'gk', {noremap = true})
       end
     end,
     on_close = function()
@@ -612,6 +615,9 @@ function _G.toggleProse()
         vim.cmd 'set nolinebreak'
         vim.cmd 'set colorcolumn=80'
       end
+
+      vim.keymap.set('n', 'j', 'j', {noremap = true})
+      vim.keymap.set('n', 'k', 'k', {noremap = true})
     end
   })
 end
