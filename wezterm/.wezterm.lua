@@ -27,5 +27,7 @@ return {
   window_decorations = "RESIZE",
   adjust_window_size_when_changing_font_size = false,
   line_height = 1.1,
-  term = "wezterm"
+  term = "wezterm",
+  send_composed_key_when_left_alt_is_pressed = false,
+  send_composed_key_when_right_alt_is_pressed = false
 }
