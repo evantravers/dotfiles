@@ -628,10 +628,15 @@ vim.keymap.set(
 )
 
 -- Covenience macros
--- "..." -> "…"
+-- fix ellipsis: "..." -> "…"
 vim.keymap.set('n',
   '<leader>fe',
   "mc:%s,\\.\\.\\.,…,g<CR>:nohlsearch<CR>`c",
+  {noremap = true, silent = true})
+-- fix spelling: just an easier finger roll on 40% keyboard
+vim.keymap.set('n',
+  '<leader>fs',
+  '1z=',
   {noremap = true, silent = true})
 
 vim.keymap.set('n',
