@@ -584,6 +584,7 @@ vim.keymap.set({"n", "t"}, "<A-d>", "<cmd>Lspsaga term_toggle<CR>")
 function _G.toggleProse()
   require("zen-mode").toggle({
     window = {
+      backdrop = 1,
       width = 80
     },
     plugins = {
