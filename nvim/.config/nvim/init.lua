@@ -21,7 +21,6 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
   -- UI
-  "editorconfig/editorconfig-vim", -- editorconfig for being polite
   "junegunn/vim-easy-align",
   "kopischke/vim-fetch",           -- be able to open from stack traces
   "lewis6991/gitsigns.nvim",       -- gitsigns
