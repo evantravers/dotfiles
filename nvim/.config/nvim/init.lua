@@ -13,7 +13,7 @@ if not vim.loop.fs_stat(lazypath) then
     "clone",
     "--filter=blob:none",
     "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
+    "--branch=stable",       -- latest stable release
     lazypath,
   })
 end
@@ -22,30 +22,30 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   -- UI
   "junegunn/vim-easy-align",
-  "kopischke/vim-fetch",           -- be able to open from stack traces
-  "lewis6991/gitsigns.nvim",       -- gitsigns
+  "kopischke/vim-fetch",     -- be able to open from stack traces
+  "lewis6991/gitsigns.nvim", -- gitsigns
   "machakann/vim-sandwich",
   {
     "mcchrish/zenbones.nvim",
-    dependencies = {
+    dependencies             = {
       "rktjmp/lush.nvim"
     }
   },
   "norcalli/nvim-colorizer.lua",
   "nvim-lualine/lualine.nvim",
-  "tpope/vim-abolish",             -- rename... could be LSP"'d away someday
-  "tpope/vim-commentary",          -- easy comments
-  "tpope/vim-eunuch",              -- handle missing files and unix-y stuff
-  "tpope/vim-projectionist",       -- create and rename files by convention
-  "tpope/vim-ragtag",              -- handle html tags
-  "tpope/vim-repeat",              -- repeat actions
-  "tpope/vim-speeddating",         -- work with dates
-  "tpope/vim-unimpaired",          -- bindings to toggle common settings
-  "tpope/vim-vinegar",             -- use netrw with style
-  "wellle/targets.vim",            -- expand the target objects
+  "tpope/vim-abolish",       -- rename... could be LSP"'d away someday
+  "tpope/vim-commentary",    -- easy comments
+  "tpope/vim-eunuch",        -- handle missing files and unix-y stuff
+  "tpope/vim-projectionist", -- create and rename files by convention
+  "tpope/vim-ragtag",        -- handle html tags
+  "tpope/vim-repeat",        -- repeat actions
+  "tpope/vim-speeddating",   -- work with dates
+  "tpope/vim-unimpaired",    -- bindings to toggle common settings
+  "tpope/vim-vinegar",       -- use netrw with style
+  "wellle/targets.vim",      -- expand the target objects
   "windwp/nvim-autopairs",
   "windwp/nvim-ts-autotag",
-  "cormacrelf/dark-notify",      -- switch light/dark
+  "cormacrelf/dark-notify",  -- switch light/dark
   -- Syntax
   "elixir-editors/vim-elixir",
   -- git/gist/github
