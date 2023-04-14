@@ -15,7 +15,7 @@ function scheme_for_appearance(appearance)
 end
 
 return {
-  font = wezterm.font 'JetBrains Mono Medium',
+  font = wezterm.font_with_fallback {'JetBrains Mono Medium'},
   color_scheme = scheme_for_appearance(wezterm.gui.get_appearance()),
   hide_tab_bar_if_only_one_tab = true,
   window_padding = {
