@@ -72,7 +72,6 @@ require("lazy").setup({
   },
   "neovim/nvim-lspconfig",
   "nvim-lua/completion-nvim",
-  "nvim-lua/lsp_extensions.nvim",
   "nvim-lua/plenary.nvim",
   "nvim-lua/popup.nvim",
   "nvim-telescope/telescope.nvim",
