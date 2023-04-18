@@ -1,12 +1,6 @@
 local wezterm = require 'wezterm'
 
-local config = {}
-
-if wezterm.config_builder then
-  config = wezterm.config_builder()
-end
-
-function scheme_for_appearance(appearance)
+function Scheme_for_appearance(appearance)
   if appearance:find 'Dark' then
     return 'zenbones_dark'
   else
@@ -16,7 +10,7 @@ end
 
 return {
   font = wezterm.font_with_fallback {'JetBrains Mono Medium'},
-  color_scheme = scheme_for_appearance(wezterm.gui.get_appearance()),
+  color_scheme = Scheme_for_appearance(wezterm.gui.get_appearance()),
   hide_tab_bar_if_only_one_tab = true,
   window_padding = {
     left   = '2cell',
