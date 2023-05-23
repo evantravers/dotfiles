@@ -46,6 +46,7 @@ require("lazy").setup({
   "windwp/nvim-autopairs",
   "windwp/nvim-ts-autotag",
   "cormacrelf/dark-notify",  -- switch light/dark
+  "stevearc/oil.nvim",
   -- Syntax
   "elixir-editors/vim-elixir",
   -- git/gist/github
