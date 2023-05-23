@@ -34,7 +34,11 @@ require("lazy").setup({
   },
   "norcalli/nvim-colorizer.lua",
   "nvim-lualine/lualine.nvim",
-  "stevearc/oil.nvim",
+  {
+    'stevearc/oil.nvim',
+    opts = {},
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+  },
   "tpope/vim-abolish",       -- rename... could be LSP"'d away someday
   "tpope/vim-commentary",    -- easy comments
   "tpope/vim-eunuch",        -- handle missing files and unix-y stuff
