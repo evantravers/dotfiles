@@ -21,6 +21,7 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
   -- UI
+  "cormacrelf/dark-notify",  -- switch light/dark
   "junegunn/vim-easy-align",
   "kopischke/vim-fetch",     -- be able to open from stack traces
   "lewis6991/gitsigns.nvim", -- gitsigns
@@ -33,6 +34,7 @@ require("lazy").setup({
   },
   "norcalli/nvim-colorizer.lua",
   "nvim-lualine/lualine.nvim",
+  "stevearc/oil.nvim",
   "tpope/vim-abolish",       -- rename... could be LSP"'d away someday
   "tpope/vim-commentary",    -- easy comments
   "tpope/vim-eunuch",        -- handle missing files and unix-y stuff
@@ -45,8 +47,6 @@ require("lazy").setup({
   "wellle/targets.vim",      -- expand the target objects
   "windwp/nvim-autopairs",
   "windwp/nvim-ts-autotag",
-  "cormacrelf/dark-notify",  -- switch light/dark
-  "stevearc/oil.nvim",
   -- Syntax
   "elixir-editors/vim-elixir",
   -- git/gist/github
