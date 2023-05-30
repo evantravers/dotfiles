@@ -47,7 +47,6 @@ require("lazy").setup({
   "tpope/vim-repeat",        -- repeat actions
   "tpope/vim-speeddating",   -- work with dates
   "tpope/vim-unimpaired",    -- bindings to toggle common settings
-  "tpope/vim-vinegar",       -- use netrw with style
   "wellle/targets.vim",      -- expand the target objects
   "windwp/nvim-autopairs",
   "windwp/nvim-ts-autotag",
@@ -116,6 +115,13 @@ vim.o.showmode = false
 require('dark_notify').run()
 
 -- UI
+require("oil").setup({
+  view_options = {
+    show_hidden = true
+  }
+})
+vim.keymap.set("n", "-", require("oil").open, { desc = "Open parent directory" })
+
 require('gitsigns').setup{
   on_attach = function(bufnr)
     local gs = package.loaded.gitsigns
@@ -468,16 +474,8 @@ vim.keymap.set("n", "<leader>sb", "<cmd>Lspsaga show_buf_diagnostics<CR>")
 
 -- Diagnostic jump
 -- You can use <C-o> to jump back to your previous location
-vim.keymap.set("n", "[e", "<cmd>Lspsaga diagnostic_jump_prev<CR>")
-vim.keymap.set("n", "]e", "<cmd>Lspsaga diagnostic_jump_next<CR>")
-
--- Diagnostic jump with filters such as only jumping to an error
-vim.keymap.set("n", "[E", function()
-  require("lspsaga.diagnostic"):goto_prev({ severity = vim.diagnostic.severity.ERROR })
-end)
-vim.keymap.set("n", "]E", function()
-  require("lspsaga.diagnostic"):goto_next({ severity = vim.diagnostic.severity.ERROR })
-end)
+vim.keymap.set("n", "[E", "<cmd>Lspsaga diagnostic_jump_prev<CR>")
+vim.keymap.set("n", "]E", "<cmd>Lspsaga diagnostic_jump_next<CR>")
 
 -- Toggle outline
 vim.keymap.set("n","<leader>o", "<cmd>Lspsaga outline<CR>")
