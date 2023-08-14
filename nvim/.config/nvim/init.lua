@@ -214,7 +214,7 @@ vim.keymap.set('n', '<c-p>', ":lua require('telescope.builtin').find_files({ fin
 vim.keymap.set('n', '<localleader><space>', ":lua require('telescope.builtin').buffers()<cr>", {noremap = true, silent = true})
 
 -- ZK
-local home = vim.fn.expand("~/Library/Mobile Documents/iCloud~md~obsidian/Documents/wiki")
+local home = vim.fn.expand("~/src/wiki")
 
 require('telekasten').setup({
   home         = home,
