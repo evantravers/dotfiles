@@ -4,6 +4,7 @@ vim.cmd([[runtime .vimrc]])
 
 -- Neovim specific settings
 vim.o.icm = 'split'
+vim.opt.foldtext = "v:lua.vim.treesitter.foldtext()"
 
 -- PLUGINS
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
