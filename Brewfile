@@ -48,7 +48,6 @@ cask "obsidian"
 cask "raycast"
 cask "soundsource"
 cask "wezterm"
-mas "Deliveries", id: 924726344
 mas "Drafts", id: 1435957248
 mas "Reeder", id: 1529448980
 mas "Things", id: 904280696
