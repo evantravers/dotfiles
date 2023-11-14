@@ -7,4 +7,4 @@ Brewfile.lock.json
 tmux/.config/tmux/plugins
 tmux/.config/tmux/tmux.conf
 *~
-home-manager/.config/home-manager/local.nix
+local.nix
