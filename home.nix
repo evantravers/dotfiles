@@ -17,7 +17,6 @@
   # environment.
   home.packages = [
     pkgs.neovim
-    pkgs.git
     pkgs.ripgrep
   ];
 
@@ -52,6 +51,12 @@
 
   programs.starship = {
     enable = true;
+  };
+
+  programs.git = {
+    enable = true;
+
+    lfs.enable = true;
   };
 
   programs.tmux = {
