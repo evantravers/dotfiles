@@ -85,7 +85,7 @@
 
     # status bar
     set-option -g status-left " #S "
-    set-option -g status-right "#[bold]%-l:%M ⋮ #[default italics]%a, %b %d #[default]⋮ #{battery_icon}"
+    set-option -g status-right "#[bold]%-l:%M ⋮ #[default italics]%a, %b %d #[default]"
     set-option -g set-titles-string "tmux:#I #W"
 
     # window status (tab selected/unselected)
@@ -129,28 +129,10 @@
     # dim inactive window text
     set -g window-style fg=colour15
     set -g window-active-style fg=colour7
-
-    # cool battery options
-    set -g @batt_icon_charge_tier9 "󰂂"
-    set -g @batt_icon_charge_tier8 "󰂁"
-    set -g @batt_icon_charge_tier7 "󰂀"
-    set -g @batt_icon_charge_tier6 "󰁿"
-    set -g @batt_icon_charge_tier5 "󰁾"
-    set -g @batt_icon_charge_tier4 "󰁽"
-    set -g @batt_icon_charge_tier3 "󰁼"
-    set -g @batt_icon_charge_tier2 "󰁻"
-    set -g @batt_icon_charge_tier1 "󰁺"
-    set -g @batt_icon_status_charged "󰁹"
-    set -g @batt_icon_status_charging "󰂄"
-    set -g @batt_icon_status_discharging "󱊥"
-    set -g @batt_icon_status_attached "ﮣ"
-    set -g @batt_color_status_primary_charged "#3daee9"
-    set -g @batt_color_status_primary_charging "#3daee9"
     '';
 
     plugins = with pkgs.tmuxPlugins; [
       tmux-thumbs
-      battery
       logging
       pain-control
       sessionist
