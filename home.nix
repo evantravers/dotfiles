@@ -33,7 +33,7 @@
     ".config/starship/starship.toml".source = starship/.config/starship.toml;
   };
 
-  home.activation.nvimSwaps = lib.hm.dag.entryAfter ["writeBoundary"] ''
+  home.activation.mkdirNvimFolders = lib.hm.dag.entryAfter ["writeBoundary"] ''
     mkdir -p $HOME/.config/nvim/backups $HOME/.config/nvim/swaps $HOME/.config/nvim/undo
   '';
 
