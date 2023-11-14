@@ -14,16 +14,6 @@ The dotfiles are structured so that you can use `stow` as a backup.
 2. Install home-manager[^home]:
 3. `nix-shell '<home-manager>' -A install`
 
-Optional:
-
-Install wezterm's terminfo
-```
-tempfile=$(mktemp) \
-&& curl -o $tempfile https://raw.githubusercontent.com/wez/wezterm/main/termwiz/data/wezterm.terminfo \
-&& tic -x -o ~/.terminfo $tempfile \
-&& rm $tempfile
-```
-
 [^home]: https://nix-community.github.io/home-manager/index.html#sec-install-standalone
 
         ```

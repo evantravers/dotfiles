@@ -37,6 +37,13 @@
     mkdir -p $HOME/.config/nvim/backups $HOME/.config/nvim/swaps $HOME/.config/nvim/undo
   '';
 
+  home.activation.installWeztermProfile = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    tempfile=$(mktemp) \
+    && ${pkgs.curl}/bin/curl -o $tempfile https://raw.githubusercontent.com/wez/wezterm/main/termwiz/data/wezterm.terminfo \
+    && tic -x -o ~/.terminfo $tempfile \
+    && rm $tempfile
+  '';
+
   home.sessionVariables = {
     EDITOR = "nvim";
   };
