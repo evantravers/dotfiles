@@ -21,7 +21,6 @@
     pkgs.neovim
     pkgs.tmux
     pkgs.git
-    pkgs.lua
     pkgs.ripgrep
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
