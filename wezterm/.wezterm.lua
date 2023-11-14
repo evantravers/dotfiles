@@ -31,6 +31,4 @@ return {
   send_composed_key_when_left_alt_is_pressed = false,
   send_composed_key_when_right_alt_is_pressed = false,
   window_close_confirmation = 'NeverPrompt'
-
-  config.default_domain = 'WSL:NixOS'
 }
