@@ -121,11 +121,15 @@ require("lazy").setup({
     "nvim-telescope/telescope.nvim",
     dependencies = { {'nvim-lua/plenary.nvim'} }
   },
-  {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
   -- Prose
   {"folke/zen-mode.nvim", lazy = true},
   -- ZK
   {"renerocksai/telekasten.nvim"},
+},
+{
+  performance = {
+    reset_packpath = false,
+  }
 })
 
 -- THEME
