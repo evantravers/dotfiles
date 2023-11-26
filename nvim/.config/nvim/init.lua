@@ -343,8 +343,10 @@ npairs.setup({
   check_ts = true,
   close_triple_quotes = true
 })
-npairs.add_rules(require("nvim-autopairs.rules.endwise-ruby"))
-local endwise = require("nvim-autopairs.ts-rule").endwise
+npairs.add_rules(require('nvim-autopairs.rules.endwise-elixir'))
+npairs.add_rules(require('nvim-autopairs.rules.endwise-lua'))
+npairs.add_rules(require('nvim-autopairs.rules.endwise-ruby'))
+local endwise = require ("nvim-autopairs.ts-rule").endwise
 npairs.add_rules({
   endwise("then$", "end", "lua", nil),
   endwise("do$", "end", "lua", nil),
@@ -589,3 +591,4 @@ vim.keymap.set('n',
   '<leader>a',
   "<cmd>lua require('telescope.builtin').live_grep()<cr>",
   {noremap = true, silent = true})
+
