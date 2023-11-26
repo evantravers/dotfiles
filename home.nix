@@ -73,10 +73,6 @@
           sha256 = "39L6UDslgIEymFsQY8klV/aluU971twRUymzRL17+6c=";
         };
       }
-      {
-        name = "foreign-env";
-        src = pkgs.fishPlugins.foreign-env;
-      }
     ];
   };
 
