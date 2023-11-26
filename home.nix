@@ -88,6 +88,11 @@
         error_symbol = "[❯](dimmed red)";
       };
 
+      git_status = {
+        style = "bold yellow";
+        format = "([$all_status$ahead_behind]($style) )";
+      };
+
       jobs.disabled = true;
     };
   };
