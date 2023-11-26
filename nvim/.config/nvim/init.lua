@@ -139,15 +139,6 @@ vim.g.zenbones = {
 }
 vim.cmd [[color zenbones]]
 
-require'nvim-treesitter.configs'.setup {
-  highlight = {
-    enable = true,
-  },
-  indent = {
-    enable = true
-  }
-}
-
 -- statusline
 require('lualine').setup {
   options = {

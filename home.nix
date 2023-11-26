@@ -21,7 +21,6 @@
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = [
-    pkgs.neovim
     pkgs.ripgrep
   ];
 
@@ -31,9 +30,8 @@
     # git
     ".cvsignore".source = git/.cvsignore;
     ".gitconfig".source = git/.gitconfig;
-    # nvim
+    # vim
     ".config/nvim/.vimrc".source = nvim/.config/nvim/.vimrc;
-    ".config/nvim/init.lua".source = nvim/.config/nvim/init.lua;
   };
 
   home.activation.mkdirNvimFolders = lib.hm.dag.entryAfter ["writeBoundary"] ''
@@ -48,7 +46,6 @@
   '';
 
   home.sessionVariables = {
-    EDITOR = "nvim";
   };
 
   # Let Home Manager install and manage itself.
@@ -169,6 +166,17 @@
       pain-control
       sessionist
       yank
+    ];
+  };
+
+  programs.neovim = {
+    enable = true;
+    defaultEditor = true;
+
+    extraLuaConfig = lib.fileContents nvim/.config/nvim/init.lua;
+
+    plugins = [
+      pkgs.vimPlugins.nvim-treesitter.withAllGrammars
     ];
   };
 }
