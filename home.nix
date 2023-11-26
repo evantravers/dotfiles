@@ -34,8 +34,6 @@
     # nvim
     ".config/nvim/.vimrc".source = nvim/.config/nvim/.vimrc;
     ".config/nvim/init.lua".source = nvim/.config/nvim/init.lua;
-    # starship?
-    ".config/starship/starship.toml".source = starship/.config/starship.toml;
   };
 
   home.activation.mkdirNvimFolders = lib.hm.dag.entryAfter ["writeBoundary"] ''
@@ -79,6 +77,18 @@
 
   programs.starship = {
     enable = true;
+
+    settings = {
+      command_timeout = 100;
+      format = "[$all](dimmed white)";
+
+      character = {
+        success_symbol = "[❯](dimmed green)";
+        error_symbol = "[❯](dimmed red)";
+      };
+
+      jobs.disabled = true;
+    };
   };
 
   programs.git = {
