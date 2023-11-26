@@ -64,6 +64,7 @@
 
     plugins = [
       {
+        # TODO: Remove this
         name = "fish-asdf";
         src = pkgs.fetchFromGitHub {
           owner = "rstacruz";
