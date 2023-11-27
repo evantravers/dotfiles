@@ -180,6 +180,7 @@
         plugin = pkgs.vimPlugins.nvim-treesitter.withAllGrammars;
         type = "lua";
         config = ''
+          vim.cmd [[packadd nvim-treesitter]]
           require'nvim-treesitter.configs'.setup {
             highlight = { enable = true, },
             indent = { enable = true },
