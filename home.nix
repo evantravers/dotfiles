@@ -176,7 +176,20 @@
     extraLuaConfig = lib.fileContents nvim/.config/nvim/init.lua;
 
     plugins = [
-      pkgs.vimPlugins.nvim-treesitter.withAllGrammars
+      {
+        plugin = pkgs.vimPlugins.nvim-treesitter.withAllGrammars;
+        type = "lua";
+        config = ''
+          require'nvim-treesitter.configs'.setup {
+            highlight = {
+              enable = true,
+            },
+            indent = {
+              enable = true
+            }
+          }
+        '';
+      }
     ];
   };
 }
