@@ -58,3 +58,5 @@ test-unit.yml
 ##############################
 tags
 TAGS
+
+.direnv
