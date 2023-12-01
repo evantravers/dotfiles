@@ -426,7 +426,7 @@ local function root_pattern(...)
 end
 
 require'lspconfig'.elixirls.setup({
-  cmd = { "/opt/homebrew/bin/elixir-ls" };
+  cmd = { "elixir-ls" };
   on_attach = on_attach
 })
 require'lspconfig'.solargraph.setup({
