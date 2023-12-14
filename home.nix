@@ -296,7 +296,9 @@
         plugin = nvim-colorizer-lua;
         type = "lua";
         config = ''
-          require'colorizer'.setup()
+          require'colorizer'.setup({
+            css = { rgb_fn = true; };
+          })
         '';
       }
       {
