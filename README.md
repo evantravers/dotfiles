@@ -15,9 +15,8 @@ installer now.
 
 1. Install Nix
 2. Install nix-darwin[^darwin]
-3. `darwin-rebuild switch`
-
-`ln nix-darwin/.nixpkgs/darwin-configuration.nix ~/.nixpkgs/darwin-configuration.nix`
+3. `rm ~/.nixpkgs/darwin-configuration.nix && ln nix-darwin/.nixpkgs/darwin-configuration.nix ~/.nixpkgs/darwin-configuration.nix`
+4. `darwin-rebuild switch`
 
 ## Home Manager
 
