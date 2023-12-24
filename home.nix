@@ -32,6 +32,8 @@
     ".gitconfig".source = git/.gitconfig;
     # vim
     ".config/nvim/.vimrc".source = nvim/.config/nvim/.vimrc;
+    # nix-darwin
+    ".nixpkgs/darwin-configuration.nix".source = nix-darwin/.nixpkgs/darwin-configuration.nix;
   };
 
   home.activation.mkdirNvimFolders = lib.hm.dag.entryAfter ["writeBoundary"] ''
