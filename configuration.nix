@@ -12,6 +12,7 @@
     # include NixOS-WSL modules
     <nixos-wsl/modules>
     <home-manager/nixos>
+    /etc/nixos/cachix.nix
   ];
 
   wsl.enable = true;
@@ -27,7 +28,7 @@
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  programs.fish.enable = true
+  programs.fish.enable = true;
 
   users.defaultUserShell = pkgs.fish;
 }
