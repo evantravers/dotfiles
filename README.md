@@ -5,11 +5,13 @@
 - I've used the default OSX installer, I'd probably use the determinite systems
 installer now.
 
+## Clone this repo
+
+1. git clone git@github.com:evantravers/dotfiles.git ~/.dotfiles
+
 ## NixOS
 
-- basically enables flakes
-
-`ln configuration.nix /etc/nixos/configuration.nix`
+1. `ln configuration.nix /etc/nixos/configuration.nix`
 
 ## MacOS
 
@@ -26,15 +28,6 @@ The dotfiles are structured so that you can use `stow` as a backup.
 2. `cp ~/.dotfiles/local.nix.tmp ~/.dotfiles/local.nix`
 3. Edit `~/.dotfiles/local.nix` to be correct (TODO: this should be automated)
 4. `home-manager switch`
-
-[^home]: https://nix-community.github.io/home-manager/index.html#sec-install-standalone
-
-        ```
-        nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
-        nix-channel --update
-        ```
-
-        `nix-shell '<home-manager>' -A install`
 
 [^darwin]: https://daiderd.com/nix-darwin/#Installing
 
