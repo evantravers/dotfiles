@@ -11,16 +11,22 @@ installer now.
 
 `ln configuration.nix /etc/nixos/configuration.nix`
 
+## MacOS
+
+1. Install Nix
+2. Install nix-darwin[^darwin]
+3. `darwin-rebuild switch`
+
+`ln nix-darwin/.nixpkgs/darwin-configuration.nix ~/.nixpkgs/darwin-configuration.nix`
+
 ## Home Manager
 
 The dotfiles are structured so that you can use `stow` as a backup.
 
 1. `ln -s ~/.dotfiles/ ~/.config/home-manager`
-2. Install home-manager[^home]:
-3. `cp ~/.dotfiles/local.nix.tmp ~/.dotfiles/local.nix`
-4. Edit `~/.dotfiles/local.nix` to be correct (TODO: this should be automated)
-5. `nix-shell '<home-manager>' -A install`
-6. (optiona) Install nix-darwin[^darwin]
+2. `cp ~/.dotfiles/local.nix.tmp ~/.dotfiles/local.nix`
+3. Edit `~/.dotfiles/local.nix` to be correct (TODO: this should be automated)
+4. `home-manager switch`
 
 [^home]: https://nix-community.github.io/home-manager/index.html#sec-install-standalone
 

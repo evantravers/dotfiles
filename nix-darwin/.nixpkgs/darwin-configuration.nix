@@ -5,6 +5,7 @@
   # $ nix-env -qaP | grep wget
   environment.systemPackages =
     [
+      pkgs.home-manager
     ];
 
   # Use a custom configuration.nix location.
@@ -27,8 +28,20 @@
     pkgs.monaspace
   ];
 
-  system.defaults.dock = {
-    autohide = true;
-    show-recents = false;
+  system.defaults = {
+    dock = {
+      autohide = true;
+      orientation = "left";
+      show-process-indicators = false;
+      show-recents = false;
+      static-only = true;
+    };
+    finder = {
+      AppleShowAllExtensions = true;
+      ShowPathbar = true;
+    };
+    NSGlobalDomain = {
+      AppleKeyboardUIMode = 3;
+    };
   };
 }
