@@ -32,7 +32,7 @@
     ".gitconfig".source = git/.gitconfig;
     # vim
     ".config/nvim/.vimrc".source = nvim/.config/nvim/.vimrc;
-    # nix-darwin
+    # nix-darwin TODO: This should only happen on darwin.
     ".nixpkgs/darwin-configuration.nix".source = nix-darwin/.nixpkgs/darwin-configuration.nix;
   };
 
