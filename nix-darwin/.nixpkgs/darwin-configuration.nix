@@ -42,6 +42,7 @@
     };
     NSGlobalDomain = {
       AppleKeyboardUIMode = 3;
+      "com.apple.keyboard.fnState" = true;
     };
   };
 }
