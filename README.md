@@ -11,7 +11,7 @@ installer now.
 
 ## NixOS
 
-1. `ln configuration.nix /etc/nixos/configuration.nix`
+1. `sudo ln -s ~/.dotfiles/configuration.nix /etc/nixos/configuration.nix`
 
 ## MacOS
 
