@@ -37,7 +37,9 @@
     casks = [
       "1password"
       "bartender"
+      "brave-browser"
       "fantastical"
+      "firefox"
       "hammerspoon"
       "karabiner-elements"
       "obsidian"
@@ -50,6 +52,7 @@
       "Drafts" = 1435957248;
       "Reeder" = 1529448980;
       "Things" = 904280696;
+      "Timery" = 1425368544;
     };
   };
 
