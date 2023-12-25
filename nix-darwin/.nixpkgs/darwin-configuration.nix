@@ -31,6 +31,28 @@
     pkgs.monaspace
   ];
 
+  homebrew = {
+    enable = true;
+
+    casks = [
+      "1password"
+      "bartender"
+      "fantastical"
+      "hammerspoon"
+      "karabiner-elements"
+      "obsidian"
+      "raycast"
+      "soundsource"
+      "wezterm"
+    ];
+
+    masApps = {
+      "Drafts" = 1435957248;
+      "Reeder" = 1529448980;
+      "Things" = 904280696;
+    };
+  };
+
   system.defaults = {
     dock = {
       autohide = true;
