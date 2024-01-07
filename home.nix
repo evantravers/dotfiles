@@ -121,7 +121,7 @@
     enable = true;
     sensibleOnTop = false;
     prefix = "C-space";
-    escapeTime = 0;
+    escapeTime = 10;
     shell = "${pkgs.fish}/bin/fish";
     terminal = "wezterm";
 
