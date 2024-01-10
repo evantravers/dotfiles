@@ -77,11 +77,6 @@ vim.keymap.set('n',
   '1z=',
   {noremap = true, silent = true})
 
-vim.keymap.set('n',
-  '<leader>a',
-  "<cmd>lua require('telescope.builtin').live_grep()<cr>",
-  {noremap = true, silent = true})
-
 require('auto-dark-mode').setup({
   update_interval = 1000,
   set_dark_mode = function()
