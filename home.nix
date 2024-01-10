@@ -491,6 +491,7 @@
         plugin = telescope-nvim;
         type = "lua";
         config = ''
+          vim.keymap.set('n', '<localleader>a', "<cmd>lua require('telescope.builtin').live_grep()<cr>", {noremap = true, silent = true})
           vim.keymap.set('n', '<c-p>', ":lua require('telescope.builtin').find_files({ find_command = {'rg', '--files', '--hidden', '-g', '!.git' }})<cr>", {noremap = true, silent = true})
           vim.keymap.set('n', '<localleader><space>', ":lua require('telescope.builtin').buffers()<cr>", {noremap = true, silent = true})
         '';
