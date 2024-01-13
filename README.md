@@ -6,11 +6,11 @@ I've used the default OSX installer, I'd probably use the [Determinate Systems I
 
 ## Clone this repo
 
-1. `git clone git@github.com:evantravers/dotfiles.git ~/.dotfiles`
+1. `git clone git@github.com:evantravers/dotfiles.git ~/src/github.com/evantravers/dotfiles`
 
 ## NixOS
 
-1. `sudo ln -s ~/.dotfiles/configuration.nix /etc/nixos/configuration.nix`
+1. `sudo ln -s ~/src/github.com/evantravers/dotfiles/configuration.nix /etc/nixos/configuration.nix`
 
 ## MacOS
 
@@ -23,9 +23,9 @@ I've used the default OSX installer, I'd probably use the [Determinate Systems I
 
 The dotfiles are structured so that you can use `stow` as a backup.
 
-1. `ln -s ~/.dotfiles/ ~/.config/home-manager`
-2. `cp ~/.dotfiles/local.nix.tmp ~/.dotfiles/local.nix`
-3. Edit `~/.dotfiles/local.nix` to be correct (TODO: this should be automated)
+1. `ln -s ~/src/github.com/evantravers/dotfiles/ ~/.config/home-manager`
+2. `cp ~/src/github.com/evantravers/dotfiles/local.nix.tmp ~/.dotfiles/local.nix`
+3. Edit `~/src/github.com/evantravers/dotfiles/local.nix` to be correct (TODO: this should be automated)
 4. `home-manager switch`
 
 [^darwin]: https://daiderd.com/nix-darwin/#Installing
