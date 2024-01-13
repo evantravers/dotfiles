@@ -2,12 +2,11 @@
 
 ## Install Nix and/or NixOS
 
-- I've used the default OSX installer, I'd probably use the determinite systems
-installer now.
+I've used the default OSX installer, I'd probably use the [Determinate Systems Installer](https://github.com/DeterminateSystems/nix-installer) now.
 
 ## Clone this repo
 
-1. git clone git@github.com:evantravers/dotfiles.git ~/.dotfiles
+1. `git clone git@github.com:evantravers/dotfiles.git ~/.dotfiles`
 
 ## NixOS
 
