@@ -33,6 +33,8 @@
     ".gitconfig".source = git/.gitconfig;
     # vim
     ".config/nvim/.vimrc".source = nvim/.config/nvim/.vimrc;
+    # wezterm
+    ".config/wezterm/wezterm.lua".source = wezterm/.wezterm.lua;
   };
 
   home.activation.mkdirNvimFolders = lib.hm.dag.entryAfter ["writeBoundary"] ''
