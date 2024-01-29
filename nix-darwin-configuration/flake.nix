@@ -10,7 +10,7 @@
   outputs = inputs@{ self, nix-darwin, nixpkgs }: {
     darwinConfigurations = {
       "G2157QVFX1" = nix-darwin.lib.darwinSystem {
-        localSettings = {
+        inputs.localSettings = {
           home = {
             username = "etravers";
             homeDirectory = "/Users/etravers/";
@@ -18,7 +18,7 @@
           hostPlatform = "aarch64-darwin";
         };
         modules = [ ./configuration.nix ];
-        specialArgs = { inherit localSettings; };
+        specialArgs = { inherit inputs; };
       };
       "Evans-Macbook-Pro" = nix-darwin.lib.darwinSystem {
         modules = [ ./configuration.nix ];
