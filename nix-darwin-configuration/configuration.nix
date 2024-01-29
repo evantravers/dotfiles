@@ -1,7 +1,7 @@
 { config, pkgs, inputs, ... }:
 
 {
-  inherit (inputs.self) localSettings;
+  inherit (inputs.self.localSetttings) home hostPlatform;
 
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
