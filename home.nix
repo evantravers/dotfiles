@@ -134,6 +134,7 @@
       pain-control
       sessionist
       yank
+      fuzzback
     ];
   };
 
