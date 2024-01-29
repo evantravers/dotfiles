@@ -129,12 +129,12 @@
     extraConfig = lib.fileContents tmux/.config/tmux/tmux.conf;
 
     plugins = with pkgs.tmuxPlugins; [
-      tmux-thumbs
+      fuzzback
       logging
       pain-control
       sessionist
+      tmux-thumbs
       yank
-      fuzzback
     ];
   };
 
