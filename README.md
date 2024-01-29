@@ -1,6 +1,6 @@
 # Dotfiles
 
-## Install Nix and/or NixOS
+## Install Nix
 
 I've used the default OSX installer, I'd probably use the [Determinate Systems Installer](https://github.com/DeterminateSystems/nix-installer) now.
 
@@ -10,14 +10,12 @@ I've used the default OSX installer, I'd probably use the [Determinate Systems I
 
 ## NixOS
 
-1. `sudo ln -s ~/src/github.com/evantravers/dotfiles/configuration.nix /etc/nixos/configuration.nix`
+1. `sudo nixos-rebuild switch --flake .#`
 
 ## MacOS
 
-1. Install Nix
-2. Install nix-darwin[^darwin]
-3. `rm ~/.nixpkgs/darwin-configuration.nix && ln nix-darwin/.nixpkgs/darwin-configuration.nix ~/.nixpkgs/darwin-configuration.nix`
-4. `darwin-rebuild switch`
+1. Install nix-darwin[^darwin]
+2. `darwin-rebuild switch --flake ~/src/github.com/evantravers/dotfiles/nix-darwin-configuration`
 
 ## Home Manager
 
