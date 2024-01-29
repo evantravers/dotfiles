@@ -1,7 +1,7 @@
-{ config, pkgs, localSettings, ... }:
+{ config, pkgs, inputs, ... }:
 
 {
-  inherit localSettings;
+  inherit (inputs) localSettings;
 
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
