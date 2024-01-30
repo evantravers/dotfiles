@@ -26,12 +26,12 @@
   # plain files is through 'home.file'.
   home.file = {
     # git
-    ".cvsignore".source = git/.cvsignore;
-    ".gitconfig".source = git/.gitconfig;
+    ".cvsignore".source = ../git/.cvsignore;
+    ".gitconfig".source = ../git/.gitconfig;
     # vim
-    ".config/nvim/.vimrc".source = nvim/.config/nvim/.vimrc;
+    ".config/nvim/.vimrc".source = ../nvim/.config/nvim/.vimrc;
     # wezterm
-    ".config/wezterm/wezterm.lua".source = wezterm/.wezterm.lua;
+    ".config/wezterm/wezterm.lua".source = ../wezterm/.wezterm.lua;
   };
 
   home.activation.mkdirNvimFolders = lib.hm.dag.entryAfter ["writeBoundary"] ''
@@ -123,7 +123,7 @@
     shell = "${pkgs.fish}/bin/fish";
     terminal = "wezterm";
 
-    extraConfig = lib.fileContents tmux/.config/tmux/tmux.conf;
+    extraConfig = lib.fileContents ../tmux/.config/tmux/tmux.conf;
 
     plugins = with pkgs.tmuxPlugins; [
       fuzzback
@@ -139,7 +139,7 @@
     enable = true;
     defaultEditor = true;
 
-    extraLuaConfig = lib.fileContents nvim/.config/nvim/init.lua;
+    extraLuaConfig = lib.fileContents ../nvim/.config/nvim/init.lua;
 
     plugins = with pkgs.vimPlugins; [
       {
