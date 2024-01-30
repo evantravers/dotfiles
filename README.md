@@ -14,8 +14,12 @@ I've used the default OSX installer, I'd probably use the [Determinate Systems I
 
 ## MacOS
 
-1. Install nix-darwin[^darwin]
-2. `darwin-rebuild switch --flake ~/src/github.com/evantravers/dotfiles/nix-darwin-configuration`
+To install:
+
+`nix run nix-darwin -- switch --flake ~/src/github.com/evantravers/dotfiles/nix-darwin-configuration/`
+
+To update:
+`darwin-rebuild switch --flake ~/src/github.com/evantravers/dotfiles/nix-darwin-configuration`
 
 ## Home Manager
 
