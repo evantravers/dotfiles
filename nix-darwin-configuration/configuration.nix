@@ -1,7 +1,12 @@
 { config, pkgs, inputs, ... }:
 
 {
-  inherit (inputs.self.localSetttings) home hostPlatform;
+  # inherit (inputs.self.localSetttings) home hostPlatform;
+  home = {
+    username = "etravers";
+    homeDirectory = "/Users/etravers/";
+  };
+  nixpkgs.hostPlatform = "aarch64-darwin";
 
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
