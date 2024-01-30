@@ -16,7 +16,7 @@
       let
         pkgs = nixpkgs.legacyPackages.${system};
       in {
-        homeConfigurations.evan = home-manager.lib.homeManagerConfiguration {
+        homeConfigurations.etravers = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
 
           # Specify your home configuration modules here, for example,
