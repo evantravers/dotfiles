@@ -27,10 +27,7 @@ To update:
 
 The dotfiles are structured so that you can use `stow` as a backup.
 
-1. `ln -s ~/src/github.com/evantravers/dotfiles/ ~/.config/home-manager`
-2. `cp ~/src/github.com/evantravers/dotfiles/local.nix.tmp ~/.dotfiles/local.nix`
-3. Edit `~/src/github.com/evantravers/dotfiles/local.nix` to be correct (TODO: this should be automated)
-4. `home-manager switch`
+`home-manager switch --flake ~/src/github.com/evantravers/dotfiles/home-manager`
 
 [^darwin]: https://daiderd.com/nix-darwin/#Installing
 
