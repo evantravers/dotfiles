@@ -6,6 +6,8 @@ I've used the default OSX installer, I'd probably use the [Determinate Systems I
 
 ## Clone this repo
 
+(Use `nix-shell - git` if you don't have git in your path yet.)
+
 1. `git clone git@github.com:evantravers/dotfiles.git ~/src/github.com/evantravers/dotfiles`
 
 ## NixOS
