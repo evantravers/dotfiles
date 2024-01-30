@@ -10,10 +10,12 @@
   outputs = inputs@{ self, nix-darwin, nixpkgs }: {
     darwinConfigurations = {
       "G2157QVFX1" = nix-darwin.lib.darwinSystem {
+        system = "aarch64-darwin";
         modules = [ ./configuration.nix ];
         specialArgs = { inherit inputs; };
       };
       "Evans-MacBook-Pro" = nix-darwin.lib.darwinSystem {
+        system = "x86_64-darwin";
         modules = [ ./configuration.nix ];
         specialArgs = { inherit inputs; };
       };
