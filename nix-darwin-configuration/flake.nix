@@ -13,7 +13,7 @@
         modules = [ ./configuration.nix ];
         specialArgs = { inherit inputs; };
       };
-      "Evans-Macbook-Pro" = nix-darwin.lib.darwinSystem {
+      "Evans-MacBook-Pro" = nix-darwin.lib.darwinSystem {
         modules = [ ./configuration.nix ];
         specialArgs = { inherit inputs; };
       };
