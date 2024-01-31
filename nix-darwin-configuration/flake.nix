@@ -15,9 +15,12 @@
           ./configuration.nix
           home-manager.darwinModules.home-manager
           {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.etravers = import ../home-manager/home.nix;
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              users.etravers = import ../home-manager/home.nix;
+            };
+            users.users.etravers.home = "/Users/etravers";
           }
         ];
         specialArgs = { inherit inputs; };
@@ -28,9 +31,12 @@
           ./configuration.nix
           home-manager.darwinModules.home-manager
           {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.evan = import ../home-manager/home.nix;
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              users.evan = import ../home-manager/home.nix;
+            };
+            users.users.evan.home = "/Users/evan";
           }
         ];
         specialArgs = { inherit inputs; };
