@@ -11,7 +11,6 @@
   imports = [
     # include NixOS-WSL modules
     <nixos-wsl/modules>
-    <home-manager/nixos>
     /etc/nixos/cachix.nix
   ];
 
