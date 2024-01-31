@@ -16,8 +16,6 @@
           home-manager.darwinModules.home-manager
           {
             home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
               users.etravers = import ../home-manager/home.nix;
             };
             users.users.etravers.home = "/Users/etravers";
@@ -32,8 +30,6 @@
           home-manager.darwinModules.home-manager
           {
             home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
               users.evan = import ../home-manager/home.nix;
             };
             users.users.evan.home = "/Users/evan";
