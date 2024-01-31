@@ -43,9 +43,6 @@
   home.sessionVariables = {
   };
 
-  # Let Home Manager install and manage itself.
-  programs.home-manager.enable = true;
-
   # Use fish
   programs.fish = {
     enable = true;
