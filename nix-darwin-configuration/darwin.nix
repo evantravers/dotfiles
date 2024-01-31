@@ -14,7 +14,12 @@
 
   # Auto upgrade nix package and the daemon service.
   services.nix-daemon.enable = true;
-  # nix.package = pkgs.nix;
+  nix = {
+    package = pkgs.nix;
+    settings = {
+      "extra-experimental-features" = [ "nix-command" "flakes" ];
+    };
+  };
 
   # Create /etc/zshrc that loads the nix-darwin environment.
   programs = {
