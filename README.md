@@ -8,15 +8,13 @@ I've used the default OSX installer, I'd probably use the [Determinate Systems I
 
 (Use `nix-shell - git` if you don't have git in your path yet.)
 
-1. `git clone git@github.com:evantravers/dotfiles.git ~/src/github.com/evantravers/dotfiles`
+`git clone git@github.com:evantravers/dotfiles.git ~/src/github.com/evantravers/dotfiles`
 
 ## NixOS
 
 `sudo nixos-rebuild switch --flake nixos-configuration --impure` (currently impure because of wsl stuff I haven't fixed.)
 
 ## MacOS
-
-To install:
 
 `nix run nix-darwin -- switch --flake ~/src/github.com/evantravers/dotfiles/nix-darwin-configuration/`
 
@@ -25,7 +23,7 @@ To update:
 
 ## Home Manager
 
-The dotfiles are structured so that you can use `stow` as a backup.
+The dotfiles are structured so that you can use `stow` as a backup. You could technically use `home-manager` separately from Nix to manage them, but the NixOS or nix-darwin flakes should manage it for you.
 
 `home-manager switch --flake ~/src/github.com/evantravers/dotfiles/home-manager`
 
