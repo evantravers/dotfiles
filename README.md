@@ -12,7 +12,7 @@ I've used the default OSX installer, I'd probably use the [Determinate Systems I
 
 ## NixOS
 
-1. `sudo nixos-rebuild switch --flake .#`
+`sudo nixos-rebuild switch --flake nixos-configuration --impure` (currently impure because of wsl stuff I haven't fixed.)
 
 ## MacOS
 
