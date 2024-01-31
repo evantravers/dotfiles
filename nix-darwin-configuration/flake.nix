@@ -12,7 +12,7 @@
       "G2157QVFX1" = nix-darwin.lib.darwinSystem {
         system = "aarch64-darwin";
         modules = [
-          ./configuration.nix
+          ./darwin.nix
           home-manager.darwinModules.home-manager
           {
             home-manager = {
@@ -28,7 +28,7 @@
       "Evans-MacBook-Pro" = nix-darwin.lib.darwinSystem {
         system = "x86_64-darwin";
         modules = [
-          ./configuration.nix
+          ./darwin.nix
           home-manager.darwinModules.home-manager
           {
             home-manager = {
