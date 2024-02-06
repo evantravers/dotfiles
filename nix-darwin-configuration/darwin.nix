@@ -36,6 +36,15 @@
     pkgs.monaspace
   ];
 
+  services = {
+    yabai = {
+      enable = true;
+      config = {
+        layout = "bsp";
+      };
+    };
+  };
+
   homebrew = {
     enable = true;
 
