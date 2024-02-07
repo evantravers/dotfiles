@@ -49,6 +49,7 @@
         yabai -m rule --add app='Fantastical' display=east
         yabai -m rule --add app='OBS' display=east
         yabai -m rule --add app='Timery' manage=off
+        yabai -m rule --add app='Cardhop' manage=off
       '';
     };
   };
