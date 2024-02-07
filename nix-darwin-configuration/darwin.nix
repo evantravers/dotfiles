@@ -46,6 +46,8 @@
       };
       extraConfig = ''
         yabai -m rule --add app='System Settings' manage=off
+        yabai -m rule --add app='Fantastical' display=east
+        yabai -m rule --add app='Timery' manage=off
       '';
     };
   };
