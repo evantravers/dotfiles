@@ -41,7 +41,12 @@
       enable = true;
       config = {
         layout = "bsp";
+        mouse_modifier = "ctrl";
+        window_shadow = "float";
       };
+      extraConfig = ''
+        yabai -m rule --add app='System Settings' manage=off
+      '';
     };
   };
 
