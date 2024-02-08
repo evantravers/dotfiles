@@ -43,6 +43,7 @@
         layout = "bsp";
         mouse_modifier = "ctrl";
         window_shadow = "float";
+        window_gap = "20";
       };
       extraConfig = ''
         yabai -m rule --add app='System Settings' manage=off
