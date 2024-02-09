@@ -10,12 +10,20 @@
 {
   imports = [
     # include NixOS-WSL modules
-    <nixos-wsl/modules>
-    /etc/nixos/cachix.nix
   ];
 
-  wsl.enable = true;
-  wsl.defaultUser = "nixos";
+  wsl = {
+    enable = true;
+    defaultUser = "nixos";
+    nativeSystemd = true;
+    interop.includePath = false;
+  };
+
+  environment = {
+    systemPackages = with pkgs; [
+      wslu
+    ];
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
