@@ -42,6 +42,7 @@
       config = {
         layout = "bsp";
         mouse_modifier = "ctrl";
+        mouse_drop_action = "stack";
         window_shadow = "float";
         window_gap = "20";
         window_placement = "second_child";
