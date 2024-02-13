@@ -11,7 +11,7 @@ On WSL2: [WSL2 Nix](https://github.com/nix-community/NixOS-WSL?tab=readme-ov-fil
 
 ### NixOS (currently just WSL)
 
-`sudo nixos-install --flake github:evantravers/dotfiles#evan-wsl`
+`sudo nixos-install --flake github:evantravers/dotfiles#nixos`
 
 ### Darwin/Linux
 
