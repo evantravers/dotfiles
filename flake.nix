@@ -31,7 +31,7 @@
     ...
   } @ inputs: {
     nixosConfigurations = {
-      evan-wsl = inputs.nixpkgs.lib.nixosSystem {
+      "nixos" = inputs.nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
           nixos-wsl.nixosModules.wsl
