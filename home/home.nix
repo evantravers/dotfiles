@@ -21,6 +21,12 @@
       ".config/nvim/.vimrc".source = ../config/nvim/.config/nvim/.vimrc;
       # wezterm
       ".config/wezterm/wezterm.lua".source = ../config/wezterm/.wezterm.lua;
+
+      hammerspoon = lib.mkIf pkgs.stdenvNoCC.isDarwin {
+        source = ./../config/hammerspoon;
+        target = ".hammerspoon";
+        recursive = true;
+      };
     };
 
     activation.mkdirNvimFolders = lib.hm.dag.entryAfter ["writeBoundary"] ''
