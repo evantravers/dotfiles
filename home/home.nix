@@ -4,6 +4,7 @@
   imports = [
     ./nvim.nix
     ./tmux.nix
+    ./git.nix
   ];
 
   home = {
@@ -19,9 +20,6 @@
     # Home Manager is pretty good at managing dotfiles. The primary way to manage
     # plain files is through 'home.file'.
     file = {
-      # git
-      ".cvsignore".source = ../config/git/.cvsignore;
-      ".gitconfig".source = ../config/git/.gitconfig;
       # wezterm
       ".config/wezterm/wezterm.lua".source = ../config/wezterm/.wezterm.lua;
 
@@ -100,12 +98,6 @@
 
         jobs.disabled = true;
       };
-    };
-
-    git = {
-      enable = true;
-
-      lfs.enable = true;
     };
 
     jujutsu = {
