@@ -31,11 +31,12 @@
     ...
   } @ inputs: {
     nixosConfigurations = {
-      nixos = inputs.nixpkgs.lib.nixosSystem {
+      evan-wsl = inputs.nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
           nixos-wsl.nixosModules.wsl
           ./nixos/configuration.nix
+          ./config/wsl
           home-manager.nixosModules.home-manager
           {
             home-manager.users.nixos = import ./home/home.nix;
