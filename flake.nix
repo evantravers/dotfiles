@@ -43,5 +43,36 @@
         ];
       };
     };
+
+    darwinConfigurations = {
+      "G2157QVFX1" = darwin.lib.darwinSystem {
+        system = "aarch64-darwin";
+        modules = [
+          ./darwin/darwin.nix
+          home-manager.darwinModules.home-manager
+          {
+            home-manager = {
+              users.etravers = import ./home/home.nix;
+            };
+            users.users.etravers.home = "/Users/etravers";
+          }
+        ];
+        specialArgs = { inherit inputs; };
+      };
+      "Evans-MacBook-Pro" = darwin.lib.darwinSystem {
+        system = "x86_64-darwin";
+        modules = [
+          ./darwin/darwin.nix
+          home-manager.darwinModules.home-manager
+          {
+            home-manager = {
+              users.evan = import ./home/home.nix;
+            };
+            users.users.evan.home = "/Users/evan";
+          }
+        ];
+        specialArgs = { inherit inputs; };
+      };
+    };
   };
 }
