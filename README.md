@@ -9,9 +9,9 @@ On WSL2: [WSL2 Nix](https://github.com/nix-community/NixOS-WSL?tab=readme-ov-fil
 
 ## Bootstrap
 
-### NixOS
+### NixOS (currently just WSL)
 
-`sudo nixos-install --flake github:evantravers/dotfiles#nixos`
+`sudo nixos-install --flake github:evantravers/dotfiles#evan-wsl`
 
 ### Darwin/Linux
 
