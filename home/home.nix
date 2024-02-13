@@ -5,6 +5,7 @@
     ./nvim.nix
     ./tmux.nix
     ./git.nix
+    ./wezterm.nix
   ];
 
   home = {
@@ -20,22 +21,12 @@
     # Home Manager is pretty good at managing dotfiles. The primary way to manage
     # plain files is through 'home.file'.
     file = {
-      # wezterm
-      ".config/wezterm/wezterm.lua".source = ../config/wezterm/.wezterm.lua;
-
       hammerspoon = lib.mkIf pkgs.stdenvNoCC.isDarwin {
         source = ./../config/hammerspoon;
         target = ".hammerspoon";
         recursive = true;
       };
     };
-
-    activation.installWeztermProfile = lib.hm.dag.entryAfter ["writeBoundary"] ''
-      tempfile=$(mktemp) \
-      && ${pkgs.curl}/bin/curl -o $tempfile https://raw.githubusercontent.com/wez/wezterm/main/termwiz/data/wezterm.terminfo \
-      && tic -x -o ~/.terminfo $tempfile \
-      && rm $tempfile
-    '';
 
     sessionVariables = {
     };
