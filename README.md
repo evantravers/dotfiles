@@ -20,8 +20,8 @@ Maybe: `sudo nix run github:evantravers/dotfiles?dir=nixos-configuration`
 
 ## MacOS
 
-`nix run nix-darwin -- switch --flake ~/src/github.com/evantravers/dotfiles/nix-darwin-configuration/`
-Maybe: `sudo nix run github:evantravers/dotfiles?dir=nix-darwin-configuration`
+`nix run nix-darwin -- switch --flake ~/src/github.com/evantravers/`
+Maybe: `sudo nix run github:evantravers/dotfiles#darwinConfiguration`
 
 To update:
 `darwin-rebuild switch --flake ~/src/github.com/evantravers/dotfiles/nix-darwin-configuration`
