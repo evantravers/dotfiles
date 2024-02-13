@@ -1,7 +1,7 @@
 # NixOS-WSL specific options are documented on the NixOS-WSL repository:
 # https://github.com/nix-community/NixOS-WSL
 
-{... }:
+{pkgs, ... }:
 
 {
   imports = [
@@ -10,7 +10,7 @@
 
   wsl = {
     enable = true;
-    defaultUser = "evan";
+    defaultUser = "nixos";
     nativeSystemd = true;
     interop.includePath = false;
   };
