@@ -3,6 +3,7 @@
 {
   imports = [
     ./nvim.nix
+    ./tmux.nix
   ];
 
   home = {
@@ -110,26 +111,6 @@
     jujutsu = {
       enable = true;
       enableFishIntegration = true;
-    };
-
-    tmux = {
-      enable = true;
-      sensibleOnTop = false;
-      prefix = "C-space";
-      escapeTime = 10;
-      shell = "${pkgs.fish}/bin/fish";
-      terminal = "wezterm";
-
-      extraConfig = lib.fileContents ../config/tmux/.config/tmux/tmux.conf;
-
-      plugins = with pkgs.tmuxPlugins; [
-        fuzzback
-        logging
-        pain-control
-        sessionist
-        tmux-thumbs
-        yank
-      ];
     };
   };
 }
