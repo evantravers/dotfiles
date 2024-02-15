@@ -45,7 +45,6 @@
         mouse_drop_action = "stack";
         window_shadow = "float";
         window_gap = "20";
-        window_placement = "second_child";
       };
       extraConfig = ''
         yabai -m rule --add app='System Settings' manage=off
