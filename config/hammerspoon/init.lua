@@ -328,6 +328,3 @@ hs.audiodevice.watcher.start()
 Hyper:bind({}, 'w', nil, function()
   hs.window.focusedWindow():application():selectMenuItem({"Edit", "Start Dictation"})
 end)
-
--- insta-hide
-hs.hotkey.bind({"cmd"}, "h" function() hs.window.focusedWindow():application():hide() end)
