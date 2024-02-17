@@ -21,6 +21,12 @@
   default = simple
 [commit]
   verbose = true
+[diff]
+  algorithm = histogram
+[merge]
+  conflictstyle = zdiff3
+[url "git@github.com:"]
+  insteadOf = "https://github.com"
 [alias]
   st = status --short --branch
   co = checkout
