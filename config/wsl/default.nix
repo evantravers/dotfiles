@@ -12,7 +12,7 @@
     enable = true;
     defaultUser = "nixos";
     nativeSystemd = true;
-    interop.includePath = false;
+    interop.includePath = true;
   };
 
   environment = {
