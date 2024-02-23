@@ -157,7 +157,7 @@ HyperModal
     HyperModal:exit()
   end)
 
-Hyper:bind({}, 'm', function() HyperModal:toggle() end)
+Hyper:bind({}, 'Return', function() HyperModal:toggle() end)
 
 local brave = require('brave')
       brave.start(Config)
