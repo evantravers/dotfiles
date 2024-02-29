@@ -24,11 +24,6 @@ return {
     bundleID = 'com.google.Chrome',
     tags = {'browsers'}
   },
-  ['com.kapeli.dashdoc'] = {
-    bundleID = 'com.kapeli.dashdoc',
-    hyperKey = 'h',
-    tags = {'coding'}
-  },
   ['com.microsoft.teams2'] = {
     bundleID = 'com.microsoft.teams2',
     tags = {'communication', 'chat'}
