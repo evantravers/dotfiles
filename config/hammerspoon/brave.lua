@@ -9,12 +9,8 @@
 
 local module = {}
 
-module.start = function(config_table)
-  module.config = config_table
-end
-
 module.jump = function(url)
-  hs.osascript.javascript([[
+  local _success, object, _output = hs.osascript.javascript([[
   (function() {
     var brave = Application('Brave');
     brave.activate();
@@ -26,10 +22,15 @@ module.jump = function(url)
       if (tabIndex != -1) {
         win.activeTabIndex = (tabIndex + 1);
         win.index = 1;
+        return true;
+      }
+      else {
+        return false;
       }
     }
   })();
   ]])
+  return object
 end
 
 module.killTabsByDomain = function(domain)

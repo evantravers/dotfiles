@@ -164,7 +164,6 @@ HyperModal
 Hyper:bind({}, 'm', function() HyperModal:toggle() end)
 
 local brave = require('brave')
-      brave.start(Config)
 
 -- Random bindings
 Hyper:bind({}, 'r', nil, function()
@@ -258,6 +257,14 @@ Hyper:bind({}, 'v', nil, function()
     hs.application.launchOrFocusByBundleID('com.adobe.LightroomClassicCC7')
   else
     brave.jump("lucidchart.com|figma.com")
+  end
+end)
+
+Hyper:bind({}, 'h', nil, function()
+  if brave.jump("devdocs.io") then
+    return true
+  else
+    hs.urlevent.openURL("http://devdocs.io")
   end
 end)
 
