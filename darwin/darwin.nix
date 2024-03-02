@@ -34,6 +34,7 @@
   fonts.fontDir.enable = true;
   fonts.fonts = [
     pkgs.monaspace
+    pkgs.atkinson-hyperlegible
   ];
 
   services = {
