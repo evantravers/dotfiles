@@ -55,6 +55,7 @@
         yabai -m rule --add app='Cardhop' manage=off
         yabai -m rule --add app='System Settings' manage=off
         yabai -m rule --add app='Timery' manage=off
+        yabai -m rule --add app='Pop' manage=off
       '';
     };
   };
