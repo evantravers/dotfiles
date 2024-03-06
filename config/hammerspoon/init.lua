@@ -359,7 +359,3 @@ hs.audiodevice.watcher.start()
 Hyper:bind({}, 'w', nil, function()
   hs.window.focusedWindow():application():selectMenuItem({"Edit", "Start Dictation"})
 end)
-
-if hs.fs.attributes("~/.hammerspoon/local.lua") then
-  require "~/.hammerspoon/local.lua"
-end
