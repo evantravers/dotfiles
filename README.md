@@ -29,7 +29,7 @@ On WSL2: [WSL2 Nix](https://github.com/nix-community/NixOS-WSL?tab=readme-ov-fil
 
 ## Home Manager
 
-You coulud use something like this to import my home-manager standalone.
+You could use something like this to import my home-manager standalone.
 
 ```nix
 { config, pkgs, ... }: {
