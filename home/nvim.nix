@@ -354,6 +354,14 @@
               },
             },
           }
+          require'lspconfig'.ltex.setup({
+            settings = {
+              ltex = {
+                language = "en-US",
+                enabled = true
+              }
+            }
+          })
         '';
       }
       completion-nvim
