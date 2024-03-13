@@ -14,8 +14,9 @@
     # The home.packages option allows you to install Nix packages into your
     # environment.
     packages = [
-      pkgs.nixd
       pkgs.ltex-ls
+      pkgs.marksman
+      pkgs.nixd
       pkgs.ripgrep
     ];
 
