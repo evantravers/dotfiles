@@ -362,6 +362,14 @@
               }
             }
           })
+          require'lspconfig'.marksman.setup({
+            settings = {
+              filetypes = {
+                "markdown",
+                "md"
+              }
+            }
+          })
         '';
       }
       completion-nvim
@@ -377,54 +385,6 @@
       }
       plenary-nvim
       zen-mode-nvim
-      {
-        plugin = telekasten-nvim;
-        type = "lua";
-        config = ''
-          local home = vim.fn.expand("~/src/wiki")
-
-          require('telekasten').setup({
-            home         = home,
-            take_over_my_home = true,
-            auto_set_filetype = false,
-            dailies      = home .. '/' .. 'journal/daily',
-            weeklies     = home .. '/' .. 'journal/weekly',
-            templates    = home .. '/' .. 'templates',
-            image_subdir = nil,
-            uuid_type = "%Y%m%d%H%M",
-            follow_creates_nonexisting = true,
-            journal_auto_open = false,
-            template_new_daily = home .. '/' .. 'templates/daily.md',
-            template_new_weekly= home .. '/' .. 'templates/weekly.md',
-            image_link_style = "markdown",
-            sort = "filename",
-            plug_into_calendar = true,
-            calendar_opts = {
-              weeknm = 4,
-              calendar_monday = 1,
-              calendar_mark = 'left-fit',
-            },
-            close_after_yanking = false,
-            insert_after_inserting = true,
-            tag_notation = "#tag",
-            command_palette_theme = "ivy",
-            show_tags_theme = "ivy",
-            subdirs_in_links = true,
-            template_handling = "smart",
-            new_note_location = "smart",
-            rename_update_links = true,
-            media_previewer = "telescope-media-files",
-            follow_url_fallback = nil,
-          })
-
-          vim.keymap.set('n', '<localleader>zf', ":Telekasten find_notes<cr>", {noremap = true, silent = true})
-          vim.keymap.set('n', '<localleader>zd', ":Telekasten find_daily_notes<cr>", {noremap = true, silent = true})
-          vim.keymap.set('n', '<localleader>zg', ":Telekasten search_notes<cr>", {noremap = true, silent = true})
-          vim.keymap.set('n', '<localleader>zz', ":lua require('telekasten').follow_link()<CR>", {noremap = true, silent = true})
-          vim.keymap.set('n', '<localleader>z', ":lua require('telekasten').panel()<CR>", {noremap = true, silent = true})
-          vim.keymap.set('i', '[[', "<cmd>:lua require('telekasten').insert_link()<CR>", {noremap = true, silent = true})
-        '';
-      }
       {
         plugin = pkgs.vimUtils.buildVimPlugin {
           name = "auto-dark-mode-nvim";
