@@ -15,6 +15,7 @@
     # environment.
     packages = [
       pkgs.nixd
+      pkgs.ltex-ls
       pkgs.ripgrep
     ];
 
