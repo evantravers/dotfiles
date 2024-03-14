@@ -381,6 +381,7 @@
           vim.keymap.set('n', '<localleader>a', "<cmd>lua require('telescope.builtin').live_grep()<cr>", {noremap = true, silent = true})
           vim.keymap.set('n', '<c-p>', ":lua require('telescope.builtin').find_files({ find_command = {'rg', '--files', '--hidden', '-g', '!.git' }})<cr>", {noremap = true, silent = true})
           vim.keymap.set('n', '<localleader><space>', ":lua require('telescope.builtin').buffers()<cr>", {noremap = true, silent = true})
+          vim.keymap.set('n', '<localleader>ww', ":lua require('telescope.builtin').find_files({prompt_title = 'Search ZK', shorten_path = false, cwd = '~/src/wiki'})<cr>", {noremap = true, silent = true})
         '';
       }
       plenary-nvim
