@@ -14,6 +14,7 @@
     # The home.packages option allows you to install Nix packages into your
     # environment.
     packages = [
+      pkgs.devenv
       pkgs.ltex-ls
       pkgs.marksman
       pkgs.nixd
