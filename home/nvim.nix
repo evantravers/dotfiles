@@ -315,7 +315,9 @@
             end
           end
 
-          require'lspconfig'.elixirls.setup {}
+          require'lspconfig'.elixirls.setup {
+            cmd = { "elixir-ls" }
+          }
           require'lspconfig'.solargraph.setup({
             cmd = { "solargraph", "stdio" },
             filetypes = { "ruby" },
