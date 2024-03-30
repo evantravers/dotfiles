@@ -96,7 +96,6 @@
 
     jujutsu = {
       enable = true;
-      enableFishIntegration = true;
     };
   };
 }
