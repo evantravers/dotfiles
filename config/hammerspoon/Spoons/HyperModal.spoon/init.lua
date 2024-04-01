@@ -11,12 +11,26 @@ m.homepage = "https://github.com/evantravers/hammerspoon-config/Spoons/HyperModa
 -- initialize it as "closed"
 m.isOpen = false
 
+m.style = {
+  strokeWidth  = 0,
+  strokeColor = { white = 1, alpha = 0 },
+  fillColor   = { white = 0, alpha = 0.35 },
+  textColor = { white = 1, alpha = 1 },
+  textFont  = ".AppleSystemUIFont",
+  textSize  = 54,
+  radius = 28,
+  atScreenEdge = 0,
+  fadeInDuration = 0,
+  fadeOutDuration = 0,
+  padding = nil,
+}
+
 function m:entered()
   m.isOpen = true
   m.alertUuids = hs.fnutils.map(hs.screen.allScreens(), function(screen)
     local prompt = string.format("🖥 : %s",
                                  hs.window.focusedWindow():application():title())
-    return hs.alert.show(prompt, hs.alert.defaultStyle, screen, true)
+    return hs.alert.show(prompt, m.style, screen, true)
   end)
 
   return self
