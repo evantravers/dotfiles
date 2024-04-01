@@ -2,6 +2,9 @@
 
 This is to describe the barebones development system I use. Supports NixOS on WSL, Intel and Silicon Macs.
 
+> [!WARNING]
+> I haven't tested bootstrapping this yet, especially on an "unknown" host.
+
 ## Install Nix
 
 On OSX: [Determinate Systems Installer](https://github.com/DeterminateSystems/nix-installer).
