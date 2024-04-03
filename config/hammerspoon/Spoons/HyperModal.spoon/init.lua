@@ -37,26 +37,17 @@ function m:entered()
   m.indicator = hs.canvas.new{x=max.x, y=max.y, h=max.h, w=max.w}:appendElements({
     type = "rectangle",
     action="stroke",
-    strokeWidth=2.0,
-    strokeColor= {white=0.5},
+    strokeWidth=4.0,
+    strokeColor= {white=0.5, alpha=0.3},
     roundedRectRadii = {xRadius=14.0, yRadius=14.0},
     frame = {x=f.x, y=f.y, h=f.h, w=f.w}
   }):show()
-
-  m.alertUuids = hs.fnutils.map(hs.screen.allScreens(), function(screen)
-    local prompt = string.format("🖥 : %s",
-                                 hs.window.focusedWindow():application():title())
-    return hs.alert.show(prompt, m.style, screen, true)
-  end)
 
   return self
 end
 
 function m:exited()
   m.isOpen = false
-  hs.fnutils.ieach(m.alertUuids, function(uuid)
-    hs.alert.closeSpecific(uuid)
-  end)
 
   m.indicator:delete()
 
