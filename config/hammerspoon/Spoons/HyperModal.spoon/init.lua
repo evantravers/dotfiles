@@ -38,7 +38,7 @@ function m:entered()
     type = "rectangle",
     action="stroke",
     strokeWidth=4.0,
-    strokeColor= {white=0.5, alpha=0.3},
+    strokeColor= {white=0.5, alpha=0.7},
     roundedRectRadii = {xRadius=14.0, yRadius=14.0},
     frame = {x=f.x, y=f.y, h=f.h, w=f.w}
   }):show()
