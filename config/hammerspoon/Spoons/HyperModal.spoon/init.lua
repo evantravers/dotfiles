@@ -27,6 +27,22 @@ m.style = {
 
 function m:entered()
   m.isOpen = true
+
+  local win = hs.window.focusedWindow()
+  local screen = win:screen()
+  local max = screen:fullFrame()
+  local f = win:frame()
+
+  -- https://github.com/Hammerspoon/hammerspoon/issues/2214
+  m.indicator = hs.canvas.new{x=max.x, y=max.y, h=max.h, w=max.w}:appendElements({
+    type = "rectangle",
+    action="stroke",
+    strokeWidth=2.0,
+    strokeColor= {white=0.5},
+    roundedRectRadii = {xRadius=14.0, yRadius=14.0},
+    frame = {x=f.x, y=f.y, h=f.h, w=f.w}
+  }):show()
+
   m.alertUuids = hs.fnutils.map(hs.screen.allScreens(), function(screen)
     local prompt = string.format("🖥 : %s",
                                  hs.window.focusedWindow():application():title())
@@ -41,6 +57,8 @@ function m:exited()
   hs.fnutils.ieach(m.alertUuids, function(uuid)
     hs.alert.closeSpecific(uuid)
   end)
+
+  m.indicator:delete()
 
   return self
 end
