@@ -21,7 +21,7 @@ function m:entered()
     type = "rectangle",
     action="stroke",
     strokeWidth=4.0,
-    strokeColor= {white=0.5, alpha=0.7},
+    strokeColor= {hex = "#F74F9E", alpha=0.7},
     roundedRectRadii = {xRadius=14.0, yRadius=14.0},
     frame = f
   }):show()
