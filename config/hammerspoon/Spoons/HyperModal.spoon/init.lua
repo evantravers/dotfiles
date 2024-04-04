@@ -28,18 +28,16 @@ m.style = {
 function m:entered()
   m.isOpen = true
 
-  local win = hs.window.focusedWindow()
-  local screenFrame = win:screen():fullFrame()
-  local f = win:frame()
+  local f = hs.window.focusedWindow():frame()
 
   -- https://github.com/Hammerspoon/hammerspoon/issues/2214
-  m.indicator = hs.canvas.new(screenFrame):appendElements({
+  m.indicator = hs.canvas.new(f):appendElements({
     type = "rectangle",
     action="stroke",
     strokeWidth=4.0,
     strokeColor= {white=0.5, alpha=0.7},
     roundedRectRadii = {xRadius=14.0, yRadius=14.0},
-    frame = {x=f.x, y=f.y, h=f.h, w=f.w}
+    frame = f
   }):show()
 
   return self
