@@ -29,12 +29,11 @@ function m:entered()
   m.isOpen = true
 
   local win = hs.window.focusedWindow()
-  local screen = win:screen()
-  local max = screen:fullFrame()
+  local screenFrame = win:screen():fullFrame()
   local f = win:frame()
 
   -- https://github.com/Hammerspoon/hammerspoon/issues/2214
-  m.indicator = hs.canvas.new{x=max.x, y=max.y, h=max.h, w=max.w}:appendElements({
+  m.indicator = hs.canvas.new(screenFrame):appendElements({
     type = "rectangle",
     action="stroke",
     strokeWidth=4.0,
