@@ -135,5 +135,9 @@ return {
   ['com.flexibits.cardhop.mac'] = {
     bundleID = 'com.flexibits.cardhop.mac',
     localBindings = {'u'}
+  },
+  ['com.goodsnooze.MacWhisper'] = {
+    bundleID = 'com.goodsnooze.MacWhisper',
+    localBindings = {'a'}
   }
 }
