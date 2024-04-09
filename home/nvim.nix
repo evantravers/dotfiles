@@ -174,11 +174,12 @@
       }
       lush-nvim
       {
-        plugin = nvim-colorizer-lua;
+        plugin = nvim-highlight-colors;
         type = "lua";
         config = ''
-          require'colorizer'.setup({
-            css = { rgb_fn = true; };
+          require'nvim-highlight-colors'.setup({
+            render = 'virtual',
+            enable_tailwind = true
           })
         '';
       }
