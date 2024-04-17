@@ -34,7 +34,7 @@
   fonts.fontDir.enable = true;
   fonts.fonts = [
     pkgs.atkinson-hyperlegible
-    pkgs.iosevka
+    pkgs.jetbrains-mono
   ];
 
   services = {
