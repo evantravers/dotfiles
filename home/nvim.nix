@@ -414,6 +414,21 @@
         };
       }
       {
+        plugin = pkgs.vimUtils.buildVimPlugin {
+          name = "nvim-tree-pairs";
+          src = pkgs.fetchFromGitHub {
+            owner = "yorickpeterse";
+            repo = "nvim-tree-pairs";
+            rev = "2a6198c66116ea18b8c64a5d0f049c5dab83aa96";
+            hash = "sha256-uJ4LxczgWl4aQCFuG4cR+2zwhNo7HB6R7ZPTdgjvyfY=";
+          };
+          type = "lua";
+          config = ''
+          require('tree-pairs').setup()
+          '';
+        };
+      }
+      {
         plugin = flash-nvim;
         type = "lua";
         config = ''
