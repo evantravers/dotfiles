@@ -48,7 +48,8 @@
         window_gap = "20";
       };
       extraConfig = ''
-        yabai -m signal --add event=display_changed action="yabai -m rule --remove label=calendar && if [ \$YABAI_DISPLAY_INDEX -gt 1 ]; then yabai -m rule --add app='Fantastical' label='calendar' display=east; else yabai -m rule --add app='Fantastical' label='calendar' native-fullscreen=on; fi" active=yes
+        yabai -m signal --add event=display_added action="yabai -m rule --remove label=calendar && yabai -m rule --add app='Fantastical' label='calendar' display=east" active=yes
+        yabai -m signal --add event=display_removed action="yabai -m rule --remove label=calendar && yabai -m rule --add app='Fantastical' label='calendar' native-fullscreen=on" active=yes
         yabai -m rule --add app='OBS' display=east
         yabai -m rule --add app='Spotify' display=east
 
