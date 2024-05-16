@@ -207,7 +207,6 @@
         '';
       }
       vim-abolish
-      vim-commentary
       vim-eunuch
       vim-projectionist
       vim-ragtag
@@ -260,9 +259,6 @@
         plugin = nvim-lspconfig;
         type = "lua";
         config = ''
-          vim.keymap.set('n', '<space>e', vim.diagnostic.open_float)
-          vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
-          vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
           vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist)
 
           -- Use LspAttach autocommand to only map the following keys
@@ -279,7 +275,6 @@
               vim.keymap.set('n', '<space>t', '<cmd>TroubleToggle<CR>', opts)
               vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
               vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
-              vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
               vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
               vim.keymap.set('n', '<M-k>', vim.lsp.buf.signature_help, opts)
               vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts)
