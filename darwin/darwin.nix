@@ -96,8 +96,9 @@
     };
     finder = {
       AppleShowAllExtensions = true;
-      ShowPathbar = true;
+      FXDefaultSearchScope = "SCcf";
       FXEnableExtensionChangeWarning = false;
+      ShowPathbar = true;
     };
     NSGlobalDomain = {
       AppleKeyboardUIMode = 3;
