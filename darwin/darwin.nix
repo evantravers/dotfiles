@@ -86,24 +86,30 @@
     };
   };
 
-  system.defaults = {
-    dock = {
-      autohide = true;
-      orientation = "left";
-      show-process-indicators = false;
-      show-recents = false;
-      static-only = true;
+  system = {
+    defaults = {
+      dock = {
+        autohide = true;
+        orientation = "left";
+        show-process-indicators = false;
+        show-recents = false;
+        static-only = true;
+      };
+      finder = {
+        AppleShowAllExtensions = true;
+        FXDefaultSearchScope = "SCcf";
+        FXEnableExtensionChangeWarning = false;
+        ShowPathbar = true;
+      };
+      NSGlobalDomain = {
+        AppleKeyboardUIMode = 3;
+        "com.apple.keyboard.fnState" = true;
+        NSAutomaticWindowAnimationsEnabled = false;
+      };
     };
-    finder = {
-      AppleShowAllExtensions = true;
-      FXDefaultSearchScope = "SCcf";
-      FXEnableExtensionChangeWarning = false;
-      ShowPathbar = true;
-    };
-    NSGlobalDomain = {
-      AppleKeyboardUIMode = 3;
-      "com.apple.keyboard.fnState" = true;
-      NSAutomaticWindowAnimationsEnabled = false;
+    keyboard = {
+      enableKeyMapping = true;
+      remapCapsLockToControl = true;
     };
   };
 }
