@@ -1,7 +1,7 @@
 return {
   ['com.raycast.macos'] = {
     bundleID = 'com.raycast.macos',
-    localBindings = {'c', 'space', 'o'}
+    localBindings = {'c', 'space'}
   },
   ['com.github.wez.wezterm'] = {
     bundleID = 'com.github.wez.wezterm',
@@ -68,11 +68,11 @@ return {
     hyperKey ='d',
     tags = {'review', 'writing', 'research', 'notes'},
     whitelisted = true,
-    localBindings = {'x', ';'}
+    localBindings = {'x', 'n'}
   },
   ['com.joehribar.toggl'] = {
     bundleID = 'com.joehribar.toggl',
-    hyperKey = 'n'
+    hyperKey = 'w'
   },
   ['com.ideasoncanvas.mindnode.macos'] = {
     bundleID = 'com.ideasoncanvas.mindnode.macos',
