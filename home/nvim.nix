@@ -248,13 +248,7 @@
       vim-fugitive
       vim-git
       vim-rhubarb
-      {
-        plugin = trouble-nvim;
-        type = "lua";
-        config = ''
-          require('trouble').setup()
-        '';
-      }
+      trouble-nvim
       {
         plugin = nvim-lspconfig;
         type = "lua";
