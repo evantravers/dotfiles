@@ -23,10 +23,8 @@
   };
 
   outputs = {
-    self,
     darwin,
     nixos-wsl,
-    flake-utils,
     home-manager,
     ...
   } @ inputs: {
