@@ -50,13 +50,13 @@
           ./darwin/darwin.nix
           home-manager.darwinModules.home-manager
           {
+            _module.args = { inherit inputs; };
             home-manager = {
               users.etravers = import ./home/home.nix;
             };
             users.users.etravers.home = "/Users/etravers";
           }
         ];
-        specialArgs = { inherit inputs; };
       };
       "Evans-MacBook-Pro" = darwin.lib.darwinSystem {
         system = "x86_64-darwin";
@@ -64,13 +64,13 @@
           ./darwin/darwin.nix
           home-manager.darwinModules.home-manager
           {
+            _module.args = { inherit inputs; };
             home-manager = {
               users.evan = import ./home/home.nix;
             };
             users.users.evan.home = "/Users/evan";
           }
         ];
-        specialArgs = { inherit inputs; };
       };
     };
   };
