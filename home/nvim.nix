@@ -418,6 +418,13 @@
         };
       }
       flash-nvim
+      {
+        plugin = todo-comments-nvim;
+        type = "lua";
+        config = ''
+          require("todo-comments").setup()
+        '';
+      }
     ];
   };
 }
