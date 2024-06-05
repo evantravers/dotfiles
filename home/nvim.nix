@@ -417,6 +417,7 @@
           '';
         };
       }
+      # FIXME: flash isn't working
       flash-nvim
       {
         plugin = todo-comments-nvim;
