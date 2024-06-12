@@ -128,8 +128,8 @@ return {
     bundleID = 'company.thebrowser.Browser',
     tags = {'browsers'}
   },
-  ['com.dexterleng.Homerow'] = {
-    bundleID = 'com.dexterleng.Homerow',
+  ['com.superultra.Homerow'] = {
+    bundleID = 'com.superultra.Homerow',
     localBindings = {'l'}
   },
   ['com.flexibits.cardhop.mac'] = {
