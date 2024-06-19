@@ -31,8 +31,7 @@
   # $ darwin-rebuild changelog
   system.stateVersion = 4;
 
-  fonts.fontDir.enable = true;
-  fonts.fonts = [
+  fonts.packages = [
     pkgs.atkinson-hyperlegible
     pkgs.jetbrains-mono
   ];
