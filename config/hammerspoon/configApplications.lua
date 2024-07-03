@@ -72,7 +72,7 @@ return {
   },
   ['com.joehribar.toggl'] = {
     bundleID = 'com.joehribar.toggl',
-    hyperKey = 'w'
+    hyperKey = 'r'
   },
   ['com.ideasoncanvas.mindnode.macos'] = {
     bundleID = 'com.ideasoncanvas.mindnode.macos',
@@ -121,9 +121,6 @@ return {
     bundleID = 'com.surteesstudios.Bartender',
     localBindings = {'b'}
   },
-  ['com.loom.desktop'] = {
-    bundleID = 'com.loom.desktop',
-  },
   ['company.thebrowser.Browser'] = {
     bundleID = 'company.thebrowser.Browser',
     tags = {'browsers'}
@@ -139,5 +136,9 @@ return {
   ['com.goodsnooze.MacWhisper'] = {
     bundleID = 'com.goodsnooze.MacWhisper',
     localBindings = {'a'}
+  },
+  ['com.goodsnooze.MenuGPT'] = {
+    bundleID = 'com.goodsnooze.MenuGPT',
+    localBindings = {'p'}
   }
 }
