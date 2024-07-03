@@ -3,26 +3,10 @@ hs.loadSpoon('Headspace'):start()
 hs.loadSpoon('Teamz'):start()
 hs.loadSpoon('HyperModal')
 
-Tags = {
-  ['browsers'] = {
-    'com.brave.Browser',
-    'org.mozilla.firefox',
-    'com.apple.Safari',
-    'com.google.Chrome'
-  },
-  ['distraction'] = {
-    'com.hnc.Discord',
-    'com.tinyspeck.slackmacgap',
-    'com.tapbots.Tweetbot3Mac'
-  },
-  ['communication'] = {
-    'com.microsoft.teams2',
-    'com.apple.mail'
-  }
-}
 -- bundleID, global, local
 Bindings = {
   {'com.agiletortoise.Drafts-OSX', 'd', {'x', 'n'}},
+  {'com.apple.MobileSMS', 'q', nil},
   {'com.apple.finder', 'f', nil},
   {'com.apple.mail', 'e', nil},
   {'com.culturedcode.ThingsMac', 't', {',', '.'}},
@@ -209,30 +193,23 @@ local chooseFromGroup = function(choice)
   :contentImage(hs.image.imageFromAppBundle(choice.bundleID))
   :send()
 
-  hs.settings.set("group." .. choice.tag, choice.bundleID)
+  hs.settings.set("hyperGroup." .. choice.key, choice.bundleID)
   hs.application.launchOrFocusByBundleID(choice.bundleID)
 end
 
-local hyperGroup = function(key, tag)
+local hyperGroup = function(key, group)
   Hyper:bind({}, key, nil, function()
-    hs.application.launchOrFocusByBundleID(hs.settings.get("group." .. tag))
+    hs.application.launchOrFocusByBundleID(hs.settings.get("hyperGroup." .. key))
   end)
   Hyper:bind({'option'}, key, nil, function()
-    local group =
-      hs.fnutils.filter(Config.applications, function(app)
-        return app.tags and
-               hs.fnutils.contains(app.tags, tag) and
-               app.bundleID ~= hs.settings.get("group." .. tag)
-      end)
-
+    print("Setting options...")
     local choices = {}
-    hs.fnutils.each(group, function(app)
+    hs.fnutils.each(group, function(bundleID)
       table.insert(choices, {
-        text = hs.application.nameForBundleID(app.bundleID),
-        image = hs.image.imageFromAppBundle(app.bundleID),
-        bundleID = app.bundleID,
-        key = key,
-        tag = tag
+        text = hs.application.nameForBundleID(bundleID),
+        image = hs.image.imageFromAppBundle(bundleID),
+        bundleID = bundleID,
+        key = key
       })
     end)
 
@@ -247,9 +224,12 @@ local hyperGroup = function(key, tag)
   end)
 end
 
-hyperGroup('q', 'personal')
-hyperGroup('k', 'browsers')
-hyperGroup('i', 'chat')
+hyperGroup('k', {
+    'com.apple.Safari',
+    'com.brave.Browser',
+    'com.google.Chrome',
+    'org.mozilla.firefox'
+  })
 
 -- Jump to google hangout or zoom
 Z_count = 0
