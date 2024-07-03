@@ -231,6 +231,10 @@ hyperGroup('k', {
     'org.mozilla.firefox'
   })
 
+hyperGroup('i', {
+    'com.microsoft.teams2'
+  })
+
 -- Jump to google hangout or zoom
 Z_count = 0
 Hyper:bind({}, 'z', nil, function()
