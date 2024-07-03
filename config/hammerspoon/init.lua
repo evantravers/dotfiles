@@ -174,11 +174,6 @@ Hyper:bind({}, 'm', function() HyperModal:toggle() end)
 local brave = require('brave')
 
 -- Random bindings
-Hyper:bind({}, 'r', nil, function()
-  hs.application.launchOrFocusByBundleID('org.hammerspoon.Hammerspoon')
-end)
-Hyper:bind({'shift'}, 'r', nil, function() hs.reload() end)
-
 local chooseFromGroup = function(choice)
   local name = hs.application.nameForBundleID(choice.bundleID)
 
@@ -276,57 +271,6 @@ Hyper:bind({}, 'h', nil, function()
   end
 end)
 
-Hyper:bind({}, 'p', nil, function()
-  local _success, projects, _output = hs.osascript.javascript([[
-    (function() {
-      var Things = Application("Things");
-      var divider = /## Resources/;
-
-      Things.launch();
-
-      let getUrls = function(proj) {
-        if (proj.notes() && proj.notes().match(divider)) {
-          return proj.notes()
-                     .split(divider)[1]
-                     .replace(divider, "")
-                     .split("\n")
-                     .map(str => str.replace(/^- /, ""))
-                     .filter(s => s != "")
-        }
-        else {
-          return false;
-        }
-      }
-
-      let projects =
-        Things
-        .projects()
-        .filter(t => t.status() == "open")
-        .map(function(proj) {
-          return {
-            text: proj.name(),
-            subText: proj.area().name(),
-            urls: getUrls(proj),
-            id: proj.id()
-          }
-        })
-        .filter(function(proj) {
-          return proj.urls
-        });
-
-      return projects;
-    })();
-  ]])
-
-  hs.chooser.new(function(choice)
-    hs.fnutils.each(choice.urls, hs.urlevent.openURL)
-    hs.urlevent.openURL("things:///show?id=" .. choice.id)
-  end)
-  :placeholderText("Choose a project…")
-  :choices(projects)
-  :show()
-end)
-
 require('browserSnip')
 
 -- sync tags to OSX
@@ -359,7 +303,3 @@ hs.audiodevice.watcher.setCallback(function(event)
   end
 end)
 hs.audiodevice.watcher.start()
-
-Hyper:bind({}, 'o', nil, function()
-  hs.window.focusedWindow():application():selectMenuItem({"Edit", "Start Dictation"})
-end)
