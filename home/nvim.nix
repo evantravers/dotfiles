@@ -408,8 +408,8 @@
           src = pkgs.fetchFromGitHub {
             owner = "yorickpeterse";
             repo = "nvim-tree-pairs";
-            rev = "2a6198c66116ea18b8c64a5d0f049c5dab83aa96";
-            hash = "sha256-uJ4LxczgWl4aQCFuG4cR+2zwhNo7HB6R7ZPTdgjvyfY=";
+            rev = "e7f7b6cc28dda6f3fa271ce63b0d371d5b7641da";
+            hash = "sha256-fb4EsrWAbm8+dWAhiirCPuR44MEg+KYb9hZOIuEuT24=";
           };
           type = "lua";
           config = ''
