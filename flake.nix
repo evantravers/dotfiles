@@ -33,11 +33,11 @@
         system = "x86_64-linux";
         modules = [
           nixos-wsl.nixosModules.wsl
-          ./nixos/configuration.nix
-          ./config/wsl
+          ./modules/nixos/configuration.nix
+          ./modules/wsl
           home-manager.nixosModules.home-manager
           {
-            home-manager.users.nixos = import ./home/home.nix;
+            home-manager.users.nixos = import ./modules/home-manager;
           }
         ];
       };
@@ -47,12 +47,12 @@
       "G2157QVFX1" = darwin.lib.darwinSystem {
         system = "aarch64-darwin";
         modules = [
-          ./darwin/darwin.nix
+          ./modules/darwin
           home-manager.darwinModules.home-manager
           {
             _module.args = { inherit inputs; };
             home-manager = {
-              users.etravers = import ./home/home.nix;
+              users.etravers = import ./modules/home-manager;
             };
             users.users.etravers.home = "/Users/etravers";
           }
@@ -61,12 +61,12 @@
       "Evans-MacBook-Pro" = darwin.lib.darwinSystem {
         system = "x86_64-darwin";
         modules = [
-          ./darwin/darwin.nix
+          ./modules/darwin
           home-manager.darwinModules.home-manager
           {
             _module.args = { inherit inputs; };
             home-manager = {
-              users.evan = import ./home/home.nix;
+              users.evan = import ./modules/home-manager;
             };
             users.users.evan.home = "/Users/evan";
           }
