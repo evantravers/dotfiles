@@ -13,7 +13,7 @@ Bindings = {
   {'com.flexibits.cardhop.mac', nil, {'u'}},
   {'com.flexibits.fantastical2.mac', 'y', {'/'}},
   {'com.github.wez.wezterm', 'j', nil},
-  {'com.goodsnooze.MenuGPT', nil, {'p'}},
+  {'com.goodsnooze.MenuGPT', 'p', nil},
   {'com.goodsnoze.MacWhisper', nil, {'a'}},
   {'com.joehribar.toggl', 'r', nil},
   {'com.raycast.macos', nil, {'c', 'space'}},
