@@ -13,7 +13,6 @@ Bindings = {
   {'com.flexibits.cardhop.mac', nil, {'u'}},
   {'com.flexibits.fantastical2.mac', 'y', {'/'}},
   {'com.github.wez.wezterm', 'j', nil},
-  {'com.goodsnooze.MenuGPT', 'p', nil},
   {'com.goodsnoze.MacWhisper', nil, {'a'}},
   {'com.joehribar.toggl', 'r', nil},
   {'com.raycast.macos', nil, {'c', 'space'}},
@@ -279,6 +278,14 @@ Hyper:bind({}, 'h', nil, function()
     return true
   else
     hs.urlevent.openURL("http://devdocs.io")
+  end
+end)
+
+Hyper:bind({}, 'p', nil, function()
+  if brave.jump("chatpt.com") then
+    return true
+  else
+    hs.urlevent.openURL("https://chatpt.com")
   end
 end)
 
