@@ -282,10 +282,10 @@ Hyper:bind({}, 'h', nil, function()
 end)
 
 Hyper:bind({}, 'p', nil, function()
-  if brave.jump("chatpt.com") then
+  if brave.jump("chatgpt.com") then
     return true
   else
-    hs.urlevent.openURL("https://chatpt.com")
+    hs.urlevent.openURL("https://chatgpt.com")
   end
 end)
 
