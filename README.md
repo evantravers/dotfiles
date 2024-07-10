@@ -36,6 +36,6 @@ You could use something like this to import my home-manager standalone.
 
 ```nix
 { config, pkgs, ... }: {
-  home-manager.users.evan = import ./home/home.nix;
+  home-manager.users.evan = import ./home-manager/home.nix;
 }
 ```
