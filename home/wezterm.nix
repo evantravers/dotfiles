@@ -1,6 +1,6 @@
 {lib, pkgs, ...}:
 {
-  home.file.".config/wezterm/wezterm.lua".source = ../config/wezterm/.wezterm.lua;
+  home.file.".config/wezterm/wezterm.lua".source = ../.config/wezterm/.wezterm.lua;
 
   home.activation.installWeztermProfile = lib.hm.dag.entryAfter ["writeBoundary"] ''
     tempfile=$(mktemp) \

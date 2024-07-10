@@ -1,6 +1,6 @@
 {lib, pkgs, ...}:
 {
-  home.file.".config/nvim/.vimrc".source = ../config/nvim/.config/nvim/.vimrc;
+  home.file.".config/nvim/.vimrc".source = ../.config/nvim/.config/nvim/.vimrc;
 
   home.activation.mkdirNvimFolders = lib.hm.dag.entryAfter ["writeBoundary"] ''
     mkdir -p $HOME/.config/nvim/backups $HOME/.config/nvim/swaps $HOME/.config/nvim/undo
@@ -10,7 +10,7 @@
     enable = true;
     defaultEditor = true;
 
-    extraLuaConfig = lib.fileContents ../config/nvim/.config/nvim/init.lua;
+    extraLuaConfig = lib.fileContents ../.config/nvim/.config/nvim/init.lua;
 
     plugins = with pkgs.vimPlugins; [
       {
