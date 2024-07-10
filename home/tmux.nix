@@ -8,7 +8,7 @@
     shell = "${pkgs.fish}/bin/fish";
     terminal = "wezterm";
 
-    extraConfig = lib.fileContents ../config/tmux/.config/tmux/tmux.conf;
+    extraConfig = lib.fileContents ../.config/tmux/.config/tmux/tmux.conf;
 
     plugins = with pkgs.tmuxPlugins; [
       fuzzback

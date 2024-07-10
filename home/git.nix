@@ -1,8 +1,8 @@
 {...}:
 {
   home.file = {
-    ".cvsignore".source = ../config/git/.cvsignore;
-    ".gitconfig".source = ../config/git/.gitconfig;
+    ".cvsignore".source = ../.config/git/.cvsignore;
+    ".gitconfig".source = ../.config/git/.gitconfig;
   };
 
   programs.git = {
