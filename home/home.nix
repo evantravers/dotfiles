@@ -26,7 +26,7 @@
     # plain files is through 'home.file'.
     file = {
       hammerspoon = lib.mkIf pkgs.stdenvNoCC.isDarwin {
-        source = ./../config/hammerspoon;
+        source = ./../.config/hammerspoon;
         target = ".hammerspoon";
         recursive = true;
       };
