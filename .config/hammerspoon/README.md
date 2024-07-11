@@ -10,11 +10,6 @@ To install: `git clone git@github.com:evantravers/hammerspoon-config.git ~/.hamm
 
 ## Modules
 
-### Autolayout
-
-- Listens to display changes and moves and maximizes windows based on screen
-  preferences.
-
 ### Brave
 
 - Provides bindings for Brave Browser
@@ -28,17 +23,6 @@ Moved to [https://github.com/evantravers/Hyper.spoon](https://github.com/evantra
 ### Headspace
 
 Moved to [https://github.com/evantravers/headspace.spoon](https://github.com/evantravers/headspace.spoon)
-
-### Movewindows
-
-Moved to [https://github.com/evantravers/MoveWindows.spoon/](https://github.com/evantravers/MoveWindows.spoon/)
-
-One interesting binding for auto splitting an reference application, moved out to [https://github.com/evantravers/split.spoon](https://github.com/evantravers/split.spoon)
-
-### Secrets
-
-Simple loading of API keys or secret variables into `hs.settings` via
-`hs.json`.
 
 ### Browsersnip
 
