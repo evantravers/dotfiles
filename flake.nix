@@ -34,7 +34,7 @@
         modules = [
           nixos-wsl.nixosModules.wsl
           ./nixos/configuration.nix
-          ./config/wsl
+          ./.config/wsl
           home-manager.nixosModules.home-manager
           {
             home-manager.users.nixos = import ./home-manager/home.nix;
