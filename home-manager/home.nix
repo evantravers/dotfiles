@@ -102,7 +102,7 @@
     helix = {
       enable = true;
       settings = {
-        theme = "catppuccin_mocha";
+        theme = "horizon-dark";
         editor = {
           line-number = "relative";
           lsp = {
