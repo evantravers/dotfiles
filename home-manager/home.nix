@@ -98,5 +98,22 @@
     jujutsu = {
       enable = true;
     };
+
+    helix = {
+      enable = true;
+      settings = {
+        theme = "catppuccin_mocha";
+        editor = {
+          line-number = "relative";
+          lsp = {
+            display-inlay-hints = true;
+          };
+          rulers = [
+            80
+          ];
+          true-color = true;
+        };
+      };
+    };
   };
 }
