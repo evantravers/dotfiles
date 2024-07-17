@@ -104,14 +104,13 @@
       settings = {
         theme = "ferra";
         editor = {
+          color-modes = true;
+          cursorline = true;
           line-number = "relative";
-          lsp = {
-            display-inlay-hints = true;
-          };
-          rulers = [
-            80
-          ];
+          lsp = { display-inlay-hints = true; };
+          rulers = [ 80 ];
           true-color = true;
+          soft-wrap.wrap-at-text-width = true;
         };
       };
     };
