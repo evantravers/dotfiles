@@ -102,7 +102,7 @@
     helix = {
       enable = true;
       settings = {
-        theme = "ferra";
+        theme = "mellow";
         editor = {
           color-modes = true;
           cursorline = true;
