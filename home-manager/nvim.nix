@@ -426,6 +426,21 @@
           require("todo-comments").setup()
         '';
       }
+      {
+        plugin = pkgs.vimUtils.buildVimPlugin {
+          name = "markdown.nvim";
+          src = pkgs.fetchFromGitHub {
+            owner = "MeanderingProgrammer";
+            repo = "markdown.nvim";
+            rev = "123048b428eb85618780fcef9ea9f4d68b5d2508";
+            hash = "sha256-YWcpS8K8ykAnC2qDXhl6kteSJ9pwxT4WXMqsFrwX7WM=";
+          };
+          type = "lua";
+          config = ''
+            require('render-markdown').setup()
+          '';
+        };
+      }
     ];
   };
 }
