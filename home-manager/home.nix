@@ -17,7 +17,7 @@
       pkgs.amber
       pkgs.devenv
       pkgs.ltex-ls
-      pkgs.marksman
+      pkgs.markdown-oxide
       pkgs.nixd
       pkgs.ripgrep
     ];
