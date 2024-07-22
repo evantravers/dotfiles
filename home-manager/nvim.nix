@@ -354,7 +354,7 @@
               }
             }
           })
-          require'lspconfig'.marksman.setup({
+          require'lspconfig'.markdown_oxide.setup({
             settings = {
               filetypes = {
                 "markdown",
