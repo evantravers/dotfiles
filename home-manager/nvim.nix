@@ -433,7 +433,6 @@
         require("render-markdown").setup()
         '';
       }
-      
     ];
   };
 }
