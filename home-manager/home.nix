@@ -47,16 +47,6 @@
 
       plugins = [
         {
-          # TODO: Remove this
-          name = "fish-asdf";
-          src = pkgs.fetchFromGitHub {
-            owner = "rstacruz";
-            repo = "fish-asdf";
-            rev = "5869c1b1ecfba63f461abd8f98cb21faf337d004";
-            sha256 = "39L6UDslgIEymFsQY8klV/aluU971twRUymzRL17+6c=";
-          };
-        }
-        {
           name = "nix-env";
           src = pkgs.fetchFromGitHub {
             owner = "lilyball";
