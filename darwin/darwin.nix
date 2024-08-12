@@ -47,8 +47,8 @@
         window_gap = "20";
       };
       extraConfig = ''
-        yabai -m signal --add event=display_added action="yabai -m rule --remove label=calendar && yabai -m rule --add app='Morgen' label='calendar' display=east" active=yes
-        yabai -m signal --add event=display_removed action="yabai -m rule --remove label=calendar && yabai -m rule --add app='Morgen' label='calendar' native-fullscreen=on" active=yes
+        yabai -m signal --add event=display_added action="yabai -m rule --remove label=calendar && yabai -m rule --add app='Fantastical' label='calendar' display=east" active=yes
+        yabai -m signal --add event=display_removed action="yabai -m rule --remove label=calendar && yabai -m rule --add app='Fantastical' label='calendar' native-fullscreen=on" active=yes
         yabai -m rule --add app='OBS' display=east
         yabai -m rule --add app='Spotify' display=east
 
@@ -64,13 +64,13 @@
     enable = true;
 
     casks = [
-     "1password"
+      "1password"
       "bartender"
       "brave-browser"
+      "fantastical"
       "firefox"
       "hammerspoon"
       "karabiner-elements"
-      "morgen"
       "obsidian"
       "raycast"
       "soundsource"
