@@ -11,7 +11,7 @@ Bindings = {
   {'com.apple.mail', 'e', nil},
   {'com.culturedcode.ThingsMac', 't', {',', '.'}},
   {'com.flexibits.cardhop.mac', nil, {'u'}},
-  {'com.todesktop.210203cqcj00tw1', 'y', {'/'}},
+  {'com.flexibits.fantastical2.mac', 'y', {'/'}},
   {'com.github.wez.wezterm', 'j', nil},
   {'com.goodsnoze.MacWhisper', nil, {'a'}},
   {'com.joehribar.toggl', 'r', nil},
