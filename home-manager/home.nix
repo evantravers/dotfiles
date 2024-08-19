@@ -85,6 +85,9 @@
       settings = {
         theme = "mellow";
         editor = {
+          file-picker = {
+            hidden = false;
+          };
           color-modes = true;
           cursorline = true;
           line-number = "relative";
