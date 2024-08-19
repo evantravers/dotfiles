@@ -83,7 +83,7 @@
     helix = {
       enable = true;
       settings = {
-        theme = "mellow";
+        theme = "kanagawa-dragon";
         editor = {
           file-picker = {
             hidden = false;
