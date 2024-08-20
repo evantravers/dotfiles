@@ -6,7 +6,6 @@
   untracked = red
 [core]
   excludesfile = "~/.cvsignore"
-  editor = nvim
 [credential]
   helper = osxkeychain
 [rerere]
