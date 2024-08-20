@@ -97,19 +97,19 @@
       settings = {
         theme = "kanagawa-dragon";
         editor = {
+          color-modes = true;
+          cursorline = true;
           file-picker = {
             hidden = false;
           };
-          color-modes = true;
-          cursorline = true;
           line-number = "relative";
           lsp = { display-inlay-hints = true; };
           rulers = [ 80 ];
-          true-color = true;
           soft-wrap = {
             enable = false;
             wrap-at-text-width = true;
           };
+          true-color = true;
         };
       };
     };
