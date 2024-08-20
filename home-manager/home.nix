@@ -82,6 +82,7 @@
 
     helix = {
       enable = true;
+      defaultEditor = true;
       settings = {
         theme = "kanagawa-dragon";
         editor = {
