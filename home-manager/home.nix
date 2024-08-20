@@ -83,6 +83,17 @@
     helix = {
       enable = true;
       defaultEditor = true;
+      languages = {
+        language = [
+          {
+            name = "nix";
+            language-servers = [ "nixd" ];
+          }
+        ];
+        language-server = {
+          nixd.command = "${pkgs.nixd}/bin/nixd";
+        };
+      };
       settings = {
         theme = "kanagawa-dragon";
         editor = {
@@ -95,7 +106,10 @@
           lsp = { display-inlay-hints = true; };
           rulers = [ 80 ];
           true-color = true;
-          soft-wrap.wrap-at-text-width = true;
+          soft-wrap = {
+            enable = false;
+            wrap-at-text-width = true;
+          };
         };
       };
     };
