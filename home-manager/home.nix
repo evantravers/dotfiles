@@ -89,9 +89,18 @@
             name = "nix";
             language-servers = [ "nixd" ];
           }
+          {
+            name = "markdown";
+            language-servers = [
+              "markdown-oxide"
+              "ltex-ls"
+            ];
+          }
         ];
         language-server = {
           nixd.command = "${pkgs.nixd}/bin/nixd";
+          markdown-oxide.command = "${pkgs.markdown-oxide}/bin/markdown-oxide";
+          ltex-ls.command = "${pkgs.ltex-ls}/bin/ltex-ls";
         };
       };
       settings = {
