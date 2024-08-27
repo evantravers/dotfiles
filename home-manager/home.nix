@@ -121,9 +121,21 @@
           true-color = true;
         };
         keys = {
-          normal.space.W = ":toggle-option soft-wrap.enable";
-          insert.C-c = "normal_mode";
-          insert."C-[" = "normal_mode";
+          normal = {
+            space = {
+              W = ":toggle-option soft-wrap.enable";
+              q = ":reflow";
+            };
+          };
+          select = {
+            space = {
+              q = ":reflow";
+            };
+          };
+          insert = {
+            C-c   = "normal_mode";
+            "C-[" = "normal_mode";
+          };
         };
       };
     };
