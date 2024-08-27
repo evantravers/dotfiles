@@ -123,6 +123,7 @@
         keys = {
           normal.space.W = ":toggle-option soft-wrap.enable";
           insert.C-c = "normal_mode";
+          insert."C-[" = "normal_mode";
         };
       };
     };
