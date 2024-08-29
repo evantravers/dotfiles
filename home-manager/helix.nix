@@ -40,6 +40,7 @@
           wrap-at-text-width = true;
         };
         true-color = true;
+        whitespace.render = "all";
       };
       keys = {
         normal = {
