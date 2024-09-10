@@ -25,7 +25,7 @@
       };
     };
     settings = {
-      theme = "base16_transparent";
+      theme = "kanagawa-dragon";
       editor = {
         color-modes = true;
         cursorline = true;
