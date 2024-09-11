@@ -481,8 +481,22 @@
           '';
         };
       }
-      # FIXME: flash isn't working
-      flash-nvim
+      {
+        plugin = flash-nvim;
+        type = "lua";
+        config = ''
+          require("flash").setup({
+            modes = {
+              char = {
+                enabled = true
+              },
+              search = {
+                enabled = true
+              }
+            }
+          });
+        '';
+      }
       {
         plugin = todo-comments-nvim;
         type = "lua";
