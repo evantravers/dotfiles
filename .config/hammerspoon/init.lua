@@ -45,7 +45,7 @@ end
 -- https://github.com/dmitriiminaev/Hammerspoon-HyperModal/blob/master/.hammerspoon/yabai.lua
 local yabai = function(args, completion)
   local yabai_output = ""
-  local yabai_error = ""
+  local yabai_error  = ""
   -- Runs in background very fast
   local yabai_task = hs.task.new("/run/current-system/sw/bin/yabai", function(err, stdout, stderr)
     print()
@@ -277,13 +277,18 @@ Hyper:bind({}, 'z', nil, function()
 end)
 
 -- Jump to figma
+local designApps = {
+  'com.figma.Desktop',
+  'com.electron.realtimeboard',
+  'com.adobe.LightroomClassicCC7'
+}
 Hyper:bind({}, 'v', nil, function()
-  if hs.application.find('com.figma.Desktop') then
-    hs.application.launchOrFocusByBundleID('com.figma.Desktop')
-  elseif hs.application.find('com.electron.realtimeboard') then
-    hs.application.launchOrFocusByBundleID('com.electron.realtimeboard')
-  elseif hs.application.find('com.adobe.LightroomClassicCC7') then
-    hs.application.launchOrFocusByBundleID('com.adobe.LightroomClassicCC7')
+  local appFound = hs.fnutils.find(designApps, function(bundleID) ->
+    return hs.application.find(bundleID)
+  end)
+
+  if appFound then
+    hs.application.launchOrFocusByBundleID(appFound)
   else
     brave.jump("lucidchart.com|figma.com")
   end
