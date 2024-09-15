@@ -283,7 +283,7 @@ local designApps = {
   'com.adobe.LightroomClassicCC7'
 }
 Hyper:bind({}, 'v', nil, function()
-  local appFound = hs.fnutils.find(designApps, function(bundleID) ->
+  local appFound = hs.fnutils.find(designApps, function(bundleID)
     return hs.application.find(bundleID)
   end)
 
