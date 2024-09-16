@@ -159,7 +159,11 @@
           require('mini.jump').setup()       -- fFtT work past a line
           require('mini.pairs').setup()      -- pair brackets
           require('mini.statusline').setup() -- minimal statusline
-          require('mini.surround').setup()   -- surround
+          require('mini.surround').setup({   -- surround
+            custom_surroundings = {
+              ['l'] = { output = { left = '[', right = ']()'}}
+            }
+          })
           local miniclue = require('mini.clue')
           miniclue.setup({       -- cute prompts about bindings
             triggers = {
