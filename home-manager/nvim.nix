@@ -34,6 +34,14 @@
           }
         '';
       }
+      # targets and textobjects
+      {
+        plugin = mini-nvim;
+        type = "lua";
+        config = ''
+          require('mini.ai').setup()
+        '';
+      }
       {
         plugin = nvim-treesitter-textobjects;
         type = "lua";
