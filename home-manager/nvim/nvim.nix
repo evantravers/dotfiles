@@ -205,13 +205,12 @@
           })
         '';
       }
-      targets-vim # Classic text-objects
-      vim-eunuch # powerful buffer-level file options
-      vim-ragtag # print/execute bindings for template files
+      targets-vim     # Classic text-objects
+      vim-eunuch      # powerful buffer-level file options
+      vim-ragtag      # print/execute bindings for template files
       vim-speeddating # incrementing dates and times
-      # git and github
-      vim-fugitive # :Git actions
-      vim-rhubarb # github plugins for fugitive
+      vim-fugitive    # :Git actions
+      vim-rhubarb     # github plugins for fugitive
       # LSP and Completion
       # =======================================================================
       {
