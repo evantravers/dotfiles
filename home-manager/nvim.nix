@@ -24,7 +24,7 @@
           vim.cmd [[color zenbones]]
         '';
       }
-      nvim-web-devicons
+      lush-nvim
       {
         plugin = nvim-highlight-colors;
         type = "lua";
@@ -61,6 +61,7 @@
         require("todo-comments").setup()
         '';
       }
+      zen-mode-nvim
       {
         plugin = render-markdown;
         type = "lua";
@@ -68,7 +69,6 @@
         require("render-markdown").setup()
         '';
       }
-      zen-mode-nvim
       {
         plugin = pkgs.vimUtils.buildVimPlugin {
           name = "auto-dark-mode-nvim";
@@ -124,6 +124,9 @@
         config = ''
           require('mini.ai').setup()
           require('mini.statusline').setup()
+          require('mini.icons').setup()
+          require('mini.jump').setup()
+          require('mini.bracketed').setup()
         '';
       }
       {
@@ -167,7 +170,6 @@
       vim-ragtag
       vim-repeat
       vim-speeddating
-      vim-unimpaired
       {
         plugin = vim-easy-align;
         type = "lua";
@@ -258,41 +260,14 @@
           vim.g['sandwich#recipes'] = sandwich_recipes
         '';
       }
-      {
-        plugin = flash-nvim;
-        type = "lua";
-        config = ''
-          require("flash").setup({
-            modes = {
-              char = {
-                enabled = true
-              },
-              search = {
-                enabled = true
-              }
-            }
-          });
-        '';
-      }
-      # languages
-      vim-elixir
-      {
-        plugin = nvim-ts-autotag;
-        type = "lua";
-        config = ''
-          require("nvim-ts-autotag").setup()
-        '';
-      }
-      # utilities
-      vim-fetch
-      lush-nvim
-      vim-gist
-      webapi-vim
+      # git and github
       vim-fugitive
       vim-git
       vim-rhubarb
-      trouble-nvim
       plenary-nvim
+      vim-gist
+      webapi-vim
+      vim-fetch
       {
         plugin = nvim-lspconfig;
         type = "lua";
@@ -407,7 +382,7 @@
           })
         '';
       }
-      coq_nvim
+      coq_nvim # TODO: I don't know that I've configured this correctly.
       {
         plugin = telescope-nvim;
         type = "lua";
