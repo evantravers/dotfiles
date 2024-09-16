@@ -12,6 +12,7 @@
     extraLuaConfig = lib.fileContents ../.config/nvim/.config/nvim/init.lua;
 
     plugins = with pkgs.vimPlugins; [
+      # UI and themes
       {
         plugin = zenbones-nvim;
         type = "lua";
@@ -25,6 +26,88 @@
       }
       nvim-web-devicons
       {
+        plugin = nvim-highlight-colors;
+        type = "lua";
+        config = ''
+          require'nvim-highlight-colors'.setup({
+            render = 'virtual',
+            enable_tailwind = true
+          })
+        '';
+      }
+      {
+        plugin = lualine-nvim;
+        type = "lua";
+        config = ''
+          require('lualine').setup {
+            options = {
+              theme = "zenbones"
+            }
+          }
+        '';
+      }
+      {
+        plugin = oil-nvim;
+        type = "lua";
+        config = ''
+          require("oil").setup({
+            view_options = {
+              show_hidden = true
+            }
+          })
+          vim.keymap.set("n", "-", require("oil").open, { desc = "Open parent directory" })
+        '';
+      }
+      git-messenger-vim
+      {
+        plugin = gitsigns-nvim;
+        type = "lua";
+        config = ''
+          require('gitsigns').setup()
+        '';
+      }
+      {
+        plugin = todo-comments-nvim;
+        type = "lua";
+        config = ''
+        require("todo-comments").setup()
+        '';
+      }
+      {
+        plugin = render-markdown;
+        type = "lua";
+        config = ''
+        require("render-markdown").setup()
+        '';
+      }
+      zen-mode-nvim
+      {
+        plugin = pkgs.vimUtils.buildVimPlugin {
+          name = "auto-dark-mode-nvim";
+          src = pkgs.fetchFromGitHub {
+            owner = "f-person";
+            repo = "auto-dark-mode.nvim";
+            rev = "76e8d40d1e1544bae430f739d827391cbcb42fcc";
+            hash = "sha256-uJ4LxczgWl4aQCFuG4cR+2zwhNo7HB6R7ZPTdgjvyfY=";
+          };
+          type = "lua";
+          config = ''
+          -- TODO: This doesn't insert properly
+          require('auto-dark-mode').setup({
+            update_interval = 1000,
+            set_dark_mode = function()
+              vim.api.nvim_set_option('background', 'dark')
+            end,
+            set_light_mode = function()
+              vim.api.nvim_set_option('background', 'light')
+            end,
+          })
+          '';
+        };
+      }
+      noice-nvim
+      # treesitter
+      {
         plugin = nvim-treesitter.withAllGrammars;
         type = "lua";
         config = ''
@@ -33,6 +116,21 @@
             indent = { enable = true },
           }
         '';
+      }
+      {
+        plugin = pkgs.vimUtils.buildVimPlugin {
+          name = "nvim-tree-pairs";
+          src = pkgs.fetchFromGitHub {
+            owner = "yorickpeterse";
+            repo = "nvim-tree-pairs";
+            rev = "e7f7b6cc28dda6f3fa271ce63b0d371d5b7641da";
+            hash = "sha256-fb4EsrWAbm8+dWAhiirCPuR44MEg+KYb9hZOIuEuT24=";
+          };
+          type = "lua";
+          config = ''
+          require('tree-pairs').setup()
+          '';
+        };
       }
       # targets and textobjects
       {
@@ -146,20 +244,41 @@
         }
         '';
       }
+      targets-vim
+      {
+        plugin = nvim-autopairs;
+        type = "lua";
+        config = ''
+          local npairs = require("nvim-autopairs")
+          npairs.setup({
+            check_ts = true,
+            close_triple_quotes = true
+          })
+          npairs.add_rules(require('nvim-autopairs.rules.endwise-elixir'))
+          npairs.add_rules(require('nvim-autopairs.rules.endwise-lua'))
+          npairs.add_rules(require('nvim-autopairs.rules.endwise-ruby'))
+          local endwise = require ("nvim-autopairs.ts-rule").endwise
+          npairs.add_rules({
+            endwise("then$", "end", "lua", nil),
+            endwise("do$", "end", "lua", nil),
+            endwise(" do$", "end", "elixir", nil),
+          })
+        '';
+      }
+      # operators
+      vim-abolish
+      vim-eunuch
+      vim-projectionist
+      vim-ragtag
+      vim-repeat
+      vim-speeddating
+      vim-unimpaired
       {
         plugin = vim-easy-align;
         type = "lua";
         config = ''
           vim.keymap.set('v', '<Enter>', '<Plug>(EasyAlign)', {})
           vim.keymap.set('n', '<Leader>a', '<Plug>(EasyAlign)', {})
-        '';
-      }
-      vim-fetch
-      {
-        plugin = gitsigns-nvim;
-        type = "lua";
-        config = ''
-          require('gitsigns').setup()
         '';
       }
       {
@@ -244,68 +363,24 @@
           vim.g['sandwich#recipes'] = sandwich_recipes
         '';
       }
-      lush-nvim
       {
-        plugin = nvim-highlight-colors;
+        plugin = flash-nvim;
         type = "lua";
         config = ''
-          require'nvim-highlight-colors'.setup({
-            render = 'virtual',
-            enable_tailwind = true
-          })
-        '';
-      }
-      {
-        plugin = oil-nvim;
-        type = "lua";
-        config = ''
-          require("oil").setup({
-            view_options = {
-              show_hidden = true
+          require("flash").setup({
+            modes = {
+              char = {
+                enabled = true
+              },
+              search = {
+                enabled = true
+              }
             }
-          })
-          vim.keymap.set("n", "-", require("oil").open, { desc = "Open parent directory" })
+          });
         '';
       }
-      {
-        plugin = lualine-nvim;
-        type = "lua";
-        config = ''
-          require('lualine').setup {
-            options = {
-              theme = "zenbones"
-            }
-          }
-        '';
-      }
-      vim-abolish
-      vim-eunuch
-      vim-projectionist
-      vim-ragtag
-      vim-repeat
-      vim-speeddating
-      vim-unimpaired
-      targets-vim
-      {
-        plugin = nvim-autopairs;
-        type = "lua";
-        config = ''
-          local npairs = require("nvim-autopairs")
-          npairs.setup({
-            check_ts = true,
-            close_triple_quotes = true
-          })
-          npairs.add_rules(require('nvim-autopairs.rules.endwise-elixir'))
-          npairs.add_rules(require('nvim-autopairs.rules.endwise-lua'))
-          npairs.add_rules(require('nvim-autopairs.rules.endwise-ruby'))
-          local endwise = require ("nvim-autopairs.ts-rule").endwise
-          npairs.add_rules({
-            endwise("then$", "end", "lua", nil),
-            endwise("do$", "end", "lua", nil),
-            endwise(" do$", "end", "elixir", nil),
-          })
-        '';
-      }
+      # languages
+      vim-elixir
       {
         plugin = nvim-ts-autotag;
         type = "lua";
@@ -313,14 +388,16 @@
           require("nvim-ts-autotag").setup()
         '';
       }
-      vim-elixir
+      # utilities
+      vim-fetch
+      lush-nvim
       vim-gist
       webapi-vim
-      git-messenger-vim
       vim-fugitive
       vim-git
       vim-rhubarb
       trouble-nvim
+      plenary-nvim
       {
         plugin = nvim-lspconfig;
         type = "lua";
@@ -391,7 +468,6 @@
               }
             }
           })
-          require'lspconfig'.tsserver.setup {}
           require'lspconfig'.nixd.setup {}
           require'lspconfig'.lua_ls.setup {
             cmd = { "lua-language-server" };
@@ -437,7 +513,6 @@
         '';
       }
       completion-nvim
-      popup-nvim
       {
         plugin = telescope-nvim;
         type = "lua";
@@ -446,77 +521,6 @@
           vim.keymap.set('n', '<space>f', ":lua require('telescope.builtin').find_files({ find_command = {'rg', '--files', '--hidden', '-g', '!.git' }})<cr>", {noremap = true, silent = true})
           vim.keymap.set('n', '<space>b', ":lua require('telescope.builtin').buffers()<cr>", {noremap = true, silent = true})
           vim.keymap.set('n', '<space>w', ":lua require('telescope.builtin').find_files({prompt_title = 'Search ZK', shorten_path = false, cwd = '~/src/wiki'})<cr>", {noremap = true, silent = true})
-        '';
-      }
-      plenary-nvim
-      zen-mode-nvim
-      {
-        plugin = pkgs.vimUtils.buildVimPlugin {
-          name = "auto-dark-mode-nvim";
-          src = pkgs.fetchFromGitHub {
-            owner = "f-person";
-            repo = "auto-dark-mode.nvim";
-            rev = "76e8d40d1e1544bae430f739d827391cbcb42fcc";
-            hash = "sha256-uJ4LxczgWl4aQCFuG4cR+2zwhNo7HB6R7ZPTdgjvyfY=";
-          };
-          type = "lua";
-          config = ''
-          -- TODO: This doesn't insert properly
-          require('auto-dark-mode').setup({
-            update_interval = 1000,
-            set_dark_mode = function()
-              vim.api.nvim_set_option('background', 'dark')
-            end,
-            set_light_mode = function()
-              vim.api.nvim_set_option('background', 'light')
-            end,
-          })
-          '';
-        };
-      }
-      {
-        plugin = pkgs.vimUtils.buildVimPlugin {
-          name = "nvim-tree-pairs";
-          src = pkgs.fetchFromGitHub {
-            owner = "yorickpeterse";
-            repo = "nvim-tree-pairs";
-            rev = "e7f7b6cc28dda6f3fa271ce63b0d371d5b7641da";
-            hash = "sha256-fb4EsrWAbm8+dWAhiirCPuR44MEg+KYb9hZOIuEuT24=";
-          };
-          type = "lua";
-          config = ''
-          require('tree-pairs').setup()
-          '';
-        };
-      }
-      {
-        plugin = flash-nvim;
-        type = "lua";
-        config = ''
-          require("flash").setup({
-            modes = {
-              char = {
-                enabled = true
-              },
-              search = {
-                enabled = true
-              }
-            }
-          });
-        '';
-      }
-      {
-        plugin = todo-comments-nvim;
-        type = "lua";
-        config = ''
-        require("todo-comments").setup()
-        '';
-      }
-      {
-        plugin = render-markdown;
-        type = "lua";
-        config = ''
-        require("render-markdown").setup()
         '';
       }
     ];
