@@ -90,20 +90,19 @@
             rev = "76e8d40d1e1544bae430f739d827391cbcb42fcc";
             hash = "sha256-uJ4LxczgWl4aQCFuG4cR+2zwhNo7HB6R7ZPTdgjvyfY=";
           };
-          type = "lua";
-          config = ''
-          -- TODO: This doesn't insert properly
-          require('auto-dark-mode').setup({
-            update_interval = 1000,
-            set_dark_mode = function()
-              vim.api.nvim_set_option('background', 'dark')
-            end,
-            set_light_mode = function()
-              vim.api.nvim_set_option('background', 'light')
-            end,
-          })
-          '';
         };
+        type = "lua";
+        config = ''
+        require('auto-dark-mode').setup({
+          update_interval = 1000,
+          set_dark_mode = function()
+            vim.api.nvim_set_option('background', 'dark')
+          end,
+          set_light_mode = function()
+            vim.api.nvim_set_option('background', 'light')
+          end,
+        })
+        '';
       }
       noice-nvim
       # treesitter
@@ -126,11 +125,11 @@
             rev = "e7f7b6cc28dda6f3fa271ce63b0d371d5b7641da";
             hash = "sha256-fb4EsrWAbm8+dWAhiirCPuR44MEg+KYb9hZOIuEuT24=";
           };
-          type = "lua";
-          config = ''
-          require('tree-pairs').setup()
-          '';
         };
+        type = "lua";
+        config = ''
+        require('tree-pairs').setup()
+        '';
       }
       # targets and textobjects
       {
