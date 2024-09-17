@@ -18,6 +18,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts("Definition"))
     vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts("Implementation"))
     vim.keymap.set('n', '<M-k>', vim.lsp.buf.signature_help, opts("Signature Help"))
+    vim.keymap.set('i', '<M-k>', vim.lsp.buf.signature_help, opts("Signature Help"))
     vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts("Add Workspace Folder"))
     vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, opts("Remove Workspace Folder"))
     vim.keymap.set('n', '<space>wl', function()
