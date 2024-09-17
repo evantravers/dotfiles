@@ -165,7 +165,7 @@
             }
           })
           local miniclue = require('mini.clue')
-          miniclue.setup({       -- cute prompts about bindings
+          miniclue.setup({                   -- cute prompts about bindings
             triggers = {
               { mode = 'n', keys = '<Leader>' },
               { mode = 'x', keys = '<Leader>' },
