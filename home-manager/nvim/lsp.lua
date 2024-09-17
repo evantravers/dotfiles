@@ -1,4 +1,4 @@
-vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist)
+vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, {desc = "Add buffer diagnostics to the location list."})
 
 -- Use LspAttach autocommand to only map the following keys
 -- after the language server attaches to the current buffer
