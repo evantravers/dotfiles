@@ -99,7 +99,7 @@
             plugins = {
               gitsigns = { enabled = true },
               tmux = { enabled = true },
-              kitty = {
+              wezterm = {
                 enabled = true,
               },
             },
