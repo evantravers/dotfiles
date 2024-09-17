@@ -90,14 +90,6 @@ require'lspconfig'.lua_ls.setup {
     },
   },
 }
-require'lspconfig'.ltex.setup({
-  settings = {
-    ltex = {
-      language = "en-US",
-      enabled = true
-    }
-  }
-})
 require'lspconfig'.markdown_oxide.setup({
   settings = {
     filetypes = {
