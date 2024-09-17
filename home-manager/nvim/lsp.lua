@@ -38,8 +38,6 @@ local lspconfig = require('lspconfig')
 
 require'lspconfig'.elixirls.setup { cmd = { "elixir-ls" } }
 require'lspconfig'.solargraph.setup({
-  cmd = { "solargraph", "stdio" },
-  filetypes = { "ruby" },
   settings = {
     solargraph = {
       diagnostics = true,
@@ -49,21 +47,14 @@ require'lspconfig'.solargraph.setup({
 })
 require'lspconfig'.nixd.setup {}
 require'lspconfig'.lua_ls.setup {
-  cmd = { "lua-language-server" };
   settings = {
     Lua = {
       runtime = {
-        -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
         version = 'LuaJIT',
-        -- Setup your lua path
         path = vim.split(package.path, ';'),
       },
-      diagnostics = {
-        -- Get the language server to recognize the `vim` global
-        globals = {'vim', 'hs'},
-      },
+      diagnostics = { globals = {'vim', 'hs'}, },
       workspace = {
-        -- Make the server aware of Neovim/Hammerspoon runtime files
         library = {
           [vim.fn.expand('$VIMRUNTIME/lua')] = true,
           [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
@@ -73,11 +64,4 @@ require'lspconfig'.lua_ls.setup {
     },
   },
 }
-require'lspconfig'.markdown_oxide.setup({
-  settings = {
-    filetypes = {
-      "markdown",
-      "md"
-    }
-  }
-})
+require'lspconfig'.markdown_oxide.setup{}
