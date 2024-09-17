@@ -140,7 +140,6 @@
             keymaps = {
               init_selection = "<M-o>",
               scope_incremental = "<M-O>",
-              scope_decremental = "<M-I>",
               node_incremental = "<M-o>",
               node_decremental = "<M-i>",
             },
