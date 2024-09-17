@@ -17,7 +17,6 @@
     packages = [
       pkgs.amber
       pkgs.devenv
-      pkgs.ltex-ls
       pkgs.markdown-oxide
       pkgs.nixd
       pkgs.ripgrep
