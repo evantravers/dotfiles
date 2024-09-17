@@ -25,6 +25,29 @@
           vim.cmd [[color zenbones]]
         '';
       }
+      {
+        plugin = pkgs.vimUtils.buildVimPlugin {
+          name = "auto-dark-mode-nvim"; # switch vim color with OS theme
+          src = pkgs.fetchFromGitHub {
+            owner = "f-person";
+            repo = "auto-dark-mode.nvim";
+            rev = "14cad96b80a07e9e92a0dcbe235092ed14113fb2";
+            hash = "sha256-bSkS2IDkRMQCjaePFYtq39Bokgd1Bwoxgu2ceP7Bh5s=";
+          };
+        };
+        type = "lua";
+        config = ''
+        require('auto-dark-mode').setup({
+          update_interval = 1000,
+          set_dark_mode = function()
+            vim.api.nvim_set_option('background', 'dark')
+          end,
+          set_light_mode = function()
+            vim.api.nvim_set_option('background', 'light')
+          end,
+        })
+        '';
+      }
       lush-nvim # Required by zenbones for all the colors
       {
         plugin = nvim-highlight-colors; # highlight CSS colors
@@ -120,29 +143,6 @@
         type = "lua";
         config = ''
         require("render-markdown").setup()
-        '';
-      }
-      {
-        plugin = pkgs.vimUtils.buildVimPlugin {
-          name = "auto-dark-mode-nvim"; # switch vim color with OS theme
-          src = pkgs.fetchFromGitHub {
-            owner = "f-person";
-            repo = "auto-dark-mode.nvim";
-            rev = "14cad96b80a07e9e92a0dcbe235092ed14113fb2";
-            hash = "sha256-bSkS2IDkRMQCjaePFYtq39Bokgd1Bwoxgu2ceP7Bh5s=";
-          };
-        };
-        type = "lua";
-        config = ''
-        require('auto-dark-mode').setup({
-          update_interval = 1000,
-          set_dark_mode = function()
-            vim.api.nvim_set_option('background', 'dark')
-          end,
-          set_light_mode = function()
-            vim.api.nvim_set_option('background', 'light')
-          end,
-        })
         '';
       }
       {
