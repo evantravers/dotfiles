@@ -35,30 +35,12 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 local lspconfig = require('lspconfig')
 
-local function root_pattern(...)
-  local patterns = vim.tbl_flatten {...}
-
-  return function(startpath)
-    for _, pattern in ipairs(patterns) do
-      return lspconfig.util.search_ancestors(
-        startpath,
-        function(path)
-          if lspconfig.util.path.exists(vim.fn.glob(lspconfig.util.path.join(path, pattern))) then
-            return path
-          end
-        end
-      )
-    end
-  end
-end
-
 require'lspconfig'.elixirls.setup {
   cmd = { "elixir-ls" }
 }
 require'lspconfig'.solargraph.setup({
   cmd = { "solargraph", "stdio" },
   filetypes = { "ruby" },
-  root_dir = root_pattern("Gemfile", ".git"),
   settings = {
     solargraph = {
       diagnostics = true,
