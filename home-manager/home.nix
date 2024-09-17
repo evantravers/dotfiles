@@ -62,9 +62,18 @@
         command_timeout = 100;
         format = "[$all](dimmed white)";
 
+        directory = {
+          style = "bold bright-white";
+        };
+
         character = {
           success_symbol = "[❯](dimmed green)";
           error_symbol = "[❯](dimmed red)";
+        };
+
+        git_branch = {
+          style = "bold bright-white";
+          ignore_branches = [ "master" "main" ];
         };
 
         git_status = {
