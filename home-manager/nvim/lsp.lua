@@ -36,8 +36,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 local lspconfig = require('lspconfig')
 
-require'lspconfig'.elixirls.setup { cmd = { "elixir-ls" } }
-require'lspconfig'.solargraph.setup({
+lspconfig.elixirls.setup { cmd = { "elixir-ls" } }
+lspconfig.solargraph.setup({
   settings = {
     solargraph = {
       diagnostics = true,
@@ -45,8 +45,8 @@ require'lspconfig'.solargraph.setup({
     }
   }
 })
-require'lspconfig'.nixd.setup {}
-require'lspconfig'.lua_ls.setup {
+lspconfig.nixd.setup {}
+lspconfig.lua_ls.setup {
   settings = {
     Lua = {
       runtime = {
@@ -64,4 +64,4 @@ require'lspconfig'.lua_ls.setup {
     },
   },
 }
-require'lspconfig'.markdown_oxide.setup{}
+lspconfig.markdown_oxide.setup{}
