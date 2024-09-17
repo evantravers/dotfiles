@@ -62,7 +62,7 @@ vim.keymap.set(
   'n',
   '<localleader>m',
   ':lua _G.toggleProse()<cr>',
-  {noremap = true, silent = true}
+  {noremap = true, silent = true, desc = "Toggle Writing Mode"}
 )
 
 vim.keymap.set({ 'i', 's' }, '<Tab>', function()
@@ -78,9 +78,9 @@ vim.keymap.set({ 'i', 's' }, '<Tab>', function()
 vim.keymap.set('n',
   '<leader>fe',
   "mc:%s,\\.\\.\\.,…,g<CR>:nohlsearch<CR>`c",
-  {noremap = true, silent = true})
+  {noremap = true, silent = true, desc = "... -> …"})
 -- fix spelling: just an easier finger roll on 40% keyboard
 vim.keymap.set('n',
   '<leader>fs',
   '1z=',
-  {noremap = true, silent = true})
+  {noremap = true, silent = true, desc = "Fix spelling under cursor"})
