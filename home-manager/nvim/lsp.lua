@@ -36,9 +36,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 local lspconfig = require('lspconfig')
 
-require'lspconfig'.elixirls.setup {
-  cmd = { "elixir-ls" }
-}
+require'lspconfig'.elixirls.setup { cmd = { "elixir-ls" } }
 require'lspconfig'.solargraph.setup({
   cmd = { "solargraph", "stdio" },
   filetypes = { "ruby" },
