@@ -1,4 +1,4 @@
-vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, {desc = "Add buffer diagnostics to the location list."})
+vim.keymap.set('n', '<space>d', vim.diagnostic.setloclist, {desc = "Add buffer diagnostics to the location list."})
 
 -- Use LspAttach autocommand to only map the following keys
 -- after the language server attaches to the current buffer
@@ -22,8 +22,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
       print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
     end, vim.tbl_extend('force', opts, {desc = "List Workspace Folders"}))
     vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, vim.tbl_extend('force', opts, {desc = "Type Definition"}))
-    vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, vim.tbl_extend('force', opts, {desc = "Rename Symbol"}))
-    vim.keymap.set({ 'n', 'v' }, '<space>ca', vim.lsp.buf.code_action, vim.tbl_extend('force', opts, {desc = "Code Action"}))
+    vim.keymap.set('n', '<space>r', vim.lsp.buf.rename, vim.tbl_extend('force', opts, {desc = "Rename Symbol"}))
+    vim.keymap.set({ 'n', 'v' }, '<space>a', vim.lsp.buf.code_action, vim.tbl_extend('force', opts, {desc = "Code Action"}))
     vim.keymap.set('n', 'gr', vim.lsp.buf.references, vim.tbl_extend('force', opts, {desc = "Buffer References"}))
     vim.keymap.set('n', '<localleader>f', function()
       vim.lsp.buf.format { async = true }
