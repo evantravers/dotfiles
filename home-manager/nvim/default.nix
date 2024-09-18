@@ -212,6 +212,7 @@
               ['l'] = { output = { left = '[', right = ']()'}}
             }
           })
+          require('mini.splitjoin').setup()  -- work with parameters
           local miniclue = require('mini.clue')
           miniclue.setup({                   -- cute prompts about bindings
             triggers = {
