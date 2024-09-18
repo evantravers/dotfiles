@@ -50,16 +50,6 @@
       }
       lush-nvim # Required by zenbones for all the colors
       {
-        plugin = nvim-highlight-colors; # highlight CSS colors
-        type = "lua";
-        config = ''
-          require'nvim-highlight-colors'.setup({
-            render = 'virtual',
-            enable_tailwind = true
-          })
-        '';
-      }
-      {
         plugin = oil-nvim; # Sits on top of netrw to make file actions easy.
         type = "lua";
         config = ''
@@ -69,13 +59,6 @@
             }
           })
           vim.keymap.set("n", "-", require("oil").open, { desc = "Open parent directory" })
-        '';
-      }
-      {
-        plugin = todo-comments-nvim; # Highlight todo messages
-        type = "lua";
-        config = ''
-        require("todo-comments").setup()
         '';
       }
       {
@@ -202,7 +185,20 @@
           require('mini.align').setup()      -- aligning
           require('mini.bracketed').setup()  -- unimpaired bindings with TS
           require('mini.comment').setup()    -- TS-wise comments
-          require('mini.diff').setup()    -- TS-wise comments
+          require('mini.diff').setup()       -- hunk management and highlight
+          local hipatterns = require('mini.hipatterns')
+          hipatterns.setup({  -- highlight strings and colors
+            highlighters = {
+              -- Highlight standalone 'FIXME', 'HACK', 'TODO', 'NOTE'
+              fixme = { pattern = '%f[%w]()FIXME()%f[%W]', group = 'MiniHipatternsFixme' },
+              hack  = { pattern = '%f[%w]()HACK()%f[%W]',  group = 'MiniHipatternsHack'  },
+              todo  = { pattern = '%f[%w]()TODO()%f[%W]',  group = 'MiniHipatternsTodo'  },
+              note  = { pattern = '%f[%w]()NOTE()%f[%W]',  group = 'MiniHipatternsNote'  },
+
+              -- Highlight hex color strings (`#rrggbb`) using that color
+              hex_color = hipatterns.gen_highlighter.hex_color(),
+            }
+          })
           require('mini.icons').setup()      -- minimal icons
           require('mini.jump').setup()       -- fFtT work past a line
           require('mini.pairs').setup()      -- pair brackets
