@@ -12,7 +12,8 @@
     extraLuaConfig = lib.fileContents ../../.config/nvim/.config/nvim/init.lua;
 
     plugins = with pkgs.vimPlugins; [
-      # UI and Themes
+      # =======================================================================
+      # UI AND THEMES
       # =======================================================================
       {
         plugin = zenbones-nvim; # Minimalist theme I love.
@@ -131,7 +132,8 @@
           vim.keymap.set('n', '<space>z', ":lua require('telescope.builtin').find_files({prompt_title = 'Search ZK', shorten_path = false, cwd = '~/src/wiki'})<cr>", {noremap = true, silent = true, desc = "Wiki"})
         '';
       }
-      # Treesitter
+      # =======================================================================
+      # TREESITTER
       # =======================================================================
       {
         plugin = nvim-treesitter.withAllGrammars; # Treesitter
@@ -175,7 +177,8 @@
         }
         '';
       }
-      # Utilities and Mini
+      # =======================================================================
+      # UTILITIES AND MINI
       # =======================================================================
       {
         plugin = mini-nvim; # Ridiculously complete family of plugins
@@ -264,7 +267,8 @@
       vim-speeddating # incrementing dates and times
       vim-fugitive    # :Git actions
       vim-rhubarb     # github plugins for fugitive
-      # LSP and Completion
+      # =======================================================================
+      # LSP AND COMPLETION
       # =======================================================================
       {
         plugin = nvim-lspconfig; # Interface for LSPs
