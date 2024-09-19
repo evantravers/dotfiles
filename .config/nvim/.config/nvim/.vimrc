@@ -28,6 +28,7 @@ set hidden
 set listchars=tab:»·,trail:·
 set list
 set scrolloff=3
+set nofoldenable
 
 " Tags
 set tags=./tags;/,tags;/
