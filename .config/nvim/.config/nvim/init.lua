@@ -5,6 +5,9 @@ vim.cmd([[runtime .vimrc]])
 vim.o.icm = 'split'
 vim.opt.foldtext = "v:lua.vim.treesitter.foldtext()"
 
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+
 vim.o.showmode = false
 
 -- Use rg
