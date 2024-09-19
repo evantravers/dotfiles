@@ -17,18 +17,18 @@ set expandtab
 " Hud
 set termguicolors
 syntax on
-set ruler
-set number
-set nowrap
-set fillchars=vert:\│
 set colorcolumn=80
 set cursorline
-set relativenumber
+set fillchars=vert:\│
 set hidden
-set listchars=tab:»·,trail:·
 set list
-set scrolloff=3
+set listchars=tab:»·,trail:·
 set nofoldenable
+set nowrap
+set number
+set relativenumber
+set ruler
+set scrolloff=3
 
 " Tags
 set tags=./tags;/,tags;/
