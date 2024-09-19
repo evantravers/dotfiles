@@ -2,6 +2,17 @@
 
 This is to describe the barebones development system I use. Supports NixOS on WSL, Intel and Silicon Macs.
 
+Featuring:
+- Wezterm
+- Tmux
+- Fish
+- Neovim
+- OSX
+  - darwin-nix
+  - Hammerspoon
+  - homebrew mas
+  - yabai
+
 ## Install Nix
 
 On OSX: [Determinate Systems Installer](https://github.com/DeterminateSystems/nix-installer).
