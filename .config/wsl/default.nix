@@ -21,4 +21,15 @@
       wsl-open
     ];
   };
+
+  services.xserver.enable = true;
+  services.xserver.displayManager.sddm.enable = true;
+
+  programs.hyprland = {
+    enable = true;
+    xwayland.enable = true;
+  };
+
+  services.xrdp.enable = true;
+  services.xrdp.openFirewall = true;
 }
