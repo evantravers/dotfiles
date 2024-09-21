@@ -24,7 +24,7 @@
             solid_line_nr          = true,
             solid_vert_split       = true,
           }
-          vim.cmd [[color zenbones]]
+          vim.cmd.colorscheme "zenbones"
         '';
       }
       {
