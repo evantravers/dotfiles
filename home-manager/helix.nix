@@ -23,7 +23,7 @@
       };
     };
     settings = {
-      theme = "kanagawa-dragon";
+      theme = "mellow";
       editor = {
         color-modes = true;
         cursorline = true;
