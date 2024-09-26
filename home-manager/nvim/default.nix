@@ -117,7 +117,7 @@
         '';
       }
       {
-        plugin = render-markdown; # Display markdown including docs
+        plugin = render-markdown.nvim; # Display markdown including docs
         type = "lua";
         config = ''
         require("render-markdown").setup()
