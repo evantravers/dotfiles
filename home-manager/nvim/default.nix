@@ -110,7 +110,7 @@
 
         vim.keymap.set(
           'n',
-          '<localleader>m',
+          '<space>W',
           ':lua _G.toggleProse()<cr>',
           {noremap = true, silent = true, desc = "Toggle Writing Mode"}
         )
