@@ -206,6 +206,11 @@
           })
           require('mini.icons').setup()      -- minimal icons
           require('mini.jump').setup()       -- fFtT work past a line
+          require('mini.jump2d').setup({
+            mappings = {
+              start_jumping = 'gw'
+            }
+          })       -- fFtT work past a line
           require('mini.pairs').setup()      -- pair brackets
           require('mini.statusline').setup() -- minimal statusline
           require('mini.surround').setup({   -- surround
