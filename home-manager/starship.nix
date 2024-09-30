@@ -8,7 +8,7 @@
       format = "[$all](dimmed white)";
 
       directory = {
-        style = "bold fg";
+        style = "italic white";
       };
 
       git_branch = {
