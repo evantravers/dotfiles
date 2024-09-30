@@ -7,31 +7,19 @@
       command_timeout = 100;
       format = "[$all](dimmed white)";
 
-      directory = {
-        style = "italic white";
-      };
+      directory.style = "italic white";
 
-      git_branch = {
-        ignore_branches = [ "master" "main" ];
-      };
+      git_branch.ignore_branches = [ "master" "main" ];
 
       git_status = {
         style = "bold yellow";
         format = "([$all_status$ahead_behind]($style) )";
       };
 
-      elixir = {
-        symbol = " ";
-      };
-
-      nix_shell = {
-        symbol = " ";
-        style = "italic fg";
-      };
-
-      ruby = {
-        symbol = " ";
-      };
+      elixir.symbol = " ";
+      lua.symbol = "󰢱 ";
+      nix_shell.symbol = " ";
+      ruby.symbol = " ";
 
       character = {
         success_symbol = "[❯](dimmed green)";
