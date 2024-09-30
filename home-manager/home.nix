@@ -62,6 +62,15 @@
         command_timeout = 100;
         format = "[$all](dimmed white)";
 
+        directory = {
+          style = "bold fg";
+        };
+
+        nix_shell = {
+          symbol = " ";
+          style = "italic fg";
+        };
+
         character = {
           success_symbol = "[❯](dimmed green)";
           error_symbol = "[❯](dimmed red)";
