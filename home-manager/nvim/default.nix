@@ -198,7 +198,7 @@
           require('mini.pairs').setup()      -- pair brackets
           require('mini.pick').setup()       -- pickers
           vim.keymap.set('n', '<space>/', "<cmd>Pick grep_live<cr>", opts("Live Grep"))
-          vim.keymap.set('n', '<space>F', "<cmd>lua MiniPick.builtin.files({tool='git'})<cr>", opts("Git Files"))
+          vim.keymap.set('n', '<space>F', "<cmd>Pick files tool='git'<cr>", opts("Git Files"))
           vim.keymap.set('n', '<space>f', "<cmd>Pick files<cr>", opts("Find Files"))
           vim.keymap.set('n', '<space>b', "<cmd>Pick buffers<cr>", opts("Buffers"))
           vim.keymap.set('n', "<space>'", "<cmd>Pick resume<cr>", opts("Last Picker"))
