@@ -191,7 +191,7 @@
             mappings = {
               start_jumping = 'gw'
             }
-          })       -- fFtT work past a line
+          })                                 -- fFtT work past a line
           require('mini.pairs').setup()      -- pair brackets
           require('mini.pick').setup()       -- pickers
           vim.keymap.set('n', '<space>/', "<cmd>Pick grep_live<cr>", {noremap = true, silent = true, desc = "Live Grep"})
@@ -201,8 +201,7 @@
           vim.keymap.set('n', "<space>'", "<cmd>Pick resume<cr>", {noremap = true, silent = true, desc = "Last Picker"})
           vim.keymap.set('n', "<space>g", "<cmd>Pick git_commits<cr>", {noremap = true, silent = true, desc = "Git Commits"})
           require('mini.statusline').setup() -- minimal statusline
-          require('mini.surround').setup({   -- surround
-          })
+          require('mini.surround').setup()
           require('mini.splitjoin').setup()  -- work with parameters
           local miniclue = require('mini.clue')
           miniclue.setup({                   -- cute prompts about bindings
