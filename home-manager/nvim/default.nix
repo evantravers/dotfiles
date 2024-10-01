@@ -170,9 +170,8 @@
           require('mini.comment').setup()    -- TS-wise comments
           require('mini.diff').setup()       -- hunk management and highlight
           require('mini.extra').setup()      -- extra p}ickers
-          require('mini.files').setup({      -- file manipulation
-            vim.keymap.set('n', '-', ":lua if not MiniFiles.close() then MiniFiles.open() end<cr>", {noremap = true, silent = true, desc = "Find Files"});
-          });
+          require('mini.files').setup()      -- file manipulation
+          vim.keymap.set('n', '-', ":lua if not MiniFiles.close() then MiniFiles.open() end<cr>", {noremap = true, silent = true, desc = "Find Files"});
           local hipatterns = require('mini.hipatterns')
           hipatterns.setup({  -- highlight strings and colors
             highlighters = {
