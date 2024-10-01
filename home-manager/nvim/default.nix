@@ -111,17 +111,6 @@
         require("render-markdown").setup()
         '';
       }
-      {
-        plugin = telescope-nvim; # UI for pickers
-        type = "lua";
-        config = ''
-          vim.keymap.set('n', '<space>/', "<cmd>lua require('telescope.builtin').live_grep()<cr>", {noremap = true, silent = true, desc = "Live Grep"})
-          vim.keymap.set('n', '<space>f', ":lua require('telescope.builtin').git_files()<cr>", {noremap = true, silent = true, desc = "Find Files"})
-          vim.keymap.set('n', '<space>F', ":lua require('telescope.builtin').find_files()<cr>", {noremap = true, silent = true, desc = "Find Files @ CWD"})
-          vim.keymap.set('n', '<space>b', ":lua require('telescope.builtin').buffers()<cr>", {noremap = true, silent = true, desc = "Buffers"})
-          vim.keymap.set('n', '<space>z', ":lua require('telescope.builtin').find_files({prompt_title = 'Search ZK', shorten_path = false, cwd = '~/src/wiki'})<cr>", {noremap = true, silent = true, desc = "Wiki"})
-        '';
-      }
       # =======================================================================
       # TREESITTER
       # =======================================================================
@@ -179,7 +168,8 @@
           require('mini.bracketed').setup()  -- unimpaired bindings with TS
           require('mini.comment').setup()    -- TS-wise comments
           require('mini.diff').setup()       -- hunk management and highlight
-          require('mini.files').setup({     -- file manipulation
+          require('mini.extra').setup()      -- extra p}ickers
+          require('mini.files').setup({      -- file manipulation
             vim.keymap.set('n', '-', ":lua if not MiniFiles.close() then MiniFiles.open() end<cr>", {noremap = true, silent = true, desc = "Find Files"});
           });
           local hipatterns = require('mini.hipatterns')
@@ -203,6 +193,12 @@
             }
           })       -- fFtT work past a line
           require('mini.pairs').setup()      -- pair brackets
+          require('mini.pick').setup()       -- pickers
+            vim.keymap.set('n', '<space>/', "<cmd>Pick grep_live<cr>", {noremap = true, silent = true, desc = "Live Grep"})
+            vim.keymap.set('n', '<space>F', "<cmd>lua MiniPick.builtin.files({tool='git'})<cr>", {noremap = true, silent = true, desc = "Git Files"})
+            vim.keymap.set('n', '<space>f', "<cmd>Pick files<cr>", {noremap = true, silent = true, desc = "Find Files"})
+            vim.keymap.set('n', '<space>b', "<cmd>Pick buffers<cr>", {noremap = true, silent = true, desc = "Buffers"})
+            vim.keymap.set('n', "<space>'", "<cmd>Pick resume<cr>", {noremap = true, silent = true, desc = "Last Picker"})
           require('mini.statusline').setup() -- minimal statusline
           require('mini.surround').setup({   -- surround
           })
