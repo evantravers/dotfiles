@@ -16,10 +16,10 @@
         format = "([$all_status$ahead_behind]($style) )";
       };
 
-      elixir.symbol = " ";
-      lua.symbol = "󰢱 ";
+      elixir.symbol    = " ";
+      lua.symbol       = "󰢱 ";
       nix_shell.symbol = " ";
-      ruby.symbol = " ";
+      ruby.symbol      = " ";
 
       character = {
         success_symbol = "[❯](dimmed green)";
