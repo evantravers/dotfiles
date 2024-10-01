@@ -78,8 +78,8 @@
                 vim.o.linebreak = true
                 vim.o.colorcolumn = "0"
 
-                vim.keymap.set('n', 'j', 'gj', {noremap = true})
-                vim.keymap.set('n', 'k', 'gk', {noremap = true})
+                vim.keymap.set('n', 'j', 'gj', {noremap = true, buffer = true})
+                vim.keymap.set('n', 'k', 'gk', {noremap = true, buffer = true})
               end
             end,
             on_close = function()
@@ -91,8 +91,8 @@
                 vim.o.colorcolumn = "80"
               end
 
-              vim.keymap.set('n', 'j', 'j', {noremap = true})
-              vim.keymap.set('n', 'k', 'k', {noremap = true})
+              vim.keymap.set('n', 'j', 'j', {noremap = true, buffer = true})
+              vim.keymap.set('n', 'k', 'k', {noremap = true, buffer = true})
             end
           })
         end
