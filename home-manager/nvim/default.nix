@@ -194,12 +194,12 @@
           })       -- fFtT work past a line
           require('mini.pairs').setup()      -- pair brackets
           require('mini.pick').setup()       -- pickers
-            vim.keymap.set('n', '<space>/', "<cmd>Pick grep_live<cr>", {noremap = true, silent = true, desc = "Live Grep"})
-            vim.keymap.set('n', '<space>F', "<cmd>lua MiniPick.builtin.files({tool='git'})<cr>", {noremap = true, silent = true, desc = "Git Files"})
-            vim.keymap.set('n', '<space>f', "<cmd>Pick files<cr>", {noremap = true, silent = true, desc = "Find Files"})
-            vim.keymap.set('n', '<space>b', "<cmd>Pick buffers<cr>", {noremap = true, silent = true, desc = "Buffers"})
-            vim.keymap.set('n', "<space>'", "<cmd>Pick resume<cr>", {noremap = true, silent = true, desc = "Last Picker"})
-            vim.keymap.set('n', "<space>g", "<cmd>Pick git_commits<cr>", {noremap = true, silent = true, desc = "Git Commits"})
+          vim.keymap.set('n', '<space>/', "<cmd>Pick grep_live<cr>", {noremap = true, silent = true, desc = "Live Grep"})
+          vim.keymap.set('n', '<space>F', "<cmd>lua MiniPick.builtin.files({tool='git'})<cr>", {noremap = true, silent = true, desc = "Git Files"})
+          vim.keymap.set('n', '<space>f', "<cmd>Pick files<cr>", {noremap = true, silent = true, desc = "Find Files"})
+          vim.keymap.set('n', '<space>b', "<cmd>Pick buffers<cr>", {noremap = true, silent = true, desc = "Buffers"})
+          vim.keymap.set('n', "<space>'", "<cmd>Pick resume<cr>", {noremap = true, silent = true, desc = "Last Picker"})
+          vim.keymap.set('n', "<space>g", "<cmd>Pick git_commits<cr>", {noremap = true, silent = true, desc = "Git Commits"})
           require('mini.statusline').setup() -- minimal statusline
           require('mini.surround').setup({   -- surround
           })
