@@ -71,23 +71,24 @@
             },
             on_open = function()
               if (vim.bo.filetype == "markdown" or vim.bo.filetype == "telekasten") then
-                vim.cmd 'set so=999'
-                vim.cmd 'set nornu nonu'
+                vim.o.scrolloff = 999
+                vim.o.relativenumber = false
+                vim.o.number = false
                 vim.o.wrap = true
-                vim.cmd 'set linebreak'
-                vim.cmd 'set colorcolumn=0'
+                vim.o.linebreak = true
+                vim.o.colorcolumn = "0"
 
                 vim.keymap.set('n', 'j', 'gj', {noremap = true})
                 vim.keymap.set('n', 'k', 'gk', {noremap = true})
               end
             end,
             on_close = function()
-              vim.cmd 'set so=3'
-              vim.cmd 'set rnu'
+              vim.o.scrolloff = 3
+              vim.o.relativenumber = true
               if (vim.bo.filetype == "markdown" or vim.bo.filetype == "telekasten") then
                 vim.o.wrap = false
-                vim.cmd 'set nolinebreak'
-                vim.cmd 'set colorcolumn=80'
+                vim.o.linebreak = false
+                vim.o.colorcolumn = "80"
               end
 
               vim.keymap.set('n', 'j', 'j', {noremap = true})
