@@ -199,6 +199,7 @@
             vim.keymap.set('n', '<space>f', "<cmd>Pick files<cr>", {noremap = true, silent = true, desc = "Find Files"})
             vim.keymap.set('n', '<space>b', "<cmd>Pick buffers<cr>", {noremap = true, silent = true, desc = "Buffers"})
             vim.keymap.set('n', "<space>'", "<cmd>Pick resume<cr>", {noremap = true, silent = true, desc = "Last Picker"})
+            vim.keymap.set('n', "<space>g", "<cmd>Pick git_commits<cr>", {noremap = true, silent = true, desc = "Git Commits"})
           require('mini.statusline').setup() -- minimal statusline
           require('mini.surround').setup({   -- surround
           })
