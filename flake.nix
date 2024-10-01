@@ -37,7 +37,7 @@
           ./.config/wsl
           home-manager.nixosModules.home-manager
           {
-            home-manager.users.nixos = import ./home-manager/home.nix;
+            home-manager.users.nixos = import ./home-manager;
           }
         ];
       };
@@ -52,7 +52,7 @@
           {
             _module.args = { inherit inputs; };
             home-manager = {
-              users.etravers = import ./home-manager/home.nix;
+              users.etravers = import ./home-manager;
             };
             users.users.etravers.home = "/Users/etravers";
           }
@@ -66,7 +66,7 @@
           {
             _module.args = { inherit inputs; };
             home-manager = {
-              users.evan = import ./home-manager/home.nix;
+              users.evan = import ./home-manager;
             };
             users.users.evan.home = "/Users/evan";
           }
