@@ -164,6 +164,9 @@
         plugin = mini-nvim; # Ridiculously complete family of plugins
         type = "lua";
         config = ''
+          local opts = function(label)
+            return {noremap = true, silent = true, desc = label}
+          end
           require('mini.ai').setup()         -- a/i textobjects
           require('mini.align').setup()      -- aligning
           require('mini.bracketed').setup()  -- unimpaired bindings with TS
@@ -171,7 +174,7 @@
           require('mini.diff').setup()       -- hunk management and highlight
           require('mini.extra').setup()      -- extra p}ickers
           require('mini.files').setup()      -- file manipulation
-          vim.keymap.set('n', '-', ":lua if not MiniFiles.close() then MiniFiles.open() end<cr>", {noremap = true, silent = true, desc = "Find Files"});
+          vim.keymap.set('n', '-', ":lua if not MiniFiles.close() then MiniFiles.open() end<cr>", opts("Find Files"));
           local hipatterns = require('mini.hipatterns')
           hipatterns.setup({  -- highlight strings and colors
             highlighters = {
@@ -194,9 +197,6 @@
           })
           require('mini.pairs').setup()      -- pair brackets
           require('mini.pick').setup()       -- pickers
-          local opts = function(label)
-            return {noremap = true, silent = true, desc = label}
-          end
           vim.keymap.set('n', '<space>/', "<cmd>Pick grep_live<cr>", opts("Live Grep"))
           vim.keymap.set('n', '<space>F', "<cmd>lua MiniPick.builtin.files({tool='git'})<cr>", opts("Git Files"))
           vim.keymap.set('n', '<space>f', "<cmd>Pick files<cr>", opts("Find Files"))
