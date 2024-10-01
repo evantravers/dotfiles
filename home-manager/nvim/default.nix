@@ -42,27 +42,15 @@
         require('auto-dark-mode').setup({
           update_interval = 1000,
           set_dark_mode = function()
-            vim.api.nvim_set_option('background', 'dark')
+            vim.o.background = 'dark'
           end,
           set_light_mode = function()
-            vim.api.nvim_set_option('background', 'light')
+            vim.o.background = 'light'
           end,
         })
         '';
       }
       lush-nvim # Required by zenbones for all the colors
-      {
-        plugin = oil-nvim; # Sits on top of netrw to make file actions easy.
-        type = "lua";
-        config = ''
-          require("oil").setup({
-            view_options = {
-              show_hidden = true
-            }
-          })
-          vim.keymap.set("n", "-", require("oil").open, { desc = "Open parent directory" })
-        '';
-      }
       {
         plugin = zen-mode-nvim; # Create minimalist prose writing environment
         type = "lua";
@@ -85,7 +73,7 @@
               if (vim.bo.filetype == "markdown" or vim.bo.filetype == "telekasten") then
                 vim.cmd 'set so=999'
                 vim.cmd 'set nornu nonu'
-                vim.cmd 'set wrap'
+                vim.o.wrap = true
                 vim.cmd 'set linebreak'
                 vim.cmd 'set colorcolumn=0'
 
@@ -97,7 +85,7 @@
               vim.cmd 'set so=3'
               vim.cmd 'set rnu'
               if (vim.bo.filetype == "markdown" or vim.bo.filetype == "telekasten") then
-                vim.cmd 'set nowrap'
+                vim.o.wrap = false
                 vim.cmd 'set nolinebreak'
                 vim.cmd 'set colorcolumn=80'
               end
@@ -191,6 +179,9 @@
           require('mini.bracketed').setup()  -- unimpaired bindings with TS
           require('mini.comment').setup()    -- TS-wise comments
           require('mini.diff').setup()       -- hunk management and highlight
+          require('mini.files').setup({     -- file manipulation
+            vim.keymap.set('n', '-', ":lua if not MiniFiles.close() then MiniFiles.open() end<cr>", {noremap = true, silent = true, desc = "Find Files"});
+          });
           local hipatterns = require('mini.hipatterns')
           hipatterns.setup({  -- highlight strings and colors
             highlighters = {
@@ -214,9 +205,6 @@
           require('mini.pairs').setup()      -- pair brackets
           require('mini.statusline').setup() -- minimal statusline
           require('mini.surround').setup({   -- surround
-            custom_surroundings = {
-              ['l'] = { output = { left = '[', right = ']()'}}
-            }
           })
           require('mini.splitjoin').setup()  -- work with parameters
           local miniclue = require('mini.clue')
