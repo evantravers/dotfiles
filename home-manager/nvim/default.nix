@@ -173,7 +173,13 @@
           require('mini.diff').setup()       -- hunk management and highlight
           require('mini.extra').setup()      -- extra p}ickers
           require('mini.files').setup()      -- file manipulation
-          vim.keymap.set('n', '-', ":lua if not MiniFiles.close() then MiniFiles.open() end<cr>", opts("Find Files"));
+          local oil_style = function()
+            if not MiniFiles.close() then
+              MiniFiles.open(vim.api.nvim_buf_get_name(0))
+              MiniFiles.reveal_cwd()
+            end
+          end
+          vim.keymap.set('n', '-', oil_style, opts("File Explorer"));
           local hipatterns = require('mini.hipatterns')
           hipatterns.setup({  -- highlight strings and colors
             highlighters = {
