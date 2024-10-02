@@ -43,7 +43,7 @@
       keys = {
         normal = {
           space = {
-            W = ":toggle-option soft-wrap.enable";
+            m = ":toggle-option soft-wrap.enable";
             q = ":reflow";
           };
         };
