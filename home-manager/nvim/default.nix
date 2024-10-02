@@ -170,7 +170,6 @@
           require('mini.ai').setup()         -- a/i textobjects
           require('mini.align').setup()      -- aligning
           require('mini.bracketed').setup()  -- unimpaired bindings with TS
-          require('mini.comment').setup()    -- TS-wise comments
           require('mini.diff').setup()       -- hunk management and highlight
           require('mini.extra').setup()      -- extra p}ickers
           require('mini.files').setup()      -- file manipulation
