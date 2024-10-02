@@ -202,7 +202,7 @@
           vim.keymap.set('n', '<space>b', "<cmd>Pick buffers<cr>", opts("Buffers"))
           vim.keymap.set('n', "<space>'", "<cmd>Pick resume<cr>", opts("Last Picker"))
           vim.keymap.set('n', "<space>g", "<cmd>Pick git_commits<cr>", opts("Git Commits"))
-          vim.keymap.set('n', "<space>z", "<cmd>Pick explorer cwd=vim.fn.expand('~/src/wiki')<cr>", opts("Wiki"))
+          vim.keymap.set('n', "<space>z", "<cmd>lua MiniPick.builtin.files(nil, {source={cwd=vim.fn.expand('~/src/wiki')}})<cr>", opts("Wiki"))
           require('mini.statusline').setup() -- minimal statusline
           require('mini.surround').setup()
           require('mini.splitjoin').setup()  -- work with parameters
