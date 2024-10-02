@@ -21,8 +21,8 @@
         type = "lua";
         config = ''
           vim.g.zenbones = {
-            solid_line_nr          = true,
-            solid_vert_split       = true,
+            solid_line_nr    = true,
+            solid_vert_split = true,
           }
           vim.cmd.colorscheme "zenbones"
         '';
