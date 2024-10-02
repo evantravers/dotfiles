@@ -11,7 +11,6 @@
     extraConfig = lib.fileContents ../.config/tmux/.config/tmux/tmux.conf;
 
     plugins = with pkgs.tmuxPlugins; [
-      fuzzback
       logging
       pain-control
       sessionist
