@@ -3,7 +3,7 @@ vim.cmd([[runtime .vimrc]])
 
 -- Neovim specific settings
 vim.o.icm = 'split'
-vim.o.cia = 'kind,abbr,menu'
+-- vim.o.cia = 'kind,abbr,menu' wait for nightly to drop
 vim.o.foldtext = "v:lua.vim.treesitter.foldtext()"
 
 vim.opt.foldmethod = "expr"
