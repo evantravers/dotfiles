@@ -55,6 +55,7 @@
               users.etravers = import ./home-manager;
             };
             users.users.etravers.home = "/Users/etravers";
+            nix.settings.trusted-users = [ "etravers" ];
           }
         ];
       };
@@ -69,6 +70,7 @@
               users.evan = import ./home-manager;
             };
             users.users.evan.home = "/Users/evan";
+            nix.settings.trusted-users = [ "evan" ];
           }
         ];
       };
