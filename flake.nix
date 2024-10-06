@@ -41,6 +41,7 @@
           }
         ];
       };
+      nix.settings.trusted-users = [ "nixos" ];
     };
 
     darwinConfigurations = {
