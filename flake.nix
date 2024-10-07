@@ -24,10 +24,29 @@
 
   outputs = {
     darwin,
-    nixos-wsl,
     home-manager,
     ...
-  } @ inputs: {
+  } @ inputs: let
+      darwinSystem = {host, user, arch ? "aarch64-darwin"}: {
+        ${host} = darwin.lib.darwinSystem {
+          system = ${arch};
+          modules = [
+            ./darwin/darwin.nix
+            home-manager.darwinModules.home-manager
+            {
+              _module.args = { inherit inputs; };
+              home-manager = {
+                users.${user} = import ./home-manager;
+              };
+              # FIXME: feels like the below could be two lines above
+              users.users.${user}.home = "/Users/${user}";
+              nix.settings.trusted-users = [ user ];
+            }
+          ];
+        };
+      };
+  in
+  {
     nixosConfigurations = {
       "nixos" = inputs.nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
@@ -44,37 +63,17 @@
       nix.settings.trusted-users = [ "nixos" ];
     };
 
+
     darwinConfigurations = {
-      "G2157QVFX1" = darwin.lib.darwinSystem {
-        system = "aarch64-darwin";
-        modules = [
-          ./darwin/darwin.nix
-          home-manager.darwinModules.home-manager
-          {
-            _module.args = { inherit inputs; };
-            home-manager = {
-              users.etravers = import ./home-manager;
-            };
-            users.users.etravers.home = "/Users/etravers";
-            nix.settings.trusted-users = [ "etravers" ];
-          }
-        ];
-      };
-      "Evans-MacBook-Pro" = darwin.lib.darwinSystem {
-        system = "x86_64-darwin";
-        modules = [
-          ./darwin/darwin.nix
-          home-manager.darwinModules.home-manager
-          {
-            _module.args = { inherit inputs; };
-            home-manager = {
-              users.evan = import ./home-manager;
-            };
-            users.users.evan.home = "/Users/evan";
-            nix.settings.trusted-users = [ "evan" ];
-          }
-        ];
-      };
+      darwinSystem({
+        host = "G2157QVFX1";
+        user = "etravers";
+      });
+      darwinSystem({
+        host = "Evans-MacBook-Pro";
+        user = "evan";
+        arch = "x86_64-darwin";
+      });
     };
   };
 }
