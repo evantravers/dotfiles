@@ -18,7 +18,6 @@
   };
   outputs = { nixpkgs, darwin, home-manager, nixos-wsl, ... } @ inputs: let
     darwinSystem = {user, arch ? "aarch64-darwin"}: 
-      # FIXME: I'd still like to return the full thing
       darwin.lib.darwinSystem {
         system = arch;
         modules = [
