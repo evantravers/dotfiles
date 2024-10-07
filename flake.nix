@@ -54,11 +54,9 @@
     };
     darwinConfigurations = {
       "G2157QVFX1" = darwinSystem {
-        host = "G2157QVFX1";
         user = "etravers";
       };
       "Evans-MacBook-Pro" = darwinSystem {
-        host = "Evans-MacBook-Pro";
         user = "evan";
         arch = "x86_64-darwin";
       };
