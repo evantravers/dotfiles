@@ -17,7 +17,7 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
   outputs = { nixpkgs, darwin, home-manager, nixos-wsl, ... } @ inputs: let
-    darwinSystem = {user, arch ? "aarch64-darwin"}: 
+    darwinSystem = {user, arch ? "aarch64-darwin"}:
       darwin.lib.darwinSystem {
         system = arch;
         modules = [
