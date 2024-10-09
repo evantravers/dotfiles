@@ -71,6 +71,7 @@
       "firefox"
       "hammerspoon"
       "karabiner-elements"
+      "keycastr"
       "obsidian"
       "raycast"
       "soundsource"
