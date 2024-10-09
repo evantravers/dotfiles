@@ -13,19 +13,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
     local opts = function(str)
       return { buffer = ev.buf, desc = str }
     end
-      -- FIXME: refactor and DRY this func:
-    local function check_codelens_support()
-      local clients = vim.lsp.get_clients({ bufnr = buf })
-      for _, c in ipairs(clients) do
-        if c.server_capabilities.codeLensProvider then return true end
-      end
-      return false
-    end
 
-    if check_codelens_support() then
-      vim.lsp.codelens.refresh({ bufnr = buf })
-      vim.api.nvim_exec_autocmds("User", { pattern = "LspAttached" })
-    end
+    if client.server_capabilities.codeLensProvider then vim.lsp.codelens.refresh({ bufnr = bufnr }) end
 
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts("Declaration"))
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts("Definition"))
