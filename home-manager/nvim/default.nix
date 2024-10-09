@@ -112,8 +112,11 @@
         require("render-markdown").setup({
           checkbox = {
             custom = {
-              canceled = { raw = '[-]', rendered = '󰜺 ', highlight = 'RenderMarkdownTodo' },
-              progress = { raw = '[/]', rendered = '󰦖 ', highlight = 'RenderMarkdownTodo' },
+              todo = { raw = "[-]", rendered = "󰜺", highlight = "RenderMarkdownCancelled" },
+              cancelled = { raw = '[-]', rendered = '󰜺 ', highlight = 'RenderMarkdownTodo' },
+              incomplete = { raw = '[/]', rendered = '󰦖 ', highlight = 'RenderMarkdownTodo' },
+              forwarded = { raw = "[>]", rendered = "", highlight = "RenderMarkdownForwarded" },
+              scheduled = { raw = "[<]", rendered = "󰸘", highlight = "RenderMarkdownScheduled" },
             }
           }
         })
