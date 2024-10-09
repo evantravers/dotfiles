@@ -109,7 +109,14 @@
         plugin = render-markdown-nvim; # Display markdown including docs
         type = "lua";
         config = ''
-        require("render-markdown").setup()
+        require("render-markdown").setup({
+          checkbox = {
+            custom = {
+              canceled = { raw = '[-]', rendered = '󰜺 ', highlight = 'RenderMarkdownTodo' },
+              progress = { raw = '[/]', rendered = '󰦖 ', highlight = 'RenderMarkdownTodo' },
+            }
+          }
+        })
         '';
       }
       # =======================================================================
