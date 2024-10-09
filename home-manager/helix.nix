@@ -23,7 +23,7 @@
       };
     };
     settings = {
-      theme = "mellow";
+      theme = "ferra";
       editor = {
         color-modes = true;
         cursorline = true;
