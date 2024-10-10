@@ -14,6 +14,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
       return { buffer = ev.buf, desc = str }
     end
 
+    local client = vim.lsp.get_client_by_id(ev.data.client_id)
     if client.server_capabilities.codeLensProvider then vim.lsp.codelens.refresh({ bufnr = bufnr }) end
 
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts("Declaration"))
