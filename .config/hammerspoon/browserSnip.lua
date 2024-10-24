@@ -15,6 +15,12 @@ Hyper:bind({}, 's', nil, function()
   -- get the highlighted item
   hs.eventtap.keyStroke('command', 'c')
   local highlight = hs.pasteboard.readString()
+  local words = {}
+  for word in string.gmatch(highlight, "([^%s]+)") do
+    table.insert(words, word)
+  end
+  local textStart = hs.http.encodeForQuery(words[1] .. " " .. words[2])
+  local textEnd = hs.http.encodeForQuery(words[#words-1] .. " " .. words[#words])
   local quote = ""
   for line in magiclines(highlight) do
     quote = quote .. "> " .. line .. "\n"
@@ -27,7 +33,7 @@ Hyper:bind({}, 's', nil, function()
   local template = string.format([[%s
 
 %s
-[%s](%s)]], title, quote, title, url)
+[%s](%s#:~:text=%s,%s)]], title, quote, title, url, textStart, textEnd)
   -- format and send to drafts
   hs.urlevent.openURL("drafts://x-callback-url/create?tag=links&text=" .. hs.http.encodeForQuery(template))
   hs.notify.show("Snipped!", "The snippet has been sent to Drafts", "")
