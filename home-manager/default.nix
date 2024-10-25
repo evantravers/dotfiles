@@ -59,5 +59,14 @@
     jujutsu = {
       enable = true;
     };
+    zellij = {
+      enable = true;
+      settings = {
+        default_layout = "compact";
+        default_shell = "fish";
+        pane_frames = false;
+        theme = "nord";
+      };
+    };
   };
 }
