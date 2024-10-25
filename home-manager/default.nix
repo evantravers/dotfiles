@@ -6,7 +6,6 @@
     ./helix.nix
     ./nvim
     ./starship.nix
-    ./tmux.nix
     ./wezterm.nix
   ];
 
