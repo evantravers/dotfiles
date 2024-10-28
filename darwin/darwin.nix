@@ -58,6 +58,12 @@
         yabai -m rule --add app='Timery' manage=off
       '';
     };
+    jankyborders = {
+      enable = true;
+    };
+    sketchybar = {
+      enable = true;
+    };
   };
 
   homebrew = {
