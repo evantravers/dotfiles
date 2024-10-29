@@ -60,6 +60,10 @@
     };
     jankyborders = {
       enable = true;
+      blur_radius = 5.0;
+      hidpi = true;
+      active_color = "0xff867A74";
+      inactive_color = "0x33867A74";
     };
     sketchybar = {
       enable = true;
@@ -68,6 +72,7 @@
         sketchybar --update
       '';
     };
+    karabiner-elements.enable = true;
   };
 
   homebrew = {
@@ -80,7 +85,6 @@
       "fantastical"
       "firefox"
       "hammerspoon"
-      "karabiner-elements"
       "keycastr"
       "obsidian"
       "raycast"
