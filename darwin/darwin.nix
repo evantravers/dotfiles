@@ -65,13 +65,6 @@
       active_color = "0xff867A74";
       inactive_color = "0x33867A74";
     };
-    sketchybar = {
-      enable = true;
-      config = ''
-        sketchybar --bar height=24
-        sketchybar --update
-      '';
-    };
     karabiner-elements.enable = true;
   };
 
