@@ -65,7 +65,6 @@
       active_color = "0xff867A74";
       inactive_color = "0x33867A74";
     };
-    karabiner-elements.enable = true;
   };
 
   homebrew = {
@@ -78,6 +77,7 @@
       "fantastical"
       "firefox"
       "hammerspoon"
+      "karabiner-elements"
       "keycastr"
       "obsidian"
       "raycast"
