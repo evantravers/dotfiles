@@ -21,6 +21,7 @@
       pkgs.markdown-oxide
       pkgs.nixd
       pkgs.ripgrep
+      pkgs.smartcat
     ];
 
     # Home Manager is pretty good at managing dotfiles. The primary way to manage
