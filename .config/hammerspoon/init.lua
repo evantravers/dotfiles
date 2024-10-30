@@ -134,8 +134,6 @@ end)
   end
 end)
 
-Hyper:bind({}, 'm', function() HyperModal:toggle() end)
-
 local brave = require('brave')
 
 -- Random bindings
