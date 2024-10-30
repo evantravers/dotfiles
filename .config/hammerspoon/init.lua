@@ -66,6 +66,8 @@ local yabai = function(args, completion)
   yabai_task:start()
 end
 
+-- window bindings via yabai above
+-- we are using jankyborders to highlight which is focused
 Hyper
 :bind({"control"}, "h", function()
   yabai({"-m", "window", "--focus", "west"})
