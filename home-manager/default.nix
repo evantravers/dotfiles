@@ -15,13 +15,14 @@
 
     # The home.packages option allows you to install Nix packages into your
     # environment.
-    packages = [
-      pkgs.amber
-      pkgs.devenv
-      pkgs.markdown-oxide
-      pkgs.nixd
-      pkgs.ripgrep
-      pkgs.smartcat
+    packages = with pkgs; [
+      amber
+      devenv
+      markdown-oxide
+      nixd
+      ollama
+      ripgrep
+      smartcat
     ];
 
     # Home Manager is pretty good at managing dotfiles. The primary way to manage
