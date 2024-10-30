@@ -62,7 +62,7 @@
       enable = true;
       blur_radius = 5.0;
       hidpi = true;
-      active_color = "0x33B279A7";
+      active_color = "0xAAB279A7";
       inactive_color = "0x33867A74";
     };
   };
