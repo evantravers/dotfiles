@@ -1,6 +1,5 @@
 hs.loadSpoon('Hyper')
 hs.loadSpoon('Headspace'):start()
-hs.loadSpoon('Teamz'):start()
 
 -- bundleID, global, local
 Bindings = {
