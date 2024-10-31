@@ -13,7 +13,6 @@
   environment.darwinConfig = "$HOME/src/github.com/evantravers/dotfiles/darwin";
 
   # Auto upgrade nix package and the daemon service.
-  services.nix-daemon.enable = true;
   nix = {
     package = pkgs.nix;
     settings = {
@@ -37,6 +36,7 @@
   ];
 
   services = {
+    nix-daemon.enable = true;
     yabai = {
       enable = true;
       config = {
