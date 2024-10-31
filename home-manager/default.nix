@@ -33,6 +33,11 @@
         target = ".hammerspoon";
         recursive = true;
       };
+      kanata = lib.mkIf pkgs.stdenvNoCC.isDarwin {
+        source = ./../.config/kanata;
+        target = "./config/kanata";
+        recursive = true;
+      };
     };
 
     sessionVariables = {
