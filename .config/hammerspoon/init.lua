@@ -226,12 +226,12 @@ jumpOrOpen = function(url)
   if brave.jump(url) then
     return true
   else
-    hs.urlevent.openURL(url)
+    hs.urlevent.openURL("https://" .. url)
   end
 end
 
 Hyper:bind({}, 'h', nil, function()
-  jumpOrOpen("https://devdocs.io")
+  jumpOrOpen("devdocs.io")
 end)
 
 Hyper:bind({}, 'p', nil, function()
