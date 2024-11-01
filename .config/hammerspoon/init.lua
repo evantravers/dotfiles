@@ -222,20 +222,24 @@ Hyper:bind({}, 'v', nil, function()
   end
 end)
 
-Hyper:bind({}, 'h', nil, function()
-  if brave.jump("devdocs.io") then
+jumpOrOpen = function(url)
+  if brave.jump(url) then
     return true
   else
-    hs.urlevent.openURL("http://devdocs.io")
+    hs.urlevent.openURL(url)
   end
+end
+
+Hyper:bind({}, 'h', nil, function()
+  jumpOrOpen("https://devdocs.io")
 end)
 
 Hyper:bind({}, 'p', nil, function()
-  if brave.jump("chatgpt.com") then
-    return true
-  else
-    hs.urlevent.openURL("https://chatgpt.com")
-  end
+  jumpOrOpen("chatgpt.com")
+end)
+
+Hyper:bind({"shift"}, 'p', nil, function()
+  jumpOrOpen("claude.ai")
 end)
 
 require('browserSnip')
