@@ -212,13 +212,16 @@
         })
         require('mini.pairs').setup()      -- pair brackets
         require('mini.pick').setup()       -- pickers
-        MiniPick.registry.files = function(local_opts)
-          local opts = { source = { cwd = local_opts.cwd } }
-          local_opts.cwd = nil
+        MiniPick.registry.files_root = function(local_opts)
+          local root_patterns = { ".git" }
+          local root_dir = vim.fs.dirname(vim.fs.find(root_patterns, { upward = true })[1])
+          local opts = { source = { cwd = root_dir } }
+          local_opts.cwd = root_dir -- nil?
           return MiniPick.builtin.files(local_opts, opts)
         end
         vim.keymap.set('n', '<space>/', "<cmd>Pick grep_live<cr>", opts("Live Grep"))
-        vim.keymap.set('n', '<space>f', "<cmd>Pick files tool='git'<cr>", opts("Find Files"))
+        vim.keymap.set('n', '<space>F', "<cmd>Pick files tool='git'<cr>", opts("Find Files in CWD"))
+        vim.keymap.set('n', '<space>f', "<cmd>Pick files_root tool='git'<cr>", opts("Find Files"))
         vim.keymap.set('n', '<space>b', "<cmd>Pick buffers<cr>", opts("Buffers"))
         vim.keymap.set('n', "<space>'", "<cmd>Pick resume<cr>", opts("Last Picker"))
         vim.keymap.set('n', "<space>g", "<cmd>Pick git_commits<cr>", opts("Git Commits"))
