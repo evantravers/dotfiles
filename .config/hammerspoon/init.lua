@@ -181,7 +181,9 @@ hyperGroup('k', {
     'com.apple.Safari',
     'com.brave.Browser',
     'com.google.Chrome',
-    'org.mozilla.firefox'
+    'org.mozilla.firefox',
+    'company.thebrowser.Browser',
+    'org.mozilla.com.zen.browser'
   })
 
 hyperGroup('i', {
@@ -238,7 +240,7 @@ Hyper:bind({}, 'p', nil, function()
   jumpOrOpen("chatgpt.com")
 end)
 
-Hyper:bind({"shift"}, 'p', nil, function()
+Hyper:bind({"alt"}, 'p', nil, function()
   jumpOrOpen("claude.ai")
 end)
 
