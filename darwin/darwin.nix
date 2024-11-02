@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
   # List packages installed in system profile. To search by name, run:
@@ -64,6 +64,19 @@
       hidpi = true;
       active_color = "0xAAB279A7";
       inactive_color = "0x33867A74";
+    };
+  };
+
+
+  # Home Manager is pretty good at managing dotfiles. The primary way to manage
+  # plain files is through 'home.file'.
+  config = lib.mkIf pkgs.stdenv.isDarwin {
+    home-manager.users.${config.user} = {
+      file.hammerspoon = {
+        source = ./../.config/hammerspoon;
+        target = ".hammerspoon";
+        recursive = true;
+      };
     };
   };
 

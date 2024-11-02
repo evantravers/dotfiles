@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 
 {
   imports = [
@@ -24,24 +24,6 @@
       ripgrep
       smartcat
     ];
-
-    # Home Manager is pretty good at managing dotfiles. The primary way to manage
-    # plain files is through 'home.file'.
-    file = {
-      hammerspoon = lib.mkIf pkgs.stdenvNoCC.isDarwin {
-        source = ./../.config/hammerspoon;
-        target = ".hammerspoon";
-        recursive = true;
-      };
-      kanata = lib.mkIf pkgs.stdenvNoCC.isDarwin {
-        source = ./../.config/kanata;
-        target = "./config/kanata";
-        recursive = true;
-      };
-    };
-
-    sessionVariables = {
-    };
   };
 
   programs = {
