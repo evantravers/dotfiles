@@ -134,6 +134,9 @@ end)
     yabai({"-m", "space", "--layout", "bsp"})
   end
 end)
+:bind({"shift"}, "tab", function()
+  yabai({"-m", "window", "--display", "recent", "--focus"})
+end)
 
 local brave = require('brave')
 
