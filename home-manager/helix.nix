@@ -23,7 +23,7 @@
       };
     };
     settings = {
-      theme = "nord";
+      theme = "nightfox";
       editor = {
         color-modes = true;
         cursorline = true;
