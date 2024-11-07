@@ -2,9 +2,9 @@ local wezterm = require 'wezterm'
 
 function Scheme_for_appearance(appearance)
   if appearance:find 'Dark' then
-    return 'zenbones_dark'
+    return 'nightfox'
   else
-    return 'zenbones_light'
+    return 'dayfox'
   end
 end
 

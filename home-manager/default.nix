@@ -4,9 +4,7 @@
   imports = [
     ./git.nix
     ./helix.nix
-    ./nvim
     ./starship.nix
-    ./tmux.nix
     ./wezterm.nix
   ];
 
@@ -59,5 +57,17 @@
     };
 
     jujutsu.enable = true;
+
+    zellij = {
+      enable = true;
+      enableFishIntegration = true;
+      settings = {
+        theme          = "nightfox";
+        default_shell  = "fish";
+        default_layout = "compact";
+        pane_frames    = false;
+        default_mode   = "locked";
+      };
+    };
   };
 }
