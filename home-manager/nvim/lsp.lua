@@ -88,3 +88,4 @@ lspconfig.lua_ls.setup {
   },
 }
 lspconfig.markdown_oxide.setup{}
+lspconfig.ts_ls.setup{}
