@@ -48,8 +48,7 @@ lspconfig.solargraph.setup({
     }
   }
 })
-local nvim_lsp = require("lspconfig")
-nvim_lsp.nixd.setup({
+lspconfig.nixd.setup({
   cmd = { "nixd" },
   settings = {
     nixd = {
