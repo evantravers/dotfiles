@@ -16,6 +16,7 @@ return {
   -- theme
   color_scheme = Scheme_for_appearance(wezterm.gui.get_appearance()),
   -- window and UI
+  max_fps = 240,
   window_padding = {
     left   = '2cell',
     right  = '2cell',
