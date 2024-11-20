@@ -119,9 +119,9 @@
       remapCapsLockToControl = true;
     };
     activationScripts.restartHammerspoon.text = ''
-    echo 'Restarting Hammerspoon…'
-    killall Hammerspoon && sleep 1 || true
-    open -a /Applications/Hammerspoon.app
+      echo 'Restarting Hammerspoon…'
+      killall Hammerspoon && sleep 1 || true
+      open -a /Applications/Hammerspoon.app
     '';
   };
 }
