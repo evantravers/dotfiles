@@ -118,7 +118,7 @@
       enableKeyMapping = true;
       remapCapsLockToControl = true;
     };
-    activationScripts.hammerspoon.text = ''
+    activationScripts.restartHammerspoon.text = ''
     killall Hammerspoon && sleep 1 || true
     open -a /Applications/Hammerspoon.app
     '';
