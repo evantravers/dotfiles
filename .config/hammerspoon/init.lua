@@ -69,6 +69,32 @@ end
 -- we are using jankyborders to highlight which is focused
 local Yabai =
   hs.hotkey.modal.new({}, nil)
+
+  function Yabai:entered()
+    Yabai.enabled = true
+    local f = hs.window.focusedWindow():screen():frame()
+    Yabai.indicator = hs.canvas.new(f):appendElements({
+      type = "rectangle",
+      action="stroke",
+      strokeWidth=4.0,
+      strokeColor= {hex = "#F74F9E", alpha=0.7},
+      roundedRectRadii = {xRadius=14.0, yRadius=14.0},
+      frame = f
+    }):show()
+
+  end
+  function Yabai:exited()
+    Yabai.enabled = false
+    Yabai.indicator:delete()
+  end
+
+  Yabai
+  :bind({"control"}, "c", function()
+    Yabai:exit()
+  end)
+  :bind({}, "escape", function()
+    Yabai:exit()
+  end)
   :bind({}, "h", function()
     yabai({"-m", "window", "--focus", "west"})
   end)
@@ -140,12 +166,10 @@ local Yabai =
   end)
 
 Hyper:bind({}, "m", function()
-  if Hyper.yabai_enabled then
+  if Yabai.enabled then
     Yabai:exit()
-    Hyper.yabai_enabled = false
   else
     Yabai:enter()
-    Hyper.yabai_enabled = true
   end
 end)
 
