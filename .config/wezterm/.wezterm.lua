@@ -2,7 +2,7 @@ local wezterm = require 'wezterm'
 
 function Scheme_for_appearance(appearance)
   if appearance:find 'Dark' then
-    return 'Monokai Pro Ristretto (Gogh)'
+    return 'nightfox'
   else
     return 'dayfox'
   end
