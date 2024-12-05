@@ -23,7 +23,7 @@
       };
     };
     settings = {
-      theme = "monokai_pro_ristretto";
+      theme = "nightfox";
       editor = {
         color-modes = true;
         cursorline = true;
