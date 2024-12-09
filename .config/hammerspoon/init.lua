@@ -7,7 +7,6 @@ Bindings = {
   {'com.apple.MobileSMS', 'q', nil},
   {'com.apple.finder', 'f', nil},
   {'com.apple.mail', 'e', nil},
-  {'com.culturedcode.ThingsMac', 't', {',', '.'}},
   {'com.flexibits.cardhop.mac', nil, {'u'}},
   {'com.flexibits.fantastical2.mac', 'y', {'/'}},
   {'com.github.wez.wezterm', 'j', nil},
