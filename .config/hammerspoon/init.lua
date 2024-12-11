@@ -35,6 +35,7 @@ hs.fnutils.each(Bindings, function(bindingTable)
 end)
 
 Hyper:bind({}, '.', function()
+  Hyper:exit()
   hs.shortcuts.run("Capture")
 end)
 
