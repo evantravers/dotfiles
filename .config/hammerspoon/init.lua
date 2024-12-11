@@ -34,6 +34,17 @@ hs.fnutils.each(Bindings, function(bindingTable)
   end
 end)
 
+Hyper:bind({}, '.', function()
+  local win = hs.window.focusedWindow()
+  local app = win:application()
+
+  local chooser = hs.chooser.new(function(choice)
+    hs.urlevent.openURL("raycast://extensions/KevinBatdorf/obsidian/appendTaskCommand?arguments=%7B%22text%22%3A%22" .. choice["text"] .. "%22%7D")
+  end)
+  :enableDefaultForQuery(true)
+  :show()
+end)
+
 -- provide the ability to override config per computer
 if (hs.fs.displayName('./localConfig.lua')) then
   require('localConfig')
