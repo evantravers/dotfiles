@@ -35,14 +35,7 @@ hs.fnutils.each(Bindings, function(bindingTable)
 end)
 
 Hyper:bind({}, '.', function()
-  local win = hs.window.focusedWindow()
-  local app = win:application()
-
-  local chooser = hs.chooser.new(function(choice)
-    hs.urlevent.openURL("raycast://extensions/KevinBatdorf/obsidian/appendTaskCommand?arguments=%7B%22text%22%3A%22" .. choice["text"] .. "%22%7D")
-  end)
-  :enableDefaultForQuery(true)
-  :show()
+  hs.shortcuts.run("Capture")
 end)
 
 -- provide the ability to override config per computer
@@ -203,7 +196,7 @@ local hyperGroup = function(key, group)
     hs.application.launchOrFocusByBundleID(hs.settings.get("hyperGroup." .. key))
   end)
   Hyper:bind({'option'}, key, nil, function()
-    print("Setting options...")
+    print("Setting options…")
     local choices = {}
     hs.fnutils.each(group, function(bundleID)
       table.insert(choices, {
