@@ -34,9 +34,13 @@ hs.fnutils.each(Bindings, function(bindingTable)
   end
 end)
 
-Hyper:bind({}, ',', function()
+Hyper:bind({}, '.', function()
   Hyper:exit()
   hs.shortcuts.run("Capture")
+end)
+Hyper:bind({}, ',', function()
+  Hyper:exit()
+  hs.shortcuts.run("Smart Capture")
 end)
 
 -- provide the ability to override config per computer
