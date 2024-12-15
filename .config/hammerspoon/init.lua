@@ -11,7 +11,7 @@ Bindings = {
   {'com.flexibits.fantastical2.mac', 'y', {'/'}},
   {'com.github.wez.wezterm', 'j', nil},
   {'com.goodsnoze.MacWhisper', nil, {'a'}},
-  {'com.joehribar.toggl', 'r', nil},
+  {'com.toggl.daneel', 'r', nil},
   {'com.raycast.macos', nil, {'c', 'space'}},
   {'com.superultra.Homerow', nil, {'l'}},
   {'com.surteesstudios.Bartender', nil, {'b'}},
