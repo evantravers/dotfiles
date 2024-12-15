@@ -55,7 +55,7 @@
         yabai -m rule --add app='Cardhop' manage=off
         yabai -m rule --add app='Pop' manage=off
         yabai -m rule --add app='System Settings' manage=off
-        yabai -m rule --add app='Timery' manage=off
+        yabai -m rule --add app='Toggl' manage=off
       '';
     };
     jankyborders = {
@@ -88,7 +88,7 @@
     masApps = {
       "Drafts" = 1435957248;
       "Reeder" = 1529448980;
-      "Timery" = 1425368544;
+      "Toggl" = 1291898086;
     };
   };
 
