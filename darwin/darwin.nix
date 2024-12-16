@@ -51,6 +51,7 @@
         yabai -m signal --add event=display_removed action="yabai -m rule --remove label=calendar && yabai -m rule --add app='Fantastical' label='calendar' native-fullscreen=on" active=yes
         yabai -m rule --add app='OBS' display=east
         yabai -m rule --add app='Spotify' display=east
+        yabai -m rule --add app='Fantastical' display=east
 
         yabai -m rule --add app='Cardhop' manage=off
         yabai -m rule --add app='Pop' manage=off
