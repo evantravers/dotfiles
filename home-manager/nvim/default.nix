@@ -293,6 +293,10 @@
         type = "lua";
         config = lib.fileContents ./lsp.lua;
       }
+      {
+        plugin = copilot-vim;
+        type = "lua";
+      }
     ];
   };
 }
