@@ -16,6 +16,12 @@
             "markdown-oxide"
           ];
         }
+        {
+          name = "devicetree";
+          file-types = [
+            "keymap"
+          ];
+        }
       ];
       language-server = {
         nixd.command = "${pkgs.nixd}/bin/nixd";
