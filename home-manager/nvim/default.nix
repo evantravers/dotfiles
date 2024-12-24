@@ -227,9 +227,13 @@
         vim.keymap.set('n', "<space>'", "<cmd>Pick resume<cr>", opts("Last Picker"))
         vim.keymap.set('n', "<space>g", "<cmd>Pick git_commits<cr>", opts("Git Commits"))
         vim.keymap.set('n', "<space>z", "<cmd>lua MiniPick.builtin.files(nil, {source={cwd=vim.fn.expand('~/src/wiki')}})<cr>", opts("Wiki"))
+        local gen_loader = require('mini.snippets').gen_loader
+        require('mini.snippets').setup({
+          gen_loader.from_lang()
+        })
+        require('mini.splitjoin').setup()  -- work with parameters
         require('mini.statusline').setup() -- minimal statusline
         require('mini.surround').setup()
-        require('mini.splitjoin').setup()  -- work with parameters
         local miniclue = require('mini.clue')
         miniclue.setup({                   -- cute prompts about bindings
           triggers = {
