@@ -38,6 +38,11 @@
         target = "./config/kanata";
         recursive = true;
       };
+      ghostty = {
+        source = ./../.config/ghostty;
+        target = ".ghostty";
+        recursive = true;
+      };
     };
 
     sessionVariables = {
