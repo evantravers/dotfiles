@@ -15,8 +15,16 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     flake-utils.url = "github:numtide/flake-utils";
+    ghostty.url = "github:ghostty-org/ghostty";
   };
-  outputs = { nixpkgs, darwin, home-manager, nixos-wsl, ... } @ inputs: let
+  outputs = {
+    nixpkgs,
+    darwin,
+    home-manager,
+    nixos-wsl,
+    ghostty,
+    ...
+  } @ inputs: let
     darwinSystem = {user, arch ? "aarch64-darwin"}:
       darwin.lib.darwinSystem {
         system = arch;
