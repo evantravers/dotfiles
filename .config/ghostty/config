@@ -1,8 +1,8 @@
 theme = light:zenbones,dark:zenbones_dark
 
 window-decoration = false
-window-padding-x = 16
-window-padding-y = 16
+window-padding-x  = 16
+window-padding-y  = 16
 
 cursor-style = block
 cursor-style-blink = true
@@ -18,9 +18,9 @@ window-colorspace = display-p3
 
 shell-integration = fish
 
-font-family = JetBrainsMono
+font-family  = JetBrainsMono
 font-thicken = true
-font-size = 16
+font-size    = 16
 
 font-feature = zero
 font-feature = ss01
@@ -31,3 +31,7 @@ font-feature = ss05
 font-feature = ss06
 font-feature = calt
 font-feature = liga
+
+keybind = cmd+enter        = toggle_fullscreen
+keybind = global:F19+enter = toggle_quick_terminal
+keybind = global:cmd+`     = toggle_quick_terminal
