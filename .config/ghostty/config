@@ -10,6 +10,7 @@ cursor-style-blink = true
 clipboard-read = "allow"
 
 macos-option-as-alt = true
+macos-non-native-fullscreen = true
 
 confirm-close-surface = false
 mouse-hide-while-typing = true
@@ -32,6 +33,5 @@ font-feature = ss06
 font-feature = calt
 font-feature = liga
 
-keybind = cmd+enter        = toggle_fullscreen
-keybind = global:F19+enter = toggle_quick_terminal
-keybind = global:cmd+`     = toggle_quick_terminal
+keybind = cmd+enter=toggle_fullscreen
+keybind = global:cmd+`=toggle_quick_terminal
