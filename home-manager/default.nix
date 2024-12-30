@@ -35,12 +35,12 @@
       };
       kanata = lib.mkIf pkgs.stdenvNoCC.isDarwin {
         source = ./../.config/kanata;
-        target = "./config/kanata";
+        target = "./.config/kanata";
         recursive = true;
       };
       ghostty = {
         source = ./../.config/ghostty;
-        target = ".ghostty";
+        target = "./.config/ghostty";
         recursive = true;
       };
     };
