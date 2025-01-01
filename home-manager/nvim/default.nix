@@ -191,11 +191,12 @@
         require('mini.operators').setup()
         require('mini.icons').setup()      -- minimal icons
         require('mini.jump').setup()       -- fFtT work past a line
-        require('mini.jump2d').setup({
-          mappings = {
-            start_jumping = 'gw'
+        local MiniJump2d = require('mini.jump2d').setup({
+          view = {
+            dim = true
           }
         })
+        vim.keymap.set('n', 'gw', "<cmd>:lua MiniJump2d.start(MiniJump2d.builtin_opts.single_character)<cr>", opts("Jump to Word"))
         require('mini.pairs').setup()      -- pair brackets
         require('mini.pick').setup()       -- pickers
         MiniPick.registry.files_root = function(local_opts)
