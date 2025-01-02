@@ -194,6 +194,9 @@
         local MiniJump2d = require('mini.jump2d').setup({
           view = {
             dim = true
+          },
+          mappings = {
+            start_jumping = ''
           }
         })
         vim.keymap.set('n', 'gw', "<cmd>:lua MiniJump2d.start(MiniJump2d.builtin_opts.single_character)<cr>", opts("Jump to Word"))
