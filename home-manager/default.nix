@@ -7,7 +7,6 @@
     ./nvim
     ./starship.nix
     ./tmux.nix
-    ./wezterm.nix
   ];
 
   home = {

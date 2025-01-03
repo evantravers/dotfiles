@@ -83,7 +83,6 @@
       "obsidian"
       "raycast"
       "soundsource"
-      "wezterm"
     ];
 
     masApps = {
