@@ -6,6 +6,7 @@
     prefix = "C-space";
     escapeTime = 10;
     shell = "${pkgs.fish}/bin/fish";
+    terminal = "xterm-ghostty";
 
     extraConfig = lib.fileContents ../.config/tmux/.config/tmux/tmux.conf;
 
