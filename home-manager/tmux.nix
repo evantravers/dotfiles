@@ -6,7 +6,6 @@
     prefix = "C-space";
     escapeTime = 10;
     shell = "${pkgs.fish}/bin/fish";
-    terminal = "wezterm";
 
     extraConfig = lib.fileContents ../.config/tmux/.config/tmux/tmux.conf;
 
