@@ -18,6 +18,7 @@ mouse-hide-while-typing = true
 window-colorspace = display-p3
 
 shell-integration = fish
+initial-command = "tmux new -A -s default"
 
 font-family  = JetBrainsMono
 font-thicken = true
