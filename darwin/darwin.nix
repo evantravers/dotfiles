@@ -77,6 +77,7 @@
       "brave-browser"
       "fantastical"
       "firefox"
+      "ghostty"
       "hammerspoon"
       "karabiner-elements"
       "keycastr"
