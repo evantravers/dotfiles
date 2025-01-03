@@ -64,10 +64,7 @@
             },
             plugins = {
               gitsigns = { enabled = true },
-              tmux = { enabled = true },
-              wezterm = {
-                enabled = true,
-              },
+              tmux = { enabled = true }
             },
             on_open = function()
               if (vim.bo.filetype == "markdown" or vim.bo.filetype == "telekasten") then
