@@ -198,7 +198,11 @@
         })
         vim.keymap.set('n', 'gw', "<cmd>:lua MiniJump2d.start(MiniJump2d.builtin_opts.single_character)<cr>", opts("Jump to Word"))
         require('mini.pairs').setup()      -- pair brackets
-        require('mini.pick').setup()       -- pickers
+        require('mini.pick').setup({
+          mappings = {
+            choose_marked = '<M-x>'
+          }
+        })       -- pickers
         MiniPick.registry.files_root = function(local_opts)
           local root_patterns = { ".git" }
           local root_dir = vim.fs.dirname(vim.fs.find(root_patterns, { upward = true })[1])
