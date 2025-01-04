@@ -14,7 +14,6 @@
       url = "github:nix-community/NixOS-WSL";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # flake-utils.url = "github:numtide/flake-utils";
     helix-master = {
       url = "github:helix-editor/helix";
       inputs.nixpkgs.follows = "nixpkgs";
