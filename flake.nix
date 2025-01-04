@@ -1,5 +1,6 @@
 {
   description = "Evan's Nix System Configuration";
+
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     home-manager = {
@@ -18,9 +19,6 @@
       url = "github:helix-editor/helix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    ghostty = {
-      url = "github:ghostty-org/ghostty";
-    };
   };
   outputs = {
     nixpkgs,
@@ -28,7 +26,6 @@
     home-manager,
     nixos-wsl,
     helix-master,
-    ghostty,
     ...
   } @ inputs: let
     darwinSystem = {user, arch ? "aarch64-darwin"}:
