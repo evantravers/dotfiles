@@ -1,9 +1,10 @@
-{pkgs, ...}:
+{pkgs, helix-master, ...}:
 
 {
   programs.helix = {
     enable = true;
     # defaultEditor = true;
+    package = helix-master.packages.${pkgs.system}.default;
     languages = {
       language = [
         {
@@ -33,6 +34,10 @@
       editor = {
         color-modes = true;
         cursorline = true;
+        end-of-line-diagnostics = true;
+        inline-diagnostics = {
+          cursor-line = "error";
+        };
         file-picker = {
           hidden = false;
         };
