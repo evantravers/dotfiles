@@ -30,7 +30,7 @@
       };
     };
     settings = {
-      theme = "nightfox";
+      theme = "yo";
       editor = {
         color-modes = true;
         cursorline = true;
