@@ -34,6 +34,11 @@
       editor = {
         color-modes = true;
         cursorline = true;
+        cursor-shape = {
+          insert = "bar";
+          normal = "block";
+          select = "underline";
+        };
         end-of-line-diagnostics = "hint";
         inline-diagnostics = {
           cursor-line = "error";
