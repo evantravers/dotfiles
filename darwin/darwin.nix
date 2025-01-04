@@ -82,6 +82,7 @@
       "keycastr"
       "obsidian"
       "raycast"
+      "ghostty"
       "soundsource"
     ];
 
