@@ -14,13 +14,18 @@
       url = "github:nix-community/NixOS-WSL";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    flake-utils.url = "github:numtide/flake-utils";
+    # flake-utils.url = "github:numtide/flake-utils";
+    helix-master = {
+      url = "github:helix-editor/helix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs = {
     nixpkgs,
     darwin,
     home-manager,
     nixos-wsl,
+    helix-master,
     ...
   } @ inputs: let
     darwinSystem = {user, arch ? "aarch64-darwin"}:
@@ -33,6 +38,9 @@
             _module.args = { inherit inputs; };
             home-manager = {
               users.${user} = import ./home-manager;
+              extraSpecialArgs = {
+                helix-master = helix-master;
+              };
             };
             users.users.${user}.home = "/Users/${user}";
             nix.settings.trusted-users = [ user ];
@@ -52,6 +60,9 @@
           {
             home-manager = {
               users.nixos = import ./home-manager;
+              extraSpecialArgs = {
+                helix-master = helix-master;
+              };
             };
             nix.settings.trusted-users = [ "nixos" ];
           }
