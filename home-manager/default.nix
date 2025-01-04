@@ -11,8 +11,8 @@
 
   xdg.enable = true;
   xdg.configFile = {
-    "kanata".source = ./../.config/kanata;
-    "hammerspoon".source = ./../.config/hammerspoon;
+    "kanata".source = lib.mkIf pkgs.stdenv.isDarwin ./../.config/kanata;
+    "hammerspoon".source = lib.mkIf pkgs.stdenv.isDarwin ./../.config/hammerspoon;
     "ghostty/config".source = ./../.config/ghostty/config;
   };
 
