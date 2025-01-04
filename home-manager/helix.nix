@@ -34,7 +34,7 @@
       editor = {
         color-modes = true;
         cursorline = true;
-        end-of-line-diagnostics = true;
+        end-of-line-diagnostics = "hint";
         inline-diagnostics = {
           cursor-line = "error";
         };
