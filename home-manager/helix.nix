@@ -30,7 +30,7 @@
       };
     };
     settings = {
-      theme = "everforest_dark";
+      theme = "yo_berry";
       editor = {
         color-modes = true;
         cursorline = true;
