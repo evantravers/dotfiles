@@ -30,7 +30,7 @@
       };
     };
     settings = {
-      theme = "yo_berry";
+      theme = "kanagawa-dragon";
       editor = {
         color-modes = true;
         cursorline = true;
