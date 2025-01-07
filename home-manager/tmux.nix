@@ -2,9 +2,9 @@
 {
   programs.tmux = {
     enable = true;
-    sensibleOnTop = false;
-    prefix = "C-space";
     escapeTime = 10;
+    prefix = "C-space";
+    sensibleOnTop = false;
     shell = "${pkgs.fish}/bin/fish";
     terminal = "xterm-256color";
 
