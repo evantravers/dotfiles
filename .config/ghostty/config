@@ -20,7 +20,6 @@ window-colorspace = display-p3
 shell-integration = fish
 
 font-family  = JetBrainsMono
-font-thicken = true
 font-size    = 16
 
 font-feature = zero
