@@ -34,4 +34,4 @@ font-feature = calt
 font-feature = liga
 
 keybind = cmd+enter=toggle_fullscreen
-keybind = global:cmd+`=toggle_quick_terminal
+# keybind = global:cmd+`=toggle_quick_terminal
