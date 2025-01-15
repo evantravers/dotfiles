@@ -294,6 +294,10 @@ Hyper:bind({"alt"}, 'p', nil, function()
   jumpOrOpen("claude.ai")
 end)
 
+Hyper:bind({"control"}, 'p', nil, function()
+  jumpOrOpen("gemini.google.com")
+end)
+
 require('browserSnip')
 
 -- change audio settings based on output
