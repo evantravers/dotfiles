@@ -83,7 +83,6 @@
       "obsidian"
       "raycast"
       "ghostty"
-      "soundsource"
     ];
 
     masApps = {
