@@ -3,7 +3,7 @@ hs.loadSpoon('Headspace'):start()
 
 -- bundleID, global, local
 Bindings = {
-  {'com.agiletortoise.Drafts-OSX', 'd', {'x', 'n'}},
+  -- {'com.agiletortoise.Drafts-OSX', 'd', {'x', 'n'}},
   {'com.apple.MobileSMS', 'q', nil},
   {'com.apple.finder', 'f', nil},
   {'com.apple.mail', 'e', nil},
@@ -298,18 +298,4 @@ Hyper:bind({"control"}, 'p', nil, function()
   jumpOrOpen("gemini.google.com")
 end)
 
-require('browserSnip')
-
--- change audio settings based on output
-hs.audiodevice.watcher.setCallback(function(event)
-  if event == "dOut" then
-    local name = hs.audiodevice.defaultOutputDevice():name()
-    if name == "WH-1000XM4" then
-      hs.shortcuts.run("XM4")
-    end
-    if name == "MacBook Pro Speakers" then
-      hs.shortcuts.run("Macbook Pro Speakers")
-    end
-  end
-end)
-hs.audiodevice.watcher.start()
+-- require('browserSnip')
