@@ -17,7 +17,7 @@
     };
     helix-master = {
       url = "github:helix-editor/helix";
-      inputs.nixpkgs.follows = "nixpkgs";
+      # inputs.nixpkgs.follows = "nixpkgs";
     };
   };
   outputs = {
