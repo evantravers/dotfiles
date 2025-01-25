@@ -103,20 +103,9 @@
         '';
       }
       {
-        plugin = render-markdown-nvim; # Display markdown including docs
+        plugin = markview-nvim;
         type = "lua";
         config = ''
-        require("render-markdown").setup({
-          checkbox = {
-            custom = {
-              todo = { raw = "[-]", rendered = "󰜺", highlight = "RenderMarkdownCancelled" },
-              cancelled = { raw = '[-]', rendered = '󰜺 ', highlight = 'RenderMarkdownTodo' },
-              incomplete = { raw = '[/]', rendered = '󰦖 ', highlight = 'RenderMarkdownTodo' },
-              forwarded = { raw = "[>]", rendered = "", highlight = "RenderMarkdownForwarded" },
-              scheduled = { raw = "[<]", rendered = "󰸘", highlight = "RenderMarkdownScheduled" },
-            }
-          }
-        })
         '';
       }
       # =======================================================================
