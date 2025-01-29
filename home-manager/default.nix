@@ -28,7 +28,6 @@
       devenv
       markdown-oxide
       nixd
-      ollama
       ripgrep
       smartcat
     ];
@@ -52,5 +51,11 @@
     };
 
     jujutsu.enable = true;
+  };
+
+  services = { ollama = {
+      enable = true;
+      # acceleration = "cuda"; # only for WSL, I need to be smarter about this
+    };
   };
 }
