@@ -233,7 +233,7 @@ hyperGroup('k', {
     'com.google.Chrome',
     'org.mozilla.firefox',
     'company.thebrowser.Browser',
-    'org.mozilla.com.zen.browser'
+    'app.zen-browser.zen'
   })
 
 hyperGroup('i', {
