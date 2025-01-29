@@ -73,8 +73,8 @@
 
     casks = [
       "1password"
-      "alex313031-thorium"
       "bartender"
+      "google-chrome"
       "fantastical"
       "firefox"
       "ghostty"
@@ -83,6 +83,7 @@
       "keycastr"
       "obsidian"
       "raycast"
+      "zen-browser"
     ];
 
     masApps = {
