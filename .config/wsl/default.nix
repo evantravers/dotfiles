@@ -8,6 +8,8 @@
     # include NixOS-WSL modules
   ];
 
+  nixpkgs.config.allowUnfree = true;
+
   wsl = {
     enable = true;
     defaultUser = "nixos";
