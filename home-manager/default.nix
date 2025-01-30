@@ -10,6 +10,7 @@
   ];
 
   xdg.enable = true;
+  # TODO: move this to ./home-manager/modules/darwin or something
   xdg.configFile."hammerspoon" = lib.mkIf pkgs.stdenv.isDarwin {
     source = ./../.config/hammerspoon;
   };
@@ -53,9 +54,5 @@
     jujutsu.enable = true;
   };
 
-  services = { ollama = {
-      enable = true;
-      # acceleration = "cuda"; # only for WSL, I need to be smarter about this
-    };
-  };
+  services.ollama.enable = true;
 }
