@@ -21,4 +21,8 @@
       wsl-open
     ];
   };
+
+  home-manager.users.nixos = { ... }: {
+    services.ollama.acceleration = "cuda";
+  };
 }
