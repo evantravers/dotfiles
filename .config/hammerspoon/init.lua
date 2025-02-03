@@ -287,15 +287,17 @@ Hyper:bind({}, 'h', nil, function()
 end)
 
 Hyper:bind({}, 'p', nil, function()
-  jumpOrOpen("chatgpt.com")
+  jumpOrOpen("claude.ai")
 end)
 
-Hyper:bind({"alt"}, 'p', nil, function()
-  jumpOrOpen("claude.ai")
+Hyper:bind({"shift"}, 'p', nil, function()
+  jumpOrOpen("perplexity.ai")
 end)
 
 Hyper:bind({"control"}, 'p', nil, function()
   jumpOrOpen("gemini.google.com")
 end)
 
--- require('browserSnip')
+Hyper:bind({"alt"}, 'p', nil, function()
+  jumpOrOpen("chatgpt.com")
+end)
