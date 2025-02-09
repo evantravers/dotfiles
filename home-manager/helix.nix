@@ -16,6 +16,7 @@
           language-servers = [
             "markdown-oxide"
           ];
+          comment-tokens = ["-" "+" "*" "1." ">" "- [ ]"];
         }
         {
           name = "devicetree";
