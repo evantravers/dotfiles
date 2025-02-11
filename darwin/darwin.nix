@@ -83,7 +83,6 @@
       "keycastr"
       "obsidian"
       "raycast"
-      "zen-browser"
     ];
 
     masApps = {
