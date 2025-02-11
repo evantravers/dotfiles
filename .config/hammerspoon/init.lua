@@ -232,8 +232,6 @@ hyperGroup('k', {
     'com.brave.Browser',
     'com.google.Chrome',
     'org.mozilla.firefox',
-    'company.thebrowser.Browser',
-    'app.zen-browser.zen'
   })
 
 hyperGroup('i', {
