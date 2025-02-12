@@ -34,6 +34,7 @@
     aerospace = {
       enable = true;
       settings = {
+        accordion-padding = 0;
         on-focused-monitor-changed = [ "move-mouse monitor-lazy-center" ];
         mode = {
           main = {
