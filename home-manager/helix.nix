@@ -3,7 +3,7 @@
 {
   programs.helix = {
     enable = true;
-    # defaultEditor = true;
+    defaultEditor = true;
     # package = helix-master.packages.${pkgs.system}.default;
     languages = {
       language = [
