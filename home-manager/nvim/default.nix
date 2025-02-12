@@ -8,7 +8,7 @@
 
   programs.neovim = {
     enable = true;
-    defaultEditor = true;
+    # defaultEditor = true;
 
     extraLuaConfig = lib.fileContents ../../.config/nvim/.config/nvim/init.lua;
 
