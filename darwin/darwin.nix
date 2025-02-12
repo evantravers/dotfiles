@@ -13,12 +13,7 @@
   environment.darwinConfig = "$HOME/src/github.com/evantravers/dotfiles/darwin";
 
   # Auto upgrade nix package and the daemon service.
-  nix = {
-    package = pkgs.nix;
-    settings = {
-      "extra-experimental-features" = [ "nix-command" "flakes" ];
-    };
-  };
+  nix.enable = false;
 
   # Create /etc/zshrc that loads the nix-darwin environment.
   programs = {
