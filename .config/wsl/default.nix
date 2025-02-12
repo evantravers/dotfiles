@@ -24,7 +24,7 @@
     ];
   };
 
-  home-manager.users.nixos = { ... }: {
-    services.ollama.acceleration = "cuda";
-  };
+  # home-manager.users.nixos = { ... }: {
+  #   services.ollama.acceleration = "cuda";
+  # };
 }
