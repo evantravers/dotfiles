@@ -36,6 +36,14 @@
       settings = {
         accordion-padding = 0;
         on-focused-monitor-changed = [ "move-mouse monitor-lazy-center" ];
+        on-window-detected = [
+          {
+            "if" = {
+              app-id = "com.flexibits.fantastical2.mac";
+            };
+            run = "move-node-to-workspace 2";
+          }
+        ];
         mode = {
           main = {
             binding = {
