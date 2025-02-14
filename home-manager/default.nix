@@ -51,7 +51,15 @@
       nix-direnv.enable = true;
     };
 
-    jujutsu.enable = true;
+    jujutsu = {
+      enable = true;
+      settings = {
+        user = {
+          name = "Evan Travers";
+          email = "evantravers@gmail.com";
+        };
+      };
+    };
   };
 
   services.ollama.enable = true;
