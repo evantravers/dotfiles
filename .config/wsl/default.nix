@@ -13,7 +13,6 @@
   wsl = {
     enable = true;
     defaultUser = "nixos";
-    nativeSystemd = true;
     interop.includePath = true;
   };
 
