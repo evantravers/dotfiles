@@ -141,6 +141,7 @@
         AppleKeyboardUIMode = 3;
         "com.apple.keyboard.fnState" = true;
         NSAutomaticWindowAnimationsEnabled = false;
+        NSWindowShouldDragOnGesture = true;
       };
     };
     keyboard = {
