@@ -52,8 +52,6 @@ if (hs.fs.displayName('./localConfig.lua')) then
   require('localConfig')
 end
 
-local brave = require('brave')
-
 -- Random bindings
 local chooseFromGroup = function(choice)
   local name = hs.application.nameForBundleID(choice.bundleID)
@@ -116,8 +114,6 @@ Hyper:bind({}, 'z', nil, function()
     hs.application.launchOrFocusByBundleID('com.microsoft.teams2')
     local call = hs.settings.get("call")
     call:focus()
-  else
-    brave.jump("meet.google.com|hangouts.google.com.call")
   end
 end)
 
@@ -134,35 +130,25 @@ Hyper:bind({}, 'v', nil, function()
 
   if appFound then
     hs.application.launchOrFocusByBundleID(appFound)
-  else
-    brave.jump("lucidchart.com|figma.com")
   end
 end)
 
-jumpOrOpen = function(url)
-  if brave.jump(url) then
-    return true
-  else
-    hs.urlevent.openURL("https://" .. url)
-  end
-end
-
 Hyper:bind({}, 'h', nil, function()
-  jumpOrOpen("devdocs.io")
+  hs.urlevent.openURL("devdocs.io")
 end)
 
 Hyper:bind({}, 'p', nil, function()
-  jumpOrOpen("claude.ai")
+  hs.urlevent.openURL("claude.ai")
 end)
 
 Hyper:bind({"shift"}, 'p', nil, function()
-  jumpOrOpen("perplexity.ai")
+  hs.urlevent.openURL("perplexity.ai")
 end)
 
 Hyper:bind({"control"}, 'p', nil, function()
-  jumpOrOpen("gemini.google.com")
+  hs.urlevent.openURL("gemini.google.com")
 end)
 
 Hyper:bind({"alt"}, 'p', nil, function()
-  jumpOrOpen("chatgpt.com")
+  hs.urlevent.openURL("chatgpt.com")
 end)
