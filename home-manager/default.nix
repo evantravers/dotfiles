@@ -18,6 +18,9 @@
     source = ./../.config/kanata;
   };
   xdg.configFile."ghostty/config".source = ./../.config/ghostty/config;
+  xdg.configFile."moxide/settings.toml".text = ''
+  title_headings = false
+  '';
 
   home = {
     stateVersion = "24.05"; # Please read the comment before changing.
