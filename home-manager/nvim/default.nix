@@ -153,7 +153,11 @@
         require('mini.bracketed').setup()  -- unimpaired bindings with TS
         require('mini.diff').setup()       -- hunk management and highlight
         require('mini.extra').setup()      -- extra p}ickers
-        require('mini.files').setup()      -- file manipulation
+        require('mini.files').setup({
+          options = {
+            use_as_default_explorer = false
+          }
+        })
         local oil_style = function()
           if not MiniFiles.close() then
             MiniFiles.open(vim.api.nvim_buf_get_name(0))
