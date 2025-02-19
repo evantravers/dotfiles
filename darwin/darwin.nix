@@ -44,6 +44,10 @@
             run = "move-node-to-workspace 2";
           }
         ];
+        workspace-to-monitor-force-assignment = {
+          "1" = ["main"];
+          "2" = ["secondary" "main"];
+        };
         mode = {
           main = {
             binding = {
@@ -61,8 +65,8 @@
               alt-ctrl-j = "join-with down";
               alt-ctrl-k = "join-with up";
               alt-ctrl-l = "join-with right";
-              alt-minus = "resize smart -50";
-              alt-equal = "resize smart +50";
+              alt-minus = "resize smart -100";
+              alt-equal = "resize smart +100";
               alt-1 = "workspace 1";
               alt-2 = "workspace 2";
               alt-3 = "workspace 3";
@@ -70,7 +74,7 @@
               alt-shift-2 = "move-node-to-workspace 2";
               alt-shift-3 = "move-node-to-workspace 3";
               alt-tab = "workspace-back-and-forth";
-              alt-shift-tab = "move-workspace-to-monitor --wrap-around next";
+              alt-shift-tab = "move-node-to-monitor --wrap-around next";
               alt-shift-semicolon = "mode service";
             };
           };
