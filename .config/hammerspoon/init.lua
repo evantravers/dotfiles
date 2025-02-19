@@ -1,5 +1,4 @@
 hs.loadSpoon('Hyper')
-hs.loadSpoon('Headspace'):start()
 
 -- bundleID, global, local
 Bindings = {
