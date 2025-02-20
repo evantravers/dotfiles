@@ -31,7 +31,7 @@
       };
     };
     settings = {
-      theme = "nord-night";
+      theme = "catppuccin_frappe";
       editor = {
         color-modes = true;
         cursorline = true;
