@@ -31,7 +31,7 @@
       };
     };
     settings = {
-      theme = "tokyonight";
+      theme = "kanagawa-dragon";
       editor = {
         color-modes = true;
         cursorline = true;
