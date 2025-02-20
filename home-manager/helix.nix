@@ -31,7 +31,7 @@
       };
     };
     settings = {
-      theme = "catppuccin_frappe";
+      theme = "tokyonight";
       editor = {
         color-modes = true;
         cursorline = true;
