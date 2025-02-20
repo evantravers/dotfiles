@@ -133,21 +133,21 @@ Hyper:bind({}, 'v', nil, function()
 end)
 
 Hyper:bind({}, 'h', nil, function()
-  hs.urlevent.openURL("devdocs.io")
+  hs.urlevent.openURL("https://devdocs.io")
 end)
 
 Hyper:bind({}, 'p', nil, function()
-  hs.urlevent.openURL("claude.ai")
+  hs.urlevent.openURL("https://claude.ai")
 end)
 
 Hyper:bind({"shift"}, 'p', nil, function()
-  hs.urlevent.openURL("perplexity.ai")
+  hs.urlevent.openURL("https://perplexity.ai")
 end)
 
 Hyper:bind({"control"}, 'p', nil, function()
-  hs.urlevent.openURL("gemini.google.com")
+  hs.urlevent.openURL("https://gemini.google.com")
 end)
 
 Hyper:bind({"alt"}, 'p', nil, function()
-  hs.urlevent.openURL("chatgpt.com")
+  hs.urlevent.openURL("https://chatgpt.com")
 end)
