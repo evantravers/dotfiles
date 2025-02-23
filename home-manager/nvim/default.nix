@@ -106,6 +106,12 @@
         plugin = markview-nvim;
         type = "lua";
         config = ''
+        vim.keymap.set(
+          'n',
+          '<space>M',
+          ':Markview toggle<cr>',
+          {noremap = true, silent = true, desc = "Toggle Markview"}
+        )
         '';
       }
       # =======================================================================
