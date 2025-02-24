@@ -152,6 +152,6 @@ Hyper:bind({"alt"}, 'p', nil, function()
   hs.urlevent.openURL("https://chatgpt.com")
 end)
 
-Hyper:bind({"super"}, 'p', nil, function()
+Hyper:bind({"command"}, 'p', nil, function()
   hs.urlevent.openURL("https://x.com/i/grok")
 end)
