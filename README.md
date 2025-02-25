@@ -11,7 +11,7 @@ Featuring:
   - darwin-nix
   - Hammerspoon
   - homebrew mas
-  - yabai
+  - aerospace and jankyborders
 
 ## Install Nix
 
