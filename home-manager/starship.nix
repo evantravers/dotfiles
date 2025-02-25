@@ -23,7 +23,7 @@
 
       character = {
         success_symbol = "[❯](dimmed green)";
-        error_symbol = "[❯](dimmed red)";
+        error_symbol   = "[❯](dimmed red)";
       };
 
       jobs.disabled = true;
