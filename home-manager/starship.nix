@@ -12,7 +12,7 @@
       git_branch.ignore_branches = [ "master" "main" ];
 
       git_status = {
-        style = "bold yellow";
+        style  = "bold yellow";
         format = "([$all_status$ahead_behind]($style) )";
       };
 
