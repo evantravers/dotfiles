@@ -132,6 +132,10 @@ Hyper:bind({}, 'v', nil, function()
   end
 end)
 
+Hyper:bind({}, 'n', nil, function()
+  hs.urlevent.openURL("obsidian://adv-uri?vault=wiki&commandid=zk-prefixer")
+end)
+
 Hyper:bind({}, 'h', nil, function()
   hs.urlevent.openURL("https://devdocs.io")
 end)
