@@ -49,8 +49,8 @@ gaps:
   # Gap between windows and the screen edge.
   outer_gap:
     top: '60px'
-    right: '20px'
-    bottom: '20px'
+    right: '0px'
+    bottom: '0px'
     left: '20px'
 
 window_effects:
@@ -93,7 +93,7 @@ window_effects:
       style: 'square'
     transparency:
       enabled: true
-      opacity: '75%'
+      opacity: '85%'
 
 window_behavior:
   # New windows are created in this state whenever possible.
