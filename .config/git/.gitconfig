@@ -1,58 +1,58 @@
-[column]
-  ui = auto
 [branch]
   sort = -committerdate
+[browser "gitscm"]
+  cmd = /bin/sh -c 'open http://git-scm.com/docs/$(basename $1 .html)' --
 [color "status"]
   added = green
   changed = yellow
   untracked = red
+[column]
+  ui = auto
+[commit]
+  verbose = true
 [core]
   excludesfile = "~/.cvsignore"
 [credential]
   helper = osxkeychain
-[rerere]
-  enabled = true
-  autoupdate = true
-[browser "gitscm"]
-  cmd = /bin/sh -c 'open http://git-scm.com/docs/$(basename $1 .html)' --
-[help]
-  browser = gitscm
-  autocorrect = prompt
-[pull]
-  ff = true
-[push]
-  default = simple
-  autoSetupRemote = true
-[fetch]
-  prune = true
-  pruneTags = true
-  all = true
-[commit]
-  verbose = true
 [diff]
   algorithm = histogram
   colorMoved = plain
   mnemonicPrefix = true
   renames = true
-[rebase]
-  autoSquash = true
-  autoStash = true
-  updateRefs = true
-[tag]
-  sort = version:refname
-[merge]
-  conflictstyle = zdiff3
-[url "git@github.com:"]
-  insteadOf = "https://github.com"
-[user]
-  email = evantravers@gmail.com
-  name = Evan Travers
-[github]
-  user = evantravers
-[hub]
-  protocol = ssh
+[fetch]
+  prune = true
+  pruneTags = true
+  all = true
 [filter "lfs"]
   clean = git-lfs clean -- %f
   smudge = git-lfs smudge -- %f
   process = git-lfs filter-process
   required = true
+[github]
+  user = evantravers
+[help]
+  browser = gitscm
+  autocorrect = prompt
+[hub]
+  protocol = ssh
+[merge]
+  conflictstyle = zdiff3
+[pull]
+  ff = true
+[push]
+  default = simple
+  autoSetupRemote = true
+[rebase]
+  autoSquash = true
+  autoStash = true
+  updateRefs = true
+[rerere]
+  enabled = true
+  autoupdate = true
+[tag]
+  sort = version:refname
+[url "git@github.com:"]
+  insteadOf = "https://github.com"
+[user]
+  email = evantravers@gmail.com
+  name = Evan Travers
