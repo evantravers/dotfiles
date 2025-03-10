@@ -157,6 +157,8 @@
         require('mini.ai').setup()         -- a/i textobjects
         require('mini.align').setup()      -- aligning
         require('mini.bracketed').setup()  -- unimpaired bindings with TS
+        require('mini.snippets').setup()
+        require('mini.completion').setup()
         require('mini.diff').setup()       -- hunk management and highlight
         require('mini.extra').setup()      -- extra p}ickers
         require('mini.files').setup({
