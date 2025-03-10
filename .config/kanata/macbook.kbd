@@ -6,8 +6,8 @@
 )
 
 (defvar
-  tap-time 150
-  hold-time 200
+  tap-time 100
+  hold-time 150
 )
 
 ;; Definine two aliases, one for esc/control to other for function key
