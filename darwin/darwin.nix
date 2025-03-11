@@ -104,13 +104,14 @@
     casks = [
       "1password"
       "bartender"
-      "google-chrome"
       "fantastical"
       "firefox"
       "ghostty"
+      "google-chrome"
       "hammerspoon"
       "karabiner-elements"
       "keycastr"
+      "librewolf"
       "obsidian"
       "raycast"
     ];
