@@ -1,58 +1,8 @@
-[branch]
-  sort = -committerdate
-[browser "gitscm"]
-  cmd = /bin/sh -c 'open http://git-scm.com/docs/$(basename $1 .html)' --
-[color "status"]
-  added = green
-  changed = yellow
-  untracked = red
-[column]
-  ui = auto
-[commit]
-  verbose = true
-[core]
-  excludesfile = "~/.cvsignore"
-[credential]
-  helper = osxkeychain
-[diff]
-  algorithm = histogram
-  colorMoved = plain
-  mnemonicPrefix = true
-  renames = true
-[fetch]
-  prune = true
-  pruneTags = true
-  all = true
 [filter "lfs"]
-  clean = git-lfs clean -- %f
-  smudge = git-lfs smudge -- %f
-  process = git-lfs filter-process
-  required = true
-[github]
-  user = evantravers
-[help]
-  browser = gitscm
-  autocorrect = prompt
-[hub]
-  protocol = ssh
-[merge]
-  conflictstyle = zdiff3
-[pull]
-  ff = true
-[push]
-  default = simple
-  autoSetupRemote = true
-[rebase]
-  autoSquash = true
-  autoStash = true
-  updateRefs = true
-[rerere]
-  enabled = true
-  autoupdate = true
-[tag]
-  sort = version:refname
-[url "git@github.com:"]
-  insteadOf = "https://github.com"
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
 [user]
-  email = evantravers@gmail.com
-  name = Evan Travers
+	name = Samuel Cotterall
+	email = samuelcotterall@gmail.com
