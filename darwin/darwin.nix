@@ -6,6 +6,7 @@
   environment.systemPackages =
     [
       pkgs.home-manager
+      pkgs.oh-my-posh
     ];
 
   # Use a custom configuration.nix location.
@@ -18,8 +19,6 @@
   # Create /etc/zshrc that loads the nix-darwin environment.
   programs = {
     gnupg.agent.enable = true;
-    zsh.enable = true;  # default shell on catalina
-    # home-manager.enable = true;
   };
 
   # Used for backwards compatibility, please read the changelog before changing.
@@ -51,7 +50,6 @@
     #   "obsidian"
     #   "raycast"
     # ];
-
 
   };
 
