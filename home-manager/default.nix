@@ -63,6 +63,11 @@
         };
       };
     };
+
+    yazi = {
+      enable = true;
+      enableFishIntegration = true;
+    };
   };
 
   services.ollama.enable = true;
