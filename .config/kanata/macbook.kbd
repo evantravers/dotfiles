@@ -1,35 +1,34 @@
-;; Caps to escape/control configuration for Kanata
-(defcfg process-unmapped-keys yes)
+;; home row-mods
 
+;; un-mapped keys behave as normally
+(defcfg
+  process-unmapped-keys yes
+)
+
+;; define the keys to remap
 (defsrc
-  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10   f11   f12
-  caps a s d f j k l ;
+ caps a s d f h j k l ;
 )
 
+;; define values for tap time and hold time
 (defvar
-  tap-time 100
-  hold-time 150
+  tap-time 150
+  hold-time 200
 )
 
-;; Definine two aliases, one for esc/control to other for function key
+;; alias definitions
 (defalias
-  escctrl (tap-hold 100 100 esc lctl)
-  a (tap-hold $tap-time $hold-time a lmet)
+  escctrl (tap-hold $tap-time $hold-time esc lctl)
+  a (tap-hold $tap-time $hold-time a lctrl)
   s (tap-hold $tap-time $hold-time s lalt)
-  d (tap-hold $tap-time $hold-time d lctl)
+  d (tap-hold $tap-time $hold-time d lmet)
   f (tap-hold $tap-time $hold-time f lsft)
   j (tap-hold $tap-time $hold-time j rsft)
-  k (tap-hold $tap-time $hold-time k rctl)
+  k (tap-hold $tap-time $hold-time k rmet)
   l (tap-hold $tap-time $hold-time l ralt)
-  ; (tap-hold $tap-time $hold-time ; rmet)
+  ; (tap-hold $tap-time $hold-time ; rctrl)
 )
 
 (deflayer base
-  brdn  brup  _    _    _    _   prev  pp  next  mute  vold  volu
-  @escctrl @a @s @d @f @j @k @l @;
-)
-
-(deflayer fn
-  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10   f11   f12
-  @escctrl _ _ _ _ _ _ _ _
+  @escctrl @a @s @d @f @j @k @k @l @;
 )
