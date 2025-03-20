@@ -30,6 +30,7 @@
     packages = with pkgs; [
       amber
       devenv
+      harper
       markdown-oxide
       nixd
       ripgrep
