@@ -46,7 +46,6 @@
       enable = true;
       interactiveShellInit = ''
         set fish_greeting # N/A
-        bind \cw backward-kill-word
       '';
     };
 
