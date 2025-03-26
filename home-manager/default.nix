@@ -68,6 +68,11 @@
       enable = true;
       enableFishIntegration = true;
     };
+
+    zoxide = {
+      enable = true;
+      enableFishIntegration = true;
+    };
   };
 
   services.ollama.enable = true;
