@@ -20,6 +20,10 @@
       url = "github:helix-editor/helix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    neovim-nightly = {
+      url = "github:nix-community/neovim-nightly-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs = {
     nixpkgs,
@@ -27,6 +31,7 @@
     home-manager,
     nixos-wsl,
     helix-master,
+    neovim-nightly,
     ...
   } @ inputs: let
     darwinSystem = {user, arch ? "aarch64-darwin"}:
@@ -41,6 +46,7 @@
               users.${user} = import ./home-manager;
               extraSpecialArgs = {
                 helix-master = helix-master;
+                neovim-nightly = neovim-nightly;
               };
             };
             users.users.${user}.home = "/Users/${user}";
@@ -63,6 +69,7 @@
               users.nixos = import ./home-manager;
               extraSpecialArgs = {
                 helix-master = helix-master;
+                neovim-nightly = neovim-nightly;
               };
             };
             nix.settings.trusted-users = [ "nixos" ];
