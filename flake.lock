@@ -138,6 +138,7 @@
         "darwin": "darwin",
         "helix-master": "helix-master",
         "home-manager": "home-manager",
+        "neovim-nightly": "neovim-nightly",
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs"
       }
