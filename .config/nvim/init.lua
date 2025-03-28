@@ -115,8 +115,7 @@ vim.lsp.config.ruby = {
 
 vim.lsp.config.markdown = {
   cmd = { "markdown-oxide" },
-  filetypes = { "markdown" },
-  root_dir = "~/src/wiki"
+  filetypes = { "markdown" }
 }
 
 vim.lsp.enable({
