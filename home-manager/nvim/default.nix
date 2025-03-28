@@ -1,4 +1,4 @@
-{lib, pkgs, ...}:
+{lib, pkgs, neovim-nightly, ...}:
 {
   home.file.".config/nvim/.vimrc".source = ../../.config/nvim/.vimrc;
 
@@ -8,6 +8,7 @@
 
   programs.neovim = {
     enable = true;
+    package = neovim-nightly.packages.${pkgs.system}.default;
     defaultEditor = true;
 
     extraLuaConfig = lib.fileContents ../../.config/nvim/init.lua;
