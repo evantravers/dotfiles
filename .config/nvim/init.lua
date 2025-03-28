@@ -56,3 +56,73 @@ vim.diagnostic.config({
    current_line = true,
   },
 })
+
+vim.lsp.config.elixir_ls = {
+  cmd = { "elixir-ls" },
+  filetypes = { "elixir" }
+}
+
+vim.lsp.config.nixd = {
+  cmd = { "nixd", "--inlay-hints=true" },
+  filetypes = { "nix" },
+  settings = {
+    nixd = {
+      nixpkgs = {
+        expr = "import <nixpkgs> { }",
+      },
+      root_markers = { "flake.nix", ".git", vim.uv.cwd() },
+      formatting = {
+        command = { "nixfmt" },
+      },
+      options = {
+        nixos = {
+          expr = '(builtins.getFlake ("git+file://" + toString ./.)).nixosConfigurations.k-on.options',
+        },
+        home_manager = {
+          expr = '(builtins.getFlake ("git+file://" + toString ./.)).homeConfigurations."ruixi@k-on".options',
+        },
+      },
+    },
+  }
+}
+
+vim.lsp.config.luals = {
+  cmd = { "lua-language-server" },
+  filetypes = { "lua" },
+  settings = {
+    Lua = {
+      runtime = {
+        version = 'LuaJIT',
+        path = vim.split(package.path, ';'),
+      },
+      diagnostics = { globals = {'vim', 'hs'}, },
+      workspace = {
+        library = {
+          [vim.fn.expand('$VIMRUNTIME/lua')] = true,
+          [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
+          [vim.fn.expand('/Applications/Hammerspoon.app/Contents/Resources/extensions/hs/')] = true
+        },
+      },
+    },
+  }
+}
+
+vim.lsp.config.ruby = {
+  cmd = { "ruby-lsp" },
+  filetypes = { "ruby" },
+  root_markers = { ".git" },
+}
+
+vim.lsp.config.markdown = {
+  cmd = { "markdown-oxide" },
+  filetypes = { "markdown" },
+  root_dir = "~/src/wiki"
+}
+
+vim.lsp.enable({
+  'elixir_ls',
+  'ruby',
+  'nixd',
+  'luals',
+  'markdown',
+})
