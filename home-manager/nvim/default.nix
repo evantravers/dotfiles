@@ -280,11 +280,6 @@
       # =======================================================================
       # LSP AND COMPLETION
       # =======================================================================
-      {
-        plugin = nvim-lspconfig; # Interface for LSPs
-        type = "lua";
-        config = lib.fileContents ./lsp.lua;
-      }
     ];
   };
 }
