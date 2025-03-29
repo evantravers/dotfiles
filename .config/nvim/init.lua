@@ -55,7 +55,8 @@ vim.diagnostic.config({
 
 vim.lsp.config.elixir_ls = {
   cmd = { "elixir-ls" },
-  filetypes = { "elixir" }
+  filetypes = { "elixir" },
+  root_markers = { "mix.lock", ".git" }
 }
 
 vim.lsp.config.nixd = {
@@ -66,7 +67,7 @@ vim.lsp.config.nixd = {
       nixpkgs = {
         expr = "import <nixpkgs> { }",
       },
-      root_markers = { "flake.nix", ".git", vim.uv.cwd() },
+      root_markers = { "flake.nix", ".git" },
       formatting = {
         command = { "nixfmt" },
       },
