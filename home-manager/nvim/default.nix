@@ -107,6 +107,11 @@
         plugin = markview-nvim;
         type = "lua";
         config = ''
+        require("markview").setup({
+          preview = {
+            enable = false;
+          }
+        });
         vim.keymap.set(
           'n',
           '<space>M',
