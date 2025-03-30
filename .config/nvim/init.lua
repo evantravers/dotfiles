@@ -98,7 +98,7 @@ vim.lsp.config.luals = {
 
 vim.lsp.config.ruby = {
   cmd = { "ruby-lsp" },
-  filetypes = { "ruby" },
+  filetypes = { "ruby", "eruby" },
   root_markers = { ".git" },
 }
 
