@@ -101,6 +101,9 @@
   homebrew = {
     enable = true;
 
+    onActivation.autoUpdate  = true;
+    onActivation.upgrade = true;
+
     casks = [
       "1password"
       "bartender"
@@ -111,7 +114,6 @@
       "hammerspoon"
       "karabiner-elements"
       "keycastr"
-      "librewolf"
       "obsidian"
       "raycast"
     ];
