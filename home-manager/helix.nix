@@ -1,4 +1,8 @@
-{pkgs, helix-master, ...}:
+{
+  pkgs,
+  # helix-master,
+  ...
+}:
 
 {
   programs.helix = {
