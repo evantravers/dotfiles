@@ -99,7 +99,7 @@
   };
 
   homebrew = {
-    enable = false;
+    enable = true;
 
     casks = [
       "1password"
