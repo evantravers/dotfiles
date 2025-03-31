@@ -1,4 +1,9 @@
-{lib, pkgs, neovim-nightly, ...}:
+{
+  lib,
+  pkgs,
+  # neovim-nightly,
+  ...
+}:
 {
   home.file.".config/nvim/.vimrc".source = ../../.config/nvim/.vimrc;
 
