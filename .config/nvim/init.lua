@@ -53,8 +53,8 @@ vim.diagnostic.config({
   },
 })
 
-vim.lsp.config.elixir_ls = {
-  cmd = { "elixir-ls" },
+vim.lsp.config.elixir = {
+  cmd = { "lexical" },
   filetypes = { "elixir" },
   root_markers = { "mix.lock", ".git" }
 }
@@ -108,7 +108,7 @@ vim.lsp.config.markdown = {
 }
 
 vim.lsp.enable({
-  'elixir_ls',
+  'elixir',
   'ruby',
   'nixd',
   'luals',
