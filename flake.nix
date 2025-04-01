@@ -34,6 +34,17 @@
     neovim-nightly,
     ...
   } @ inputs: let
+    forAllSystems = nixpkgs.lib.genAttrs [
+      "aarch64-darwin"
+      "x86_64-darwin"
+      "x86_64-linux"
+    ];
+
+    nixpkgsFor = system: import nixpkgs {
+      inherit system;
+      overlays = [ ]; # Add your overlays here if needed
+    };
+
     darwinSystem = {user, arch ? "aarch64-darwin"}:
       darwin.lib.darwinSystem {
         system = arch;
@@ -77,6 +88,7 @@
         ];
       };
     };
+
     darwinConfigurations = {
       "G2157QVFX1" = darwinSystem {
         user = "etravers";
@@ -86,5 +98,20 @@
         arch = "x86_64-darwin";
       };
     };
+
+    devShells = forAllSystems (system:
+      let
+        pkgs = nixpkgsFor system;
+      in
+        {
+        default = pkgs.mkShell {
+          name = "config-environment";
+
+          buildInputs = with pkgs; [
+            lua-language-server
+          ];
+        };
+      }
+    );
   };
 }
