@@ -69,7 +69,6 @@
               width = 80
             },
             plugins = {
-              gitsigns = { enabled = true },
               tmux = { enabled = true }
             },
             on_open = function()
