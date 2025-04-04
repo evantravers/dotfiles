@@ -59,7 +59,7 @@ vim.lsp.config.elixir = {
   root_markers = { "mix.lock", ".git" }
 }
 
-vim.lsp.config.nixd = {
+vim.lsp.config.nix = {
   cmd = { "nixd", "--inlay-hints=true" },
   filetypes = { "nix" },
   settings = {
@@ -75,7 +75,7 @@ vim.lsp.config.nixd = {
   }
 }
 
-vim.lsp.config.luals = {
+vim.lsp.config.lua = {
   cmd = { "lua-language-server" },
   filetypes = { "lua" },
   settings = {
@@ -110,7 +110,7 @@ vim.lsp.config.markdown = {
 vim.lsp.enable({
   'elixir',
   'ruby',
-  'nixd',
-  'luals',
+  'nix',
+  'lua',
   'markdown',
 })
