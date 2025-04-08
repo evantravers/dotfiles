@@ -19,6 +19,8 @@ window-colorspace = display-p3
 
 shell-integration = fish
 
+adjust-cell-height = 10%
+
 font-family  = JetBrainsMono
 font-thicken = true
 font-size    = 16
