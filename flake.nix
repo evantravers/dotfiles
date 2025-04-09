@@ -11,12 +11,17 @@
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+     rust-overlay = {
+      url = "github:oxalica/rust-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
   };
   outputs = {
     nixpkgs,
     nix-darwin,
     home-manager,
+    rust-overlay,
     ...
   } @ inputs: let
     darwinSystem = {user, arch ? "aarch64-darwin"}:
@@ -35,6 +40,10 @@
             users.users.${user}.home = "/Users/${user}";
             nix.settings.trusted-users = [ user ];
           }
+          ({ pkgs, ... }: {
+            nixpkgs.overlays = [ rust-overlay.overlays.default ];
+            environment.systemPackages = [ pkgs.rust-bin.stable.latest.default ];
+          })
         ];
       };
   in
