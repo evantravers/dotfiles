@@ -11,7 +11,7 @@ Bindings = {
   {'com.mitchellh.ghostty', 'j', nil},
   {'com.goodsnooze.MacWhisper', nil, {'w'}},
   {'com.toggl.daneel', 'r', nil},
-  {'com.raycast.macos', nil, {'c', 'space'}},
+  {'com.raycast.macos', nil, {'c', 'space', ';'}},
   {'com.superultra.Homerow', nil, {'return', 'tab'}},
   {'com.surteesstudios.Bartender', nil, {'b'}},
   {'md.obsidian', 'g', nil},
