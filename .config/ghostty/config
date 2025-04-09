@@ -11,6 +11,8 @@ clipboard-read = "allow"
 
 macos-option-as-alt = true
 macos-non-native-fullscreen = true
+macos-icon = retro
+macos-icon-frame = beige
 
 confirm-close-surface = false
 mouse-hide-while-typing = true
