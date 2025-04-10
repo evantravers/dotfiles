@@ -140,6 +140,12 @@
       {
         plugin = nvim-treesitter-context;
         type = "lua";
+        config = ''
+        require'treesitter-context'.setup{
+          enable = false
+        }
+        vim.keymap.set('n', '<space>c', "<cmd>TSContextToggle<cr>", {noremap = true, silent = true, desc = "Toggle TS Context"})
+        '';
       }
       {
         plugin = nvim-treesitter-textobjects; # helix-style selection of TS tree
