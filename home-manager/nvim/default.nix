@@ -138,6 +138,10 @@
         '';
       }
       {
+        plugin = nvim-treesitter-context;
+        type = "lua";
+      }
+      {
         plugin = nvim-treesitter-textobjects; # helix-style selection of TS tree
         type = "lua";
         config = ''
