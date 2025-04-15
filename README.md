@@ -3,7 +3,7 @@
 This is to describe the barebones development system I use. Supports NixOS on WSL, Intel and Silicon Macs.
 
 Featuring:
-- Wezterm
+- Ghostty/Wezterm
 - Tmux
 - Fish
 - Neovim
@@ -50,3 +50,6 @@ You could use something like this to import my home-manager standalone.
   home-manager.users.evan = import ./home-manager/home.nix;
 }
 ```
+
+## References
+- I've borrowed a lot from different folks, but right now I'm looking a lot at mitchellm's setup.
