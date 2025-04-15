@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, nixpkgs-unstable, ... }:
 
 {
   imports = [
@@ -44,6 +44,7 @@
   programs = {
     fish = {
       enable = true;
+      package = nixpkgs-unstable.fish;
       interactiveShellInit = ''
         set fish_greeting # N/A
       '';

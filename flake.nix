@@ -32,6 +32,7 @@
   };
   outputs = {
     nixpkgs,
+    nixpkgs-unstable,
     darwin,
     home-manager,
     nixos-wsl,
@@ -61,6 +62,7 @@
             home-manager = {
               users.${user} = import ./home-manager;
               extraSpecialArgs = {
+                nixpkgs-unstable = nixpkgs-unstable;
                 helix-master = helix-master;
                 neovim-nightly = neovim-nightly;
               };
