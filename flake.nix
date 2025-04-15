@@ -79,12 +79,11 @@
         system = "x86_64-linux";
         modules = [
           nixos-wsl.nixosModules.wsl
-          ./nixos/configuration.nix
-          ./wsl
+          ./machines/wsl.nix
           home-manager.nixosModules.home-manager
           {
             home-manager = {
-              users.nixos = import ./home-manager;
+              users.nixos = import ./users/evantravers/home-manager.nix;
               extraSpecialArgs = {
                 helix-master = helix-master;
                 neovim-nightly = neovim-nightly;

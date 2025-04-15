@@ -1,10 +1,10 @@
-{ pkgs, lib, nixpkgs-unstable, ... }:
+{ pkgs, lib, ... }:
 
 {
   imports = [
     ./git.nix
     ./helix.nix
-    ./nvim
+    ./nvim.nix
     ./starship.nix
     ./tmux.nix
   ];
@@ -12,12 +12,12 @@
   xdg.enable = true;
   # TODO: move this to ./home-manager/modules/darwin or something
   xdg.configFile."hammerspoon" = lib.mkIf pkgs.stdenv.isDarwin {
-    source = ./../.config/hammerspoon;
+    source = .config/hammerspoon;
   };
   xdg.configFile."kanata" = lib.mkIf pkgs.stdenv.isDarwin {
-    source = ./../.config/kanata;
+    source = .config/kanata;
   };
-  xdg.configFile."ghostty/config".source = ./../.config/ghostty/config;
+  xdg.configFile."ghostty/config".source = .config/ghostty/config;
   xdg.configFile."moxide/settings.toml".text = ''
   title_headings = false
   '';
@@ -44,7 +44,7 @@
   programs = {
     fish = {
       enable = true;
-      package = nixpkgs-unstable.fish;
+      # package = inputs.nixpkgs-unstable.legacyPackages.${prev.system}.fish;
       interactiveShellInit = ''
         set fish_greeting # N/A
       '';
@@ -56,7 +56,7 @@
     };
 
     jujutsu = {
-      enable = true;
+      enable = false;
       settings = {
         user = {
           name = "Evan Travers";

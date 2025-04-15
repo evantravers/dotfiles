@@ -10,17 +10,24 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  wsl = {
-    enable = true;
-    defaultUser = "nixos";
-    interop.includePath = true;
-  };
-
   environment = {
     systemPackages = with pkgs; [
       wslu
       wsl-open
     ];
+  };
+
+  programs.fish.enable = true;
+  users.defaultUserShell = pkgs.fish;
+
+  system.stateVersion = "24.11";
+
+  time.timeZone = "America/Chicago";
+
+  wsl = {
+    enable = true;
+    defaultUser = "nixos";
+    interop.includePath = true;
   };
 
   # home-manager.users.nixos = { ... }: {
