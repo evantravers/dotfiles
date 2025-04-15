@@ -17,6 +17,8 @@
     ];
   };
 
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
   programs.fish.enable = true;
   users.defaultUserShell = pkgs.fish;
 
