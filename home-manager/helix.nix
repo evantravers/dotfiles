@@ -66,6 +66,8 @@
           space = {
             m = ":toggle-option soft-wrap.enable";
             q = ":reflow";
+            f = "file_picker_in_current_directory";
+            F = "file_picker";
           };
         };
         select = {
