@@ -1,7 +1,7 @@
 {
   lib,
   pkgs,
-  # neovim-nightly,
+  neovim-nightly,
   ...
 }:
 {
@@ -13,7 +13,7 @@
 
   programs.neovim = {
     enable = true;
-    # package = neovim-nightly.packages.${pkgs.system}.default;
+    package = neovim-nightly.packages.${pkgs.system}.default;
     defaultEditor = true;
 
     extraLuaConfig = lib.fileContents .config/nvim/init.lua;
