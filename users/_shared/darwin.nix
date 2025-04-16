@@ -1,6 +1,10 @@
 { inputs, pkgs, ... }:
 
 {
+  # Enable fish and zsh
+  programs.zsh.enable = true;
+  programs.fish.enable = true;
+
   services = {
     aerospace = {
       enable = true;
