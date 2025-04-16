@@ -42,5 +42,11 @@
       user   = "evantravers";
       wsl    = true;
     };
+
+    darwinConfigurations.G2157QVFX1 = mkSystem "macbook-pro-m1" {
+      system = "aarch64-darwin";
+      user   = "etravers";
+      darwin = true;
+    };
   };
 }
