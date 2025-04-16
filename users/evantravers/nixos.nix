@@ -7,7 +7,7 @@
   users.users.evantravers = {
     isNormalUser = true;
     home = "/home/evantravers";
-    extraGroups = [ "docker" "lxd" "wheel" ];
+    # extraGroups = [ "docker" "lxd" "wheel" ];
     shell = pkgs.fish;
   };
 
