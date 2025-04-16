@@ -1,5 +1,5 @@
 {...}: {
   imports = [
-    ../_shared/home-manager.nix
+    ../evantravers/home-manager.nix
   ];
 }

@@ -1,6 +1,6 @@
 {pkgs, ...}: {
   imports = [
-    ../_shared/darwin.nix
+    ../evantravers/darwin.nix
   ];
 
   # The user should already exist, but we need to set this up so Nix knows
