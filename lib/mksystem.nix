@@ -15,7 +15,7 @@ let
   isWSL = wsl;
 
   # True if Linux, which is a heuristic for not being Darwin.
-  isLinux = !darwin && !isWSL;
+  # isLinux = !darwin && !isWSL;
 
   # The config files for this system.
   machineConfig = ../machines/${name}.nix;
