@@ -30,94 +30,17 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
   };
-  outputs = {
-    nixpkgs,
-    nixpkgs-unstable,
-    darwin,
-    home-manager,
-    nixos-wsl,
-    helix-master,
-    neovim-nightly,
-    ...
-  } @ inputs: let
-    forAllSystems = nixpkgs.lib.genAttrs [
-      "aarch64-darwin"
-      "x86_64-darwin"
-      "x86_64-linux"
-    ];
+  outputs = { nixpkgs, home-manager, darwin, ...}@inputs: let
+    overlays = [];
 
-    nixpkgsFor = system: import nixpkgs {
-      inherit system;
-      overlays = [ ]; # Add your overlays here if needed
+    mkSystem = import ./lib/mksystem.nix {
+      inherit overlays nixpkgs inputs;
     };
-
-    darwinSystem = {user, arch ? "aarch64-darwin"}:
-      darwin.lib.darwinSystem {
-        system = arch;
-        modules = [
-          ./darwin/darwin.nix
-          home-manager.darwinModules.home-manager
-          {
-            _module.args = { inherit inputs; };
-            home-manager = {
-              users.${user} = import ./home-manager;
-              extraSpecialArgs = {
-                nixpkgs-unstable = nixpkgs-unstable;
-                helix-master = helix-master;
-                neovim-nightly = neovim-nightly;
-              };
-            };
-            users.users.${user}.home = "/Users/${user}";
-            nix.settings.trusted-users = [ user ];
-          }
-        ];
-      };
-  in
-  {
-    nixosConfigurations = {
-      nixos = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [
-          nixos-wsl.nixosModules.wsl
-          ./machines/wsl.nix
-          home-manager.nixosModules.home-manager
-          {
-            home-manager = {
-              users.nixos = import ./users/evantravers/home-manager.nix;
-              extraSpecialArgs = {
-                helix-master = helix-master;
-                neovim-nightly = neovim-nightly;
-              };
-            };
-            nix.settings.trusted-users = [ "nixos" ];
-          }
-        ];
-      };
+  in {
+    nixosConfigurations.wsl = mkSystem "wsl" {
+      system = "x86_64-linux";
+      user   = "evantravers";
+      wsl    = true;
     };
-
-    darwinConfigurations = {
-      "G2157QVFX1" = darwinSystem {
-        user = "etravers";
-      };
-      "Evans-MacBook-Pro" = darwinSystem {
-        user = "evan";
-        arch = "x86_64-darwin";
-      };
-    };
-
-    devShells = forAllSystems (system:
-      let
-        pkgs = nixpkgsFor system;
-      in
-        {
-        default = pkgs.mkShell {
-          name = "config-environment";
-
-          buildInputs = with pkgs; [
-            lua-language-server
-          ];
-        };
-      }
-    );
   };
 }
