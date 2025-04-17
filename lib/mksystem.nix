@@ -45,13 +45,8 @@ in systemFunc rec {
     home-manager.home-manager {
       home-manager.useGlobalPkgs = true;
       home-manager.useUserPackages = true;
-      # the next two lines are the most magic that I don't understand.
-      # this one makes nix-darwin work with inputs
+      home-manager.users.${user} = import userHMConfig;
       home-manager.extraSpecialArgs = { inherit inputs; };
-      # this one works with nixOS
-      home-manager.users.${user} = { pkgs, lib, ... }: import userHMConfig {
-        inherit pkgs lib inputs isWSL;
-      };
     }
 
     # We expose some extra arguments so that our modules can parameterize
