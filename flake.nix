@@ -30,8 +30,16 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
   };
-  outputs = { nixpkgs, home-manager, darwin, ...}@inputs: let
-    overlays = [];
+  outputs = { nixpkgs, nixpkgs-unstable, ...}@inputs: let
+    overlays = [
+      # This overlay makes unstable packages available through pkgs.unstable
+      (final: prev: {
+        unstable = import nixpkgs-unstable {
+          system = prev.system;
+          config.allowUnfree = true;
+        };
+      })
+    ];
 
     mkSystem = import ./lib/mksystem.nix {
       inherit overlays nixpkgs inputs;

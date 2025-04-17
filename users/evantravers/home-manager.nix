@@ -44,7 +44,7 @@
   programs = {
     fish = {
       enable = true;
-      # package = inputs.nixpkgs-unstable.legacyPackages.${prev.system}.fish;
+      package = pkgs.unstable.fish; # fish 4.0
       interactiveShellInit = ''
         set fish_greeting # N/A
       '';
