@@ -28,7 +28,7 @@
 
   wsl = {
     enable = true;
-    defaultUser = "nixos";
+    defaultUser = "evantravers";
     interop.includePath = true;
   };
 
