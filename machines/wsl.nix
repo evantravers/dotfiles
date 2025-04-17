@@ -14,6 +14,7 @@
     systemPackages = with pkgs; [
       wslu
       wsl-open
+      wezterm.terminfo
     ];
   };
 

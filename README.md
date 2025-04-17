@@ -2,7 +2,7 @@
 
 ## TODO:
 - [ ] overlay nvim successfully
-- [ ] fix the terminfo for tmux and wezterm to fix colors
+- [x] fix the terminfo for tmux and wezterm to fix colors
 - [ ] write a warning
 - [ ] make some pretty pictures
 - [ ] detail the setup
