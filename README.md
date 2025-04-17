@@ -1,11 +1,18 @@
 # Dotfiles
 
+An opinionated setup about how I want my *nix development environment and host machines configured. Presently managed through nix.
+
+## Development Environment
+
 ![](.github/images/terminal.png)
 
-## TODO:
-- [ ] write a warning
-- [ ] make some pretty pictures
-- [ ] detail the setup
+- Neovim, BTW
+- tmux
+- fish
+
+## OS Hosts
+- OSX: Hammerspoon, Homebrew, Aerospace, Settings
+- WSL: interop, wezterm.terminfo
 
 ## Bootstrap
 
