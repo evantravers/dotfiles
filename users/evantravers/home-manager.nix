@@ -1,10 +1,10 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, inputs, ... }:
 
 {
   imports = [
     ./git.nix
     ./helix.nix
-    ./nvim
+    ./nvim.nix
     ./starship.nix
     ./tmux.nix
   ];
@@ -12,12 +12,12 @@
   xdg.enable = true;
   # TODO: move this to ./home-manager/modules/darwin or something
   xdg.configFile."hammerspoon" = lib.mkIf pkgs.stdenv.isDarwin {
-    source = ./../.config/hammerspoon;
+    source = .config/hammerspoon;
   };
   xdg.configFile."kanata" = lib.mkIf pkgs.stdenv.isDarwin {
-    source = ./../.config/kanata;
+    source = .config/kanata;
   };
-  xdg.configFile."ghostty/config".source = ./../.config/ghostty/config;
+  xdg.configFile."ghostty/config".source = .config/ghostty/config;
   xdg.configFile."moxide/settings.toml".text = ''
   title_headings = false
   '';
@@ -29,7 +29,7 @@
     # environment.
     packages = with pkgs; [
       amber
-      devenv
+      unstable.devenv
       harper
       markdown-oxide
       nixd
@@ -42,8 +42,11 @@
   };
 
   programs = {
+    # get nightly
+    neovim.package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
     fish = {
       enable = true;
+      package = pkgs.unstable.fish; # fish 4.0
       interactiveShellInit = ''
         set fish_greeting # N/A
       '';
@@ -55,7 +58,7 @@
     };
 
     jujutsu = {
-      enable = true;
+      enable = false;
       settings = {
         user = {
           name = "Evan Travers";
