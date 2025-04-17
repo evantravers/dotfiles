@@ -29,7 +29,7 @@
     # environment.
     packages = with pkgs; [
       amber
-      devenv
+      unstable.devenv
       harper
       markdown-oxide
       nixd
