@@ -2,116 +2,59 @@
   description = "Evan's Nix System Configuration";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    # nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs.url ="github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     darwin = {
-      url = "github:LnL7/nix-darwin";
+      url = "github:LnL7/nix-darwin/nix-darwin-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     nixos-wsl = {
       url = "github:nix-community/NixOS-WSL";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     helix-master = {
       url = "github:helix-editor/helix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    neovim-nightly = {
+
+    neovim-nightly-overlay = {
       url = "github:nix-community/neovim-nightly-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
   };
-  outputs = {
-    nixpkgs,
-    darwin,
-    home-manager,
-    nixos-wsl,
-    helix-master,
-    neovim-nightly,
-    ...
-  } @ inputs: let
-    forAllSystems = nixpkgs.lib.genAttrs [
-      "aarch64-darwin"
-      "x86_64-darwin"
-      "x86_64-linux"
+  outputs = { nixpkgs, ...}@inputs: let
+    overlays = [
+      # This overlay makes unstable packages available through pkgs.unstable
+      (final: prev: {
+        unstable = import inputs.nixpkgs-unstable {
+          system = prev.system;
+          config.allowUnfree = true;
+        };
+      })
     ];
 
-    nixpkgsFor = system: import nixpkgs {
-      inherit system;
-      overlays = [ ]; # Add your overlays here if needed
+    mkSystem = import ./lib/mksystem.nix {
+      inherit overlays nixpkgs inputs;
+    };
+  in {
+    nixosConfigurations.wsl = mkSystem "wsl" {
+      system = "x86_64-linux";
+      user   = "evantravers";
+      wsl    = true;
     };
 
-    darwinSystem = {user, arch ? "aarch64-darwin"}:
-      darwin.lib.darwinSystem {
-        system = arch;
-        modules = [
-          ./darwin/darwin.nix
-          home-manager.darwinModules.home-manager
-          {
-            _module.args = { inherit inputs; };
-            home-manager = {
-              users.${user} = import ./home-manager;
-              extraSpecialArgs = {
-                helix-master = helix-master;
-                neovim-nightly = neovim-nightly;
-              };
-            };
-            users.users.${user}.home = "/Users/${user}";
-            nix.settings.trusted-users = [ user ];
-          }
-        ];
-      };
-  in
-  {
-    nixosConfigurations = {
-      nixos = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [
-          nixos-wsl.nixosModules.wsl
-          ./nixos/configuration.nix
-          ./wsl
-          home-manager.nixosModules.home-manager
-          {
-            home-manager = {
-              users.nixos = import ./home-manager;
-              extraSpecialArgs = {
-                helix-master = helix-master;
-                neovim-nightly = neovim-nightly;
-              };
-            };
-            nix.settings.trusted-users = [ "nixos" ];
-          }
-        ];
-      };
+    darwinConfigurations.G2157QVFX1 = mkSystem "macbook-pro-m1" {
+      system = "aarch64-darwin";
+      user   = "etravers";
+      darwin = true;
     };
-
-    darwinConfigurations = {
-      "G2157QVFX1" = darwinSystem {
-        user = "etravers";
-      };
-      "Evans-MacBook-Pro" = darwinSystem {
-        user = "evan";
-        arch = "x86_64-darwin";
-      };
-    };
-
-    devShells = forAllSystems (system:
-      let
-        pkgs = nixpkgsFor system;
-      in
-        {
-        default = pkgs.mkShell {
-          name = "config-environment";
-
-          buildInputs = with pkgs; [
-            lua-language-server
-          ];
-        };
-      }
-    );
   };
 }
