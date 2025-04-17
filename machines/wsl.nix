@@ -18,15 +18,6 @@
     ];
   };
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
-  programs.fish.enable = true;
-  users.defaultUserShell = pkgs.fish;
-
-  system.stateVersion = "24.11";
-
-  time.timeZone = "America/Chicago";
-
   wsl = {
     enable = true;
     defaultUser = "evantravers";
