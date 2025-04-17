@@ -25,10 +25,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    neovim-nightly = {
-      url = "github:nix-community/neovim-nightly-overlay";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
+    # neovim-nightly-overlay = {
+    #   url = "github:nix-community/neovim-nightly-overlay";
+    #   inputs.nixpkgs.follows = "nixpkgs-unstable";
+    # };
   };
   outputs = { nixpkgs, ...}@inputs: let
     overlays = [
@@ -39,6 +39,7 @@
           config.allowUnfree = true;
         };
       })
+      # inputs.neovim-nightly-overlay.overlays.default
     ];
 
     mkSystem = import ./lib/mksystem.nix {
