@@ -230,8 +230,8 @@
           return MiniPick.builtin.files(local_opts, opts)
         end
         vim.keymap.set('n', '<space>/', "<cmd>Pick grep_live<cr>", opts("Live Grep"))
-        vim.keymap.set('n', '<space>F', "<cmd>Pick files tool='git'<cr>", opts("Find Files in CWD"))
-        vim.keymap.set('n', '<space>f', "<cmd>Pick files_root tool='git'<cr>", opts("Find Files"))
+        vim.keymap.set('n', '<space>f', "<cmd>Pick files tool='git'<cr>", opts("Find Files in CWD"))
+        vim.keymap.set('n', '<space>F', "<cmd>Pick files_root tool='git'<cr>", opts("Find Files"))
         vim.keymap.set('n', '<space>b', "<cmd>Pick buffers<cr>", opts("Buffers"))
         vim.keymap.set('n', "<space>'", "<cmd>Pick resume<cr>", opts("Last Picker"))
         vim.keymap.set('n', "<space>g", "<cmd>Pick git_commits<cr>", opts("Git Commits"))
