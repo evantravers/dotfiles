@@ -1,5 +1,7 @@
 # Dotfiles
 
+![](.github/images/terminal.png)
+
 ## TODO:
 - [ ] write a warning
 - [ ] make some pretty pictures
