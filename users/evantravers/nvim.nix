@@ -1,11 +1,10 @@
 {
   lib,
   pkgs,
-  # neovim-nightly,
   ...
 }:
 {
-  home.file.".config/nvim/.vimrc".source = ../../.config/nvim/.vimrc;
+  home.file.".config/nvim/.vimrc".source = .config/nvim/.vimrc;
 
   home.activation.mkdirNvimFolders = lib.hm.dag.entryAfter ["writeBoundary"] ''
     mkdir -p $HOME/.config/nvim/backups $HOME/.config/nvim/swaps $HOME/.config/nvim/undo
@@ -13,12 +12,11 @@
 
   programs.neovim = {
     enable = true;
-    # package = neovim-nightly.packages.${pkgs.system}.default;
     defaultEditor = true;
 
-    extraLuaConfig = lib.fileContents ../../.config/nvim/init.lua;
+    extraLuaConfig = lib.fileContents .config/nvim/init.lua;
 
-    plugins = with pkgs.vimPlugins; [
+    plugins = with pkgs.unstable.vimPlugins; [
       # =======================================================================
       # UI AND THEMES
       # =======================================================================
@@ -232,8 +230,8 @@
           return MiniPick.builtin.files(local_opts, opts)
         end
         vim.keymap.set('n', '<space>/', "<cmd>Pick grep_live<cr>", opts("Live Grep"))
-        vim.keymap.set('n', '<space>F', "<cmd>Pick files tool='git'<cr>", opts("Find Files in CWD"))
-        vim.keymap.set('n', '<space>f', "<cmd>Pick files_root tool='git'<cr>", opts("Find Files"))
+        vim.keymap.set('n', '<space>f', "<cmd>Pick files tool='git'<cr>", opts("Find Files in CWD"))
+        vim.keymap.set('n', '<space>F', "<cmd>Pick files_root tool='git'<cr>", opts("Find Files"))
         vim.keymap.set('n', '<space>b', "<cmd>Pick buffers<cr>", opts("Buffers"))
         vim.keymap.set('n', "<space>'", "<cmd>Pick resume<cr>", opts("Last Picker"))
         vim.keymap.set('n', "<space>g", "<cmd>Pick git_commits<cr>", opts("Git Commits"))

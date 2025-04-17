@@ -6,9 +6,9 @@
     prefix = "C-space";
     sensibleOnTop = false;
     shell = "${pkgs.fish}/bin/fish";
-    terminal = "xterm-256color";
+    terminal = if pkgs.stdenv.isDarwin then "xterm-ghostty" else "wezterm";
 
-    extraConfig = lib.fileContents ../.config/tmux/.tmux.conf;
+    extraConfig = lib.fileContents .config/tmux/.tmux.conf;
 
     plugins = with pkgs.tmuxPlugins; [
       logging
