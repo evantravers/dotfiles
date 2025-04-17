@@ -45,9 +45,8 @@ in systemFunc rec {
     home-manager.home-manager {
       home-manager.useGlobalPkgs = true;
       home-manager.useUserPackages = true;
-      home-manager.users.${user} = import userHMConfig {
-        isWSL = isWSL;
-        inputs = inputs;
+      home-manager.users.${user} = { pkgs, lib, ... }: import userHMConfig {
+        inherit pkgs lib inputs isWSL;
       };
     }
 
