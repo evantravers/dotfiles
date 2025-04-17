@@ -51,9 +51,15 @@
       wsl    = true;
     };
 
-    darwinConfigurations.G2157QVFX1 = mkSystem "macbook-pro-m1" {
+    darwinConfigurations.G2157QVFX1 = mkSystem "macbook-pro" {
       system = "aarch64-darwin";
       user   = "etravers";
+      darwin = true;
+    };
+
+    darwinConfigurations.Evans-MacBook-Pro = mkSystem "macbook-pro" {
+      system = "x86_64-darwin";
+      user   = "evan";
       darwin = true;
     };
   };
