@@ -31,6 +31,7 @@
       amber
       unstable.devenv
       harper
+      lua-language-server
       markdown-oxide
       nixd
       ripgrep
