@@ -30,11 +30,11 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
   };
-  outputs = { nixpkgs, nixpkgs-unstable, ...}@inputs: let
+  outputs = { nixpkgs, ...}@inputs: let
     overlays = [
       # This overlay makes unstable packages available through pkgs.unstable
       (final: prev: {
-        unstable = import nixpkgs-unstable {
+        unstable = import inputs.nixpkgs-unstable {
           system = prev.system;
           config.allowUnfree = true;
         };

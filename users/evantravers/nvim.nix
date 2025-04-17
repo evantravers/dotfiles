@@ -16,7 +16,7 @@
 
     extraLuaConfig = lib.fileContents .config/nvim/init.lua;
 
-    plugins = with pkgs.vimPlugins; [
+    plugins = with pkgs.unstable.vimPlugins; [
       # =======================================================================
       # UI AND THEMES
       # =======================================================================
