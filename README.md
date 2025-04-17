@@ -1,8 +1,6 @@
 # Dotfiles
 
 ## TODO:
-- [ ] overlay nvim successfully
-- [x] fix the terminfo for tmux and wezterm to fix colors
 - [ ] write a warning
 - [ ] make some pretty pictures
 - [ ] detail the setup
