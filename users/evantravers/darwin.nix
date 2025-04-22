@@ -89,6 +89,7 @@
       "hammerspoon"
       "karabiner-elements"
       "keycastr"
+      "mouseless"
       "obsidian"
       "raycast"
     ];
