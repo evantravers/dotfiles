@@ -27,6 +27,8 @@
         vim.g.zenbones = {
           solid_line_nr    = true,
           solid_vert_split = true,
+          darken_noncurrent_window = true,
+          lighten_noncurrent_window = true,
         }
         vim.cmd.colorscheme "zenbones"
         '';
