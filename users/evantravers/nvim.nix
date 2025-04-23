@@ -206,7 +206,6 @@
             hex_color = hipatterns.gen_highlighter.hex_color(),
           }
         })
-        require('mini.operators').setup()
         require('mini.icons').setup()      -- minimal icons
         require('mini.jump').setup()       -- fFtT work past a line
         local MiniJump2d = require('mini.jump2d').setup({
