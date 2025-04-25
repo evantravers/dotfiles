@@ -1,4 +1,4 @@
-{ inputs, pkgs, ... }:
+{ inputs, pkgs, lib, ... }:
 
 {
   # Enable fish and zsh
@@ -89,9 +89,10 @@
       "hammerspoon"
       "karabiner-elements"
       "keycastr"
-      "mouseless"
       "obsidian"
       "raycast"
+    ] ++ lib.optionals pkgs.stdenv.hostPlatform.isAarch64 [
+      "mouseless"
     ];
 
     masApps = {
