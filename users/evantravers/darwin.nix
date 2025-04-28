@@ -133,6 +133,7 @@
     };
   };
 
+  security.pam.enableSudoTouchIdAuth = true;
   security.sudo.extraConfig = ''
   Defaults timestamp_timeout=15
   '';
