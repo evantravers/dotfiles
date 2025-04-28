@@ -14,7 +14,6 @@
       logging
       pain-control
       sessionist
-      session-wizard
       tmux-thumbs
       yank
     ];

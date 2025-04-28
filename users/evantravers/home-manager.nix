@@ -30,11 +30,13 @@
     packages = with pkgs; [
       amber
       unstable.devenv
+      gum
       harper
       lua-language-server
       markdown-oxide
       nixd
       ripgrep
+      sesh
       smartcat
     ];
 
