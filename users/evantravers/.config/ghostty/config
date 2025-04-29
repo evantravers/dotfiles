@@ -25,7 +25,7 @@ adjust-cell-height = 10%
 
 font-family  = JetBrainsMono
 font-thicken = true
-font-size    = 16
+font-size    = 21
 
 font-feature = zero
 font-feature = ss01
