@@ -81,5 +81,5 @@
     };
   };
 
-  services.ollama.enable = true;
+  # services.ollama.enable = true;
 }
