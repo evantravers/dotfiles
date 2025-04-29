@@ -42,7 +42,7 @@ Hyper:bind({}, ',', function()
   hs.shortcuts.run("Smart Capture")
 end)
 Hyper:bind({}, 't', function()
-  hs.urlevent.openURL("obsidian://open?vault=wiki&file=templates%2Ftasks%2FToday")
+  hs.urlevent.openURL("obsidian://open?vault=wiki&file=templates%2Ftasks%2FToday%20Tasks")
   Hyper:exit()
 end)
 
