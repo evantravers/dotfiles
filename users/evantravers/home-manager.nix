@@ -61,7 +61,8 @@
     };
 
     jujutsu = {
-      enable = false;
+      enable = true;
+      package = pkgs.unstable.jujutsu;
       settings = {
         user = {
           name = "Evan Travers";
