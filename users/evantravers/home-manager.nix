@@ -68,6 +68,7 @@
           name = "Evan Travers";
           email = "evantravers@gmail.com";
         };
+        ui.default-command = "log";
       };
     };
 
