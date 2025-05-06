@@ -4,7 +4,7 @@
   ...
 }:
 {
-  home.file.".config/nvim/.vimrc".source = .config/nvim/.vimrc;
+  xdg.configFile."nvim/.vimrc".source = .config/nvim/.vimrc;
 
   home.activation.mkdirNvimFolders = lib.hm.dag.entryAfter ["writeBoundary"] ''
     mkdir -p $HOME/.config/nvim/backups $HOME/.config/nvim/swaps $HOME/.config/nvim/undo
