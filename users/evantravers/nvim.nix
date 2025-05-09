@@ -296,8 +296,16 @@
       vim-fugitive # :Git actions
       vim-rhubarb # github plugins for fugitive
       # =======================================================================
-      # LSP AND COMPLETION
+      # AI
       # =======================================================================
+      {
+        plugin = pkgs.vimPlugins.avante-nvim;
+        type = "lua";
+        config = ''
+              require("avante_lib").load()
+              require("avante").setup()
+        '';
+      }
     ];
   };
 }
