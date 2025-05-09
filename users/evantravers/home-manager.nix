@@ -37,11 +37,13 @@
       unstable.claude-code
       devenv
       gum
+      unstable.goose-cli
       harper
       lua-language-server
       markdown-oxide
       nixd
       nixfmt-rfc-style
+      unstable.ollama
       ripgrep
       sesh
       smartcat
@@ -109,6 +111,4 @@
       enableFishIntegration = true;
     };
   };
-
-  # services.ollama.enable = true;
 }
