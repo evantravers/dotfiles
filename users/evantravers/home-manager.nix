@@ -34,6 +34,7 @@
     # environment.
     packages = with pkgs; [
       amber
+      unstable.claude-code
       devenv
       gum
       harper
