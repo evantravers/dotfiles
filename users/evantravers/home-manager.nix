@@ -1,4 +1,4 @@
-{ pkgs, lib, inputs, ... }:
+{ pkgs, lib, inputs, config, ... }:
 
 {
   imports = [
@@ -70,6 +70,12 @@
         };
         ui.default-command = "log";
       };
+    };
+
+    nh = {
+      enable = true;
+      clean.enable = true;
+      flake = ./.;
     };
 
     yazi = {
