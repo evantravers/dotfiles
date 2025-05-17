@@ -17,6 +17,14 @@
   xdg.configFile."kanata" = lib.mkIf pkgs.stdenv.isDarwin {
     source = .config/kanata;
   };
+  xdg.configFile."jj/config.toml".text = ''
+  [ui]
+  default-command = "log"
+
+  [user]
+  email = "evantravers@gmail.com"
+  name = "Evan Travers"
+  '';
   xdg.configFile."ghostty/config".source = .config/ghostty/config;
   xdg.configFile."moxide/settings.toml".text = ''
   title_headings = false
@@ -63,13 +71,13 @@
     jujutsu = {
       enable = true;
       package = pkgs.unstable.jujutsu;
-      settings = {
-        user = {
-          name = "Evan Travers";
-          email = "evantravers@gmail.com";
-        };
-        ui.default-command = "log";
-      };
+      # settings = {
+      #   user = {
+      #     name = "Evan Travers";
+      #     email = "evantravers@gmail.com";
+      #   };
+      #   ui.default-command = "log";
+      # };
     };
 
     nh = {
