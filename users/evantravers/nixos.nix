@@ -1,7 +1,10 @@
 { pkgs, inputs, ... }:
 
 {
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   system.stateVersion = "24.11";
 
@@ -18,4 +21,3 @@
     shell = pkgs.fish;
   };
 }
-
