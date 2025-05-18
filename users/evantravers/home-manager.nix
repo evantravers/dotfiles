@@ -24,6 +24,10 @@
   [user]
   email = "evantravers@gmail.com"
   name = "Evan Travers"
+
+  [fix.tools.nixfmt]
+  command = ["${lib.getExe pkgs.nixfmt-rfc-style}", "$path"]
+  patterns = ["glob:'**/*.nix'"]
   '';
   xdg.configFile."ghostty/config".source = .config/ghostty/config;
   xdg.configFile."moxide/settings.toml".text = ''
@@ -43,6 +47,7 @@
       lua-language-server
       markdown-oxide
       nixd
+      nixfmt-rfc-style
       ripgrep
       sesh
       smartcat
