@@ -1,4 +1,4 @@
-{...}:
+{ ... }:
 {
   home.file = {
     ".cvsignore".source = .config/git/.cvsignore;
