@@ -2,7 +2,7 @@
   description = "Evan's Nix System Configuration";
 
   inputs = {
-    nixpkgs.url ="github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
     home-manager = {
@@ -35,39 +35,42 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
-  outputs = { nixpkgs, ...}@inputs: let
-    overlays = [
-      # This overlay makes unstable packages available through pkgs.unstable
-      (final: prev: {
-        unstable = import inputs.nixpkgs-unstable {
-          system = prev.system;
-          config.allowUnfree = true;
-        };
+  outputs =
+    { nixpkgs, ... }@inputs:
+    let
+      overlays = [
+        # This overlay makes unstable packages available through pkgs.unstable
+        (final: prev: {
+          unstable = import inputs.nixpkgs-unstable {
+            system = prev.system;
+            config.allowUnfree = true;
+          };
 
-        nh = inputs.nixpkgs-unstable.legacyPackages.${prev.system}.nh;
-      })
-    ];
+          nh = inputs.nixpkgs-unstable.legacyPackages.${prev.system}.nh;
+        })
+      ];
 
-    mkSystem = import ./lib/mksystem.nix {
-      inherit overlays nixpkgs inputs;
-    };
-  in {
-    nixosConfigurations.wsl = mkSystem "wsl" {
-      system = "x86_64-linux";
-      user   = "evantravers";
-      wsl    = true;
-    };
+      mkSystem = import ./lib/mksystem.nix {
+        inherit overlays nixpkgs inputs;
+      };
+    in
+    {
+      nixosConfigurations.wsl = mkSystem "wsl" {
+        system = "x86_64-linux";
+        user = "evantravers";
+        wsl = true;
+      };
 
-    darwinConfigurations.G2157QVFX1 = mkSystem "macbook-pro" {
-      system = "aarch64-darwin";
-      user   = "etravers";
-      darwin = true;
-    };
+      darwinConfigurations.G2157QVFX1 = mkSystem "macbook-pro" {
+        system = "aarch64-darwin";
+        user = "etravers";
+        darwin = true;
+      };
 
-    darwinConfigurations.Evans-MacBook-Pro = mkSystem "macbook-pro" {
-      system = "x86_64-darwin";
-      user   = "evan";
-      darwin = true;
+      darwinConfigurations.Evans-MacBook-Pro = mkSystem "macbook-pro" {
+        system = "x86_64-darwin";
+        user = "evan";
+        darwin = true;
+      };
     };
-  };
 }

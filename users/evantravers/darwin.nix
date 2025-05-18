@@ -20,8 +20,11 @@
           }
         ];
         workspace-to-monitor-force-assignment = {
-          "1" = ["main"];
-          "2" = ["secondary" "main"];
+          "1" = [ "main" ];
+          "2" = [
+            "secondary"
+            "main"
+          ];
         };
         mode = {
           main = {
@@ -55,10 +58,22 @@
           };
           service = {
             binding = {
-              esc = [ "reload-config" "mode main" ];
-              r = [ "flatten-workspace-tree" "mode main" ];
-              f = [ "layout floating tiling" "mode main" ];
-              backspace = [ "close-all-windows-but-current" "mode main" ];
+              esc = [
+                "reload-config"
+                "mode main"
+              ];
+              r = [
+                "flatten-workspace-tree"
+                "mode main"
+              ];
+              f = [
+                "layout floating tiling"
+                "mode main"
+              ];
+              backspace = [
+                "close-all-windows-but-current"
+                "mode main"
+              ];
             };
           };
         };
@@ -76,24 +91,26 @@
   homebrew = {
     enable = true;
 
-    onActivation.autoUpdate  = true;
+    onActivation.autoUpdate = true;
     onActivation.upgrade = true;
 
-    casks = [
-      "1password"
-      "bartender"
-      "fantastical"
-      "firefox"
-      "ghostty"
-      "google-chrome"
-      "hammerspoon"
-      "karabiner-elements"
-      "keycastr"
-      "obsidian"
-      "raycast"
-    ] ++ lib.optionals pkgs.stdenv.hostPlatform.isAarch64 [
-      "mouseless"
-    ];
+    casks =
+      [
+        "1password"
+        "bartender"
+        "fantastical"
+        "firefox"
+        "ghostty"
+        "google-chrome"
+        "hammerspoon"
+        "karabiner-elements"
+        "keycastr"
+        "obsidian"
+        "raycast"
+      ]
+      ++ lib.optionals pkgs.stdenv.hostPlatform.isAarch64 [
+        "mouseless"
+      ];
 
     masApps = {
       "Reeder" = 1529448980;
@@ -135,6 +152,6 @@
 
   security.pam.enableSudoTouchIdAuth = true;
   security.sudo.extraConfig = ''
-  Defaults timestamp_timeout=15
+    Defaults timestamp_timeout=15
   '';
 }

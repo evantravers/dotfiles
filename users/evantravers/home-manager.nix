@@ -1,4 +1,10 @@
-{ pkgs, lib, inputs, config, ... }:
+{
+  pkgs,
+  lib,
+  inputs,
+  config,
+  ...
+}:
 
 {
   imports = [
@@ -18,20 +24,20 @@
     source = .config/kanata;
   };
   xdg.configFile."jj/config.toml".text = ''
-  [ui]
-  default-command = "log"
+    [ui]
+    default-command = "log"
 
-  [user]
-  email = "evantravers@gmail.com"
-  name = "Evan Travers"
+    [user]
+    email = "evantravers@gmail.com"
+    name = "Evan Travers"
 
-  [fix.tools.nixfmt]
-  command = ["${lib.getExe pkgs.nixfmt-rfc-style}", "$path"]
-  patterns = ["glob:'**/*.nix'"]
+    [fix.tools.nixfmt]
+    command = ["${lib.getExe pkgs.nixfmt-rfc-style}", "$path"]
+    patterns = ["glob:'**/*.nix'"]
   '';
   xdg.configFile."ghostty/config".source = .config/ghostty/config;
   xdg.configFile."moxide/settings.toml".text = ''
-  title_headings = false
+    title_headings = false
   '';
 
   home = {

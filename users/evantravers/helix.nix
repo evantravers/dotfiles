@@ -20,7 +20,14 @@
           language-servers = [
             "markdown-oxide"
           ];
-          comment-tokens = ["-" "+" "*" "1." ">" "- [ ]"];
+          comment-tokens = [
+            "-"
+            "+"
+            "*"
+            "1."
+            ">"
+            "- [ ]"
+          ];
         }
         {
           name = "devicetree";
@@ -52,7 +59,9 @@
           hidden = false;
         };
         line-number = "relative";
-        lsp = { display-inlay-hints = true; };
+        lsp = {
+          display-inlay-hints = true;
+        };
         rulers = [ 80 ];
         soft-wrap = {
           enable = false;
@@ -76,7 +85,7 @@
           };
         };
         insert = {
-          C-c   = "normal_mode";
+          C-c = "normal_mode";
           "C-[" = "normal_mode";
         };
       };
