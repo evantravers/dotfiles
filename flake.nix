@@ -63,7 +63,7 @@
 
       darwinConfigurations.Evans-MacBook-Pro = mkSystem "macbook-pro" {
         system = "x86_64-darwin";
-        user = "evan";
+        user = "evantravers";
         darwin = true;
       };
     };
