@@ -5,6 +5,11 @@
   programs.zsh.enable = true;
   programs.fish.enable = true;
 
+  users.users.evantravers = {
+    home = "/Users/evantravers";
+    shell = pkgs.fish;
+  };
+
   services = {
     aerospace = {
       enable = true;
