@@ -92,15 +92,16 @@ local hyperGroup = function(key, group)
 end
 
 hyperGroup('k', {
-    'com.apple.Safari',
-    'com.brave.Browser',
-    'com.google.Chrome',
-    'org.mozilla.firefox',
-  })
+  'com.apple.Safari',
+  'com.brave.Browser',
+  'com.google.Chrome',
+  'org.mozilla.firefox',
+})
 
 hyperGroup('i', {
-    'com.microsoft.teams2'
-  })
+  'com.tinyspeck.slackmacgap',
+  'com.hnc.Discord'
+})
 
 -- Jump to google hangout or zoom
 Z_count = 0
