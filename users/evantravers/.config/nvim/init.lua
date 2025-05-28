@@ -110,10 +110,16 @@ vim.lsp.config.markdown = {
   filetypes = { "markdown" }
 }
 
+vim.lsp.config.javascript = {
+  cmd = { "typescript-language-server", "--stdio" },
+  filetypes = { "javascript", "typescript" }
+}
+
 vim.lsp.enable({
   'elixir',
   'ruby',
   'nix',
   'lua',
   'markdown',
+  'javascript'
 })
