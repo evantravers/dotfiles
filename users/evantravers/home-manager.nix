@@ -67,7 +67,6 @@
     neovim.package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
     fish = {
       enable = true;
-      package = pkgs.unstable.fish; # fish 4.0
       interactiveShellInit = ''
         set fish_greeting # N/A
       '';
