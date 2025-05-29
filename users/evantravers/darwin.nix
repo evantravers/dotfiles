@@ -128,6 +128,7 @@
     pkgs.jetbrains-mono
   ];
   system = {
+    primaryUser = "evantravers";
     defaults = {
       dock = {
         autohide = true;
@@ -155,8 +156,5 @@
     };
   };
 
-  security.pam.enableSudoTouchIdAuth = true;
-  security.sudo.extraConfig = ''
-    Defaults timestamp_timeout=15
-  '';
+  security.pam.services.sudo_local.touchIdAuth = true;
 }
