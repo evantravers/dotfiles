@@ -23,8 +23,4 @@
     defaultUser = "evantravers";
     interop.includePath = true;
   };
-
-  # home-manager.users.nixos = { ... }: {
-  #   services.ollama.acceleration = "cuda";
-  # };
 }
