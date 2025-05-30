@@ -34,7 +34,7 @@
     # environment.
     packages = with pkgs; [
       amber
-      unstable.devenv
+      devenv
       gum
       harper
       lua-language-server
