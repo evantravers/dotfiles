@@ -11,6 +11,7 @@ An opinionated setup about how I want my *nix development environment and host m
 - fish
 
 ## OS Hosts
+
 - OSX: Hammerspoon, Homebrew, Aerospace, Settings
 - WSL: interop, wezterm.terminfo
 
@@ -25,11 +26,16 @@ Darwin:
 `nix run nix-darwin -- switch --flake github:evantravers/dotfiles#macbook-pro-[intel m1]`
 
 ## Update
+
 WSL:
 `sudo nixos-rebuild switch --flake ./`
+OR
+`nh os switch ./ --hostname wsl`
 
 Darwin:
 `darwin-rebuild switch --flake ./`
+OR
+`nh darwin switch ./`
 
 ## References
 - Mainly copying mitchellm's incredible work, especially mksystem.nix
