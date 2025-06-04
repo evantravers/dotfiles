@@ -35,6 +35,8 @@
     packages = with pkgs; [
       amber
       unstable.claude-code
+      copilot-cli
+      copilot-language-server
       devenv
       gum
       unstable.goose-cli

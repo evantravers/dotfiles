@@ -299,6 +299,13 @@
       # AI
       # =======================================================================
       {
+        plugin = pkgs.vimPlugins.copilot-lua;
+        type = "lua";
+        config = ''
+          require("copilot").setup({})
+        '';
+      }
+      {
         plugin = pkgs.vimPlugins.avante-nvim;
         type = "lua";
         config = ''
