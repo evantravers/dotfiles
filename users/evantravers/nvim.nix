@@ -220,7 +220,7 @@
           require('mini.pairs').setup()      -- pair brackets
           require('mini.pick').setup({
             mappings = {
-              choose_marked = '<M-x>'
+              choose_marked = '<C-q>' -- sends to quickfix anyway
             }
           })       -- pickers
           MiniPick.registry.files_root = function(local_opts)
