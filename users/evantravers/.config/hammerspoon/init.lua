@@ -99,6 +99,7 @@ hyperGroup('k', {
 })
 
 hyperGroup('i', {
+  'com.microsoft.teams2',
   'com.tinyspeck.slackmacgap',
   'com.hnc.Discord'
 })
