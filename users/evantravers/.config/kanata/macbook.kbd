@@ -19,14 +19,14 @@
 ;; alias definitions
 (defalias
   escctrl (tap-hold $tap-time $hold-time esc lctl)
-  a (tap-hold $tap-time $hold-time a lctrl)
+  a (tap-hold $tap-time $hold-time a lmet)
   s (tap-hold $tap-time $hold-time s lalt)
-  d (tap-hold $tap-time $hold-time d lmet)
+  d (tap-hold $tap-time $hold-time d lctrl)
   f (tap-hold $tap-time $hold-time f lsft)
   j (tap-hold $tap-time $hold-time j rsft)
-  k (tap-hold $tap-time $hold-time k rmet)
+  k (tap-hold $tap-time $hold-time k rctrl)
   l (tap-hold $tap-time $hold-time l ralt)
-  ; (tap-hold $tap-time $hold-time ; rctrl)
+  ; (tap-hold $tap-time $hold-time ; rmet)
 )
 
 (deflayer base

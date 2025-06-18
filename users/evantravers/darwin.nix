@@ -10,6 +10,10 @@
     shell = pkgs.fish;
   };
 
+  environment.systemPackages = [
+    pkgs.kanata
+  ];
+
   services = {
     aerospace = {
       enable = true;
@@ -108,7 +112,6 @@
         "ghostty"
         "google-chrome"
         "hammerspoon"
-        "karabiner-elements"
         "keycastr"
         "obsidian"
         "raycast"
