@@ -1,13 +1,16 @@
-;; home row-mods
+;; minimal home row-mods and hyper key
 
 ;; un-mapped keys behave as normally
 (defcfg
   process-unmapped-keys yes
+  macos-dev-names-include (
+    "Apple Internal Keyboard / Trackpad"
+  )
 )
 
 ;; define the keys to remap
 (defsrc
- caps a s d f h j k l ;
+  lctrl caps a s d f j k l ;
 )
 
 ;; define values for tap time and hold time
@@ -30,5 +33,5 @@
 )
 
 (deflayer base
-  @escctrl @a @s @d @f @j @k @k @l @;
+  f19 @escctrl @a @s @d @f @j @k @l @;
 )
