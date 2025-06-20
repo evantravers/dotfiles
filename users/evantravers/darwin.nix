@@ -12,6 +12,7 @@
 
   environment.systemPackages = [
     pkgs.kanata
+    pkgs.zed-editor
   ];
 
   services = {
