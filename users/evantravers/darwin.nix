@@ -11,7 +11,16 @@
   };
 
   environment.systemPackages = [
+    pkgs._1password-gui
+    pkgs.bartender
     pkgs.kanata
+    pkgs.firefox
+    pkgs.ghostty
+    pkgs.google-chrome
+    pkgs.keycastr
+    pkgs.mouseless
+    pkgs.obsidian
+    pkgs.raycast
     pkgs.zed-editor
   ];
 
@@ -106,19 +115,8 @@
 
     casks =
       [
-        "1password"
-        "bartender"
         "fantastical"
-        "firefox"
-        "ghostty"
-        "google-chrome"
         "hammerspoon"
-        "keycastr"
-        "obsidian"
-        "raycast"
-      ]
-      ++ lib.optionals pkgs.stdenv.hostPlatform.isAarch64 [
-        "mouseless"
       ];
 
     masApps = {
