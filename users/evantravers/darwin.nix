@@ -15,7 +15,6 @@
     pkgs.bartender
     pkgs.kanata
     pkgs.firefox
-    pkgs.ghostty
     pkgs.google-chrome
     pkgs.keycastr
     pkgs.mouseless
@@ -116,6 +115,7 @@
     casks =
       [
         "fantastical"
+        "ghostty"
         "hammerspoon"
       ];
 
