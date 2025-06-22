@@ -17,10 +17,12 @@
     pkgs.firefox
     pkgs.google-chrome
     pkgs.keycastr
-    pkgs.mouseless
     pkgs.obsidian
     pkgs.raycast
     pkgs.zed-editor
+  ]
+  ++ lib.optionals pkgs.stdenv.hostPlatform.isAarch64 [
+    pkgs.mouseless
   ];
 
   services = {
