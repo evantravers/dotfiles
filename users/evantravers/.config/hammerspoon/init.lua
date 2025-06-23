@@ -95,7 +95,7 @@ hyperGroup('k', {
   'com.apple.Safari',
   'com.brave.Browser',
   'com.google.Chrome',
-  'org.mozilla.firefox',
+  'org.nixos.firefox',
 })
 
 hyperGroup('i', {
