@@ -11,7 +11,7 @@
   };
 
   environment.systemPackages = [
-    pkgs._1password-gui
+    # pkgs._1password-gui
     pkgs.bartender
     pkgs.kanata
     pkgs.firefox
@@ -116,6 +116,7 @@
 
     casks =
       [
+        "1password"
         "fantastical"
         "ghostty"
         "hammerspoon"
