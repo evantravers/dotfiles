@@ -4,6 +4,7 @@
   # Enable fish and zsh
   programs.zsh.enable = true;
   programs.fish.enable = true;
+  # programs._1password-gui.enable = true;
 
   users.users.evantravers = {
     home = "/Users/evantravers";
@@ -11,7 +12,6 @@
   };
 
   environment.systemPackages = [
-    # pkgs._1password-gui
     pkgs.bartender
     pkgs.kanata
     pkgs.firefox
