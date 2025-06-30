@@ -42,12 +42,15 @@
       markdown-oxide
       nixd
       nixfmt-rfc-style
+      opencode
       ripgrep
       sesh
       smartcat
     ];
 
     sessionVariables = {
+      OPENROUTER_KEY = "op://Private/Open Router/credential";
+      GITHUB_TOKEN = "op://Private/Github Copilot/credential";
     };
   };
 
