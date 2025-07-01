@@ -13,9 +13,10 @@
 
   environment.systemPackages = [
     pkgs.bartender
-    pkgs.kanata
+    pkgs.defaultbrowser
     pkgs.firefox
     pkgs.google-chrome
+    pkgs.kanata
     pkgs.keycastr
     pkgs.obsidian
     pkgs.raycast
