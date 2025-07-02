@@ -303,7 +303,16 @@
         type = "lua";
         config = ''
           require("avante_lib").load()
-          require("avante").setup({})
+          require("avante").setup({
+            opts = {
+              provider = "Claude",
+              providers = {
+                claude = {
+                  api_key_name = "cmd:op read op://private/Anthropic/credential",
+                },
+              },
+            },
+          })
         '';
       }
     ];
