@@ -35,7 +35,7 @@
     packages = with pkgs; [
       _1password-cli
       amber
-      devenv
+      unstable.devenv
       gum
       harper
       lua-language-server
