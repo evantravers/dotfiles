@@ -308,7 +308,7 @@
               provider = "Claude",
               providers = {
                 claude = {
-                  api_key_name = "cmd:op read op://private/Anthropic/credential",
+                  api_key_name = "cmd:op read op://private/Claude/credential",
                 },
               },
             },
