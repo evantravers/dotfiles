@@ -114,7 +114,8 @@
           require("markview").setup({
             preview = {
               enable = false;
-            }
+              filetypes = { "markdown", "codecompanion" }
+            },
           });
           vim.keymap.set(
             'n',
@@ -298,20 +299,24 @@
       # =======================================================================
       # AI
       # =======================================================================
+      codecompanion-history-nvim # persist chat sessions
       {
-        plugin = pkgs.vimPlugins.avante-nvim;
+        plugin = pkgs.vimPlugins.codecompanion-nvim;
         type = "lua";
         config = ''
-          require("avante_lib").load()
-          require("avante").setup({
-            opts = {
-              provider = "Claude",
-              providers = {
-                claude = {
-                  api_key_name = "cmd:op read op://private/Claude/credential",
-                },
-              },
+          require("codecompanion").setup({
+            adapters = {
+              anthropic = function()
+                return require("codecompanion.adapters").extend("anthropic", {
+                  env = {
+                    api_key = "cmd:op read op://personal/Claude/credential --no-newline"
+                  }
+                })
+              end,
             },
+            extensions = {
+              history = { enabled = true };
+            }
           })
         '';
       }
