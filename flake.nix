@@ -66,5 +66,11 @@
         user = "evantravers";
         darwin = true;
       };
+
+      darwinConfigurations.Theseus = mkSystem "macbook-pro" {
+        system = "aarch64-darwin";
+        user = "evantravers";
+        darwin = true;
+      };
     };
 }
