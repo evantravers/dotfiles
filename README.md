@@ -23,7 +23,7 @@ WSL:
 `sudo nixos-rebuild switch --flake github:evantravers/dotfiles#wsl`
 
 Darwin:
-`nix run nix-darwin -- switch --flake github:evantravers/dotfiles#macbook-pro-[intel m1]`
+`sudo nix run nix-darwin -- switch --flake github:evantravers/dotfiles#macbook-pro`
 
 ## Update
 
