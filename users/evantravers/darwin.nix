@@ -21,9 +21,6 @@
     pkgs.obsidian
     pkgs.raycast
     pkgs.zed-editor
-  ]
-  ++ lib.optionals pkgs.stdenv.hostPlatform.isAarch64 [
-    pkgs.mouseless
   ];
 
   services = {
