@@ -23,7 +23,8 @@ WSL:
 `sudo nixos-rebuild switch --flake github:evantravers/dotfiles#wsl`
 
 Darwin:
-`sudo nix run nix-darwin -- switch --flake github:evantravers/dotfiles#macbook-pro`
+- Install Homebrew
+- `sudo nix run nix-darwin -- switch --flake github:evantravers/dotfiles[#macbook-pro]`
 
 ## Update
 
