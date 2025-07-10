@@ -116,9 +116,11 @@
     casks =
       [
         "1password"
+        "cardhop"
         "fantastical"
         "ghostty"
         "hammerspoon"
+        "homerow"
       ];
 
     masApps = {
