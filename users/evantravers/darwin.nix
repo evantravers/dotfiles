@@ -121,6 +121,7 @@
         "ghostty"
         "hammerspoon"
         "homerow"
+        "karabiner-elements"
       ];
 
     masApps = {
@@ -159,6 +160,7 @@
         MJConfigFile = "~/.config/hammerspoon/init.lua";
       };
     };
+    # karabiner-elements.enable = true;
     keyboard = {
       enableKeyMapping = true;
       remapCapsLockToControl = true;
