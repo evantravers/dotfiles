@@ -18,6 +18,8 @@
     ];
   };
 
+  networking.hostName = "wsl";
+
   wsl = {
     enable = true;
     defaultUser = "evantravers";

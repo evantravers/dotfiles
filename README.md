@@ -33,7 +33,7 @@ Use 1Password to configure SSH Agent for host
 WSL:
 `sudo nixos-rebuild switch --flake ./`
 OR
-`nh os switch ./ --hostname wsl`
+`nh os switch ./`
 
 Darwin:
 `darwin-rebuild switch --flake ./`
