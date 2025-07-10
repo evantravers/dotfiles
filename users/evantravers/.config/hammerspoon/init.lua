@@ -93,7 +93,6 @@ end
 
 hyperGroup('k', {
   'com.apple.Safari',
-  'com.brave.Browser',
   'com.google.Chrome',
   'org.nixos.firefox',
 })
