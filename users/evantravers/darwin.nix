@@ -150,6 +150,10 @@
         FXEnableExtensionChangeWarning = false;
         ShowPathbar = true;
       };
+      trackpad = {
+        Clicking = true;
+        TrackpadRightClick = true;
+      };
       NSGlobalDomain = {
         AppleKeyboardUIMode = 3;
         "com.apple.keyboard.fnState" = true;
