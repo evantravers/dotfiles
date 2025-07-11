@@ -4,6 +4,7 @@
   # Enable fish and zsh
   programs.zsh.enable = true;
   programs.fish.enable = true;
+  programs._1password.enable = true;
   # programs._1password-gui.enable = true;
 
   users.users.evantravers = {
