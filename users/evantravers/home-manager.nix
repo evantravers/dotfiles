@@ -63,31 +63,6 @@
       interactiveShellInit = ''
         set fish_greeting # N/A
       '';
-      functions = {
-        _1password_agent_wsl = {
-          description = "Creates socat npiperelay with windows-based 1Password";
-          body = ''
-          set -gx SSH_AUTH_SOCK $HOME/.1password/agent.sock
-          # need `ps -ww` to get non-truncated command for matching
-          # use square brackets to generate a regex match for the process we want but that doesn't match the grep command running it!
-          set ALREADY_RUNNING (
-                  ps -auxww | grep -q "[n]piperelay.exe -ei -s //./pipe/openssh-ssh-agent"
-            echo $status)
-          if test $ALREADY_RUNNING != "0"
-                  if test -S $SSH_AUTH_SOCK
-                          # not expecting the socket to exist as the forwarding command isn't running (http://www.tldp.org/LDP/abs/html/fto.html)
-                          echo "removing previous socket..."
-                          rm $SSH_AUTH_SOCK
-            end
-                  echo "Starting SSH-Agent relay..."
-                  # setsid to force new session to keep running
-                  # set socat to listen on $SSH_AUTH_SOCK and forward to npiperelay which then forwards to openssh-ssh-agent on windows
-            set agent (setsid socat "UNIX-LISTEN:$SSH_AUTH_SOCK,fork" "EXEC:/mnt/c/Users/Tower/scoop/shims/npiperelay.exe -ei -s //./pipe/openssh-ssh-agent",nofork &) &>/dev/null
-            disown
-          end
-          '';
-        };
-      };
     };
 
     direnv = {
