@@ -12,10 +12,23 @@
 
   environment = {
     systemPackages = with pkgs; [
+      socat
       wslu
       wsl-open
       wezterm.terminfo
     ];
+  };
+
+  programs.fish = {
+    shellInit = ''
+    set -gx SSH_AUTH_SOCK '/home/evantravers/.1password/agent.sock'
+    '';
+    interactiveShellInit =
+      # run 1password agent bride
+      ''
+      # .config/.agent-bridge.sh
+      _1password_agent_wsl
+      '';
   };
 
   networking.hostName = "wsl";
