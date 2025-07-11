@@ -33,7 +33,6 @@
     # The home.packages option allows you to install Nix packages into your
     # environment.
     packages = with pkgs; [
-      _1password-cli
       amber
       unstable.devenv
       gum
