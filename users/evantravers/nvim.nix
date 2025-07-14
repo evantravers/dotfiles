@@ -332,6 +332,9 @@
               inline = { adapter = "anthropic" }
             },
             adapters = {
+              opts = {
+                show_defaults = false,
+              },
               anthropic = function()
                 return require("codecompanion.adapters").extend("anthropic", {
                   env = {
@@ -350,6 +353,15 @@
                   schema = {
                     model = {
                       default = "anthropic/claude-3.7-sonnet",
+                    },
+                  },
+                })
+              end,
+              githubmodels = function()
+                return require("codecompanion.adapters").extend("githubmodels", {
+                  schema = {
+                    model = {
+                      default = "gpt-4.1",
                     },
                   },
                 })
