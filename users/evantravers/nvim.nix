@@ -301,7 +301,15 @@
       # =======================================================================
       codecompanion-history-nvim # persist chat sessions
       {
-        plugin = pkgs.vimPlugins.codecompanion-nvim;
+        plugin = pkgs.vimUtils.buildVimPlugin {
+          name = "codecompanion-nvim";
+          src = pkgs.fetchFromGitHub {
+            owner = "olimorris";
+            repo = "codecompanion.nvim";
+            rev = "af218d273e2a89b04b54eb7b38549ca07dd908b9";
+            hash = "sha256-FTXakglUrqifEXjzES6M4L+rthItu5rlw6QyIOLYNOc=";
+          };
+        };
         type = "lua";
         config = ''
           -- required for copilot token
