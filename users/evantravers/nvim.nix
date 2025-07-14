@@ -114,16 +114,10 @@
         config = ''
           require("markview").setup({
             preview = {
-              enable = false;
-              filetypes = { "markdown", "codecompanion" }
-            },
+              filetypes = { "codecompanion" },
+              ignore_buftypes = {},
+            }
           });
-          vim.keymap.set(
-            'n',
-            '<space>M',
-            ':Markview toggle<cr>',
-            {noremap = true, silent = true, desc = "Toggle Markview"}
-          )
         '';
       }
       # =======================================================================
