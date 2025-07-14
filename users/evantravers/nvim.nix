@@ -319,6 +319,9 @@
           vim.env["CODECOMPANION_TOKEN_PATH"] = vim.fn.expand("~/.config")
 
           require("codecompanion").setup({
+            display = {
+              diff = { enabled = true }
+            },
             strategies = {
               chat = {
                 adapter = "anthropic",
