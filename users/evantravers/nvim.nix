@@ -339,6 +339,21 @@
                   }
                 })
               end,
+              openrouter_claude = function()
+                return require("codecompanion.adapters").extend("openai_compatible", {
+                  env = {
+                    url = "https://openrouter.ai/api",
+                    -- api_key = "OPENROUTER_API_KEY",
+                    api_key = "cmd:op read op://personal/Open Router/credential --no-newline",
+                    chat_url = "/v1/chat/completions",
+                  },
+                  schema = {
+                    model = {
+                      default = "anthropic/claude-3.7-sonnet",
+                    },
+                  },
+                })
+              end
             },
             extensions = {
               history = { enabled = true };
