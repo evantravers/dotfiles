@@ -55,7 +55,7 @@
 
   programs = {
     # get nightly
-    neovim.package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
+    # neovim.package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
     fish = {
       enable = true;
       interactiveShellInit = ''
