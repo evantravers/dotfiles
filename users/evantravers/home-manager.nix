@@ -50,7 +50,6 @@
 
     sessionVariables = {
       ANTHROPIC_API_KEY = "op://Private/Claude/credential";
-      GITHUB_TOKEN = "op://Private/Github Copilot/credential";
     };
   };
 
