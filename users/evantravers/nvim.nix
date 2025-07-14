@@ -304,7 +304,14 @@
         plugin = pkgs.vimPlugins.codecompanion-nvim;
         type = "lua";
         config = ''
+          -- required for copilot token
+          vim.env["CODECOMPANION_TOKEN_PATH"] = vim.fn.expand("~/.config")
+
           require("codecompanion").setup({
+            strategies = {
+              chat = { adapter = "anthropic", },
+              inline = { adapter = "anthropic" }
+            },
             adapters = {
               anthropic = function()
                 return require("codecompanion.adapters").extend("anthropic", {
