@@ -42,6 +42,9 @@
             rev = "02ef9553e2a1d6e861bc6955d58ce5883d28a6ad";
             hash = "sha256-FTXakglUrqifEXjzES6M4L+rthItu5rlw6QyIOLYNOc=";
           };
+          dependencies = [
+            pkgs.vimPlugins.plenary-nvim
+          ];
         };
         type = "lua";
         config = ''
@@ -299,7 +302,8 @@
       # =======================================================================
       # AI
       # =======================================================================
-      codecompanion-history-nvim # persist chat sessions
+      plenary-nvim
+      codecompanion-history-nvim
       {
         plugin = pkgs.vimUtils.buildVimPlugin {
           name = "codecompanion-nvim";
@@ -307,7 +311,7 @@
             owner = "olimorris";
             repo = "codecompanion.nvim";
             rev = "af218d273e2a89b04b54eb7b38549ca07dd908b9";
-            hash = "sha256-FTXakglUrqifEXjzES6M4L+rthItu5rlw6QyIOLYNOc=";
+            hash = "sha256-ydMOKETNAWQGtr8zpUPkEjgc5c8hHnT0nOk1OXWBQtg=";
           };
         };
         type = "lua";
