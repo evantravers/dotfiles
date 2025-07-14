@@ -320,7 +320,12 @@
 
           require("codecompanion").setup({
             strategies = {
-              chat = { adapter = "anthropic", },
+              chat = {
+                adapter = "anthropic",
+                keymaps = {
+                  close = {modes = { n = "<C-q>", i = "<C-q>" }, opts = {},},
+                },
+              },
               inline = { adapter = "anthropic" }
             },
             adapters = {
