@@ -16,6 +16,10 @@
       wslu
       wsl-open
       wezterm.terminfo
+      # wrapper for op.exe
+      (writeShellScriptBin "op" ''
+        exec op.exe "$@"
+      '')
     ];
   };
 
@@ -30,13 +34,6 @@
       _1password_agent_wsl
       '';
     functions = {
-      op = {
-        description = "Use Host Win11 1Password";
-        wraps = "op.exe";
-        body = ''
-          op.exe $argv
-        '';
-      };
       _1password_agent_wsl = {
         description = "Creates socat npiperelay with windows-based 1Password";
         body = ''
