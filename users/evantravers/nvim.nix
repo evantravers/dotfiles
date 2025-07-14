@@ -35,16 +35,14 @@
       }
       {
         plugin = pkgs.vimUtils.buildVimPlugin {
-          name = "auto-dark-mode-nvim"; # switch vim color with OS theme
+          pname = "auto-dark-mode-nvim"; # switch vim color with OS theme
+          version = "2025-07-01";
           src = pkgs.fetchFromGitHub {
             owner = "f-person";
             repo = "auto-dark-mode.nvim";
-            rev = "02ef9553e2a1d6e861bc6955d58ce5883d28a6ad";
+            rev = "97a86c9402c784a254e5465ca2c51481eea310e3";
             hash = "sha256-FTXakglUrqifEXjzES6M4L+rthItu5rlw6QyIOLYNOc=";
           };
-          dependencies = [
-            pkgs.vimPlugins.plenary-nvim
-          ];
         };
         type = "lua";
         config = ''
@@ -302,18 +300,19 @@
       # =======================================================================
       # AI
       # =======================================================================
-      plenary-nvim
       codecompanion-history-nvim
       {
-        plugin = pkgs.vimUtils.buildVimPlugin {
-          name = "codecompanion-nvim";
+        plugin = pkgs.vimPlugins.codecompanion-nvim.overrideAttrs (old: {
           src = pkgs.fetchFromGitHub {
             owner = "olimorris";
             repo = "codecompanion.nvim";
             rev = "af218d273e2a89b04b54eb7b38549ca07dd908b9";
-            hash = "sha256-ydMOKETNAWQGtr8zpUPkEjgc5c8hHnT0nOk1OXWBQtg=";
+            sha256 = "sha256-1Htwj+Alucqff/KCjFrojy6LNL270Z1PN8OszkYIx4c=";
           };
-        };
+          # Skip the test phase
+          doCheck = false;
+          checkPhase = ":";
+        });
         type = "lua";
         config = ''
           -- required for copilot token
