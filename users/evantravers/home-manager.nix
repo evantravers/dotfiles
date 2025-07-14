@@ -48,7 +48,6 @@
     ];
 
     sessionVariables = {
-      OPENROUTER_KEY = "op://Private/Open Router/credential";
       ANTHROPIC_API_KEY = "op://Private/Claude/credential";
       GITHUB_TOKEN = "op://Private/Github Copilot/credential";
     };
