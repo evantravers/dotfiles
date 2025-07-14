@@ -181,8 +181,9 @@
           require('mini.bracketed').setup()  -- unimpaired bindings with TS
           require('mini.snippets').setup()
           require('mini.completion').setup()
-          require('mini.diff').setup()       -- hunk management and highlight
-          require('mini.extra').setup()      -- extra p}ickers
+          local diff = require('mini.diff') -- hunk management and highlight
+          diff.setup({source = diff.gen_source.none()})
+          require('mini.extra').setup()      -- extra pickers
           require('mini.files').setup({
             options = {
               use_as_default_explorer = false
