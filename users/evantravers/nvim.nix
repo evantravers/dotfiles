@@ -4,8 +4,14 @@
   ...
 }:
 {
+  imports = [
+    ./nvim-ai.nix
+  ];
+
+  # Use .vimrc for standard vim settings
   xdg.configFile."nvim/.vimrc".source = .config/nvim/.vimrc;
 
+  # Create folders for backups, swaps, and undo
   home.activation.mkdirNvimFolders = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     mkdir -p $HOME/.config/nvim/backups $HOME/.config/nvim/swaps $HOME/.config/nvim/undo
   '';
@@ -14,14 +20,17 @@
     enable = true;
     defaultEditor = true;
 
+    # Use init.lua for standard neovim settings
     extraLuaConfig = lib.fileContents .config/nvim/init.lua;
 
     plugins = with pkgs.unstable.vimPlugins; [
       # =======================================================================
       # UI AND THEMES
+      # Zenbones for minimal theme
+      # Switches light/dark automatically with OS
       # =======================================================================
       {
-        plugin = zenbones-nvim; # Minimalist theme I love.
+        plugin = zenbones-nvim;
         type = "lua";
         config = ''
           vim.g.zenbones = {
@@ -33,7 +42,7 @@
           vim.cmd.colorscheme "zenbones"
         '';
       }
-      lush-nvim # Required by zenbones for all the colors
+      lush-nvim
       {
         plugin = pkgs.vimUtils.buildVimPlugin {
           pname = "auto-dark-mode-nvim"; # switch vim color with OS theme
@@ -58,8 +67,12 @@
           })
         '';
       }
+      # =======================================================================
+      # PROSE
+      # - Optional prose mode for writing: wrap, bindings, zen
+      # =======================================================================
       {
-        plugin = zen-mode-nvim; # Create minimalist prose writing environment
+        plugin = zen-mode-nvim;
         type = "lua";
         config = ''
           -- I write prose in markdown, all the following is to help with that.
@@ -110,6 +123,9 @@
       }
       # =======================================================================
       # TREESITTER
+      # - enable treesitter options
+      # - TS-enabled context breadcrumbs
+      # - helix style scope selection
       # =======================================================================
       {
         plugin = nvim-treesitter.withAllGrammars; # Treesitter
@@ -128,7 +144,7 @@
           require'treesitter-context'.setup{
             enable = false
           }
-          vim.keymap.set('n', '<space>c', "<cmd>TSContextToggle<cr>", {noremap = true, silent = true, desc = "Toggle TS Context"})
+          vim.keymap.set('n', '<space>c', "<cmd>TSContext toggle<cr>", {noremap = true, silent = true, desc = "Toggle TS Context"})
         '';
       }
       {
@@ -289,16 +305,15 @@
           })
         '';
       }
+
+      # =======================================================================
+      # UTILITIES
+      # =======================================================================
       targets-vim # Classic text-objects
-
       vim-eunuch # powerful buffer-level file options
-
       vim-ragtag # print/execute bindings for template files
-
       vim-speeddating # incrementing dates and times
-
       vim-fugitive # :Git actions
-
       vim-rhubarb # github plugins for fugitive
     ];
   };

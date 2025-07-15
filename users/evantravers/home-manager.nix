@@ -10,7 +10,6 @@
     ./git.nix
     ./helix.nix
     ./nvim.nix
-    ./nvim-ai.nix
     ./starship.nix
     ./tmux.nix
   ];
