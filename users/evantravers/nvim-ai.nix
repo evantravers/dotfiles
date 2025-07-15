@@ -1,25 +1,97 @@
 {
-  lib,
   pkgs,
   ...
 }:
 {
   programs.neovim = {
     plugins = with pkgs.unstable.vimPlugins; [
+      # CodeCompanion as the core AI source
       {
-        plugin = markview-nvim;
+        # Install from github because the nixpkgs one is a month behind
+        plugin = pkgs.vimPlugins.codecompanion-nvim.overrideAttrs (old: {
+          src = pkgs.fetchFromGitHub {
+            owner = "olimorris";
+            repo = "codecompanion.nvim";
+            rev = "af218d273e2a89b04b54eb7b38549ca07dd908b9";
+            sha256 = "sha256-ydMOKETNAWQGtr8zpUPkEjgc5c8hHnT0nOk1OXWBQtg=";
+          };
+          # Skip the test phase
+          doCheck = false;
+          checkPhase = ":";
+        });
         type = "lua";
         config = ''
-          require("markview").setup({
-            preview = {
-              filetypes = { "codecompanion" },
-              ignore_buftypes = {},
+          -- required for githubmodels token via gh
+          vim.env["CODECOMPANION_TOKEN_PATH"] = vim.fn.expand("~/.config")
+
+          require("codecompanion").setup({
+            display = { diff = {
+              enabled = true,
+              provider = "mini_diff"
+            } },
+            strategies = {
+              chat = {
+                adapter = "anthropic",
+                -- Change close: <C-c> -> <C-q>
+                keymaps = {
+                  close = {modes = { n = "<C-q>", i = "<C-q>" }, opts = {},},
+                },
+              },
+              inline = { adapter = "anthropic" }
+            },
+            adapters = {
+              -- hide adapters that I haven't explicitly configured
+              opts = { show_defaults = false, },
+              anthropic = function()
+                return require("codecompanion.adapters").extend("anthropic", {
+                  env = {
+                    api_key = "cmd:op read op://personal/Claude/credential --no-newline"
+                  }
+                })
+              end,
+              openrouter_claude = function()
+                return require("codecompanion.adapters").extend("openai_compatible", {
+                  env = {
+                    url = "https://openrouter.ai/api",
+                    -- api_key = "OPENROUTER_API_KEY",
+                    api_key = "cmd:op read 'op://personal/Open Router/credential --no-newline'",
+                    chat_url = "/v1/chat/completions",
+                  },
+                  schema = {
+                    model = {
+                      default = "anthropic/claude-3.7-sonnet",
+                    },
+                  },
+                })
+              end,
+              githubmodels = function()
+                return require("codecompanion.adapters").extend("githubmodels", {
+                  schema = {
+                    model = {
+                      default = "gpt-4.1",
+                    },
+                  },
+                })
+              end
+            },
+            extensions = {
+              history = { enabled = true };
             }
-          });
+          })
+
+          vim.keymap.set({ "n", "v" }, "<LocalLeader>A", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true, desc = "✨ Actions" })
+          vim.keymap.set({ "n", "v" }, "<LocalLeader>a", "<cmd>CodeCompanionChat Toggle<cr>", { noremap = true, silent = true, desc = "✨ Toggle Chat" })
+          vim.keymap.set("v", "<LocalLeader>c", "<cmd>CodeCompanionChat Add<cr>", { noremap = true, silent = true, desc = "✨ Add to Chat" })
+
+          -- Expand 'cc' into 'CodeCompanion' in the command line
+          vim.cmd([[cab cc CodeCompanion]])
         '';
       }
+
+      # mini.diff for changes
+      # mini.notify to show LLM API call status
       {
-        plugin = mini-nvim; # Ridiculously complete family of plugins
+        plugin = mini-nvim;
         type = "lua";
         config = ''
           local diff = require('mini.diff') -- hunk management and highlight
@@ -69,85 +141,20 @@
         '';
       }
 
+      # Cache and restore previous chats
       codecompanion-history-nvim
 
+      # Markview for making codecompanion prettier
       {
-        plugin = pkgs.vimPlugins.codecompanion-nvim.overrideAttrs (old: {
-          src = pkgs.fetchFromGitHub {
-            owner = "olimorris";
-            repo = "codecompanion.nvim";
-            rev = "af218d273e2a89b04b54eb7b38549ca07dd908b9";
-            sha256 = "sha256-ydMOKETNAWQGtr8zpUPkEjgc5c8hHnT0nOk1OXWBQtg=";
-          };
-          # Skip the test phase
-          doCheck = false;
-          checkPhase = ":";
-        });
+        plugin = markview-nvim;
         type = "lua";
         config = ''
-          -- required for copilot token
-          vim.env["CODECOMPANION_TOKEN_PATH"] = vim.fn.expand("~/.config")
-
-          require("codecompanion").setup({
-            display = {
-              diff = { enabled = true }
-            },
-            strategies = {
-              chat = {
-                adapter = "anthropic",
-                keymaps = {
-                  close = {modes = { n = "<C-q>", i = "<C-q>" }, opts = {},},
-                },
-              },
-              inline = { adapter = "anthropic" }
-            },
-            adapters = {
-              opts = {
-                show_defaults = false,
-              },
-              anthropic = function()
-                return require("codecompanion.adapters").extend("anthropic", {
-                  env = {
-                    api_key = "cmd:op read op://personal/Claude/credential --no-newline"
-                  }
-                })
-              end,
-              openrouter_claude = function()
-                return require("codecompanion.adapters").extend("openai_compatible", {
-                  env = {
-                    url = "https://openrouter.ai/api",
-                    -- api_key = "OPENROUTER_API_KEY",
-                    api_key = "cmd:op read 'op://personal/Open Router/credential --no-newline'",
-                    chat_url = "/v1/chat/completions",
-                  },
-                  schema = {
-                    model = {
-                      default = "anthropic/claude-3.7-sonnet",
-                    },
-                  },
-                })
-              end,
-              githubmodels = function()
-                return require("codecompanion.adapters").extend("githubmodels", {
-                  schema = {
-                    model = {
-                      default = "gpt-4.1",
-                    },
-                  },
-                })
-              end
-            },
-            extensions = {
-              history = { enabled = true };
+          require("markview").setup({
+            preview = {
+              filetypes = { "codecompanion" },
+              ignore_buftypes = {},
             }
-          })
-
-          vim.keymap.set({ "n", "v" }, "<LocalLeader>A", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true, desc = "✨ Actions" })
-          vim.keymap.set({ "n", "v" }, "<LocalLeader>a", "<cmd>CodeCompanionChat Toggle<cr>", { noremap = true, silent = true, desc = "✨ Toggle Chat" })
-          vim.keymap.set("v", "<LocalLeader>c", "<cmd>CodeCompanionChat Add<cr>", { noremap = true, silent = true, desc = "✨ Add to Chat" })
-
-          -- Expand 'cc' into 'CodeCompanion' in the command line
-          vim.cmd([[cab cc CodeCompanion]])
+          });
         '';
       }
     ];
