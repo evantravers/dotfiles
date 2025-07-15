@@ -54,7 +54,7 @@
                   env = {
                     url = "https://openrouter.ai/api",
                     -- api_key = "OPENROUTER_API_KEY",
-                    api_key = "cmd:op read 'op://personal/Open Router/credential --no-newline'",
+                    api_key = "cmd:op read op://personal/OpenRouterAPI/credential --no-newline",
                     chat_url = "/v1/chat/completions",
                   },
                   schema = {
