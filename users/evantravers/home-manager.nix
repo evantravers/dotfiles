@@ -61,6 +61,9 @@
       interactiveShellInit = ''
         set fish_greeting # N/A
       '';
+      shellAliases = {
+        opencode = "op run --no-masking -- opencode";
+      };
     };
 
     direnv = {
