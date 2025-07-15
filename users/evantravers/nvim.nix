@@ -33,6 +33,7 @@
           vim.cmd.colorscheme "zenbones"
         '';
       }
+      lush-nvim # Required by zenbones for all the colors
       {
         plugin = pkgs.vimUtils.buildVimPlugin {
           pname = "auto-dark-mode-nvim"; # switch vim color with OS theme
@@ -57,7 +58,6 @@
           })
         '';
       }
-      lush-nvim # Required by zenbones for all the colors
       {
         plugin = zen-mode-nvim; # Create minimalist prose writing environment
         type = "lua";
@@ -108,18 +108,6 @@
           )
         '';
       }
-      {
-        plugin = markview-nvim;
-        type = "lua";
-        config = ''
-          require("markview").setup({
-            preview = {
-              filetypes = { "codecompanion" },
-              ignore_buftypes = {},
-            }
-          });
-        '';
-      }
       # =======================================================================
       # TREESITTER
       # =======================================================================
@@ -167,17 +155,23 @@
         plugin = mini-nvim; # Ridiculously complete family of plugins
         type = "lua";
         config = ''
+          -- opts decorates keymaps with labels
           local opts = function(label)
             return {noremap = true, silent = true, desc = label}
           end
+
           require('mini.ai').setup()         -- a/i textobjects
+
           require('mini.align').setup()      -- aligning
+
           require('mini.bracketed').setup()  -- unimpaired bindings with TS
+
           require('mini.snippets').setup()
+
           require('mini.completion').setup()
-          local diff = require('mini.diff') -- hunk management and highlight
-          diff.setup({source = diff.gen_source.none()})
+
           require('mini.extra').setup()      -- extra pickers
+
           require('mini.files').setup({
             options = {
               use_as_default_explorer = false
@@ -190,6 +184,7 @@
             end
           end
           vim.keymap.set('n', '-', oil_style, opts("File Explorer"));
+
           local hipatterns = require('mini.hipatterns')
           hipatterns.setup({  -- highlight strings and colors
             highlighters = {
@@ -203,48 +198,9 @@
               hex_color = hipatterns.gen_highlighter.hex_color(),
             }
           })
-          local MiniNotify = require('mini.notify') -- notifications
-          local ids = {} -- CodeCompanion request ID --> MiniNotify notification ID
-          local group = vim.api.nvim_create_augroup("CodeCompanionMiniNotifyHooks", {})
 
-          local function format_status(ev)
-            local name = ev.data.adapter.formatted_name or ev.data.adapter.name
-            local msg = name .. " " .. ev.data.strategy .. " request..."
-            local level, hl_group = "INFO", "DiagnosticInfo"
-            if ev.data.status then
-              msg = msg .. ev.data.status
-              if ev.data.status ~= "success" then
-                level, hl_group = "ERROR", "DiagnosticError"
-              end
-            end
-            return msg, level, hl_group
-          end
-
-          vim.api.nvim_create_autocmd({ "User" }, {
-            pattern = "CodeCompanionRequestStarted",
-            group = group,
-            callback = function(ev)
-              local msg, level, hl_group = format_status(ev)
-              ids[ev.data.id] = MiniNotify.add(msg, level, hl_group)
-            end,
-          })
-
-          vim.api.nvim_create_autocmd({ "User" }, {
-            pattern = "CodeCompanionRequestFinished",
-            group = group,
-            callback = function(ev)
-              local msg, level, hl_group = format_status(ev)
-              local mini_id = ids[ev.data.id]
-              if mini_id then
-                ids[ev.data.id] = nil
-                MiniNotify.update(mini_id, { msg = msg, level = level, hl_group = hl_group })
-              else
-                mini_id = MiniNotify.add(msg, level, hl_group)
-              end
-              vim.defer_fn(function() MiniNotify.remove(mini_id) end, 5000)
-            end,
-          })
           require('mini.icons').setup()      -- minimal icons
+
           require('mini.jump').setup()       -- fFtT work past a line
           local MiniJump2d = require('mini.jump2d').setup({
             view = {
@@ -255,7 +211,9 @@
             }
           })
           vim.keymap.set('n', 'gw', "<cmd>:lua MiniJump2d.start(MiniJump2d.builtin_opts.single_character)<cr>", opts("Jump to Word"))
+
           require('mini.pairs').setup()      -- pair brackets
+
           require('mini.pick').setup({
             mappings = {
               choose_marked = '<C-q>' -- sends to quickfix anyway
@@ -275,9 +233,13 @@
           vim.keymap.set('n', "<space>'", "<cmd>Pick resume<cr>", opts("Last Picker"))
           vim.keymap.set('n', "<space>g", "<cmd>Pick git_commits<cr>", opts("Git Commits"))
           vim.keymap.set('n', "<space>z", "<cmd>lua MiniPick.builtin.files(nil, {source={cwd=vim.fn.expand('~/src/wiki')}})<cr>", opts("Wiki"))
+
           require('mini.statusline').setup() -- minimal statusline
+
           require('mini.surround').setup()
+
           require('mini.splitjoin').setup()  -- work with parameters
+
           local miniclue = require('mini.clue')
           miniclue.setup({                   -- cute prompts about bindings
             triggers = {
@@ -328,94 +290,16 @@
         '';
       }
       targets-vim # Classic text-objects
+
       vim-eunuch # powerful buffer-level file options
+
       vim-ragtag # print/execute bindings for template files
+
       vim-speeddating # incrementing dates and times
+
       vim-fugitive # :Git actions
+
       vim-rhubarb # github plugins for fugitive
-      # =======================================================================
-      # AI
-      # =======================================================================
-      codecompanion-history-nvim
-      {
-        plugin = pkgs.vimPlugins.codecompanion-nvim.overrideAttrs (old: {
-          src = pkgs.fetchFromGitHub {
-            owner = "olimorris";
-            repo = "codecompanion.nvim";
-            rev = "af218d273e2a89b04b54eb7b38549ca07dd908b9";
-            sha256 = "sha256-1Htwj+Alucqff/KCjFrojy6LNL270Z1PN8OszkYIx4c=";
-          };
-          # Skip the test phase
-          doCheck = false;
-          checkPhase = ":";
-        });
-        type = "lua";
-        config = ''
-          -- required for copilot token
-          vim.env["CODECOMPANION_TOKEN_PATH"] = vim.fn.expand("~/.config")
-
-          require("codecompanion").setup({
-            display = {
-              diff = { enabled = true }
-            },
-            strategies = {
-              chat = {
-                adapter = "anthropic",
-                keymaps = {
-                  close = {modes = { n = "<C-q>", i = "<C-q>" }, opts = {},},
-                },
-              },
-              inline = { adapter = "anthropic" }
-            },
-            adapters = {
-              opts = {
-                show_defaults = false,
-              },
-              anthropic = function()
-                return require("codecompanion.adapters").extend("anthropic", {
-                  env = {
-                    api_key = "cmd:op read op://personal/Claude/credential --no-newline"
-                  }
-                })
-              end,
-              openrouter_claude = function()
-                return require("codecompanion.adapters").extend("openai_compatible", {
-                  env = {
-                    url = "https://openrouter.ai/api",
-                    -- api_key = "OPENROUTER_API_KEY",
-                    api_key = "cmd:op read 'op://personal/Open Router/credential --no-newline'",
-                    chat_url = "/v1/chat/completions",
-                  },
-                  schema = {
-                    model = {
-                      default = "anthropic/claude-3.7-sonnet",
-                    },
-                  },
-                })
-              end,
-              githubmodels = function()
-                return require("codecompanion.adapters").extend("githubmodels", {
-                  schema = {
-                    model = {
-                      default = "gpt-4.1",
-                    },
-                  },
-                })
-              end
-            },
-            extensions = {
-              history = { enabled = true };
-            }
-          })
-
-          vim.keymap.set({ "n", "v" }, "<LocalLeader>A", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true, desc = "✨ Actions" })
-          vim.keymap.set({ "n", "v" }, "<LocalLeader>a", "<cmd>CodeCompanionChat Toggle<cr>", { noremap = true, silent = true, desc = "✨ Toggle Chat" })
-          vim.keymap.set("v", "<LocalLeader>c", "<cmd>CodeCompanionChat Add<cr>", { noremap = true, silent = true, desc = "✨ Add to Chat" })
-
-          -- Expand 'cc' into 'CodeCompanion' in the command line
-          vim.cmd([[cab cc CodeCompanion]])
-        '';
-      }
     ];
   };
 }
