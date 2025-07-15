@@ -50,12 +50,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
-vim.diagnostic.config({
-  virtual_lines = {
-   current_line = true,
-  },
-})
+-- Diagnostic Virtual lines for only current line
+vim.diagnostic.config({ virtual_lines = { current_line = true, }, })
 
+-- LSP Configurations
 vim.lsp.config.elixir = {
   cmd = { "lexical" },
   filetypes = { "elixir" },
