@@ -2,6 +2,7 @@
 
 ;; un-mapped keys behave as normally
 (defcfg
+  concurrent-tap-hold yes
   process-unmapped-keys yes
   macos-dev-names-include (
     "Apple Internal Keyboard / Trackpad"
@@ -30,6 +31,11 @@
   k (tap-hold $tap-time $hold-time k rctrl)
   l (tap-hold $tap-time $hold-time l ralt)
   ; (tap-hold $tap-time $hold-time ; rmet)
+)
+
+;; define global input chord combinations
+(defchordsv2
+  (a ;) f19 100 all-released ()
 )
 
 (deflayer base
