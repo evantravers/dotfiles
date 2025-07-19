@@ -9,7 +9,6 @@ Bindings = {
   {'com.flexibits.cardhop.mac', nil, {'u'}},
   {'com.flexibits.fantastical2.mac', 'y', {'/'}},
   {'com.mitchellh.ghostty', 'j', nil},
-  -- {'com.goodsnooze.MacWhisper', nil, {'w'}},
   {'com.toggl.daneel', 'r', nil},
   {'com.raycast.macos', nil, {'c', 'space', ';'}},
   {'com.superultra.Homerow', nil, {'return', 'tab'}},
