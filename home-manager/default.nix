@@ -23,7 +23,7 @@
       gh
       yarn
       _1password-cli
-      open-webui
+      (python3.withPackages (ps: [ps.pip]))
     ];
   };
 
