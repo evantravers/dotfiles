@@ -6,7 +6,6 @@
   environment.systemPackages =
     [
       pkgs.home-manager
-      pkgs.oh-my-posh
     ];
 
   # Use a custom configuration.nix location.
@@ -15,6 +14,9 @@
 
   # Auto upgrade nix package and the daemon service.
   nix.enable = false;
+
+  # nix.gc.automatic = true;
+  # nix.gc.options = "--delete-older-than 30d";
 
   # Create /etc/zshrc that loads the nix-darwin environment.
   programs = {
@@ -36,7 +38,8 @@
   homebrew = {
     # enable = true;
 
-    # casks = [
+    casks = [
+      # "1password-cli"
     #   "1password"
     #   "bartender"
     #   "fantastical"
@@ -49,7 +52,7 @@
     #   "librewolf"
     #   "obsidian"
     #   "raycast"
-    # ];
+    ];
 
   };
 

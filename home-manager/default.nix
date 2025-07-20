@@ -17,11 +17,13 @@
     packages = with pkgs; [
       starship
       zsh-autocomplete
-      nodejs_20
+      nodejs_22
       mkcert
+      cmake
       gh
       yarn
       _1password-cli
+      open-webui
     ];
   };
 
