@@ -16,7 +16,7 @@
 
     packages = with pkgs; [
       starship
-      zsh-autocomplete
+      zsh-history-substring-search
       nodejs_22
       mkcert
       cmake
@@ -48,6 +48,10 @@
       initExtra = ''
         setopt completealiases
         eval "$(starship init zsh)"
+        # Enable zsh-history-substring-search
+        source ${pkgs.zsh-history-substring-search}/share/zsh-history-substring-search/zsh-history-substring-search.zsh
+        bindkey '^[[A' history-substring-search-up
+        bindkey '^[[B' history-substring-search-down
         clear
       '';
     };

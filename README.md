@@ -51,7 +51,7 @@ sudo nixos-rebuild switch --flake ~/src/github.com/samuelcotterall/dotfiles
 ### Darwin
 
 ```sh
-darwin-rebuild switch --flake ~/src/github.com/samuelcotterall/dotfiles
+darwin-rebuild switch --flake .#mbp
 ```
 
 ## Home Manager
