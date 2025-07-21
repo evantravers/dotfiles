@@ -23,6 +23,7 @@
         config = ''
           -- required for githubmodels token via gh
           vim.env["CODECOMPANION_TOKEN_PATH"] = vim.fn.expand("~/.config")
+          local ai_strategy = os.getenv("AI_STRATEGY") or "anthropic"
 
           require("codecompanion").setup({
             display = { diff = {
@@ -31,13 +32,12 @@
             } },
             strategies = {
               chat = {
-                adapter = "anthropic",
-                -- Change close: <C-c> -> <C-q>
+                adapter = ai_strategy,
                 keymaps = {
-                  close = {modes = { n = "<C-q>", i = "<C-q>" }, opts = {},},
+                  close = {modes = { n = "<C-q>", i = "<C-q>" }, opts = {}},
                 },
               },
-              inline = { adapter = "anthropic" }
+              inline = { adapter = ai_strategy }
             },
             adapters = {
               -- hide adapters that I haven't explicitly configured
