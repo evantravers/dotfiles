@@ -42,7 +42,7 @@
       markdown-oxide
       nixd
       nixfmt-rfc-style
-      opencode
+      unstable.opencode
       ripgrep
       sesh
       smartcat
