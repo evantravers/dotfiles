@@ -22,7 +22,6 @@
     pkgs.keycastr
     pkgs.obsidian
     pkgs.raycast
-    pkgs.zed-editor
   ];
 
   environment.extraInit = ''
