@@ -315,6 +315,13 @@
       vim-speeddating # incrementing dates and times
       vim-fugitive # :Git actions
       vim-rhubarb # github plugins for fugitive
+
+      {
+        plugin = nvim-dap;
+        type = "lua";
+        config = ''
+        '';
+      }
     ];
   };
 }
