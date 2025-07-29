@@ -35,7 +35,7 @@
 
 ;; define global input chord combinations
 (defchordsv2
-  (a ;) f19 100 all-released ()
+  (a ;) (one-shot 100 f19) 100 all-released ()
 )
 
 (deflayer base
