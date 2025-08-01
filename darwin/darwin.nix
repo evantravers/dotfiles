@@ -40,6 +40,7 @@
 
     casks = [
       # "1password-cli"
+      "supabase"
     #   "1password"
     #   "bartender"
     #   "fantastical"

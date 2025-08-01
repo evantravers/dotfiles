@@ -17,6 +17,7 @@
     packages = with pkgs; [
       starship
       zsh-history-substring-search
+      pyenv
       nodejs_22
       mkcert
       cmake
@@ -52,6 +53,12 @@
         source ${pkgs.zsh-history-substring-search}/share/zsh-history-substring-search/zsh-history-substring-search.zsh
         bindkey '^[[A' history-substring-search-up
         bindkey '^[[B' history-substring-search-down
+        # Initialize pyenv
+        export PYENV_ROOT="$HOME/.pyenv"
+        export PATH="$PYENV_ROOT/bin:$PATH"
+        if command -v pyenv 1>/dev/null 2>&1; then
+          eval "$(pyenv init -)"
+        fi
         clear
       '';
     };
