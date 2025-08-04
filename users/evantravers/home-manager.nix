@@ -22,7 +22,7 @@
   xdg.configFile."kanata" = lib.mkIf pkgs.stdenv.isDarwin {
     source = .config/kanata;
   };
-  xdg.configFile."ghostty/config".source = .config/ghostty/config;
+  xdg.configFile."ghostty".source = .config/ghostty;
   xdg.configFile."moxide/settings.toml".text = ''
     title_headings = false
   '';

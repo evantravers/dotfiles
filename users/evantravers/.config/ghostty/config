@@ -38,4 +38,5 @@ font-feature = calt
 font-feature = liga
 
 keybind = cmd+enter=toggle_fullscreen
-# keybind = global:cmd+`=toggle_quick_terminal
+
+custom-shader = ~/.config/ghostty/cursor.glsl
