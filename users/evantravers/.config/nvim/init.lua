@@ -57,7 +57,14 @@ vim.diagnostic.config({ virtual_lines = { current_line = true, }, })
 vim.lsp.config.elixir = {
   cmd = { "lexical" },
   filetypes = { "elixir" },
-  root_markers = { "mix.lock", ".git" }
+  root_markers = { "mix.lock", ".git" },
+  settings = {
+    elixir = {
+      formatting = {
+        command = { "mix", "format" }
+      }
+    }
+  }
 }
 
 vim.lsp.config.nix = {
