@@ -47,6 +47,11 @@ vim.api.nvim_create_autocmd('LspAttach', {
     if client:supports_method('textDocument/documentColor') then
       vim.lsp.document_color.enable(true, ev.buf, { style = "virtual" })
     end
+    if client:supports_method('textDocument/formatting') then
+      vim.keymap.set({'n', 'v'}, 'grf', function()
+        vim.lsp.buf.format({ bufnr = ev.buf })
+      end, { buffer = ev.buf, desc = 'Format with LSP' })
+    end
   end,
 })
 
