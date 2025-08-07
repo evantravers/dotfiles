@@ -59,7 +59,7 @@
                   },
                   schema = {
                     model = {
-                      default = "anthropic/claude-3.7-sonnet",
+                      default = "anthropic/claude-3.7-sonnet:online",
                     },
                   },
                 })
