@@ -51,7 +51,7 @@
             owner = "f-person";
             repo = "auto-dark-mode.nvim";
             rev = "97a86c9402c784a254e5465ca2c51481eea310e3";
-            hash = "sha256-FTXakglUrqifEXjzES6M4L+rthItu5rlw6QyIOLYNOc=";
+            hash = "sha256-zedwqG5PeJiSAZCl3GeyHwKDH/QjTz2OqDsFRTMTH/A=";
           };
         };
         type = "lua";
