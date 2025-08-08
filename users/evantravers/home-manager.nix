@@ -43,6 +43,7 @@
     packages = with pkgs; [
       amber
       unstable.devenv
+      unstable.crush
       gh
       gum
       harper
