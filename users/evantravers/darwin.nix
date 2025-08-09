@@ -21,7 +21,6 @@
     pkgs.karabiner-elements.driver
     pkgs.keycastr
     pkgs.obsidian
-    pkgs.raycast
   ];
 
   environment.extraInit = ''
@@ -126,6 +125,7 @@
         "hammerspoon"
         "homerow"
         "karabiner-elements"
+        "raycast"
       ];
 
     masApps = {
