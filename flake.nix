@@ -61,12 +61,6 @@
         wsl = true;
       };
 
-      darwinConfigurations.Evans-MacBook-Pro = mkSystem "macbook-pro" {
-        system = "x86_64-darwin";
-        user = "evantravers";
-        darwin = true;
-      };
-
       darwinConfigurations.Theseus = mkSystem "macbook-pro" {
         system = "aarch64-darwin";
         user = "evantravers";
