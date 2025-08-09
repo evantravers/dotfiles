@@ -5,7 +5,6 @@
   programs.zsh.enable = true;
   programs.fish.enable = true;
   programs._1password.enable = true;
-  # programs._1password-gui.enable = true;
 
   users.users.evantravers = {
     home = "/Users/evantravers";
@@ -119,13 +118,27 @@
     casks =
       [
         "1password"
+        "calibre"
         "cardhop"
+        "discord"
         "fantastical"
+        "figma"
         "ghostty"
         "hammerspoon"
         "homerow"
         "karabiner-elements"
+        "macwhisper"
+        "mouseless"
+        "obs"
+        "ollama"
+        "pop-app"
         "raycast"
+        "signal"
+        "slack"
+        "steam"
+        "telegram"
+        "vlc"
+        "zoom"
       ];
 
     masApps = {
