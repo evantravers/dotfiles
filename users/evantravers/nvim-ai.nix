@@ -7,15 +7,13 @@
     plugins = with pkgs.unstable.vimPlugins; [
       # CodeCompanion as the core AI source
       {
-        # Install from github because the nixpkgs one is a month behind
         plugin = pkgs.vimPlugins.codecompanion-nvim.overrideAttrs (old: {
           src = pkgs.fetchFromGitHub {
             owner = "olimorris";
             repo = "codecompanion.nvim";
-            rev = "19d665a9b13c0b05652c359c4302465b8b2543be";
-            sha256 = "sha256-zY9uWB11mr/XDAw/l4HLAy3ZHaIhUiYlzUFbiKVFSvg=";
+            rev = "02b5a14926be3d37fbfa19de5e8336db8a5711e6";
+            sha256 = "sha256-Z9oXfBJCzg7j61wcegkutPK14cgWfuoQDRLdWq//mJs=";
           };
-          # Skip the test phase
           doCheck = false;
           checkPhase = ":";
         });
