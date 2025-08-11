@@ -7,16 +7,18 @@
     plugins = with pkgs.unstable.vimPlugins; [
       # CodeCompanion as the core AI source
       {
-        plugin = pkgs.vimPlugins.codecompanion-nvim.overrideAttrs (old: {
+        plugin = pkgs.vimUtils.buildVimPlugin {
+          pname = "codecompanion-nvim";
+          version = "HEAD";
           src = pkgs.fetchFromGitHub {
             owner = "olimorris";
             repo = "codecompanion.nvim";
-            rev = "02b5a14926be3d37fbfa19de5e8336db8a5711e6";
-            sha256 = "sha256-Z9oXfBJCzg7j61wcegkutPK14cgWfuoQDRLdWq//mJs=";
+            rev = "a61730e84f92453390a4e1250482033482c33e84";
+            sha256 = "sha256-aux5G2W1oP726s+GQALm31JTRzl1KSMS4OSNbDEZ4M0=";
           };
           doCheck = false;
           checkPhase = ":";
-        });
+        };
         type = "lua";
         config = ''
           -- required for githubmodels token via gh
