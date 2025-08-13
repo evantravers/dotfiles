@@ -31,10 +31,10 @@
   a (tap-hold $tap-time $hold-time a lmet)
   s (tap-hold $tap-time $hold-time s lalt)
   d (tap-hold $tap-time $hold-time d lctrl)
-  f (tap-hold $tap-time $hold-time t lsft)  ;; f is now t
+  f (tap-hold $tap-time $hold-time f lsft)
   
   ;; Home row mod aliases - right hand
-  j (tap-hold $tap-time $hold-time i rsft)  ;; j is now i
+  j (tap-hold $tap-time $hold-time j rsft)
   k (tap-hold $tap-time $hold-time k rctrl)
   l (tap-hold $tap-time $hold-time l ralt)
   ; (tap-hold $tap-time $hold-time ; rmet)
