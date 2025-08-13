@@ -1,0 +1,81 @@
+;; Cradio/Ferris Sweep inspired Kanata config with home row mods and symbol layer
+
+(defcfg
+  concurrent-tap-hold yes
+  process-unmapped-keys yes
+  macos-dev-names-include (
+    "Apple Internal Keyboard / Trackpad"
+  )
+)
+
+;; Define the keys to remap - using a full QWERTY layout
+(defsrc
+  3    4    5    6    7         8    9    0    -    =
+  w    e    r    t    y         u    i    o    p    [
+  a    s    d    f    g         j    k    l    ;    '
+                 v    b         m    ,
+)
+
+;; define values for tap time and hold time
+(defvar
+  tap-time 150
+  hold-time 200
+)
+
+;; alias definitions
+(defalias
+  ;; Layer aliases
+  sym (layer-toggle symbol)
+  
+  ;; Home row mod aliases - left hand
+  a (tap-hold $tap-time $hold-time a lmet)
+  s (tap-hold $tap-time $hold-time s lalt)
+  d (tap-hold $tap-time $hold-time d lctrl)
+  f (tap-hold $tap-time $hold-time t lsft)  ;; f is now t
+  
+  ;; Home row mod aliases - right hand
+  j (tap-hold $tap-time $hold-time i rsft)  ;; j is now i
+  k (tap-hold $tap-time $hold-time k rctrl)
+  l (tap-hold $tap-time $hold-time l ralt)
+  ; (tap-hold $tap-time $hold-time ; rmet)
+  
+  ;; Thumb key aliases - using v, b, m, and , as thumb keys
+  vtb (tap-hold $tap-time $hold-time tab tab)
+  bsp (tap-hold $tap-time $hold-time bspc @sym)
+  msp (tap-hold $tap-time $hold-time spc spc)
+  crt (tap-hold $tap-time $hold-time ret ret)
+  
+  ;; Caps word alias
+  cw (caps-word 1000)
+)
+
+;; define global input chord combinations
+(defchordsv2
+  ;; QW = ESC
+  (q w) esc 50 all-released ()
+  
+  ;; L; = ' (apostrophe)
+  (l ;) apo 50 all-released ()
+  
+  ;; WE = SPACE
+  (w e) spc 50 all-released ()
+  
+  ;; ZX = RETURN
+  (z x) ret 50 all-released ()
+)
+
+;; Base QWERTY layer
+(deflayer base
+  q    w    e    r    t         y    u    i    o    p
+  @a   @s   @d   @f   g         h    @j   @k   @l   @;
+  z    x    c    v    b         n    m    ,    .    /
+  @vtb @bsp @msp @crt
+)
+
+;; Symbol layer - accessed by holding backspace
+(deflayer symbol
+  S-1  S-2  S-[  S-]  S-\       S-apo  S--  S-=  /    @cw
+  S-3  S-4  S-9  S-0  grv       apo    -    =    S-8  S-;
+  S-5  S-6  [    ]    S-`       S-7    S-/  S-,  S-.  sls
+  _ _ _ _
+)
