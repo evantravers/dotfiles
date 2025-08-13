@@ -122,7 +122,7 @@
     nh = {
       enable = true;
       clean.enable = true;
-      flake = ./.;
+      flake = ../../.;
     };
 
     yazi = {
