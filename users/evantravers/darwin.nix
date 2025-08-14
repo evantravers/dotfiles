@@ -121,6 +121,7 @@
         "calibre"
         "cardhop"
         "discord"
+        "docker-desktop"
         "fantastical"
         "figma"
         "ghostty"
