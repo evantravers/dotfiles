@@ -13,8 +13,8 @@
           src = pkgs.fetchFromGitHub {
             owner = "olimorris";
             repo = "codecompanion.nvim";
-            rev = "a61730e84f92453390a4e1250482033482c33e84";
-            sha256 = "sha256-aux5G2W1oP726s+GQALm31JTRzl1KSMS4OSNbDEZ4M0=";
+            rev = "3fcf6d2e9a9ece7e2a61276d42749cd62ee3a798";
+            sha256 = "sha256-MGCs7I49oFPL8AUT7Btp/yjpplJHEkDWKMlHUo3sHJ4=";
           };
           doCheck = false;
           checkPhase = ":";
