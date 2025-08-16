@@ -55,6 +55,7 @@
     # environment.
     packages = with pkgs; [
       amber
+      unstable.claude-code
       unstable.devenv
       gh
       gum
