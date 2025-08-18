@@ -186,6 +186,8 @@
 
           require('mini.completion').setup()
 
+          require('mini.diff').setup()
+
           require('mini.extra').setup()      -- extra pickers
 
           require('mini.files').setup({
