@@ -40,6 +40,7 @@
       sessionVariables = {
         OP_PLUGIN_ALIASES_SOURCED = 1;
         GITHUB_TOKEN = "op://Private/Github/token";
+        PATH = "/opt/homebrew/bin:/opt/homebrew/sbin:$PATH";
       };
 
       shellAliases = {
@@ -49,7 +50,10 @@
       initExtra = ''
         setopt completealiases
         eval "$(starship init zsh)"
+        # Add Homebrew to PATH
+        export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
         # Enable zsh-history-substring-search
+        [[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path zsh)"
         source ${pkgs.zsh-history-substring-search}/share/zsh-history-substring-search/zsh-history-substring-search.zsh
         bindkey '^[[A' history-substring-search-up
         bindkey '^[[B' history-substring-search-down

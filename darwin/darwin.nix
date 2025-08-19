@@ -8,6 +8,16 @@
       pkgs.home-manager
     ];
 
+  # Set up environment variables for Homebrew
+  environment.variables = {
+    HOMEBREW_PREFIX = "/opt/homebrew";
+    HOMEBREW_CELLAR = "/opt/homebrew/Cellar";
+    HOMEBREW_REPOSITORY = "/opt/homebrew";
+    PATH = "/opt/homebrew/bin:/opt/homebrew/sbin:$PATH";
+    MANPATH = "/opt/homebrew/share/man:$MANPATH";
+    INFOPATH = "/opt/homebrew/share/info:$INFOPATH";
+  };
+
   # Use a custom configuration.nix location.
   # $ darwin-rebuild switch -I darwin-config=$HOME/.config/nixpkgs/darwin/configuration.nix
   environment.darwinConfig = "$HOME/dotfiles/darwin";
@@ -21,6 +31,7 @@
   # Create /etc/zshrc that loads the nix-darwin environment.
   programs = {
     gnupg.agent.enable = true;
+    zsh.enable = true;
   };
 
   # Used for backwards compatibility, please read the changelog before changing.
@@ -31,30 +42,14 @@
     pkgs.jetbrains-mono
   ];
 
-  services = {
-
-  };
+  services = {};
 
   homebrew = {
-    # enable = true;
-
-    casks = [
-      # "1password-cli"
-      "supabase"
-    #   "1password"
-    #   "bartender"
-    #   "fantastical"
-    #   "firefox"
-    #   "ghostty"
-    #   "google-chrome"
-    #   "hammerspoon"
-    #   "karabiner-elements"
-    #   "keycastr"
-    #   "librewolf"
-    #   "obsidian"
-    #   "raycast"
-    ];
-
+    enable = true;
+    brews = [ "supabase/tap/supabase" "postgresql" "pnpm" ];
+    casks = [];
+    # Add homebrew to PATH
+    onActivation.cleanup = "zap";
   };
 
   system = {
