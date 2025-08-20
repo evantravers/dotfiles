@@ -13,8 +13,8 @@
           src = pkgs.fetchFromGitHub {
             owner = "olimorris";
             repo = "codecompanion.nvim";
-            rev = "3fcf6d2e9a9ece7e2a61276d42749cd62ee3a798";
-            sha256 = "sha256-MGCs7I49oFPL8AUT7Btp/yjpplJHEkDWKMlHUo3sHJ4=";
+            rev = "84deedb09763685d829c9745dcd67f4ffe443bd7";
+            sha256 = "sha256-KVI2vJlYQh26/c+1K0B1RB5KUGiU1ijPiz6IlG+wexE=";
           };
           doCheck = false;
           checkPhase = ":";
@@ -26,10 +26,6 @@
           local ai_strategy = os.getenv("AI_STRATEGY") or "anthropic"
 
           require("codecompanion").setup({
-            display = { diff = {
-              enabled = true,
-              provider = "mini_diff"
-            } },
             strategies = {
               chat = {
                 adapter = ai_strategy,
