@@ -21,3 +21,16 @@ devenv.local.nix
 .pre-commit-config.yaml
 .history
 .DS_Store
+
+# Scan reports (ephemeral) - ignore generated scanner output files
+gitleaks-report.json
+gitleaks-*.json
+semgrep-report.json
+semgrep-*.json
+detect-secrets-report.json
+detect-secrets-*.json
+detect-secrets-output.json
+# generic reports directory
+scan-reports/
+# keep the detect-secrets baseline committed by default
+!.secrets.baseline
