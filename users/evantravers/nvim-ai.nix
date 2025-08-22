@@ -31,6 +31,7 @@
                 adapter = ai_strategy,
                 keymaps = {
                   close = {modes = { n = "<C-q>", i = "<C-q>" }, opts = {}},
+                  options = {modes = { n = "<leader>h", i = "<leader>h" }, opts = {}},
                 },
               },
               inline = { adapter = ai_strategy }
