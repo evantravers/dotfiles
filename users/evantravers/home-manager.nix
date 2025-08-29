@@ -54,6 +54,10 @@
   default = true
   email = "evantravers@gmail.com"
   display-name = "evantravers"
+  folder.aliases.inbox = "INBOX"
+  folder.aliases.sent = "[Gmail]/Sent Mail"
+  folder.aliases.drafts = "[Gmail]/Drafts"
+  folder.aliases.trash = "[Gmail]/Trash"
   downloads-dir = "/Users/evantravers/Downloads"
   backend.type = "imap"
   backend.host = "imap.gmail.com"
