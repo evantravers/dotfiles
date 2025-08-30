@@ -4,6 +4,12 @@
     unstable.himalaya
   ];
 
+  # mute warnings
+  # https://github.com/pimalaya/himalaya/issues/552
+  home.sessionVariables = {
+    RUST_LOG = "off";
+  };
+
   # TODO: Put this in attrset as soon as home-manager is fixed
   xdg.configFile."himalaya/config.toml".text = ''
   [accounts.gmail]
