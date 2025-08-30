@@ -87,7 +87,7 @@
       gh
       gum
       harper
-      himalaya
+      unstable.himalaya
       lua-language-server
       markdown-oxide
       nixd
