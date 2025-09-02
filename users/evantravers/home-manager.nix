@@ -123,6 +123,7 @@
 
     nh = {
       enable = true;
+      package = pkgs.unstable.nh;
       clean.enable = true;
       flake = ../../.;
     };

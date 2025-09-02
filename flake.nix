@@ -24,16 +24,6 @@
       url = "github:helix-editor/helix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    neovim-nightly-overlay = {
-      url = "github:nix-community/neovim-nightly-overlay";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
-
-    nh = {
-      url = "github:nix-community/nh";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
   outputs =
     { nixpkgs, ... }@inputs:
@@ -45,8 +35,6 @@
             system = prev.system;
             config.allowUnfree = true;
           };
-
-          nh = inputs.nixpkgs-unstable.legacyPackages.${prev.system}.nh;
         })
       ];
 
