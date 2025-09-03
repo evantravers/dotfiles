@@ -13,8 +13,8 @@
           src = pkgs.fetchFromGitHub {
             owner = "olimorris";
             repo = "codecompanion.nvim";
-            rev = "84deedb09763685d829c9745dcd67f4ffe443bd7";
-            sha256 = "sha256-KVI2vJlYQh26/c+1K0B1RB5KUGiU1ijPiz6IlG+wexE=";
+            rev = "4bc03c40b8f7f5e5d3c324479a893c6589471446";
+            sha256 = "sha256-OvmdqjeHab4YhTS7WP4flKliXCt92oKKUJ/IQSLRSkE=";
           };
           doCheck = false;
           checkPhase = ":";
@@ -37,39 +37,41 @@
               inline = { adapter = ai_strategy }
             },
             adapters = {
-              -- hide adapters that I haven't explicitly configured
-              opts = { show_defaults = false, },
-              anthropic = function()
-                return require("codecompanion.adapters").extend("anthropic", {
-                  env = {
-                    api_key = "cmd:op read op://personal/Claude/credential --no-newline"
-                  }
-                })
-              end,
-              openrouter_claude = function()
-                return require("codecompanion.adapters").extend("openai_compatible", {
-                  env = {
-                    url = "https://openrouter.ai/api",
-                    -- api_key = "OPENROUTER_API_KEY",
-                    api_key = "cmd:op read op://personal/OpenRouterAPI/credential --no-newline",
-                    chat_url = "/v1/chat/completions",
-                  },
-                  schema = {
-                    model = {
-                      default = "anthropic/claude-3.7-sonnet:online",
+              http = {
+                -- hide adapters that I haven't explicitly configured
+                opts = { show_defaults = false, },
+                anthropic = function()
+                  return require("codecompanion.adapters").extend("anthropic", {
+                    env = {
+                      api_key = "cmd:op read op://personal/Claude/credential --no-newline"
+                    }
+                  })
+                end,
+                openrouter_claude = function()
+                  return require("codecompanion.adapters").extend("openai_compatible", {
+                    env = {
+                      url = "https://openrouter.ai/api",
+                      -- api_key = "OPENROUTER_API_KEY",
+                      api_key = "cmd:op read op://personal/OpenRouterAPI/credential --no-newline",
+                      chat_url = "/v1/chat/completions",
                     },
-                  },
-                })
-              end,
-              githubmodels = function()
-                return require("codecompanion.adapters").extend("githubmodels", {
-                  schema = {
-                    model = {
-                      default = "gpt-4.1",
+                    schema = {
+                      model = {
+                        default = "anthropic/claude-3.7-sonnet:online",
+                      },
                     },
-                  },
-                })
-              end
+                  })
+                end,
+                githubmodels = function()
+                  return require("codecompanion.adapters").extend("githubmodels", {
+                    schema = {
+                      model = {
+                        default = "gpt-4.1",
+                      },
+                    },
+                  })
+                end
+              }
             },
             extensions = {
               history = { enabled = true };
