@@ -42,7 +42,7 @@
       };
     };
     settings = {
-      theme = "kanagawa-dragon";
+      theme = "earl_grey";
       editor = {
         color-modes = true;
         cursorline = true;
