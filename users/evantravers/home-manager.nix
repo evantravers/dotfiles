@@ -67,7 +67,6 @@
       nixfmt-rfc-style
       unstable.opencode
       ripgrep
-      rv
       sesh
       smartcat
     ];

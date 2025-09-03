@@ -24,11 +24,6 @@
       url = "github:helix-editor/helix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    nix-rv = {
-      url = "github:evantravers/nix-rv";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
   };
   outputs =
     { nixpkgs, ... }@inputs:
