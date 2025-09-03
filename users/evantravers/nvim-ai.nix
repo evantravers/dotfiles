@@ -37,13 +37,22 @@
               inline = { adapter = ai_strategy }
             },
             adapters = {
+              acp = {
+                claude_code = function()
+                  return require("codecompanion.adapters").extend("claude_code", {
+                    env = {
+                      ANTHROPIC_API_KEY = vim.env.ANTHROPIC_API_KEY
+                    },
+                  })
+                end,
+              },
               http = {
                 -- hide adapters that I haven't explicitly configured
                 opts = { show_defaults = false, },
                 anthropic = function()
                   return require("codecompanion.adapters").extend("anthropic", {
                     env = {
-                      api_key = "cmd:op read op://personal/Claude/credential --no-newline"
+                      api_key = "cmd:op read op://Private/Claude/credential --no-newline"
                     }
                   })
                 end,
@@ -52,7 +61,7 @@
                     env = {
                       url = "https://openrouter.ai/api",
                       -- api_key = "OPENROUTER_API_KEY",
-                      api_key = "cmd:op read op://personal/OpenRouterAPI/credential --no-newline",
+                      api_key = "cmd:op read op://Private/OpenRouterAPI/credential --no-newline",
                       chat_url = "/v1/chat/completions",
                     },
                     schema = {
