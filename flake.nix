@@ -28,15 +28,20 @@
   outputs =
     { nixpkgs, ... }@inputs:
     let
-      overlays = [
-        # This overlay makes unstable packages available through pkgs.unstable
-        (final: prev: {
-          unstable = import inputs.nixpkgs-unstable {
-            system = prev.system;
-            config.allowUnfree = true;
-          };
-        })
-      ];
+       overlays = [
+         # This overlay makes unstable packages available through pkgs.unstable
+         (final: prev: {
+           unstable = import inputs.nixpkgs-unstable {
+             system = prev.system;
+             config.allowUnfree = true;
+           };
+         })
+
+          # Custom packages
+          (final: prev: {
+            rv = final.unstable.callPackage ./lib/rv.nix {};
+          })
+       ];
 
       mkSystem = import ./lib/mksystem.nix {
         inherit overlays nixpkgs inputs;
