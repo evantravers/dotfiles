@@ -65,7 +65,7 @@
       markdown-oxide
       nixd
       nixfmt-rfc-style
-      unstable.opencode
+      ai-tools.opencode
       ripgrep
       sesh
       smartcat
