@@ -24,21 +24,22 @@
       url = "github:helix-editor/helix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nix-ai-tools.url = "github:numtide/nix-ai-tools";
   };
   outputs =
     { nixpkgs, ... }@inputs:
     let
-       overlays = [
-         # This overlay makes unstable packages available through pkgs.unstable
-         (final: prev: {
-           unstable = import inputs.nixpkgs-unstable {
-             system = prev.system;
-             config.allowUnfree = true;
-           };
-         })
-
-
-       ];
+      overlays = [
+        # This overlay makes unstable packages available through pkgs.unstable
+        (final: prev: {
+          unstable = import inputs.nixpkgs-unstable {
+            system = prev.system;
+            config.allowUnfree = true;
+          };
+          ai-tools = inputs.nix-ai-tools.packages.${prev.system};
+        })
+      ];
 
       mkSystem = import ./lib/mksystem.nix {
         inherit overlays nixpkgs inputs;
