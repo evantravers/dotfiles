@@ -68,7 +68,6 @@
       ai-tools.opencode
       ripgrep
       sesh
-      smartcat
     ];
 
     sessionVariables = {
