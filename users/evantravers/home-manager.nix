@@ -77,6 +77,7 @@
   accounts.email.accounts.gmail = {
     primary = true;
     aerc.enable = true;
+    himalaya.enable = true;
 
     address = "evantravers@gmail.com";
     userName = "evantravers@gmail.com";
@@ -99,10 +100,14 @@
           "message/delivery-status" = "${pkgs.aerc}/libexec/aerc/filters/colorize";
           "message/rfc822" = "${pkgs.aerc}/libexec/aerc/filters/colorize";
         };
+        ui.styleset-name = "minimal";
       };
-      stylesets = {
-      };
+      stylesets.minimal = ''
+      *.selected.bg = 8
+      *.selected.fg = 7
+      '';
     };
+    himalaya.enable = true;
 
     fish = {
       enable = true;
