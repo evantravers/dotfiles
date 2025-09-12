@@ -100,11 +100,18 @@
           "message/delivery-status" = "${pkgs.aerc}/libexec/aerc/filters/colorize";
           "message/rfc822" = "${pkgs.aerc}/libexec/aerc/filters/colorize";
         };
-        ui.styleset-name = "minimal";
+        ui = {
+          threading-enabled = true;
+          show-thread-context = true;
+          styleset-name = "minimal";
+          border-char-vertical = "┃";
+          spinner = "[ ⡿ ],[ ⣟ ],[ ⣯ ],[ ⣷ ],[ ⣾ ],[ ⣽ ],[ ⣻ ],[ ⢿ ]";
+        };
       };
       stylesets.minimal = ''
       *.selected.bg = 8
       *.selected.fg = 7
+      border.fg = 8
       '';
     };
     himalaya.enable = true;
