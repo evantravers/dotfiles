@@ -103,16 +103,11 @@
         ui = {
           threading-enabled = true;
           show-thread-context = true;
-          styleset-name = "minimal";
+          styleset-name = "dracula";
           border-char-vertical = "┃";
           spinner = "[ ⡿ ],[ ⣟ ],[ ⣯ ],[ ⣷ ],[ ⣾ ],[ ⣽ ],[ ⣻ ],[ ⢿ ]";
         };
       };
-      stylesets.minimal = ''
-      *.selected.bg = 8
-      *.selected.fg = 7
-      border.fg = 8
-      '';
     };
     himalaya.enable = true;
 
