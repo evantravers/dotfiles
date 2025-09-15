@@ -19,7 +19,7 @@
     pkgs.kanata
     pkgs.karabiner-elements.driver
     pkgs.keycastr
-    pkgs.obsidian
+    pkgs.unstable.obsidian
   ];
 
   environment.extraInit = ''
