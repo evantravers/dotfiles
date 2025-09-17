@@ -20,6 +20,7 @@ mouse-hide-while-typing = true
 window-colorspace = display-p3
 
 shell-integration = fish
+shell-integration-features = true
 
 adjust-cell-height = 10%
 
