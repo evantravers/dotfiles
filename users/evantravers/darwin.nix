@@ -12,7 +12,6 @@
   };
 
   environment.systemPackages = [
-    pkgs.bartender
     pkgs.defaultbrowser
     pkgs.firefox
     pkgs.google-chrome
@@ -118,6 +117,7 @@
     casks =
       [
         "1password"
+        "bartender"
         "calibre"
         "cardhop"
         "discord"
