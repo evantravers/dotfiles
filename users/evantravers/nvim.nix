@@ -72,7 +72,16 @@
       # - Optional prose mode for writing: wrap, bindings, zen
       # =======================================================================
       {
-        plugin = zen-mode-nvim;
+        plugin = pkgs.vimUtils.buildVimPlugin {
+          pname = "zen-mode-nvim";
+          version = "2025-09-20";
+          src = pkgs.fetchFromGitHub {
+            owner = "folke";
+            repo = "zen-mode.nvim";
+            rev = "dfcb72a2dfeedc5342b2ee3a68c83243d682ba3c";
+            hash = "sha256-NAtIYpdT+0wc6n148b++uh6RLtv4SFa6av7a/grMqIo=";
+          };
+        };
         type = "lua";
         config = ''
           -- I write prose in markdown, all the following is to help with that.
