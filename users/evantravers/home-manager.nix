@@ -136,7 +136,11 @@
         };
         ui.default-command = "log";
         fix.tools.nixfmt = {
-          command = ["${lib.getExe pkgs.nixfmt-rfc-style}" "$path"];
+          command = [
+            "${lib.getExe pkgs.nixfmt-rfc-style}"
+            "--strict"
+            "--filename=$path"
+          ];
           patterns = ["glob:'**/*.nix'"];
         };
         templates.draft_commit_description = ''
