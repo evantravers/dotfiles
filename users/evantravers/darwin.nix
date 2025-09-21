@@ -127,7 +127,7 @@
         "cardhop"
         "discord"
         "docker-desktop"
-        "antastical"
+        "fantastical"
         "figma"
         "ghostty"
         "hammerspoon"
