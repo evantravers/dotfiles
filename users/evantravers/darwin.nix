@@ -111,8 +111,9 @@
   homebrew = {
     enable = true;
 
-    onActivation.autoUpdate = false;
-    onActivation.upgrade = false;
+    onActivation.autoUpdate = true;
+    onActivation.upgrade = true;
+    onActivation.cleanup = "zap";
 
     casks =
       [
@@ -122,7 +123,7 @@
         "cardhop"
         "discord"
         "docker-desktop"
-        "fantastical"
+        "antastical"
         "figma"
         "ghostty"
         "hammerspoon"
