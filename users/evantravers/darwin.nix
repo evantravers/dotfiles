@@ -136,7 +136,7 @@
         "macwhisper"
         "mouseless"
         "obs"
-        "ollama"
+        "ollama-app"
         "pop-app"
         "raycast"
         "signal"
