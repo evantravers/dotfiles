@@ -133,7 +133,9 @@ Hyper:bind({}, 'v', nil, function()
 end)
 
 Hyper:bind({}, 'n', nil, function()
-  hs.urlevent.openURL("obsidian://adv-uri?vault=wiki&commandid=zk-prefixer")
+  local timestamp = os.date("%Y%m%d%H%M")
+  local filepath = string.format("%s/src/wiki/fleeting/%s.md", os.getenv("HOME"), timestamp)
+  hs.execute(string.format("open -na ghostty -- -e nvim '%s'", filepath), true)
 end)
 
 Hyper:bind({}, 'h', nil, function()
