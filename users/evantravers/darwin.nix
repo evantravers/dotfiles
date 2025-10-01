@@ -18,6 +18,7 @@
     pkgs.kanata
     pkgs.karabiner-elements.driver
     pkgs.keycastr
+    pkgs.unstable.notion-app
     pkgs.unstable.obsidian
   ];
 
