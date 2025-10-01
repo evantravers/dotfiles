@@ -10,7 +10,7 @@ Bindings = {
   {'com.flexibits.fantastical2.mac', 'y', {'/'}},
   {'com.mitchellh.ghostty', 'j', nil},
   {'com.toggl.daneel', 'r', nil},
-  {'com.raycast.macos', nil, {'c', 'space', ';'}},
+  {'com.raycast.macos', nil, {'c', 'n', 'space', ';'}},
   {'com.superultra.Homerow', nil, {'return', 'tab'}},
   {'com.surteesstudios.Bartender', nil, {'b'}},
   {'md.obsidian', 'g', nil},
@@ -130,12 +130,6 @@ Hyper:bind({}, 'v', nil, function()
   if appFound then
     hs.application.launchOrFocusByBundleID(appFound)
   end
-end)
-
-Hyper:bind({}, 'n', nil, function()
-  local timestamp = os.date("%Y%m%d%H%M")
-  local filepath = string.format("%s/src/wiki/fleeting/%s.md", os.getenv("HOME"), timestamp)
-  hs.execute(string.format("open -na ghostty -- -e nvim '%s'", filepath), true)
 end)
 
 Hyper:bind({}, 'h', nil, function()
