@@ -14,7 +14,6 @@
   environment.systemPackages = [
     pkgs.defaultbrowser
     pkgs.firefox
-    pkgs.google-chrome
     pkgs.kanata
     pkgs.karabiner-elements.driver
     pkgs.keycastr
