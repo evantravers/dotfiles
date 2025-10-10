@@ -70,7 +70,7 @@
     ];
 
     sessionVariables = {
-      ANTHROPIC_API_KEY = "op://Private/Claude/credential";
+      # ANTHROPIC_API_KEY = "op://Private/Claude/credential";
     };
   };
 
