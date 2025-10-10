@@ -122,7 +122,7 @@
     casks =
       [
         "1password"
-        { name = "bartender"; greedy = true; }
+        # { name = "bartender"; greedy = true; }
         "calibre"
         "cardhop"
         "discord"
