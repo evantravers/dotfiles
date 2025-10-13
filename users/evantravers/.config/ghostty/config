@@ -1,6 +1,6 @@
 theme = light:zenbones,dark:zenbones dark
 
-window-decoration = false
+window-decoration = true
 window-padding-x  = 16
 window-padding-y  = 16
 
