@@ -31,7 +31,7 @@
 
   services = {
     aerospace = {
-      enable = true;
+      enable = false;
       settings = {
         accordion-padding = 0;
         on-focused-monitor-changed = [ "move-mouse monitor-lazy-center" ];
@@ -122,7 +122,6 @@
     casks =
       [
         "1password"
-        # { name = "bartender"; greedy = true; }
         "calibre"
         "cardhop"
         "discord"
