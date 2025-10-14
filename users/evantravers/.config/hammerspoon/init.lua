@@ -14,6 +14,7 @@ Bindings = {
   {'com.superultra.Homerow', nil, {'return', 'tab'}},
   {'com.surteesstudios.Bartender', nil, {'b'}},
   {'md.obsidian', 'g', nil},
+  {'com.todoist.mac.Todoist', 't', nil}
 }
 
 Hyper = spoon.Hyper
@@ -39,10 +40,6 @@ end)
 Hyper:bind({}, ',', function()
   Hyper:exit()
   hs.shortcuts.run("Smart Capture")
-end)
-Hyper:bind({}, 't', function()
-  hs.urlevent.openURL("obsidian://open?vault=wiki&file=templates%2Ftasks%2FToday%20Tasks")
-  Hyper:exit()
 end)
 
 -- provide the ability to override config per computer
