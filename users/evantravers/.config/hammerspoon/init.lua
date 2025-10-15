@@ -14,7 +14,6 @@ Bindings = {
   {'com.superultra.Homerow', nil, {'return', 'tab'}},
   {'com.surteesstudios.Bartender', nil, {'b'}},
   {'md.obsidian', 'g', nil},
-  {'com.todoist.mac.Todoist', 't', nil}
 }
 
 Hyper = spoon.Hyper
@@ -127,6 +126,10 @@ Hyper:bind({}, 'v', nil, function()
   if appFound then
     hs.application.launchOrFocusByBundleID(appFound)
   end
+end)
+
+Hyper:bind({}, 't', nil, function()
+  hs.urlevent.openURL("https://app.todoist.com/app/today")
 end)
 
 Hyper:bind({}, 'h', nil, function()
