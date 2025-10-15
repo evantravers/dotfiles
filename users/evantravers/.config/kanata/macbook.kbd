@@ -11,7 +11,7 @@
 
 ;; define the keys to remap
 (defsrc
-  lctrl caps a s d f j k l ; ralt
+  lctrl caps a s d f j k l ; rmet ralt
 )
 
 ;; define values for tap time and hold time
@@ -39,5 +39,5 @@
 )
 
 (deflayer base
-  f19 @escctrl @a @s @d @f @j @k @l @; f18
+  f19 @escctrl @a @s @d @f @j @k @l @; f18 (multi fn lctrl)
 )
