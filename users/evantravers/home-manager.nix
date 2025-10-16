@@ -164,6 +164,28 @@
       flake = ../../.;
     };
 
+    tiny = {
+      enable = true;
+      settings = {
+        servers = [
+          {
+            addr = "irc.libera.chat";
+            port = 6697;
+            tls = true;
+            realname = "Evan";
+            nicks = [ "evantravers" ];
+            join = [ "#nethack" "#nixos" "#neovim" ];
+          }
+        ];
+        defaults = {
+          nicks = [ "evantravers" ];
+          realname = "Evan";
+          join = [ ];
+          tls = true;
+        };
+      };
+    };
+
     yazi = {
       enable = true;
       enableFishIntegration = true;
