@@ -14,6 +14,7 @@ Bindings = {
   {'com.superultra.Homerow', nil, {'return', 'tab'}},
   {'com.surteesstudios.Bartender', nil, {'b'}},
   {'md.obsidian', 'g', nil},
+  {'notion.id', 'w', nil}
 }
 
 Hyper = spoon.Hyper
