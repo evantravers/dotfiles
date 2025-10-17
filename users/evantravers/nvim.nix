@@ -187,6 +187,7 @@
           require('mini.completion').setup()
 
           require('mini.diff').setup()
+          vim.keymap.set('n', '<leader>g', "<cmd>:lua MiniDiff.toggle_overlay()<cr>", opts("Toggle Diff Overlay"))
 
           require('mini.extra').setup()      -- extra pickers
 
