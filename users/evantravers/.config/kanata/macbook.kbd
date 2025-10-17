@@ -39,5 +39,5 @@
 )
 
 (deflayer base
-  f19 @escctrl @a @s @d @f @j @k @l @; f18 (multi fn lctrl)
+  f19 @escctrl @a @s @d @f @j @k @l @; f18 (multi fn caps)
 )
