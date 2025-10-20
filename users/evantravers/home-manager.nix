@@ -56,6 +56,7 @@
     packages = with pkgs; [
       amber
       ai-tools.claude-code
+      ai-tools.claude-code-acp
       unstable.devenv
       gh
       gum
