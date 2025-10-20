@@ -13,8 +13,8 @@
           src = pkgs.fetchFromGitHub {
             owner = "olimorris";
             repo = "codecompanion.nvim";
-            rev = "0297731c8c0468f7172744d172e70766bfc2802c";
-            sha256 = "sha256-RVGc/xnNG12ziNSngz7MAHDvypGGXOS1fL+QQ4OujHw=";
+            rev = "e69aebb2930911824ba81bfcbe7205d638144788";
+            sha256 = "sha256-A6k2KJeWCa1v7NSf302FVj0E4nz7RwKDVSobS0lbHv4=";
           };
           doCheck = false;
           checkPhase = ":";
@@ -38,11 +38,16 @@
             },
             adapters = {
               acp = {
-                claude_code = function()
+                devclarity_claude_code = function()
                   return require("codecompanion.adapters").extend("claude_code", {
                     env = {
-                      ANTHROPIC_API_KEY = vim.env.ANTHROPIC_API_KEY
+                      ANTHROPIC_API_KEY = "cmd:op read op://Private/yy6goxmme5pm5jkhsmspolopme/credential --no-newline"
                     },
+                    commands = {
+                      default = {
+                        "claude-code-acp"
+                      }
+                    }
                   })
                 end,
               },
@@ -83,7 +88,16 @@
               }
             },
             extensions = {
-              history = { enabled = true };
+              history = {
+                enabled = true,
+                opts = {
+                  title_generation_opts = nil
+                  -- title_generation_opts = {
+                  --   adapter = 'copilot',
+                  --   model = 'gpt-4.1'
+                  -- },
+                }
+              }
             }
           })
 
