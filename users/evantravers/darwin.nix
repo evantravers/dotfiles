@@ -124,6 +124,7 @@
         "1password"
         "calibre"
         "cardhop"
+        "deskpad"
         "discord"
         "docker-desktop"
         "fantastical"
