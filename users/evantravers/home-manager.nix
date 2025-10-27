@@ -57,6 +57,7 @@
       amber
       ai-tools.claude-code
       ai-tools.claude-code-acp
+      ai-tools.copilot-cli
       unstable.devenv
       gh
       gum
