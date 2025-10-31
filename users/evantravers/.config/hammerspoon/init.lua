@@ -156,3 +156,30 @@ end)
 Hyper:bind({"command"}, 'p', nil, function()
   hs.urlevent.openURL("https://x.com/i/grok")
 end)
+
+-- Add new functionality to the OSX Move Windows commands
+local function eventTapWatcher(event)
+  local eventType = event:getType()
+
+  -- Only process keyDown events, not flagsChanged
+  if eventType == hs.eventtap.event.types.keyDown then
+    local keyCode = event:getKeyCode()
+    local flags = event:getFlags()
+
+    -- keyCode 2 is 'd' - move window to next display
+    if keyCode == 2 and flags['fn'] and flags['ctrl'] then
+      local win = hs.window.focusedWindow()
+      if win then
+        local screen = win:screen()
+        local nextScreen = screen:next()
+        win:moveToScreen(nextScreen)
+      end
+      return true  -- Delete the event, preventing it from being passed to other applications
+    end
+  end
+
+  return false  -- Allow other events to pass through
+end
+
+-- Store event tap in a variable to prevent garbage collection
+windowActionsWatcher = hs.eventtap.new({hs.eventtap.event.types.flagsChanged, hs.eventtap.event.types.keyDown}, eventTapWatcher):start()
