@@ -137,6 +137,10 @@ Hyper:bind({}, 'h', nil, function()
   hs.urlevent.openURL("https://devdocs.io")
 end)
 
+Hyper:bind({'shift'}, 'w', nil, function()
+  hs.urlevent.openURL("https://notion.so")
+end)
+
 Hyper:bind({}, 'p', nil, function()
   hs.urlevent.openURL("https://claude.ai")
 end)
