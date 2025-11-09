@@ -54,10 +54,11 @@
     # The home.packages option allows you to install Nix packages into your
     # environment.
     packages = with pkgs; [
-      amber
       ai-tools.claude-code
       ai-tools.claude-code-acp
       ai-tools.copilot-cli
+      ai-tools.opencode
+      amber
       unstable.devenv
       gh
       gum
@@ -66,7 +67,6 @@
       markdown-oxide
       nixd
       nixfmt-rfc-style
-      ai-tools.opencode
       ripgrep
       sesh
     ];
