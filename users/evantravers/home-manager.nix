@@ -58,6 +58,7 @@
       ai-tools.claude-code-acp
       ai-tools.copilot-cli
       ai-tools.opencode
+      ai-tools.spec-kit
       amber
       unstable.devenv
       gh
