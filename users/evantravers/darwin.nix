@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, inputs, lib, ... }:
 
 {
   # Enable fish and zsh
@@ -11,14 +11,37 @@
     shell = pkgs.fish;
   };
 
-  environment.systemPackages = [
+  environment.systemPackages = with inputs.nix-casks.packages.${pkgs.system}; [
+    pkgs._1password-cli
+    pkgs._1password-gui
     pkgs.defaultbrowser
     pkgs.firefox
     pkgs.kanata
-    pkgs.karabiner-elements.driver
+    pkgs.karabiner-elements
     pkgs.keycastr
     pkgs.unstable.notion-app
     pkgs.unstable.obsidian
+    pkgs.zoom-us
+    calibre
+    cardhop
+    deskpad
+    discord
+    docker
+    fantastical
+    figma
+    ghostty
+    hammerspoon
+    homerow
+    macwhisper
+    mouseless
+    obs
+    ollama-app
+    pop-app
+    raycast
+    signal
+    slack
+    telegram
+    vlc
   ];
 
   environment.extraInit = ''
@@ -110,14 +133,6 @@
       active_color = "0xAAB279A7";
       inactive_color = "0x33867A74";
     };
-  };
-
-  homebrew = {
-    enable = true;
-
-    onActivation.autoUpdate = true;
-    onActivation.upgrade = true;
-    onActivation.cleanup = "zap";
   };
 
   fonts.packages = [
