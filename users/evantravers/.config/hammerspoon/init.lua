@@ -12,7 +12,6 @@ Bindings = {
   {'com.toggl.daneel', 'r', nil},
   {'com.raycast.macos', nil, {'c', 'n', 'space', ';'}},
   {'com.superultra.Homerow', nil, {'return', 'tab'}},
-  {'com.surteesstudios.Bartender', nil, {'b'}},
   {'md.obsidian', 'g', nil},
   {'notion.id', 'w', nil}
 }
