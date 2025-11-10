@@ -121,6 +121,27 @@
         "type": "github"
       }
     },
+    "nix-casks": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1762732863,
+        "narHash": "sha256-PCX7kYGtjPmBktHZn8XSzn0hLmFxqRN4LI39KlRzHRw=",
+        "owner": "atahanyorganci",
+        "repo": "nix-casks",
+        "rev": "e473f213e18f44a453b540bd02710956bcad81c4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "atahanyorganci",
+        "ref": "archive",
+        "repo": "nix-casks",
+        "type": "github"
+      }
+    },
     "nixos-wsl": {
       "inputs": {
         "flake-compat": "flake-compat",
@@ -196,6 +217,7 @@
         "helix-master": "helix-master",
         "home-manager": "home-manager",
         "nix-ai-tools": "nix-ai-tools",
+        "nix-casks": "nix-casks",
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs_2",
         "nixpkgs-unstable": "nixpkgs-unstable"
