@@ -118,41 +118,6 @@
     onActivation.autoUpdate = true;
     onActivation.upgrade = true;
     onActivation.cleanup = "zap";
-
-    casks =
-      [
-        "1password"
-        "calibre"
-        "cardhop"
-        "deskpad"
-        "discord"
-        "docker-desktop"
-        "fantastical"
-        "figma"
-        "ghostty"
-        "hammerspoon"
-        "homerow"
-        "karabiner-elements"
-        "macwhisper"
-        "mouseless"
-        "obs"
-        "ollama-app"
-        "pop-app"
-        "raycast"
-        "signal"
-        "slack"
-        "steam"
-        "telegram"
-        "vlc"
-        "zoom"
-      ];
-
-    masApps = {
-      "Parcel" = 375589283;
-      "Reeder" = 1529448980;
-      "Timery" = 1425368544;
-      "Toggl" = 1291898086;
-    };
   };
 
   fonts.packages = [
