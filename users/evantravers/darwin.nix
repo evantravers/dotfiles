@@ -19,6 +19,7 @@
     (with pkgs; [
       defaultbrowser
       firefox
+      hidden-bar
       kanata
       keycastr
       unstable.notion-app
