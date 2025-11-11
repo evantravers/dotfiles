@@ -20,6 +20,7 @@
     pkgs.firefox
     pkgs.kanata
     pkgs.karabiner-elements
+    pkgs.karabiner-elements.driver
     pkgs.keycastr
     pkgs.unstable.notion-app
     pkgs.unstable.obsidian
