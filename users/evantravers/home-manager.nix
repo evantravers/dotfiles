@@ -70,10 +70,6 @@
       ripgrep
       sesh
     ];
-
-    sessionVariables = {
-      # ANTHROPIC_API_KEY = "op://Private/Claude/credential";
-    };
   };
 
   accounts.email.accounts.gmail = {
