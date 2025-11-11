@@ -15,35 +15,38 @@
     shell = pkgs.fish;
   };
 
-  environment.systemPackages = with inputs.nix-casks.packages.${pkgs.system}; [
-    pkgs.defaultbrowser
-    pkgs.firefox
-    pkgs.kanata
-    pkgs.keycastr
-    pkgs.unstable.notion-app
-    pkgs.unstable.obsidian
-    pkgs.zoom-us
-    calibre
-    cardhop
-    deskpad
-    discord
-    docker
-    fantastical
-    figma
-    ghostty
-    hammerspoon
-    homerow
-    macwhisper
-    mouseless
-    obs
-    ollama-app
-    pop-app
-    raycast
-    signal
-    slack
-    telegram
-    vlc
-  ];
+  environment.systemPackages =
+    (with pkgs; [
+      defaultbrowser
+      firefox
+      kanata
+      keycastr
+      unstable.notion-app
+      unstable.obsidian
+      zoom-us
+    ]) ++
+    (with inputs.nix-casks.packages.${pkgs.system}; [
+      calibre
+      cardhop
+      deskpad
+      discord
+      docker
+      fantastical
+      figma
+      ghostty
+      hammerspoon
+      homerow
+      macwhisper
+      mouseless
+      obs
+      ollama-app
+      pop-app
+      raycast
+      signal
+      slack
+      telegram
+      vlc
+    ]);
 
   environment.extraInit = ''
   export SSH_AUTH_SOCK=~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
