@@ -2,7 +2,6 @@ hs.loadSpoon('Hyper')
 
 -- bundleID, global, local
 Bindings = {
-  -- {'com.agiletortoise.Drafts-OSX', 'd', {'x', 'n'}},
   {'com.apple.MobileSMS', 'q', nil},
   {'com.apple.finder', 'f', nil},
   {'com.apple.mail', 'e', nil},
@@ -10,8 +9,8 @@ Bindings = {
   {'com.flexibits.fantastical2.mac', 'y', {'/'}},
   {'com.mitchellh.ghostty', 'j', nil},
   {'com.toggl.daneel', 'r', nil},
-  {'com.raycast.macos', nil, {'c', 'n', 'space', ';'}},
-  {'com.superultra.Homerow', nil, {'return', 'tab'}},
+  {'com.raycast.macos', nil, {'c', 'n', 'space'}},
+  {'com.superultra.Homerow', nil, {'return', 'tab', ';'}},
   {'md.obsidian', 'g', nil},
   {'notion.id', 'w', nil}
 }
