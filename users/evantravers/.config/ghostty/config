@@ -24,7 +24,7 @@ shell-integration-features = true
 
 adjust-cell-height = 10%
 
-font-family  = Recursive
+font-family  = JetBrainsMono
 font-thicken = true
 font-size    = 18
 

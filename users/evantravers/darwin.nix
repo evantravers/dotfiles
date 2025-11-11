@@ -135,7 +135,6 @@
   fonts.packages = [
     pkgs.atkinson-hyperlegible
     pkgs.jetbrains-mono
-    pkgs.recursive
   ];
   system = {
     primaryUser = "evantravers";
