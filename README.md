@@ -12,7 +12,7 @@ An opinionated setup about how I want my *nix development environment and host m
 
 ## OS Hosts
 
-- OSX: Hammerspoon, Homebrew, Aerospace, Settings
+- OSX: Hammerspoon, Aerospace, Settings
 - WSL: interop, wezterm.terminfo
 
 ## Bootstrap
@@ -23,7 +23,6 @@ WSL:
 `sudo nixos-rebuild switch --flake github:evantravers/dotfiles#wsl`
 
 Darwin:
-- Install Homebrew
 - `sudo nix run nix-darwin -- switch --flake github:evantravers/dotfiles[#macbook-pro]`
 
 Use 1Password to configure SSH Agent for host
