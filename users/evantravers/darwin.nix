@@ -5,6 +5,7 @@
   programs.zsh.enable = true;
   programs.fish.enable = true;
   programs._1password.enable = true;
+  programs._1password-gui.enable = true;
 
   users.users.evantravers = {
     home = "/Users/evantravers";
@@ -12,8 +13,6 @@
   };
 
   environment.systemPackages = with inputs.nix-casks.packages.${pkgs.system}; [
-    pkgs._1password-cli
-    pkgs._1password-gui
     pkgs.defaultbrowser
     pkgs.firefox
     pkgs.kanata
@@ -129,6 +128,7 @@
       active_color = "0xAAB279A7";
       inactive_color = "0x33867A74";
     };
+    # karabiner-elements.enable = true;
   };
 
   fonts.packages = [
