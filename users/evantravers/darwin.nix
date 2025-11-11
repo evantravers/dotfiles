@@ -1,4 +1,4 @@
-{ pkgs, inputs, lib, ... }:
+{ pkgs, inputs, ... }:
 
 {
   # Enable fish and zsh
@@ -19,8 +19,6 @@
     pkgs.defaultbrowser
     pkgs.firefox
     pkgs.kanata
-    pkgs.karabiner-elements
-    pkgs.karabiner-elements.driver
     pkgs.keycastr
     pkgs.unstable.notion-app
     pkgs.unstable.obsidian
@@ -132,7 +130,6 @@
       active_color = "0xAAB279A7";
       inactive_color = "0x33867A74";
     };
-    # karabiner-elements.enable = true;
   };
 
   fonts.packages = [
@@ -170,7 +167,6 @@
         MJConfigFile = "~/.config/hammerspoon/init.lua";
       };
     };
-    # karabiner-elements.enable = true;
     keyboard = {
       enableKeyMapping = true;
       remapCapsLockToControl = true;
