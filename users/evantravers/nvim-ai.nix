@@ -50,6 +50,15 @@
                     }
                   })
                 end,
+                opencode = function()
+                  return require('codecompanion.adapters').extend('claude_code', {
+                    name = 'opencode',
+                    formatted_name = 'OpenCode',
+                    commands = {
+                      default = { 'opencode', 'acp' },
+                    },
+                  })
+                end
               },
               http = {
                 -- hide adapters that I haven't explicitly configured
@@ -59,21 +68,6 @@
                     env = {
                       api_key = "cmd:op read op://Private/Claude/credential --no-newline"
                     }
-                  })
-                end,
-                openrouter_claude = function()
-                  return require("codecompanion.adapters").extend("openai_compatible", {
-                    env = {
-                      url = "https://openrouter.ai/api",
-                      -- api_key = "OPENROUTER_API_KEY",
-                      api_key = "cmd:op read op://Private/OpenRouterAPI/credential --no-newline",
-                      chat_url = "/v1/chat/completions",
-                    },
-                    schema = {
-                      model = {
-                        default = "anthropic/claude-3.7-sonnet:online",
-                      },
-                    },
                   })
                 end,
                 githubmodels = function()
