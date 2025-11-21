@@ -53,6 +53,7 @@
     # The home.packages option allows you to install Nix packages into your
     # environment.
     packages = with pkgs; [
+      ai-tools.codex
       ai-tools.claude-code
       ai-tools.claude-code-acp
       ai-tools.copilot-cli
