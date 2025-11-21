@@ -13,8 +13,8 @@
           src = pkgs.fetchFromGitHub {
             owner = "olimorris";
             repo = "codecompanion.nvim";
-            rev = "ec2261d19b1daff9a14f79bb1274ff5852ceffd9";
-            sha256 = "sha256-pWRMOmiJLxA37Nnq6VibCQtuILZ3g0AYpirzxbjZwqA=";
+            rev = "68fcda022fce25ee380e267d4b0fe98113b3957d";
+            sha256 = "sha256-J33VhN7XVo/DFXw+zIzeewMqV16rmt5ChUtLHtdlexE=";
           };
           doCheck = false;
           checkPhase = ":";
@@ -85,11 +85,10 @@
               history = {
                 enabled = true,
                 opts = {
-                  title_generation_opts = nil
-                  -- title_generation_opts = {
-                  --   adapter = 'copilot',
-                  --   model = 'gpt-4.1'
-                  -- },
+                  title_generation_opts = nil,
+                  title_generation_opts = {
+                    adapter = 'anthropic',
+                  },
                 }
               }
             }
