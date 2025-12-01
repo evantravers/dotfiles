@@ -41,10 +41,10 @@
         # This overlay makes unstable packages available through pkgs.unstable
         (final: prev: {
           unstable = import inputs.nixpkgs-unstable {
-            system = prev.system;
+            system = prev.stdenv.hostPlatform.system;
             config.allowUnfree = true;
           };
-          ai-tools = inputs.nix-ai-tools.packages.${prev.system};
+          ai-tools = inputs.nix-ai-tools.packages.${prev.stdenv.hostPlatform.system};
         })
       ];
 
