@@ -11,9 +11,7 @@
     };
 
     darwin = {
-      # url = "github:LnL7/nix-darwin/nix-darwin-25.11";
-      # TODO: use the branch once #1647 is closed
-      url = "github:LnL7/nix-darwin";
+      url = "github:LnL7/nix-darwin/nix-darwin-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
