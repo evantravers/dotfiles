@@ -1,6 +1,7 @@
 { pkgs, lib, ... }:
 {
   programs.tmux = {
+    package = pkgs.unstable.tmux;
     enable = true;
     escapeTime = 10;
     prefix = "C-space";
