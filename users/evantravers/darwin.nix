@@ -26,7 +26,7 @@
       unstable.obsidian
       zoom-us
     ]) ++
-    (with inputs.nix-casks.packages.${pkgs.system}; [
+    (with inputs.nix-casks.packages.${pkgs.stdenv.hostPlatform.system}; [
       calibre
       cardhop
       deskpad
