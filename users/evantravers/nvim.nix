@@ -43,30 +43,6 @@
         '';
       }
       lush-nvim
-      {
-        plugin = pkgs.vimUtils.buildVimPlugin {
-          pname = "auto-dark-mode-nvim"; # switch vim color with OS theme
-          version = "2025-07-01";
-          src = pkgs.fetchFromGitHub {
-            owner = "f-person";
-            repo = "auto-dark-mode.nvim";
-            rev = "97a86c9402c784a254e5465ca2c51481eea310e3";
-            hash = "sha256-zedwqG5PeJiSAZCl3GeyHwKDH/QjTz2OqDsFRTMTH/A=";
-          };
-        };
-        type = "lua";
-        config = ''
-          require('auto-dark-mode').setup({
-            update_interval = 1000,
-            set_dark_mode = function()
-              vim.o.background = 'dark'
-            end,
-            set_light_mode = function()
-              vim.o.background = 'light'
-            end,
-          })
-        '';
-      }
       # =======================================================================
       # PROSE
       # - Optional prose mode for writing: wrap, bindings, zen
