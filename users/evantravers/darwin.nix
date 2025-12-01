@@ -19,6 +19,7 @@
     (with pkgs; [
       defaultbrowser
       firefox
+      # calibre
       hidden-bar
       kanata
       keycastr
@@ -27,7 +28,6 @@
       zoom-us
     ]) ++
     (with inputs.nix-casks.packages.${pkgs.stdenv.hostPlatform.system}; [
-      calibre
       cardhop
       deskpad
       discord
