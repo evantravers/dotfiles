@@ -25,7 +25,6 @@
       keycastr
       unstable.notion-app
       unstable.obsidian
-      zoom-us
     ]) ++
     (with inputs.nix-casks.packages.${pkgs.stdenv.hostPlatform.system}; [
       cardhop
