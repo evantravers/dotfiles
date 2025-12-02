@@ -16,41 +16,47 @@
   };
 
   environment.systemPackages =
-    (with pkgs; [
+    with pkgs; [
       defaultbrowser
       firefox
-      # calibre
       hidden-bar
       kanata
       keycastr
       unstable.notion-app
       unstable.obsidian
-    ]) ++
-    (with inputs.nix-casks.packages.${pkgs.stdenv.hostPlatform.system}; [
-      cardhop
-      deskpad
-      discord
-      docker
-      fantastical
-      figma
-      ghostty
-      hammerspoon
-      homerow
-      macwhisper
-      mouseless
-      obs
-      ollama-app
-      pop-app
-      raycast
-      signal
-      slack
-      telegram
-      vlc
-    ]);
+    ];
 
   environment.extraInit = ''
   export SSH_AUTH_SOCK=~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
   '';
+
+  homebrew = {
+    enable = true;
+
+    casks = [
+      "calibre"
+      "cardhop"
+      "deskpad"
+      "discord"
+      "docker-desktop"
+      "fantastical"
+      "figma"
+      "ghostty"
+      "hammerspoon"
+      "homerow"
+      "karabiner-elements"
+      "macwhisper"
+      "mouseless"
+      "obs"
+      "pop-app"
+      "raycast"
+      "signal"
+      "slack"
+      "telegram"
+      "vlc"
+      "zoom"
+    ];
+  };
 
   services = {
     aerospace = {
