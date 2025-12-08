@@ -60,7 +60,7 @@ vim.diagnostic.config({ virtual_lines = { current_line = true, }, })
 
 -- LSP Configurations
 vim.lsp.config.elixir = {
-  cmd = { "lexical" },
+  cmd = { "expert", "--stdio" },
   filetypes = { 'elixir', 'eelixir', 'heex' },
   root_markers = { 'mix.exs', '.git' },
   settings = {
