@@ -5,10 +5,6 @@
   programs.zsh.enable = true;
   programs.fish.enable = true;
   programs._1password.enable = true;
-  programs._1password-gui = {
-    enable = true;
-    package = pkgs.unstable._1password-gui;
-  };
 
   users.users.evantravers = {
     home = "/Users/evantravers";
@@ -34,6 +30,7 @@
     enable = true;
 
     casks = [
+      "1password"
       "calibre"
       "cardhop"
       "deskpad"
