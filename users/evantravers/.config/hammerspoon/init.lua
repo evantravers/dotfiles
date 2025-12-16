@@ -127,6 +127,10 @@ Hyper:bind({}, 'v', nil, function()
   end
 end)
 
+Hyper:bind({'shift'}, 'e', nil, function()
+  hs.urlevent.openURL("https://outlook.office365.com/mail/")
+end)
+
 Hyper:bind({}, 't', nil, function()
   hs.urlevent.openURL("https://app.todoist.com/app/today")
 end)
