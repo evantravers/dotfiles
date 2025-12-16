@@ -5,6 +5,7 @@
 {
   programs.neovim = {
     plugins = with pkgs.unstable.vimPlugins; [
+      plenary-nvim
       # CodeCompanion as the core AI source
       {
         plugin = pkgs.vimUtils.buildVimPlugin {
