@@ -25,7 +25,7 @@
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
 
-    nix-ai-tools.url = "github:numtide/nix-ai-tools";
+    llm-agents.url = "github:numtide/llm-agents.nix";
   };
   outputs =
     { nixpkgs, ... }@inputs:
@@ -37,7 +37,7 @@
             system = prev.stdenv.hostPlatform.system;
             config.allowUnfree = true;
           };
-          ai-tools = inputs.nix-ai-tools.packages.${prev.stdenv.hostPlatform.system};
+          llm-agents = inputs.llm-agents.packages.${prev.stdenv.hostPlatform.system};
         })
       ];
 

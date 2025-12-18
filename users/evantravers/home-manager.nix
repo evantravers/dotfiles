@@ -53,13 +53,13 @@
     # The home.packages option allows you to install Nix packages into your
     # environment.
     packages = with pkgs; [
-      ai-tools.claude-code
-      ai-tools.claude-code-acp
-      ai-tools.codex
-      ai-tools.copilot-cli
-      ai-tools.opencode
-      ai-tools.openspec
-      ai-tools.spec-kit
+      llm-agents.claude-code
+      llm-agents.claude-code-acp
+      llm-agents.codex
+      llm-agents.copilot-cli
+      llm-agents.opencode
+      llm-agents.openspec
+      llm-agents.spec-kit
       amber
       unstable.devenv
       gh
