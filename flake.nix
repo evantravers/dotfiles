@@ -25,6 +25,8 @@
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
 
+    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+
     llm-agents.url = "github:numtide/llm-agents.nix";
   };
   outputs =
