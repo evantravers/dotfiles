@@ -29,7 +29,6 @@
       # =======================================================================
       # UI AND THEMES
       # Zenbones for minimal theme
-      # Switches light/dark automatically with OS
       # =======================================================================
       {
         plugin = zenbones-nvim;
