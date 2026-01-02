@@ -1,4 +1,5 @@
 {
+  inputs,
   lib,
   pkgs,
   ...
@@ -19,6 +20,7 @@
   programs.neovim = {
     enable = true;
     defaultEditor = true;
+    package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
 
     # Use init.lua for standard neovim settings
     extraLuaConfig = lib.fileContents .config/nvim/init.lua;
