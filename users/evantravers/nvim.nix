@@ -289,7 +289,6 @@
       # =======================================================================
       # UTILITIES
       # =======================================================================
-      targets-vim # Classic text-objects
       vim-eunuch # powerful buffer-level file options
       vim-ragtag # print/execute bindings for template files
       vim-speeddating # incrementing dates and times
