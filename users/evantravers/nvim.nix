@@ -130,7 +130,14 @@
             return {noremap = true, silent = true, desc = label}
           end
 
-          require('mini.ai').setup()         -- a/i textobjects
+          require('mini.ai').setup({
+            mappings = {
+              around_next = "",
+              inside_next = "",
+              around_last = "",
+              inside_last = "",
+            }
+          })
 
           require('mini.align').setup()      -- aligning
 
