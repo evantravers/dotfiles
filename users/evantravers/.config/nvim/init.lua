@@ -73,16 +73,18 @@ vim.lsp.config.elixir = {
 }
 
 vim.lsp.config.nix = {
-  cmd = { "nixd", "--inlay-hints=true" },
+  cmd = { "nil" },
   filetypes = { "nix" },
   settings = {
-    nixd = {
+    nil_lsp = {
       nixpkgs = {
         expr = "import <nixpkgs> { }",
       },
       root_markers = { "flake.nix", ".git" },
-      formatting = {
-        command = { "nixfmt" },
+      settings = {
+        formatting = {
+          command = { "nixfmt" },
+        },
       },
     },
   }
