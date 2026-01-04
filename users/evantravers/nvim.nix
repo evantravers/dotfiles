@@ -103,45 +103,22 @@
       # - TS-enabled context breadcrumbs
       # - helix style scope selection
       # =======================================================================
-      # {
-      #   plugin = nvim-treesitter.withAllGrammars; # Treesitter
-      #   type = "lua";
-      #   config = ''
-      #     require'nvim-treesitter.configs'.setup {
-      #       highlight = { enable = true, },
-      #       indent = { enable = true },
-      #     }
-      #   '';
-      # }
-      # {
-      #   plugin = nvim-treesitter-context;
-      #   enable = false;
-      #   type = "lua";
-      #   config = ''
-      #     require'treesitter-context'.setup{
-      #       enable = false
-      #     }
-      #     vim.keymap.set('n', '<space>c', "<cmd>TSContext toggle<cr>", {noremap = true, silent = true, desc = "Toggle TS Context"})
-      #   '';
-      # }
-      # {
-      #   plugin = nvim-treesitter-textobjects; # helix-style selection of TS tree
-      #   enable = false;
-      #   type = "lua";
-      #   config = ''
-      #     require'nvim-treesitter.configs'.setup {
-      #       incremental_selection = {
-      #         enable = true,
-      #         keymaps = {
-      #           init_selection = "<M-o>",
-      #           scope_incremental = "<M-O>",
-      #           node_incremental = "<M-o>",
-      #           node_decremental = "<M-i>",
-      #         },
-      #       },
-      #     }
-      #   '';
-      # }
+      {
+        plugin = nvim-treesitter.withAllGrammars; # Treesitter
+        type = "lua";
+        config = ''
+        '';
+      }
+      {
+        plugin = nvim-treesitter-context;
+        type = "lua";
+        config = ''
+          require'treesitter-context'.setup{
+            enable = false
+          }
+          vim.keymap.set('n', '<space>c', "<cmd>TSContext toggle<cr>", {noremap = true, silent = true, desc = "Toggle TS Context"})
+        '';
+      }
       # =======================================================================
       # UTILITIES AND MINI
       # =======================================================================
