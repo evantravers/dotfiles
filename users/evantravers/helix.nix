@@ -1,6 +1,5 @@
 {
   pkgs,
-  # helix-master,
   ...
 }:
 
@@ -8,7 +7,6 @@
   programs.helix = {
     enable = true;
     # defaultEditor = true;
-    # package = helix-master.packages.${pkgs.stdenv.hostPlatform.system}.default;
     languages = {
       language = [
         {
