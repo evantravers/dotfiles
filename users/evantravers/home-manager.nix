@@ -67,7 +67,7 @@
       harper
       lua-language-server
       markdown-oxide
-      nixd
+      nil
       nixfmt-rfc-style
       ripgrep
       sesh
