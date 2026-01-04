@@ -36,6 +36,7 @@
           };
           llm-agents = inputs.llm-agents.packages.${prev.stdenv.hostPlatform.system};
         })
+        inputs.neovim-nightly-overlay.overlays.default
       ];
 
       mkSystem = import ./lib/mksystem.nix {
