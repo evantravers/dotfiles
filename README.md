@@ -23,6 +23,7 @@ WSL:
 `sudo nixos-rebuild switch --flake github:evantravers/dotfiles#wsl`
 
 Darwin:
+- Install [homebrew](https://brew.sh/)
 - `sudo nix run nix-darwin -- switch --flake github:evantravers/dotfiles[#macbook-pro]`
 
 Use 1Password to configure SSH Agent for host
