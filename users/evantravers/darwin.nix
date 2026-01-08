@@ -23,6 +23,7 @@
       hidden-bar
       kanata
       keycastr
+      libation
       unstable.notion-app
       unstable.obsidian
     ];
