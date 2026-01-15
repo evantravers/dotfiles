@@ -55,11 +55,8 @@
     packages = with pkgs; [
       llm-agents.claude-code
       llm-agents.claude-code-acp
-      llm-agents.codex
-      llm-agents.copilot-cli
       llm-agents.opencode
       llm-agents.openspec
-      llm-agents.spec-kit
       amber
       unstable.devenv
       gh
