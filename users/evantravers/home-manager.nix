@@ -53,6 +53,7 @@
     # The home.packages option allows you to install Nix packages into your
     # environment.
     packages = with pkgs; [
+      llm-agents.beads
       llm-agents.claude-code
       llm-agents.claude-code-acp
       llm-agents.opencode
