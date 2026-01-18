@@ -24,7 +24,7 @@ shell-integration-features = true
 
 adjust-cell-height = 10%
 
-font-family  = JetBrainsMono
+font-family  = JetBrainsMono NFM Regular
 font-thicken = true
 font-size    = 18
 
