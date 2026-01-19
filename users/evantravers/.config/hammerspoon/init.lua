@@ -131,9 +131,13 @@ Hyper:bind({'shift'}, 'e', nil, function()
   hs.urlevent.openURL("https://outlook.office365.com/mail/")
 end)
 
-Hyper:bind({}, 't', nil, function()
+Hyper:bind({'shift'}, 't', nil, function()
   hs.urlevent.openURL("https://app.todoist.com/app/today")
 end)
+Hyper:bind({}, 't', nil, function()
+  hs.urlevent.openURL("https://www.notion.so/Trainer-Dashboard-2b642ede473a80d88075ce2e25d3fc4b")
+end)
+
 
 Hyper:bind({}, 'h', nil, function()
   hs.urlevent.openURL("https://devdocs.io")
