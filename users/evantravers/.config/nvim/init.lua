@@ -8,7 +8,7 @@ vim.o.foldtext = 'v:lua.vim.treesitter.foldtext()'
 vim.o.winborder = 'rounded'
 
 vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 
 vim.o.showmode = false
 
