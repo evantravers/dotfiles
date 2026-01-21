@@ -58,7 +58,7 @@
                 width = 80
               },
               plugins = {
-                tmux = { enabled = true }
+                tmux = { enabled = false }
               },
               on_open = function()
                 if (vim.bo.filetype == "markdown" or vim.bo.filetype == "telekasten") then
