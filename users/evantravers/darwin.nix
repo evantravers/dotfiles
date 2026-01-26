@@ -48,6 +48,7 @@
       "hammerspoon"
       "homerow"
       "karabiner-elements"
+      "marked-app"
       "macwhisper"
       "mouseless"
       "obs"
