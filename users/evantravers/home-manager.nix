@@ -172,7 +172,17 @@
             tls = true;
             realname = "Evan";
             nicks = [ "evantravers" ];
-            join = [ "#nethack" "#nixos" "#neovim" ];
+            join = [
+              "#nethack"
+              "#nixos"
+              "#neovim"
+            ];
+            sasl = {
+              username = "evantravers";
+              password = {
+                command = "op read op://Private/7ftnywolnvbyska745tklaayqe/password";
+              };
+            };
           }
         ];
         defaults = {
