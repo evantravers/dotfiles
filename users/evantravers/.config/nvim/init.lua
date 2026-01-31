@@ -85,6 +85,13 @@ vim.lsp.config.nix = {
         formatting = {
           command = { "nixfmt" },
         },
+        nix = {
+          flake = {
+            autoArchive = true,
+            autoEvalInputs = true,
+            nixpkgsInputName = "nixpkgs",
+          },
+        },
       },
     },
   }
