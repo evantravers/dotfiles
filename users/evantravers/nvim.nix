@@ -277,6 +277,7 @@
               miniclue.gen_clues.windows(),
               miniclue.gen_clues.z(),
               { mode = 'n', keys = '<Leader>d', desc = '+DAP' },
+              { mode = 'n', keys = '<Leader>f', desc = '+Fix'}
             },
           })
         '';
