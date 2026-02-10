@@ -58,6 +58,7 @@
       llm-agents.claude-code-acp
       llm-agents.opencode
       llm-agents.openspec
+      llm-agents.pi
       amber
       unstable.devenv
       gh
