@@ -11,8 +11,7 @@ Bindings = {
   {'com.toggl.daneel', 'r', nil},
   {'com.raycast.macos', nil, {'c', 'n', 'space'}},
   {'com.superultra.Homerow', nil, {'return', 'tab', ';'}},
-  {'md.obsidian', 'g', nil},
-  {'notion.id', 'w', nil}
+  {'md.obsidian', 'g', nil}
 }
 
 Hyper = spoon.Hyper
@@ -132,10 +131,10 @@ Hyper:bind({'shift'}, 'e', nil, function()
 end)
 
 Hyper:bind({'shift'}, 't', nil, function()
-  hs.urlevent.openURL("https://app.todoist.com/app/today")
+  hs.urlevent.openURL("https://www.notion.so/Trainer-Dashboard-2b642ede473a80d88075ce2e25d3fc4b")
 end)
 Hyper:bind({}, 't', nil, function()
-  hs.urlevent.openURL("https://www.notion.so/Trainer-Dashboard-2b642ede473a80d88075ce2e25d3fc4b")
+  hs.urlevent.openURL("obsidian://open?vault=wiki&file=templates%2Ftasks%2FToday%20Tasks")
 end)
 
 
@@ -143,28 +142,8 @@ Hyper:bind({}, 'h', nil, function()
   hs.urlevent.openURL("https://devdocs.io")
 end)
 
-Hyper:bind({'shift'}, 'w', nil, function()
-  hs.urlevent.openURL("https://notion.so")
-end)
-
 Hyper:bind({}, 'p', nil, function()
   hs.urlevent.openURL("https://claude.ai")
-end)
-
-Hyper:bind({"shift"}, 'p', nil, function()
-  hs.urlevent.openURL("https://perplexity.ai")
-end)
-
-Hyper:bind({"control"}, 'p', nil, function()
-  hs.urlevent.openURL("https://gemini.google.com")
-end)
-
-Hyper:bind({"alt"}, 'p', nil, function()
-  hs.urlevent.openURL("https://chatgpt.com")
-end)
-
-Hyper:bind({"command"}, 'p', nil, function()
-  hs.urlevent.openURL("https://x.com/i/grok")
 end)
 
 -- Add new functionality to the OSX Move Windows commands
