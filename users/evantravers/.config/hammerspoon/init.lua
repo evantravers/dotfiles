@@ -38,6 +38,10 @@ Hyper:bind({}, ',', function()
   Hyper:exit()
   hs.shortcuts.run("Smart Capture")
 end)
+Hyper:bind({}, 'n', function()
+  Hyper:exit()
+  hs.shortcuts.run("Quick Note")
+end)
 
 -- provide the ability to override config per computer
 if (hs.fs.displayName('./localConfig.lua')) then
