@@ -26,6 +26,7 @@
       libation
       unstable.notion-app
       unstable.obsidian
+      orbstack
     ];
 
   environment.extraInit = ''
