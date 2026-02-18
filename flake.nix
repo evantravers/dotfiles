@@ -27,17 +27,7 @@
   outputs =
     { nixpkgs, ... }@inputs:
     let
-      overlays = [
-        # This overlay makes unstable packages available through pkgs.unstable
-        (final: prev: {
-          unstable = import inputs.nixpkgs-unstable {
-            system = prev.stdenv.hostPlatform.system;
-            config.allowUnfree = true;
-          };
-          llm-agents = inputs.llm-agents.packages.${prev.stdenv.hostPlatform.system};
-        })
-        inputs.neovim-nightly-overlay.overlays.default
-      ];
+      overlays = builtins.attrValues (import ./overlays { inherit inputs; });
 
       mkSystem = import ./lib/mksystem.nix {
         inherit overlays nixpkgs inputs;
