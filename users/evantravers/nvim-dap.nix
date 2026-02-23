@@ -5,37 +5,15 @@
 {
   programs.neovim = {
     plugins = with pkgs.unstable.vimPlugins; [
-      nvim-nio # Required dependency for nvim-dap-ui
       {
-        plugin = nvim-dap-ui;
+        plugin = nvim-dap-view;
         type = "lua";
-        config = ''
-          local dap = require('dap')
-          local dapui = require('dapui')
-
-          dapui.setup()
-
-          -- Auto-open UI when debugging starts
-          dap.listeners.after.event_initialized["dapui_config"] = function()
-            dapui.open()
-          end
-
-          -- Auto-close UI when debugging ends
-          dap.listeners.before.event_terminated["dapui_config"] = function()
-            dapui.close()
-          end
-
-          dap.listeners.before.event_exited["dapui_config"] = function()
-            dapui.close()
-          end
-        '';
       }
       {
         plugin = nvim-dap;
         type = "lua";
         config = ''
           local dap = require('dap')
-          local dapui = require('dapui')
 
           -- Node.js adapter configuration
           -- Requires js-debug to be installed via nix (available in PATH)
@@ -133,7 +111,7 @@
           vim.keymap.set('n', '<localleader>dn', function() dap.step_over() end, opts("Step Over"))
           vim.keymap.set('n', '<localleader>du', function() dap.step_out() end, opts("Step Out"))
           vim.keymap.set('n', '<localleader>dr', function() dap.repl.toggle() end, opts("Toggle REPL"))
-          vim.keymap.set('n', '<localleader>dU', function() dapui.toggle() end, opts("Toggle Debug UI"))
+          vim.keymap.set('n', '<localleader>dU', function() vim.cmd('DapViewToggle') end, opts("Toggle Debug UI"))
           vim.keymap.set('n', '<localleader>dq', function() dap.close() end, opts("Quit Debugging"))
           vim.keymap.set('n', '<localleader>dk', function() dap.up() end, opts("Go Up Call Stack"))
           vim.keymap.set('n', '<localleader>dj', function() dap.down() end, opts("Go Down Call Stack"))
