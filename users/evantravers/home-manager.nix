@@ -25,27 +25,6 @@
   xdg.configFile."moxide/settings.toml".text = ''
     title_headings = false
   '';
-  xdg.configFile."opencode/opencode.json".text = ''
-  {
-    "$schema": "https://opencode.ai/config.json",
-    "provider": {
-      "ollama": {
-        "npm": "@ai-sdk/openai-compatible",
-        "name": "Ollama (local)",
-        "options": {
-          "baseURL": "http://localhost:11434/v1"
-        },
-        "models": {
-          "gpt-oss:20b": {
-            "name": "GPT OSS:20b"
-          }
-        }
-      }
-    },
-    "model": "anthropic/claude-sonnet-4-20250514",
-    "small_model": "anthropic/claude-3-5-haiku-20241022"
-  }
-  '';
 
   home = {
     stateVersion = "25.05"; # Please read the comment before changing.
