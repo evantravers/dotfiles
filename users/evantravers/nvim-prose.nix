@@ -1,7 +1,4 @@
-{
-  pkgs,
-  ...
-}:
+{ pkgs, ... }:
 {
   programs.neovim = {
     plugins = with pkgs.unstable.vimPlugins; [

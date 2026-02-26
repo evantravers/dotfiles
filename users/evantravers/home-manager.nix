@@ -1,9 +1,4 @@
-{
-  pkgs,
-  lib,
-  ...
-}:
-
+{ pkgs, lib, ... }:
 {
   imports = [
     ./git.nix
@@ -15,12 +10,8 @@
 
   xdg.enable = true;
   # TODO: move this to ./home-manager/modules/darwin or something
-  xdg.configFile."hammerspoon" = lib.mkIf pkgs.stdenv.isDarwin {
-    source = .config/hammerspoon;
-  };
-  xdg.configFile."kanata" = lib.mkIf pkgs.stdenv.isDarwin {
-    source = .config/kanata;
-  };
+  xdg.configFile."hammerspoon" = lib.mkIf pkgs.stdenv.isDarwin { source = .config/hammerspoon; };
+  xdg.configFile."kanata" = lib.mkIf pkgs.stdenv.isDarwin { source = .config/kanata; };
   xdg.configFile."ghostty".source = .config/ghostty;
   xdg.configFile."moxide/settings.toml".text = ''
     title_headings = false
@@ -60,7 +51,11 @@
     address = "evantravers@gmail.com";
     userName = "evantravers@gmail.com";
     realName = "Evan Travers";
-    folders = { inbox = "INBOX"; sent = "\[Gmail\]/Sent\ Mail"; trash = "\[Gmail\]/Trash"; };
+    folders = {
+      inbox = "INBOX";
+      sent = "\[Gmail\]/Sent\ Mail";
+      trash = "\[Gmail\]/Trash";
+    };
     passwordCommand = "op read op://Private/a3v65jhzsq4lpiunlcf6fceesa/password";
     flavor = "gmail.com";
   };
@@ -70,7 +65,9 @@
       enable = true;
       extraConfig = {
         general.unsafe-accounts-conf = true;
-        viewer = {pager = "${pkgs.less}/bin/less -R";};
+        viewer = {
+          pager = "${pkgs.less}/bin/less -R";
+        };
         filters = {
           "text/plain" = "${pkgs.aerc}/libexec/aerc/filters/colorize";
           "text/calendar" = "${pkgs.aerc}/libexec/aerc/filters/calendar";
@@ -119,7 +116,7 @@
             "--strict"
             "--filename=$path"
           ];
-          patterns = ["glob:'**/*.nix'"];
+          patterns = [ "glob:'**/*.nix'" ];
         };
         templates.draft_commit_description = ''
           concat(
