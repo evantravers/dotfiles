@@ -1,9 +1,4 @@
-{
-  lib,
-  pkgs,
-  ...
-}:
-
+{ lib, pkgs, ... }:
 {
   imports = [
     ./nvim-ai.nix

@@ -1,5 +1,4 @@
-{ pkgs, inputs, ... }:
-
+{ pkgs, ... }:
 {
   # Enable fish and zsh
   programs.zsh.enable = true;
@@ -7,8 +6,8 @@
   programs._1password.enable = true;
 
   programs.ssh.extraConfig = ''
-  Host *
-    IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+    Host *
+      IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
   '';
 
   users.users.evantravers = {
@@ -16,21 +15,20 @@
     shell = pkgs.fish;
   };
 
-  environment.systemPackages =
-    with pkgs; [
-      defaultbrowser
-      firefox
-      hidden-bar
-      kanata
-      keycastr
-      libation
-      unstable.notion-app
-      unstable.obsidian
-      orbstack
-    ];
+  environment.systemPackages = with pkgs; [
+    defaultbrowser
+    firefox
+    hidden-bar
+    kanata
+    keycastr
+    libation
+    unstable.notion-app
+    unstable.obsidian
+    orbstack
+  ];
 
   environment.extraInit = ''
-  export SSH_AUTH_SOCK=~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
+    export SSH_AUTH_SOCK=~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
   '';
 
   homebrew = {
