@@ -29,9 +29,7 @@
     let
       overlays = builtins.attrValues (import ./overlays { inherit inputs; });
 
-      mkSystem = import ./lib/mksystem.nix {
-        inherit overlays nixpkgs inputs;
-      };
+      mkSystem = import ./lib/mksystem.nix { inherit overlays nixpkgs inputs; };
     in
     {
       nixosConfigurations.wsl = mkSystem "wsl" {

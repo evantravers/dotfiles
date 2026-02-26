@@ -1,8 +1,4 @@
-{
-  pkgs,
-  ...
-}:
-
+{ pkgs, ... }:
 {
   programs.helix = {
     enable = true;
@@ -15,9 +11,7 @@
         }
         {
           name = "markdown";
-          language-servers = [
-            "markdown-oxide"
-          ];
+          language-servers = [ "markdown-oxide" ];
           comment-tokens = [
             "-"
             "+"
@@ -29,9 +23,7 @@
         }
         {
           name = "devicetree";
-          file-types = [
-            "keymap"
-          ];
+          file-types = [ "keymap" ];
         }
       ];
       language-server = {
