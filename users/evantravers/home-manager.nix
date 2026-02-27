@@ -150,6 +150,7 @@
             realname = "Evan";
             nicks = [ "evantravers" ];
             join = [
+              "#elixir"
               "#nethack"
               "#nixos"
               "#neovim"
