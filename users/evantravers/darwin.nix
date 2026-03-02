@@ -33,6 +33,7 @@
 
   homebrew = {
     enable = true;
+    onActivation.cleanup = "zap";
 
     casks = [
       "1password"
@@ -40,7 +41,6 @@
       "cardhop"
       "deskpad"
       "discord"
-      "docker-desktop"
       "fantastical"
       "figma"
       "ghostty"
