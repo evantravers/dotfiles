@@ -177,6 +177,7 @@
       CustomUserPreferences."org.hammerspoon.Hammerspoon" = {
         MJConfigFile = "~/.config/hammerspoon/init.lua";
       };
+      ".GlobalPreferences"."com.apple.mouse.scaling" = -1.0;
     };
     keyboard = {
       enableKeyMapping = true;
