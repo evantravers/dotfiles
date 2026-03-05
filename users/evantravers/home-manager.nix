@@ -1,8 +1,10 @@
 { pkgs, lib, ... }:
 {
   imports = [
+    ./email.nix
     ./git.nix
     ./helix.nix
+    ./irc.nix
     ./jujutsu.nix
     ./nvim.nix
     ./starship.nix
@@ -62,31 +64,6 @@
   };
 
   programs = {
-    aerc = {
-      enable = true;
-      extraConfig = {
-        general.unsafe-accounts-conf = true;
-        viewer = {
-          pager = "${pkgs.less}/bin/less -R";
-        };
-        filters = {
-          "text/plain" = "${pkgs.aerc}/libexec/aerc/filters/colorize";
-          "text/calendar" = "${pkgs.aerc}/libexec/aerc/filters/calendar";
-          "text/html" = "${pkgs.aerc}/libexec/aerc/filters/html";
-          "message/delivery-status" = "${pkgs.aerc}/libexec/aerc/filters/colorize";
-          "message/rfc822" = "${pkgs.aerc}/libexec/aerc/filters/colorize";
-        };
-        ui = {
-          threading-enabled = true;
-          show-thread-context = true;
-          styleset-name = "dracula";
-          border-char-vertical = "┃";
-          spinner = "[ ⡿ ],[ ⣟ ],[ ⣯ ],[ ⣷ ],[ ⣾ ],[ ⣽ ],[ ⣻ ],[ ⢿ ]";
-        };
-      };
-    };
-    himalaya.enable = true;
-
     fish = {
       enable = true;
       interactiveShellInit = ''
@@ -109,39 +86,6 @@
       flake = ../../.;
     };
 
-    tiny = {
-      enable = true;
-      settings = {
-        servers = [
-          {
-            addr = "irc.libera.chat";
-            port = 6697;
-            tls = true;
-            realname = "Evan";
-            nicks = [ "evantravers" ];
-            join = [
-              "#elixir"
-              "#nethack"
-              "#nixos"
-              "#neovim"
-            ];
-            sasl = {
-              username = "evantravers";
-              password = {
-                command = "op read op://Private/7ftnywolnvbyska745tklaayqe/password";
-              };
-            };
-          }
-        ];
-        defaults = {
-          nicks = [ "evantravers" ];
-          realname = "Evan";
-          join = [ ];
-          tls = true;
-        };
-      };
-    };
-
     yazi = {
       enable = true;
       enableFishIntegration = true;
@@ -152,6 +96,4 @@
       enableFishIntegration = true;
     };
   };
-
-  # services.ollama.enable = true;
 }
