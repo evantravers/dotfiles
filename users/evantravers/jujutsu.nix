@@ -2,7 +2,7 @@
 {
   programs.jujutsu = {
     enable = true;
-    package = pkgs.unstable.jujutsu;
+    package = pkgs.jujutsu;
     settings = {
       user = {
         name = "Evan Travers";
@@ -17,17 +17,9 @@
         ];
         patterns = [ "glob:'**/*.nix'" ];
       };
-      templates.draft_commit_description = ''
-          concat(
-            coalesce(description, default_commit_description, "\n"),
-            surround(
-              "\nJJ: This commit contains the following changes:\n", "",
-              indent("JJ:     ", diff.stat(72)),
-            ),
-            "\nJJ: ignore-rest\n",
-            diff.git(),
-          )
-      '';
+      templates = {
+        draft_commit_description = "builtin_draft_commit_description_with_diff";
+      };
     };
   };
 }

@@ -20,9 +20,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
-
     llm-agents.url = "github:numtide/llm-agents.nix";
+
+    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+    jujutsu.url = "github:jj-vcs/jj?tag=v0.39.0";
   };
   outputs =
     { nixpkgs, ... }@inputs:

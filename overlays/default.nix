@@ -12,6 +12,7 @@
   };
 
   neovim-nightly = inputs.neovim-nightly-overlay.overlays.default;
+  jujutsu = inputs.jujutsu.overlays.default;
 
   # Workaround for https://github.com/NixOS/nixpkgs/issues/488689
   # gnulib's error() macro passes dgettext() results as format strings,
