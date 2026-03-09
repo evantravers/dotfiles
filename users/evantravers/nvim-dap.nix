@@ -3,6 +3,20 @@
   programs.neovim = {
     plugins = with pkgs.unstable.vimPlugins; [
       {
+        plugin = pkgs.vimUtils.buildVimPlugin {
+          pname = "nvim-dap-view";
+          version = "v1.0.0";
+          src = pkgs.fetchFromGitHub {
+            owner = "igorlfs";
+            repo = "nvim-dap-view";
+            rev = "sha256-WIT0t1TlfgDPLs7EOJf/f8kOgYbz/qtjwk/PYBKc0YY=";
+            sha256 = "sha256-WIT0t1TlfgDPLs7EOJf/f8kOgYbz/qtjwk/PYBKc0YY=";
+          };
+          doCheck = false;
+          checkPhase = ":";
+        };
+      }
+      {
         plugin = nvim-dap-view;
         type = "lua";
       }
