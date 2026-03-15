@@ -9,7 +9,7 @@
           src = pkgs.fetchFromGitHub {
             owner = "igorlfs";
             repo = "nvim-dap-view";
-            rev = "sha256-WIT0t1TlfgDPLs7EOJf/f8kOgYbz/qtjwk/PYBKc0YY=";
+            rev = "4f9069096f5616f12a73b9287586d21eb1e4fdb0";
             sha256 = "sha256-WIT0t1TlfgDPLs7EOJf/f8kOgYbz/qtjwk/PYBKc0YY=";
           };
           doCheck = false;
