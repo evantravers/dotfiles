@@ -21,11 +21,10 @@
   '';
 
   home = {
-    stateVersion = "25.05"; # Please read the comment before changing.
+    stateVersion = "25.05";
 
-    # The home.packages option allows you to install Nix packages into your
-    # environment.
     packages = with pkgs; [
+      jj-starship
       llm-agents.beads
       llm-agents.claude-code
       llm-agents.claude-code-acp
