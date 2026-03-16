@@ -40,6 +40,7 @@
       markdown-oxide
       nil
       nixfmt-rfc-style
+      unstable.rainfrog
       ripgrep
       sesh
     ];
