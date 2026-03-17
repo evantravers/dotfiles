@@ -13,6 +13,5 @@
 
   devenv = inputs.devenv.overlays.default;
   neovim-nightly = inputs.neovim-nightly-overlay.overlays.default;
-  jujutsu = inputs.jujutsu.overlays.default;
   jj-starship = inputs.jj-starship.overlays.default;
 }
