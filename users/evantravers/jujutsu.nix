@@ -2,7 +2,7 @@
 {
   programs.jujutsu = {
     enable = true;
-    package = pkgs.jujutsu;
+    package = pkgs.unstable.jujutsu;
     settings = {
       user = {
         name = "Evan Travers";
