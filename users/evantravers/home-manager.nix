@@ -32,7 +32,7 @@
       llm-agents.openspec
       llm-agents.pi
       amber
-      devenv
+      unstable.devenv
       gh
       gum
       harper
