@@ -22,7 +22,7 @@
 
     llm-agents.url = "github:numtide/llm-agents.nix";
 
-    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay?sha=7e711c5abd3b0ca9c0038606edeee6bcf09b055c"; # 2026-03-20
     jujutsu.url = "github:jj-vcs/jj?tag=v0.39.0";
     jj-starship.url = "github:dmmulroy/jj-starship?tag=v0.7.0";
     devenv.url = "github:cachix/devenv?tag=v2.0.3";
