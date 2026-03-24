@@ -6,6 +6,10 @@
     languages = {
       language = [
         {
+          name = "elixir";
+          language-servers = [ "expert" ];
+        }
+        {
           name = "nix";
           language-servers = [ "nixd" ];
         }
@@ -28,6 +32,7 @@
       ];
       language-server = {
         nixd.command = "${pkgs.nixd}/bin/nixd";
+        expert.command = "expert --stdio";
         markdown-oxide.command = "${pkgs.markdown-oxide}/bin/markdown-oxide";
       };
     };
