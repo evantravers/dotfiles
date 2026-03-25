@@ -22,7 +22,6 @@
     kanata
     keycastr
     libation
-    unstable.notion-app
     unstable.obsidian
     orbstack
   ];
