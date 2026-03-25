@@ -22,4 +22,30 @@
       };
     };
   };
+
+  programs.fish = {
+    binds = {
+      "alt-o".command = "jj_desc_wrap";
+    };
+    functions = {
+      jj_desc_wrap = {
+        description = "Wrap previous token or history command in jj desc -m \"\"";
+        body = ''
+          set -l tokens (commandline -pc)
+          set -l token $tokens[-1]
+          if test -z "$token"
+            set token (history --max=1 | head -1)
+          end
+          if test -z "$token"
+            commandline -i "jj desc -m \"\" "
+            commandline -C 12
+          else
+            commandline -r -- "jj desc -m \"$token\""
+            commandline -C 12
+          end
+          commandline -f repaint
+        '';
+      };
+    };
+  };
 }
