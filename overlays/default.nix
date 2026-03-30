@@ -14,13 +14,4 @@
   # devenv = inputs.devenv.overlays.default;
   neovim-nightly = inputs.neovim-nightly-overlay.overlays.default;
   jj-starship = inputs.jj-starship.overlays.default;
-
-  # TODO: remove once nixpkgs-unstable picks up NixOS/nixpkgs#502769
-  direnv-linkmode = final: prev: {
-    direnv = prev.direnv.overrideAttrs (_: {
-      postPatch = ''
-        substituteInPlace GNUmakefile --replace-fail " -linkmode=external" ""
-      '';
-    });
-  };
 }
