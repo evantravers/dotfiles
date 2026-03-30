@@ -16,6 +16,7 @@
 
   programs.neovim = {
     enable = true;
+    package = pkgs.unstable.neovim-unwrapped;
     defaultEditor = true;
 
     # Use init.lua for standard neovim settings
