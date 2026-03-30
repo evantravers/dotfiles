@@ -12,6 +12,6 @@
   };
 
   # devenv = inputs.devenv.overlays.default;
-  neovim-nightly = inputs.neovim-nightly-overlay.overlays.default;
+  # neovim-nightly = inputs.neovim-nightly-overlay.overlays.default;
   jj-starship = inputs.jj-starship.overlays.default;
 }
