@@ -142,3 +142,7 @@ vim.lsp.enable({
   'markdown',
   'javascript'
 })
+
+-- Built-in undotree (v0.12+)
+vim.cmd.packadd('nvim.undotree')
+vim.keymap.set('n', '<leader>u', ':Undotree<CR>', { desc = 'Toggle undotree' })
