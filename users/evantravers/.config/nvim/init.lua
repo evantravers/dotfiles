@@ -153,6 +153,43 @@ vim.lsp.enable({
   'javascript'
 })
 
+vim.api.nvim_create_autocmd('LspProgress', {
+  callback = function(ev)
+    local val = ev.data.params.value
+    local token = ev.data.params.token
+    local client = vim.lsp.get_client_by_id(ev.data.client_id)
+    local source = client and client.name or 'lsp'
+
+    if val.kind == 'begin' or val.kind == 'report' then
+      vim.api.nvim_echo(
+        {{ val.title or val.message or 'Working…', 'Normal' }},
+        false,
+        {
+          kind = 'progress',
+          title = val.title or source,
+          source = source,
+          percent = val.percentage or 0,
+          status = 'running',
+        }
+      )
+    elseif val.kind == 'end' then
+      vim.api.nvim_echo(
+        {{ val.message or 'Done', 'Normal' }},
+        false,
+        {
+          kind = 'progress',
+          title = val.title or source,
+          source = source,
+          percent = 100,
+          status = 'success',
+        }
+      )
+    end
+  end,
+})
+
+
+
 -- Built-in undotree (v0.12+)
 vim.cmd.packadd('nvim.undotree')
 vim.keymap.set('n', '<leader>u', ':Undotree<CR>', { desc = 'Toggle undotree' })
