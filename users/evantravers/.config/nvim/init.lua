@@ -58,6 +58,16 @@ vim.api.nvim_create_autocmd('LspAttach', {
 -- Diagnostic Virtual lines for only current line
 vim.diagnostic.config({ virtual_lines = { current_line = true, }, })
 
+-- Treesitter indent (built-in in 0.10+)
+vim.api.nvim_create_autocmd('FileType', {
+  callback = function()
+    local ok = pcall(vim.treesitter.start)
+    if ok then
+      vim.bo.indentexpr = 'v:lua.vim.treesitter.indentexpr()'
+    end
+  end,
+})
+
 -- LSP Configurations
 vim.lsp.config.elixir = {
   cmd = { "expert", "--stdio" },
