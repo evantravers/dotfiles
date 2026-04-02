@@ -17,6 +17,20 @@ vim.fn.sign_define("DiagnosticSignWarn", {text = "", hl = "DiagnosticSignWarn
 vim.fn.sign_define("DiagnosticSignInfo", {text = "", hl = "DiagnosticSignInfo", texthl = "DiagnosticSignInfo", culhl = "DiagnosticSignInfoLine"})
 vim.fn.sign_define("DiagnosticSignHint", {text = "", hl = "DiagnosticSignHint", texthl = "DiagnosticSignHint", culhl = "DiagnosticSignHintLine"})
 
+-- Built-in undotree (v0.12+)
+vim.cmd.packadd('nvim.undotree')
+vim.keymap.set('n', '<leader>u', ':Undotree<CR>', { desc = 'Toggle undotree' })
+
+-- Treesitter indent (built-in in 0.10+)
+vim.api.nvim_create_autocmd('FileType', {
+  callback = function()
+    local ok = pcall(vim.treesitter.start)
+    if ok then
+      vim.bo.indentexpr = 'v:lua.vim.treesitter.indentexpr()'
+    end
+  end,
+})
+
 -- Make <Tab> work for snippets
 vim.keymap.set({ 'i', 's' }, '<Tab>', function()
   if vim.snippet.active({ direction = 1 }) then
@@ -25,18 +39,6 @@ vim.keymap.set({ 'i', 's' }, '<Tab>', function()
     return '<Tab>'
   end
 end, { expr = true })
-
--- Covenience macros
--- fix ellipsis: "..." -> "…"
-vim.keymap.set('n',
-  '<leader>fe',
-  "mc:%s,\\.\\.\\.,…,g<CR>:nohlsearch<CR>`c",
-  {noremap = true, silent = true, desc = "... -> …"})
--- fix spelling: just an easier finger roll on 40% keyboard
-vim.keymap.set('n',
-  '<leader>fs',
-  '1z=',
-  {noremap = true, silent = true, desc = "Fix spelling under cursor"})
 
 vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(ev)
@@ -57,16 +59,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 -- Diagnostic Virtual lines for only current line
 vim.diagnostic.config({ virtual_lines = { current_line = true, }, })
-
--- Treesitter indent (built-in in 0.10+)
-vim.api.nvim_create_autocmd('FileType', {
-  callback = function()
-    local ok = pcall(vim.treesitter.start)
-    if ok then
-      vim.bo.indentexpr = 'v:lua.vim.treesitter.indentexpr()'
-    end
-  end,
-})
 
 -- LSP Configurations
 vim.lsp.config.elixir = {
@@ -188,8 +180,14 @@ vim.api.nvim_create_autocmd('LspProgress', {
   end,
 })
 
-
-
--- Built-in undotree (v0.12+)
-vim.cmd.packadd('nvim.undotree')
-vim.keymap.set('n', '<leader>u', ':Undotree<CR>', { desc = 'Toggle undotree' })
+-- Covenience macros
+-- fix ellipsis: "..." -> "…"
+vim.keymap.set('n',
+  '<leader>fe',
+  "mc:%s,\\.\\.\\.,…,g<CR>:nohlsearch<CR>`c",
+  {noremap = true, silent = true, desc = "... -> …"})
+-- fix spelling: just an easier finger roll on 40% keyboard
+vim.keymap.set('n',
+  '<leader>fs',
+  '1z=',
+  {noremap = true, silent = true, desc = "Fix spelling under cursor"})
