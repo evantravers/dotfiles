@@ -17,9 +17,10 @@ vim.fn.sign_define("DiagnosticSignWarn", {text = "", hl = "DiagnosticSignWarn
 vim.fn.sign_define("DiagnosticSignInfo", {text = "", hl = "DiagnosticSignInfo", texthl = "DiagnosticSignInfo", culhl = "DiagnosticSignInfoLine"})
 vim.fn.sign_define("DiagnosticSignHint", {text = "", hl = "DiagnosticSignHint", texthl = "DiagnosticSignHint", culhl = "DiagnosticSignHintLine"})
 
--- Built-in undotree (v0.12+)
+-- Built-in undotree and difftool
 vim.cmd.packadd('nvim.undotree')
 vim.keymap.set('n', '<leader>u', ':Undotree<CR>', { desc = 'Toggle undotree' })
+vim.cmd.packadd('nvim.difftool')
 
 -- Treesitter indent (built-in in 0.10+)
 vim.api.nvim_create_autocmd('FileType', {
