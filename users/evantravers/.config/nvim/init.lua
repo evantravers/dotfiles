@@ -133,7 +133,13 @@ vim.lsp.config.markdown = {
 
 vim.lsp.config.javascript = {
   cmd = { "typescript-language-server", "--stdio" },
-  filetypes = { "javascript", "typescript", "vue", "javascriptreact" }
+  filetypes = {
+    "javascript",
+    "typescript",
+    "vue",
+    "javascriptreact",
+    "typescriptreact"
+  }
 }
 
 vim.lsp.enable({
