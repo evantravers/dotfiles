@@ -19,26 +19,22 @@
                 tmux = { enabled = false }
               },
               on_open = function()
-                if (vim.bo.filetype == "markdown" or vim.bo.filetype == "telekasten") then
-                  vim.o.scrolloff = 999
-                  vim.o.relativenumber = false
-                  vim.o.number = false
-                  vim.o.wrap = true
-                  vim.o.linebreak = true
-                  vim.o.colorcolumn = "0"
+                vim.o.scrolloff = 999
+                vim.o.relativenumber = false
+                vim.o.number = false
+                vim.o.wrap = true
+                vim.o.linebreak = true
+                vim.o.colorcolumn = "0"
 
-                  vim.keymap.set('n', 'j', 'gj', {noremap = true, buffer = true})
-                  vim.keymap.set('n', 'k', 'gk', {noremap = true, buffer = true})
-                end
+                vim.keymap.set('n', 'j', 'gj', {noremap = true, buffer = true})
+                vim.keymap.set('n', 'k', 'gk', {noremap = true, buffer = true})
               end,
               on_close = function()
                 vim.o.scrolloff = 3
                 vim.o.relativenumber = true
-                if (vim.bo.filetype == "markdown" or vim.bo.filetype == "telekasten") then
-                  vim.o.wrap = false
-                  vim.o.linebreak = false
-                  vim.o.colorcolumn = "80"
-                end
+                vim.o.wrap = false
+                vim.o.linebreak = false
+                vim.o.colorcolumn = "80"
 
                 vim.keymap.set('n', 'j', 'j', {noremap = true, buffer = true})
                 vim.keymap.set('n', 'k', 'k', {noremap = true, buffer = true})
