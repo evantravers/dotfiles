@@ -22,6 +22,9 @@ vim.cmd.packadd('nvim.undotree')
 vim.keymap.set('n', '<leader>u', ':Undotree<CR>', { desc = 'Toggle undotree' })
 vim.cmd.packadd('nvim.difftool')
 
+-- New UI opt-in
+require('vim._core.ui2').enable({})
+
 -- Treesitter indent (built-in in 0.10+)
 vim.api.nvim_create_autocmd('FileType', {
   callback = function()
