@@ -72,6 +72,10 @@
             q = ":reflow";
             f = "file_picker_in_current_directory";
             F = "file_picker";
+            z = [
+              ":cd ~/src/wiki"
+              "file_picker"
+            ];
           };
         };
         select = {
