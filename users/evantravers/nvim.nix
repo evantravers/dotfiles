@@ -56,12 +56,16 @@
       }
       {
         plugin = nvim-treesitter-context;
+        optional = true;
         type = "lua";
         config = ''
-          require'treesitter-context'.setup{
-            enable = false
-          }
-          vim.keymap.set('n', '<space>c', "<cmd>TSContext toggle<cr>", {noremap = true, silent = true, desc = "Toggle TS Context"})
+          vim.keymap.set('n', '<space>c', function()
+            vim.cmd.packadd('nvim-treesitter-context')
+            require'treesitter-context'.setup{ enable = false }
+            vim.cmd('TSContext toggle')
+            -- replace keymap with direct toggle after first load
+            vim.keymap.set('n', '<space>c', "<cmd>TSContext toggle<cr>", {noremap = true, silent = true, desc = "Toggle TS Context"})
+          end, {noremap = true, silent = true, desc = "Toggle TS Context"})
         '';
       }
       # =======================================================================
@@ -221,11 +225,56 @@
       # =======================================================================
       # UTILITIES
       # =======================================================================
-      vim-eunuch # powerful buffer-level file options
-      vim-ragtag # print/execute bindings for template files
+      {
+        plugin = vim-eunuch; # powerful buffer-level file options
+        optional = true;
+        type = "lua";
+        config = ''
+          vim.api.nvim_create_autocmd('CmdUndefined', {
+            pattern = {'Delete', 'Rename', 'Move', 'Chmod', 'Mkdir', 'Wall', 'SudoWrite', 'SudoEdit'},
+            once = true,
+            callback = function()
+              vim.cmd.packadd('vim-eunuch')
+              return true
+            end
+          })
+        '';
+      }
+      {
+        plugin = vim-ragtag; # print/execute bindings for template files
+        optional = true;
+        type = "lua";
+        config = ''
+          vim.api.nvim_create_autocmd('FileType', {
+            pattern = {'html', 'eruby', 'xml', 'heex', 'eelixir', 'vue', 'svelte', 'php'},
+            once = true,
+            callback = function()
+              vim.cmd.packadd('vim-ragtag')
+            end
+          })
+        '';
+      }
       vim-speeddating # incrementing dates and times
-      vim-fugitive # :Git actions
-      vim-rhubarb # github plugins for fugitive
+      {
+        plugin = vim-fugitive; # :Git actions
+        optional = true;
+        type = "lua";
+        config = ''
+          vim.api.nvim_create_autocmd('CmdUndefined', {
+            pattern = {'G', 'Git', 'Gread', 'Gwrite', 'Gdiffsplit', 'GBrowse', 'Gedit', 'Ggrep', 'Glog'},
+            once = true,
+            callback = function()
+              vim.cmd.packadd('vim-fugitive')
+              vim.cmd.packadd('vim-rhubarb')
+              return true
+            end
+          })
+        '';
+      }
+      {
+        plugin = vim-rhubarb; # github plugins for fugitive
+        optional = true;
+      }
     ];
   };
 }
