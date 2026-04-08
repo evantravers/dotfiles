@@ -37,7 +37,7 @@
       };
     };
     settings = {
-      theme = "earl_grey";
+      theme = "zenbones_dark";
       editor = {
         color-modes = true;
         cursorline = true;
