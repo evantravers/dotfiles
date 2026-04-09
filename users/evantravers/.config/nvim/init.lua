@@ -6,11 +6,10 @@ vim.o.icm = 'split'
 vim.o.cia = 'kind,abbr,menu'
 vim.o.foldtext = 'v:lua.vim.treesitter.foldtext()'
 vim.o.winborder = 'rounded'
+vim.o.cmdheight = 0
 
 vim.opt.foldmethod = "expr"
 vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
-
-vim.o.showmode = false
 
 vim.fn.sign_define("DiagnosticSignError", {text = "", hl = "DiagnosticSignError", texthl = "DiagnosticSignError", culhl = "DiagnosticSignErrorLine"})
 vim.fn.sign_define("DiagnosticSignWarn", {text = "", hl = "DiagnosticSignWarn", texthl = "DiagnosticSignWarn", culhl = "DiagnosticSignWarnLine"})
