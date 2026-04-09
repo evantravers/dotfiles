@@ -22,7 +22,13 @@ vim.keymap.set('n', '<leader>u', ':Undotree<CR>', { desc = 'Toggle undotree' })
 vim.cmd.packadd('nvim.difftool')
 
 -- New UI opt-in
-require('vim._core.ui2').enable({})
+require('vim._core.ui2').enable({
+  msg = {
+    targets = {
+      progress = 'msg',
+    },
+  },
+})
 
 -- Treesitter indent (built-in in 0.10+)
 vim.api.nvim_create_autocmd('FileType', {
@@ -181,11 +187,14 @@ vim.api.nvim_create_autocmd('LspProgress', {
     local client = vim.lsp.get_client_by_id(ev.data.client_id)
     local source = client and client.name or 'lsp'
 
+    local id = source .. ':' .. tostring(token)
+
     if val.kind == 'begin' or val.kind == 'report' then
       vim.api.nvim_echo(
         {{ val.title or val.message or 'Working…', 'Normal' }},
         false,
         {
+          id = id,
           kind = 'progress',
           title = val.title or source,
           source = source,
@@ -198,6 +207,7 @@ vim.api.nvim_create_autocmd('LspProgress', {
         {{ val.message or 'Done', 'Normal' }},
         false,
         {
+          id = id,
           kind = 'progress',
           title = val.title or source,
           source = source,
