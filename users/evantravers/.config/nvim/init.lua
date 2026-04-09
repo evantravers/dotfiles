@@ -142,7 +142,27 @@ vim.lsp.config.javascript = {
     "vue",
     "javascriptreact",
     "typescriptreact"
-  }
+  },
+  settings = {
+    typescript = {
+      inlayHints = {
+        includeInlayParameterNameHints = "all",
+        includeInlayFunctionLikeReturnTypeHints = true,
+        includeInlayVariableTypeHints = true,
+        includeInlayPropertyDeclarationTypeHints = true,
+        includeInlayEnumMemberValueHints = true,
+      },
+    },
+    javascript = {
+      inlayHints = {
+        includeInlayParameterNameHints = "all",
+        includeInlayFunctionLikeReturnTypeHints = true,
+        includeInlayVariableTypeHints = true,
+        includeInlayPropertyDeclarationTypeHints = true,
+        includeInlayEnumMemberValueHints = true,
+      },
+    },
+  },
 }
 
 vim.lsp.enable({

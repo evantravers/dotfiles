@@ -59,13 +59,19 @@
         optional = true;
         type = "lua";
         config = ''
+          local function toggle_context()
+            vim.cmd('TSContext toggle')
+            vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+          end
+
+          local kopts = {noremap = true, silent = true, desc = "Toggle expanded context"}
+
           vim.keymap.set('n', '<space>c', function()
             vim.cmd.packadd('nvim-treesitter-context')
             require'treesitter-context'.setup{ enable = false }
-            vim.cmd('TSContext toggle')
-            -- replace keymap with direct toggle after first load
-            vim.keymap.set('n', '<space>c', "<cmd>TSContext toggle<cr>", {noremap = true, silent = true, desc = "Toggle TS Context"})
-          end, {noremap = true, silent = true, desc = "Toggle TS Context"})
+            vim.keymap.set('n', '<space>c', toggle_context, kopts)
+            toggle_context()
+          end, kopts)
         '';
       }
       # =======================================================================
