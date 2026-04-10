@@ -40,6 +40,11 @@
                 },
                 inline = { adapter = ai_strategy }
               },
+              display = {
+                chat = {
+                  intro_message = "Welcome to CodeCompanion ✨! Press <leader>h for options",
+                },
+              },
               adapters = {
                 acp = {
                   devclarity_claude_code = function()
