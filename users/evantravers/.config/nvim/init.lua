@@ -30,16 +30,6 @@ require('vim._core.ui2').enable({
   },
 })
 
--- Treesitter indent (built-in in 0.10+)
-vim.api.nvim_create_autocmd('FileType', {
-  callback = function()
-    local ok = pcall(vim.treesitter.start)
-    if ok then
-      vim.bo.indentexpr = 'v:lua.vim.treesitter.indentexpr()'
-    end
-  end,
-})
-
 -- Make <Tab> work for snippets
 vim.keymap.set({ 'i', 's' }, '<Tab>', function()
   if vim.snippet.active({ direction = 1 }) then
