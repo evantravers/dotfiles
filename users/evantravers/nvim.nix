@@ -50,8 +50,15 @@
         plugin = nvim-treesitter.withAllGrammars;
         type = "lua";
         config = ''
-          -- Don't require nvim-treesitter, just use it for parser installation
-          -- Built-in vim.treesitter will use the installed parsers
+          vim.api.nvim_create_autocmd('FileType', {
+            callback = function(ev)
+              local bufnr = ev.buf
+              local ok = pcall(vim.treesitter.start, bufnr)
+              if ok then
+                vim.bo[bufnr].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+              end
+            end,
+          })
         '';
       }
       {
