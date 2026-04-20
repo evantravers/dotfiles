@@ -269,7 +269,7 @@
         type = "lua";
         config = ''
           vim.api.nvim_create_autocmd('FileType', {
-            pattern = {'html', 'eruby', 'xml', 'heex', 'eelixir', 'vue', 'svelte', 'php'},
+            pattern = {'elixir', 'html', 'eruby', 'xml', 'heex', 'eelixir', 'vue', 'svelte', 'php'},
             once = true,
             callback = function()
               vim.cmd.packadd('vim-ragtag')
