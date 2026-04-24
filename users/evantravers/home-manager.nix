@@ -6,6 +6,7 @@
     ./helix.nix
     ./irc.nix
     ./jujutsu.nix
+    ./llama-cpp.nix
     ./nvim.nix
     ./starship.nix
     ./tmux.nix
