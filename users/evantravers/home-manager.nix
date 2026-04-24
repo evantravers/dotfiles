@@ -46,23 +46,6 @@
     ];
   };
 
-  accounts.email.accounts.gmail = {
-    primary = true;
-    aerc.enable = true;
-    himalaya.enable = true;
-
-    address = "evantravers@gmail.com";
-    userName = "evantravers@gmail.com";
-    realName = "Evan Travers";
-    folders = {
-      inbox = "INBOX";
-      sent = "\[Gmail\]/Sent\ Mail";
-      trash = "\[Gmail\]/Trash";
-    };
-    passwordCommand = "op read op://Private/a3v65jhzsq4lpiunlcf6fceesa/password";
-    flavor = "gmail.com";
-  };
-
   programs = {
     fish = {
       enable = true;
