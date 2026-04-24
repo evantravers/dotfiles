@@ -27,7 +27,7 @@
 
             -- required for githubmodels token via gh
             vim.env["CODECOMPANION_TOKEN_PATH"] = vim.fn.expand("~/.config")
-            local ai_strategy = os.getenv("AI_STRATEGY") or "anthropic"
+            local ai_strategy = os.getenv("AI_STRATEGY") or "llama_cpp"
 
             require("codecompanion").setup({
               interactions = {
@@ -84,6 +84,21 @@
                       schema = {
                         model = {
                           default = "gpt-4.1",
+                        },
+                      },
+                    })
+                  end,
+                  llama_cpp = function()
+                    return require("codecompanion.adapters").extend("openai_compatible", {
+                      name = "llama_cpp",
+                      formatted_name = "llama.cpp",
+                      env = {
+                        url = "http://localhost:8080",
+                        api_key = "none",
+                      },
+                      schema = {
+                        model = {
+                          default = "bartowski/Qwen_Qwen3.6-27B-GGUF:Q4_K_M",
                         },
                       },
                     })
