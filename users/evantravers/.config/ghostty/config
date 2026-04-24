@@ -22,7 +22,8 @@ window-colorspace = display-p3
 shell-integration = fish
 shell-integration-features = true
 
-adjust-cell-height = 10%
+adjust-cell-height = 15%
+adjust-cell-width  = 2%
 
 font-family  = JetBrainsMono NFM Regular
 font-thicken = true
@@ -35,6 +36,10 @@ font-feature = ss03
 font-feature = ss04
 font-feature = ss05
 font-feature = ss06
+font-feature = ss07
+font-feature = ss08
+font-feature = ss09
+font-feature = ss10
 font-feature = calt
 font-feature = liga
 
