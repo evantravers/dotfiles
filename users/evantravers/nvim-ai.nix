@@ -98,7 +98,7 @@
                       },
                       schema = {
                         model = {
-                          default = "bartowski/Qwen_Qwen3.6-27B-GGUF:Q4_K_M",
+                          default = "bartowski/Qwen_Qwen3.6-27B-GGUF:Q4_1",
                         },
                       },
                     })

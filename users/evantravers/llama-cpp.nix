@@ -18,7 +18,7 @@
           "apiKey": "none",
           "models": [
             {
-              "id": "bartowski/Qwen_Qwen3.6-27B-GGUF:Q4_K_M"
+              "id": "bartowski/Qwen_Qwen3.6-27B-GGUF:Q4_1"
             }
           ]
         }
