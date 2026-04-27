@@ -28,7 +28,7 @@
       jj-starship
       llm-agents.beads
       llm-agents.claude-code
-      llm-agents.claude-code-acp
+      llm-agents.claude-agent-acp
       llm-agents.opencode
       llm-agents.openspec
       llm-agents.pi

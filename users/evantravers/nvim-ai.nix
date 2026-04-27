@@ -54,7 +54,7 @@
                       },
                       commands = {
                         default = {
-                          "claude-code-acp"
+                          "claude-agent-acp"
                         }
                       }
                     })
