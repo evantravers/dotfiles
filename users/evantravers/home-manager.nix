@@ -32,6 +32,7 @@
       llm-agents.opencode
       llm-agents.openspec
       llm-agents.pi
+      llm-agents.showboat
       amber
       unstable.devenv
       gh
