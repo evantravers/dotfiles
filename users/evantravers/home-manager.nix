@@ -41,6 +41,7 @@
       lua-language-server
       markdown-oxide
       nil
+      nixd
       nixfmt-rfc-style
       unstable.rainfrog
       ripgrep
