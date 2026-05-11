@@ -17,7 +17,7 @@ An opinionated setup about how I want my *nix development environment and host m
 
 ## Bootstrap
 
-Install [Determinite Systems Installer](https://github.com/DeterminateSystems/nix-installer) or [WSL2 Nix](https://github.com/nix-community/NixOS-WSL)
+Install [Determinate Systems Installer](https://github.com/DeterminateSystems/nix-installer) or [WSL2 Nix](https://github.com/nix-community/NixOS-WSL)
 
 WSL:
 `sudo nixos-rebuild switch --flake github:evantravers/dotfiles#wsl`
