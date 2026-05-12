@@ -26,7 +26,6 @@
 
     packages = with pkgs; [
       jj-starship
-      llm-agents.beads
       llm-agents.claude-code
       llm-agents.claude-agent-acp
       llm-agents.opencode
