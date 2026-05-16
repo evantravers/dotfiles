@@ -1,9 +1,11 @@
 { pkgs, ... }:
+let
+  passwordCommand = "op read op://Private/a3v65jhzsq4lpiunlcf6fceesa/password";
+in
+
 {
   accounts.email.accounts.gmail = {
     primary = true;
-    aerc.enable = true;
-    himalaya.enable = true;
 
     address = "evantravers@gmail.com";
     userName = "evantravers@gmail.com";
@@ -13,34 +15,53 @@
       sent = "\[Gmail\]/Sent\ Mail";
       trash = "\[Gmail\]/Trash";
     };
-    passwordCommand = "op read op://Private/a3v65jhzsq4lpiunlcf6fceesa/password";
+    passwordCommand = passwordCommand;
     flavor = "gmail.com";
+
+    imap = {
+      host = "imap.gmail.com";
+      port = 993;
+      tls.enable = true;
+    };
+
+    smtp = {
+      host = "smtp.gmail.com";
+      tls.enable = true;
+    };
   };
 
-  programs = {
-    aerc = {
-      enable = true;
-      extraConfig = {
-        general.unsafe-accounts-conf = true;
-        viewer = {
-          pager = "${pkgs.less}/bin/less -R";
-        };
-        filters = {
-          "text/plain" = "${pkgs.aerc}/libexec/aerc/filters/colorize";
-          "text/calendar" = "${pkgs.aerc}/libexec/aerc/filters/calendar";
-          "text/html" = "${pkgs.aerc}/libexec/aerc/filters/html";
-          "message/delivery-status" = "${pkgs.aerc}/libexec/aerc/filters/colorize";
-          "message/rfc822" = "${pkgs.aerc}/libexec/aerc/filters/colorize";
-        };
-        ui = {
-          threading-enabled = true;
-          show-thread-context = true;
-          styleset-name = "dracula";
-          border-char-vertical = "┃";
-          spinner = "[ ⡿ ],[ ⣟ ],[ ⣯ ],[ ⣷ ],[ ⣾ ],[ ⣽ ],[ ⣻ ],[ ⢿ ]";
+  programs.meli = {
+    enable = true;
+    package = pkgs.unstable.meli;
+    settings = {
+      terminal.theme = "dark";
+
+      accounts.gmail = {
+        root_mailbox = "INBOX";
+        format = "imap";
+        server_hostname = "imap.gmail.com";
+        server_port = "993";
+        server_username = "evantravers@gmail.com";
+        server_password_command = passwordCommand;
+        identity = "evantravers@gmail.com";
+        display_name = "Evan Travers";
+        listing.index_style = "Conversations";
+        composing.store_sent_mail = false;
+
+        send_mail = {
+          hostname = "smtp.gmail.com";
+          port = 587;
+          auth = {
+            type = "auto";
+            username = "evantravers@gmail.com";
+            password = {
+              type = "command_eval";
+              value = passwordCommand;
+            };
+          };
+          security.type = "STARTTLS";
         };
       };
     };
-    himalaya.enable = true;
   };
 }
