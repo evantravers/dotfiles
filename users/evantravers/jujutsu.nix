@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, config, ... }:
 {
   programs.jujutsu = {
     enable = true;
@@ -22,6 +22,8 @@
       };
     };
   };
+
+  home.packages = lib.mkIf config.programs.starship.enable [ pkgs.jj-starship ];
 
   programs.fish = {
     binds = {
