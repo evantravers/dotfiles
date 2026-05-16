@@ -1,4 +1,5 @@
 { pkgs, lib, ... }:
+
 {
   imports = [
     ./email.nix
@@ -52,6 +53,7 @@
       enable = true;
       interactiveShellInit = ''
         set fish_greeting # N/A
+        devenv hook fish | source
       '';
       shellAliases = {
         opencode = "op run --no-masking -- opencode";
