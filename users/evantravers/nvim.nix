@@ -47,7 +47,42 @@
       # - nvim-treesitter-context for context breadcrumbs
       # =======================================================================
       {
-        plugin = nvim-treesitter.withAllGrammars;
+        plugin = nvim-treesitter.withPlugins (p: with p; [
+          bash
+          comment
+          css
+          diff
+          dockerfile
+          eex
+          elixir
+          fish
+          gitcommit
+          gitignore
+          heex
+          html
+          javascript
+          json
+          lua
+          luadoc
+          markdown
+          markdown_inline
+          nix
+          php
+          query
+          regex
+          ruby
+          rust
+          scss
+          svelte
+          toml
+          tsx
+          typescript
+          vim
+          vimdoc
+          vue
+          xml
+          yaml
+        ]);
         type = "lua";
         config = ''
           vim.api.nvim_create_autocmd('FileType', {
@@ -98,7 +133,6 @@
         plugin = mini-nvim; # Ridiculously complete family of plugins
         type = "lua";
         config = ''
-          -- opts decorates keymaps with labels
           local opts = function(label)
             return {noremap = true, silent = true, desc = label}
           end
@@ -111,137 +145,118 @@
               inside_last = "",
             }
           })
-
-          require('mini.align').setup()      -- aligning
-
-          require('mini.bracketed').setup()  -- unimpaired bindings with TS
-
+          require('mini.align').setup()
+          require('mini.bracketed').setup()
           require('mini.snippets').setup()
-
           require('mini.completion').setup()
-
-          require('mini.diff').setup()
-          vim.keymap.set('n', '<leader>g', "<cmd>:lua MiniDiff.toggle_overlay()<cr>", opts("Toggle Diff Overlay"))
-
-          require('mini.extra').setup()      -- extra pickers
-
-          require('mini.files').setup({
-            options = {
-              use_as_default_explorer = false
-            }
+          require('mini.icons').setup()
+          require('mini.jump').setup()
+          require('mini.jump2d').setup({
+            view = { dim = true, n_steps_ahead = 2 },
+            mappings = { start_jumping = "" }
           })
-          local oil_style = function()
-            if not MiniFiles.close() then
-              MiniFiles.open(vim.api.nvim_buf_get_name(0))
-              MiniFiles.reveal_cwd()
+          vim.keymap.set('n', 'gw', function() MiniJump2d.start(MiniJump2d.builtin_opts.word_start) end, opts("Jump to Word"))
+          require('mini.pairs').setup()
+          require('mini.statusline').setup()
+          require('mini.surround').setup()
+          require('mini.splitjoin').setup()
+
+          vim.api.nvim_create_autocmd('BufReadPost', {
+            once = true,
+            callback = function()
+              require('mini.diff').setup()
+              local hipatterns = require('mini.hipatterns')
+              hipatterns.setup({
+                highlighters = {
+                  fixme = { pattern = '%f[%w]()FIXME()%f[%W]', group = 'MiniHipatternsFixme' },
+                  hack  = { pattern = '%f[%w]()HACK()%f[%W]',  group = 'MiniHipatternsHack'  },
+                  todo  = { pattern = '%f[%w]()TODO()%f[%W]',  group = 'MiniHipatternsTodo'  },
+                  note  = { pattern = '%f[%w]()NOTE()%f[%W]',  group = 'MiniHipatternsNote'  },
+                  hex_color = hipatterns.gen_highlighter.hex_color(),
+                }
+              })
+            end,
+          })
+          vim.keymap.set('n', '<leader>g', function() MiniDiff.toggle_overlay() end, opts("Toggle Diff Overlay"))
+
+          vim.keymap.set('n', '-', function()
+            require('mini.files').setup({
+              options = { use_as_default_explorer = false }
+            })
+            local oil_style = function()
+              if not MiniFiles.close() then
+                MiniFiles.open(vim.api.nvim_buf_get_name(0))
+                MiniFiles.reveal_cwd()
+              end
+            end
+            vim.keymap.set('n', '-', oil_style, opts("File Explorer"))
+            oil_style()
+          end, opts("File Explorer"))
+
+          local function load_pick()
+            require('mini.pick').setup({
+              mappings = { choose_marked = '<C-q>' }
+            })
+            require('mini.extra').setup()
+            MiniPick.registry.files_root = function(local_opts)
+              local root_patterns = { ".git" }
+              local root_dir = vim.fs.dirname(vim.fs.find(root_patterns, { upward = true })[1])
+              return MiniPick.builtin.files(local_opts, { source = { cwd = root_dir } })
             end
           end
-          vim.keymap.set('n', '-', oil_style, opts("File Explorer"));
-
-          local hipatterns = require('mini.hipatterns')
-          hipatterns.setup({  -- highlight strings and colors
-            highlighters = {
-              -- Highlight standalone 'FIXME', 'HACK', 'TODO', 'NOTE'
-              fixme = { pattern = '%f[%w]()FIXME()%f[%W]', group = 'MiniHipatternsFixme' },
-              hack  = { pattern = '%f[%w]()HACK()%f[%W]',  group = 'MiniHipatternsHack'  },
-              todo  = { pattern = '%f[%w]()TODO()%f[%W]',  group = 'MiniHipatternsTodo'  },
-              note  = { pattern = '%f[%w]()NOTE()%f[%W]',  group = 'MiniHipatternsNote'  },
-
-              -- Highlight hex color strings (`#rrggbb`) using that color
-              hex_color = hipatterns.gen_highlighter.hex_color(),
-            }
-          })
-
-          require('mini.icons').setup()      -- minimal icons
-
-          require('mini.jump').setup()       -- fFtT work past a line
-          require('mini.jump2d').setup({
-            view = {
-              dim = true,
-              n_steps_ahead = 2,
-            },
-            mappings = {
-              start_jumping = ""
-            }
-          })
-          vim.keymap.set('n', 'gw', "<cmd>:lua MiniJump2d.start(MiniJump2d.builtin_opts.word_start)<cr>", opts("Jump to Word"))
-
-          require('mini.pairs').setup()      -- pair brackets
-
-          require('mini.pick').setup({
-            mappings = {
-              choose_marked = '<C-q>' -- sends to quickfix anyway
-            }
-          })       -- pickers
-          MiniPick.registry.files_root = function(local_opts)
-            local root_patterns = { ".git" }
-            local root_dir = vim.fs.dirname(vim.fs.find(root_patterns, { upward = true })[1])
-            local opts = { source = { cwd = root_dir } }
-            local_opts.cwd = root_dir -- nil?
-            return MiniPick.builtin.files(local_opts, opts)
+          local pick_keys = {
+            {lhs = '<space>/', cmd = 'Pick grep_live',             desc = "Live Grep"},
+            {lhs = '<space>f', cmd = "Pick files tool='git'",      desc = "Find Files in CWD"},
+            {lhs = '<space>F', cmd = "Pick files_root tool='git'", desc = "Find Files"},
+            {lhs = '<space>b', cmd = 'Pick buffers',               desc = "Buffers"},
+            {lhs = "<space>'", cmd = 'Pick resume',                desc = "Last Picker"},
+            {lhs = '<space>g', cmd = 'Pick git_commits',           desc = "Git Commits"},
+          }
+          for _, k in ipairs(pick_keys) do
+            vim.keymap.set('n', k.lhs, function()
+              load_pick()
+              vim.keymap.set('n', k.lhs, '<cmd>' .. k.cmd .. '<cr>', opts(k.desc))
+              vim.cmd(k.cmd)
+            end, opts(k.desc))
           end
-          vim.keymap.set('n', '<space>/', "<cmd>Pick grep_live<cr>", opts("Live Grep"))
-          vim.keymap.set('n', '<space>f', "<cmd>Pick files tool='git'<cr>", opts("Find Files in CWD"))
-          vim.keymap.set('n', '<space>F', "<cmd>Pick files_root tool='git'<cr>", opts("Find Files"))
-          vim.keymap.set('n', '<space>b', "<cmd>Pick buffers<cr>", opts("Buffers"))
-          vim.keymap.set('n', "<space>'", "<cmd>Pick resume<cr>", opts("Last Picker"))
-          vim.keymap.set('n', "<space>g", "<cmd>Pick git_commits<cr>", opts("Git Commits"))
 
-          require('mini.statusline').setup() -- minimal statusline
-
-          require('mini.surround').setup()
-
-          require('mini.splitjoin').setup()  -- work with parameters
-
-          local miniclue = require('mini.clue')
-          miniclue.setup({                   -- cute prompts about bindings
-            triggers = {
-              { mode = 'n', keys = '<Leader>' },
-              { mode = 'x', keys = '<Leader>' },
-              { mode = 'n', keys = '<space>' },
-              { mode = 'x', keys = '<space>' },
-
-              -- Built-in completion
-              { mode = 'i', keys = '<C-x>' },
-
-              -- `g` key
-              { mode = 'n', keys = 'g' },
-              { mode = 'x', keys = 'g' },
-
-              -- Marks
-              { mode = 'n', keys = "'" },
-              { mode = 'n', keys = '`' },
-              { mode = 'x', keys = "'" },
-              { mode = 'x', keys = '`' },
-
-              -- Registers
-              { mode = 'n', keys = '"' },
-              { mode = 'x', keys = '"' },
-              { mode = 'i', keys = '<C-r>' },
-              { mode = 'c', keys = '<C-r>' },
-
-              -- Window commands
-              { mode = 'n', keys = '<C-w>' },
-
-              -- `z` key
-              { mode = 'n', keys = 'z' },
-              { mode = 'x', keys = 'z' },
-
-              -- Bracketed
-              { mode = 'n', keys = '[' },
-              { mode = 'n', keys = ']' },
-            },
-            clues = {
-              miniclue.gen_clues.builtin_completion(),
-              miniclue.gen_clues.g(),
-              miniclue.gen_clues.marks(),
-              miniclue.gen_clues.registers(),
-              miniclue.gen_clues.windows(),
-              miniclue.gen_clues.z(),
-              { mode = 'n', keys = '<Leader>d', desc = '+DAP' },
-              { mode = 'n', keys = '<Leader>f', desc = '+Fix'}
-            },
-          })
+          vim.schedule(function()
+            local miniclue = require('mini.clue')
+            miniclue.setup({
+              triggers = {
+                { mode = 'n', keys = '<Leader>' },
+                { mode = 'x', keys = '<Leader>' },
+                { mode = 'n', keys = '<space>' },
+                { mode = 'x', keys = '<space>' },
+                { mode = 'i', keys = '<C-x>' },
+                { mode = 'n', keys = 'g' },
+                { mode = 'x', keys = 'g' },
+                { mode = 'n', keys = "'" },
+                { mode = 'n', keys = '`' },
+                { mode = 'x', keys = "'" },
+                { mode = 'x', keys = '`' },
+                { mode = 'n', keys = '"' },
+                { mode = 'x', keys = '"' },
+                { mode = 'i', keys = '<C-r>' },
+                { mode = 'c', keys = '<C-r>' },
+                { mode = 'n', keys = '<C-w>' },
+                { mode = 'n', keys = 'z' },
+                { mode = 'x', keys = 'z' },
+                { mode = 'n', keys = '[' },
+                { mode = 'n', keys = ']' },
+              },
+              clues = {
+                miniclue.gen_clues.builtin_completion(),
+                miniclue.gen_clues.g(),
+                miniclue.gen_clues.marks(),
+                miniclue.gen_clues.registers(),
+                miniclue.gen_clues.windows(),
+                miniclue.gen_clues.z(),
+                { mode = 'n', keys = '<Leader>d', desc = '+DAP' },
+                { mode = 'n', keys = '<Leader>f', desc = '+Fix'}
+              },
+            })
+          end)
         '';
       }
 
