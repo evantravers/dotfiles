@@ -25,7 +25,6 @@
     stateVersion = "25.05";
 
     packages = with pkgs; [
-      jj-starship
       llm-agents.claude-code
       llm-agents.claude-agent-acp
       llm-agents.opencode
