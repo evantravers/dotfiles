@@ -211,6 +211,7 @@
             {lhs = '<space>b', cmd = 'Pick buffers',               desc = "Buffers"},
             {lhs = "<space>'", cmd = 'Pick resume',                desc = "Last Picker"},
             {lhs = '<space>g', cmd = 'Pick git_commits',           desc = "Git Commits"},
+            {lhs = '<space>z', cmd = 'lua MiniPick.builtin.files(nil, {source={cwd=vim.fn.expand("~/src/wiki")}})', desc = "Wiki"}
           }
           for _, k in ipairs(pick_keys) do
             vim.keymap.set('n', k.lhs, function()
