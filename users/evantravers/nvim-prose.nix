@@ -8,8 +8,6 @@
         type = "lua";
         config = ''
           -- set keybind for searching my wiki (no zen-mode dependency)
-          vim.keymap.set('n', "<space>z", "<cmd>lua MiniPick.builtin.files(nil, {source={cwd=vim.fn.expand('~/src/wiki')}})<cr>", {noremap = true, silent = true, desc = "Wiki"})
-
           vim.keymap.set('n', '<space>m', function()
             vim.cmd.packadd('zen-mode.nvim')
 
