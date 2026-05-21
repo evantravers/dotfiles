@@ -33,7 +33,8 @@
       llm-agents.pi
       llm-agents.showboat
       amber
-      unstable.devenv
+      # unstable.devenv
+      devenv
       gh
       gum
       harper
