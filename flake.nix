@@ -26,7 +26,7 @@
     # neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay?sha=a49f9d17bcaa684b81fc4322fbcbfc3ba501d40e"; # 2026-03-30
     # jujutsu.url = "github:jj-vcs/jj?tag=v0.39.0";
     jj-starship.url = "github:dmmulroy/jj-starship?tag=v0.7.0";
-    devenv.url = "github:cachix/devenv?tag=v2.0.6";
+    devenv.url = "github:cachix/devenv?tag=v2.1.2";
   };
   outputs =
     { nixpkgs, ... }@inputs:
