@@ -26,6 +26,7 @@
     stateVersion = "25.05";
 
     packages = with pkgs; [
+      llm-agents.antigravity
       llm-agents.claude-code
       llm-agents.claude-agent-acp
       llm-agents.opencode
