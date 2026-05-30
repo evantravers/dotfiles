@@ -19,8 +19,7 @@
     package = pkgs.unstable.neovim-unwrapped;
     defaultEditor = true;
 
-    # Use init.lua for standard neovim settings
-    extraLuaConfig = lib.fileContents .config/nvim/init.lua;
+    initLua = lib.fileContents .config/nvim/init.lua;
 
     plugins = with pkgs.unstable.vimPlugins; [
       # =======================================================================
