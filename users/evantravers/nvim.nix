@@ -164,7 +164,15 @@
           vim.api.nvim_create_autocmd('BufReadPost', {
             once = true,
             callback = function()
-              require('mini.diff').setup()
+              vim.cmd.packadd('mini-diff-jj')
+              local MiniDiff = require('mini.diff')
+              MiniDiff.setup({
+                -- Sources are attempted to attach in order: jj first, git fallback.
+                source = {
+                  require('mini.diff.jj'),
+                  MiniDiff.gen_source.git(),
+                },
+              })
               local hipatterns = require('mini.hipatterns')
               hipatterns.setup({
                 highlighters = {
@@ -292,6 +300,10 @@
             end
           })
         '';
+      }
+      {
+        plugin = pkgs.mini-diff-jj; # jj (jujutsu) source for mini.diff; loaded via packadd in mini.diff setup
+        optional = true;
       }
       vim-speeddating # incrementing dates and times
       {
