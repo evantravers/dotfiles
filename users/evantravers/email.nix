@@ -35,33 +35,6 @@ in
     package = pkgs.unstable.meli;
     settings = {
       terminal.theme = "dark";
-
-      accounts.gmail = {
-        root_mailbox = "INBOX";
-        format = "imap";
-        server_hostname = "imap.gmail.com";
-        server_port = "993";
-        server_username = "evantravers@gmail.com";
-        server_password_command = passwordCommand;
-        identity = "evantravers@gmail.com";
-        display_name = "Evan Travers";
-        listing.index_style = "Conversations";
-        composing.store_sent_mail = false;
-
-        send_mail = {
-          hostname = "smtp.gmail.com";
-          port = 587;
-          auth = {
-            type = "auto";
-            username = "evantravers@gmail.com";
-            password = {
-              type = "command_eval";
-              value = passwordCommand;
-            };
-          };
-          security.type = "STARTTLS";
-        };
-      };
     };
   };
 }
