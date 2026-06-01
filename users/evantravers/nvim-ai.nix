@@ -5,7 +5,7 @@
       { plugin = plenary-nvim; optional = true; }
       # CodeCompanion as the core AI source
       {
-        plugin = pkgs.vimUtils.buildVimPlugin {
+        plugin = pkgs.unstable.vimUtils.buildVimPlugin {
           pname = "codecompanion-nvim";
           version = "HEAD";
           src = pkgs.fetchFromGitHub {
