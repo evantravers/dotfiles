@@ -26,7 +26,7 @@
     stateVersion = "26.05";
 
     packages = with pkgs; [
-      llm-agents.antigravity
+      llm-agents.antigravity-cli
       llm-agents.claude-code
       llm-agents.claude-agent-acp
       llm-agents.opencode
@@ -43,7 +43,7 @@
       markdown-oxide
       nil
       nixd
-      nixfmt-rfc-style
+      nixfmt
       unstable.rainfrog
       ripgrep
       sesh
