@@ -169,7 +169,7 @@
         optional = true;
       }
       {
-        plugin = pkgs.vimUtils.buildVimPlugin {
+        plugin = pkgs.unstable.vimUtils.buildVimPlugin {
           pname = "nvim-dap-ruby";
           version = "2025-07-08";
           src = pkgs.fetchFromGitHub {
