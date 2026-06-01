@@ -16,7 +16,7 @@
 
   programs.neovim = {
     enable = true;
-    package = pkgs.unstable.neovim-unwrapped;
+    # package = pkgs.unstable.neovim-unwrapped;
     defaultEditor = true;
 
     initLua = lib.fileContents .config/nvim/init.lua;
