@@ -13,7 +13,6 @@
 
   devenv = inputs.devenv.overlays.default;
   # neovim-nightly = inputs.neovim-nightly-overlay.overlays.default;
-  jj-starship = inputs.jj-starship.overlays.default;
 
   # mini.diff source for jj (jujutsu), not in nixpkgs. Hosted on tangled.org.
   # https://tangled.org/ronshavit.com/mini.diff.jj
