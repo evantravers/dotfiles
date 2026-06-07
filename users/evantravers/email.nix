@@ -31,7 +31,7 @@ in
   };
 
   programs.meli = {
-    enable = true;
+    # enable = true;
     package = pkgs.unstable.meli;
     settings = {
       terminal.theme = "dark";
