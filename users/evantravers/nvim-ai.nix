@@ -5,18 +5,7 @@
       { plugin = plenary-nvim; optional = true; }
       # CodeCompanion as the core AI source
       {
-        plugin = pkgs.unstable.vimUtils.buildVimPlugin {
-          pname = "codecompanion-nvim";
-          version = "HEAD";
-          src = pkgs.fetchFromGitHub {
-            owner = "olimorris";
-            repo = "codecompanion.nvim";
-            rev = "83f5c9c99d9c0687cc94197976d81ce619727986";
-            sha256 = "sha256-bCH6UwNunia/OCbgSAOO/1Ijh/NmHNSVCvbb6Oyhm4Q=";
-          };
-          doCheck = false;
-          checkPhase = ":";
-        };
+        plugin = codecompanion-nvim;
         optional = true;
         type = "lua";
         config = ''

@@ -169,16 +169,7 @@
         optional = true;
       }
       {
-        plugin = pkgs.unstable.vimUtils.buildVimPlugin {
-          pname = "nvim-dap-ruby";
-          version = "2025-07-08";
-          src = pkgs.fetchFromGitHub {
-            owner = "suketa";
-            repo = "nvim-dap-ruby";
-            rev = "ba36f9905ca9c6d89e5af5467a52fceeb2bbbf6d";
-            sha256 = "sha256-57BBhdrikDEswZe2QW+jHMSgfXIjauc6iDNpWS0YUaU=";
-          };
-        };
+        plugin = nvim-dap-ruby;
         optional = true;
       }
     ];
