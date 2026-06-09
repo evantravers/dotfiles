@@ -11,13 +11,7 @@
     llm-agents = inputs.llm-agents.packages.${prev.stdenv.hostPlatform.system};
   };
 
-  # jujutsu pinned to v0.42.0 from the jj-vcs flake
-  jujutsu = _final: prev: {
-    jujutsu = inputs.jujutsu.packages.${prev.stdenv.hostPlatform.system}.default;
-  };
-
   devenv = inputs.devenv.overlays.default;
-  # neovim-nightly = inputs.neovim-nightly-overlay.overlays.default;
 
   # mini.diff source for jj (jujutsu), not in nixpkgs. Hosted on tangled.org.
   # https://tangled.org/ronshavit.com/mini.diff.jj
