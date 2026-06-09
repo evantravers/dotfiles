@@ -12,7 +12,6 @@
   environment = {
     systemPackages = with pkgs; [
       socat
-      wslu
       wsl-open
       wezterm.terminfo
       # wrapper for op.exe
