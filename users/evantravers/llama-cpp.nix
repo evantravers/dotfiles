@@ -61,57 +61,75 @@ let
           esac
         done
 
+        if tmux has-session -t llama 2>/dev/null; then
+          echo "Tmux session 'llama' is already running!"
+          echo "To attach:   tmux attach-session -t llama"
+          echo "To stop:     tmux kill-session -t llama"
+          exit 0
+        fi
+
+        ARGS=()
+
         if [[ "''${MODEL}" == "gemma" ]]; then
           if [[ "''${SPEC}" == "true" ]]; then
-            echo "Starting llama-server with Gemma 4 26B-A4B + Speculative MTP + Projector..."
-            exec llama-server \
-              -hf ${gemmaRepo}:${gemmaQuant} \
-              -hfd ${gemmaRepo}:${gemmaDraftQuant} \
-              --spec-type draft-mtp \
-              --spec-draft-n-max 3 \
-              -ngl 999 \
-              -fa on \
-              -c 65536 \
-              --parallel 1 \
-              --host 127.0.0.1 \
+            echo "Starting llama-server with Gemma 4 26B-A4B + Speculative MTP + Projector (in background tmux)..."
+            ARGS=(
+              -hf "${gemmaRepo}:${gemmaQuant}"
+              -hfd "${gemmaRepo}:${gemmaDraftQuant}"
+              --spec-type draft-mtp
+              --spec-draft-n-max 3
+              -ngl 999
+              -fa on
+              -c 65536
+              --parallel 1
+              --host 127.0.0.1
               --port 8080
+            )
           else
-            echo "Starting llama-server with Gemma 4 26B-A4B + Projector (Speculation disabled)..."
-            exec llama-server \
-              -hf ${gemmaRepo}:${gemmaQuant} \
-              -ngl 999 \
-              -fa on \
-              -c 65536 \
-              --parallel 1 \
-              --host 127.0.0.1 \
+            echo "Starting llama-server with Gemma 4 26B-A4B + Projector (Speculation disabled, in background tmux)..."
+            ARGS=(
+              -hf "${gemmaRepo}:${gemmaQuant}"
+              -ngl 999
+              -fa on
+              -c 65536
+              --parallel 1
+              --host 127.0.0.1
               --port 8080
+            )
           fi
 
         elif [[ "''${MODEL}" == "qwen" ]]; then
           if [[ "''${SPEC}" == "true" ]]; then
-            echo "Starting llama-server with Qwen 3.6 35B-A3B + Speculative MTP + Projector..."
-            exec llama-server \
-              -hf ${qwenRepo}:${qwenQuant} \
-              --spec-type draft-mtp \
-              --spec-draft-n-max 3 \
-              -ngl 999 \
-              -fa on \
-              -c 65536 \
-              --parallel 1 \
-              --host 127.0.0.1 \
+            echo "Starting llama-server with Qwen 3.6 35B-A3B + Speculative MTP + Projector (in background tmux)..."
+            ARGS=(
+              -hf "${qwenRepo}:${qwenQuant}"
+              --spec-type draft-mtp
+              --spec-draft-n-max 3
+              -ngl 999
+              -fa on
+              -c 65536
+              --parallel 1
+              --host 127.0.0.1
               --port 8080
+            )
           else
-            echo "Starting llama-server with Qwen 3.6 35B-A3B + Projector (Speculation disabled)..."
-            exec llama-server \
-              -hf ${qwenRepo}:${qwenQuant} \
-              -ngl 999 \
-              -fa on \
-              -c 65536 \
-              --parallel 1 \
-              --host 127.0.0.1 \
+            echo "Starting llama-server with Qwen 3.6 35B-A3B + Projector (Speculation disabled, in background tmux)..."
+            ARGS=(
+              -hf "${qwenRepo}:${qwenQuant}"
+              -ngl 999
+              -fa on
+              -c 65536
+              --parallel 1
+              --host 127.0.0.1
               --port 8080
+            )
           fi
         fi
+
+        tmux new-session -d -s llama "exec llama-server ''${ARGS[*]}"
+        echo "Server started in background tmux session 'llama'."
+        echo "To monitor:  tmux attach-session -t llama"
+        echo "To stop:     tmux kill-session -t llama"
   '';
 in
 {
