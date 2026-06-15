@@ -126,7 +126,10 @@ let
           fi
         fi
 
-        tmux new-session -d -s llama "exec llama-server ''${ARGS[*]}"
+        tmux new-session -d -s llama "exec ${pkgs.llama-cpp}/bin/llama-server ''${ARGS[*]}"
+        # Keep the pane open if llama-server exits/crashes so the error is visible
+        # instead of the session silently disappearing.
+        tmux set-option -t llama remain-on-exit on
         echo "Server started in background tmux session 'llama'."
         echo "To monitor:  tmux attach-session -t llama"
         echo "To stop:     tmux kill-session -t llama"
@@ -134,7 +137,7 @@ let
 in
 {
   home.packages = with pkgs; [
-    unstable.llama-cpp
+    llama-cpp
     llama-server-start
   ];
 
