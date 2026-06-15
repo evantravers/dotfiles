@@ -10,7 +10,6 @@ in
 {
   programs.jujutsu = {
     enable = true;
-    package = pkgs.unstable.jujutsu;
     settings = {
       user = {
         name = "Evan Travers";
@@ -31,7 +30,7 @@ in
     };
   };
 
-  home.packages = [ jjc ] ++ lib.optional config.programs.starship.enable pkgs.unstable.jj-starship;
+  home.packages = [ jjc ] ++ lib.optional config.programs.starship.enable pkgs.jj-starship;
 
   programs.fish = {
     binds = {

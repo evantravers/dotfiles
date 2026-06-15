@@ -1,7 +1,7 @@
 { pkgs, ... }:
 {
   programs.neovim = {
-    plugins = with pkgs.unstable.vimPlugins; [
+    plugins = with pkgs.vimPlugins; [
       {
         plugin = zen-mode-nvim;
         optional = true;

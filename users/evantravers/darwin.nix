@@ -36,7 +36,7 @@
     kanata
     keycastr
     libation
-    unstable.obsidian
+    obsidian
     orbstack
   ];
 

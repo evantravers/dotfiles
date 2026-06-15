@@ -34,7 +34,6 @@
       llm-agents.pi
       llm-agents.showboat
       amber
-      # unstable.devenv
       devenv
       gh
       gum
@@ -44,7 +43,7 @@
       nil
       nixd
       nixfmt
-      unstable.rainfrog
+      rainfrog
       ripgrep
       sesh
     ];
@@ -69,7 +68,6 @@
 
     nh = {
       enable = true;
-      package = pkgs.unstable.nh;
       clean.enable = true;
       flake = ../../.;
     };

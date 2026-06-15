@@ -1,7 +1,7 @@
 { pkgs, ... }:
 {
   home.packages = [
-    pkgs.unstable.jj-starship
+    pkgs.jj-starship
   ];
 
   programs.starship = {

@@ -16,14 +16,11 @@
 
   programs.neovim = {
     enable = true;
-    # 26.05 stable neovim-unwrapped isn't cached for aarch64-darwin and its
-    # build runs flaky functional tests that crash; unstable is cached (same 0.12.2).
-    package = pkgs.unstable.neovim-unwrapped;
     defaultEditor = true;
 
     initLua = lib.fileContents .config/nvim/init.lua;
 
-    plugins = with pkgs.unstable.vimPlugins; [
+    plugins = with pkgs.vimPlugins; [
       # =======================================================================
       # UI AND THEMES
       # Zenbones for minimal theme

@@ -1,7 +1,7 @@
 { pkgs, ... }:
 {
   programs.neovim = {
-    plugins = with pkgs.unstable.vimPlugins; [
+    plugins = with pkgs.vimPlugins; [
       { plugin = nvim-dap-view; optional = true; }
       {
         plugin = nvim-dap;

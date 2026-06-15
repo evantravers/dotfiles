@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 let
   passwordCommand = "op read op://Private/a3v65jhzsq4lpiunlcf6fceesa/password";
 in
@@ -32,7 +32,6 @@ in
 
   programs.meli = {
     # enable = true;
-    package = pkgs.unstable.meli;
     settings = {
       terminal.theme = "dark";
     };
