@@ -1,11 +1,9 @@
-{ ... }:
+{ config, lib, ... }:
 {
-  home.file = {
-    ".cvsignore".source = .config/git/.cvsignore;
-    ".gitconfig".source = .config/git/.gitconfig;
-  };
-
-  programs.git = {
-    enable = true;
+  config = lib.mkIf config.programs.git.enable {
+    home.file = {
+      ".cvsignore".source = .config/git/.cvsignore;
+      ".gitconfig".source = .config/git/.gitconfig;
+    };
   };
 }
