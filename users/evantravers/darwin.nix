@@ -19,11 +19,6 @@
   programs.fish.enable = true;
   programs._1password.enable = true;
 
-  programs.ssh.extraConfig = ''
-    Host *
-      IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
-  '';
-
   users.users.evantravers = {
     home = "/Users/evantravers";
     shell = pkgs.fish;
