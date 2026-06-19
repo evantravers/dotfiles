@@ -61,6 +61,19 @@
       };
     };
 
+    ssh = {
+      enable = true;
+      enableDefaultConfig = false;
+      extraConfig = lib.optionalString pkgs.stdenv.isDarwin ''
+        Include ~/.orbstack/ssh/config
+      '';
+      settings = {
+        "*" = lib.mkIf pkgs.stdenv.isDarwin {
+          IdentityAgent = "\"~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock\"";
+        };
+      };
+    };
+
     direnv = {
       enable = true;
       nix-direnv.enable = true;
