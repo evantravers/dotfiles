@@ -12,7 +12,9 @@
 
   imports = [
     ./aerospace.nix
+    ./orbstack.nix
   ];
+
 
   # Enable fish and zsh
   programs.zsh.enable = true;
@@ -32,8 +34,8 @@
     keycastr
     libation
     obsidian
-    orbstack
   ];
+
 
   environment.extraInit = ''
     export SSH_AUTH_SOCK=~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
