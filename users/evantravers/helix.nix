@@ -1,91 +1,92 @@
-{ pkgs, ... }:
+{ config, lib, pkgs, ... }:
 {
-  programs.helix = {
-    enable = true;
-    # defaultEditor = true;
-    languages = {
-      language = [
-        {
-          name = "elixir";
-          language-servers = [ "expert" ];
-        }
-        {
-          name = "nix";
-          language-servers = [ "nixd" ];
-        }
-        {
-          name = "markdown";
-          language-servers = [ "markdown-oxide" ];
-          comment-tokens = [
-            "-"
-            "+"
-            "*"
-            "1."
-            ">"
-            "- [ ]"
-          ];
-        }
-        {
-          name = "devicetree";
-          file-types = [ "keymap" ];
-        }
-      ];
-      language-server = {
-        nixd.command = "${pkgs.nixd}/bin/nixd";
-        expert.command = "expert --stdio";
-        markdown-oxide.command = "${pkgs.markdown-oxide}/bin/markdown-oxide";
-      };
-    };
-    settings = {
-      theme = "zenbones_dark";
-      editor = {
-        color-modes = true;
-        cursorline = true;
-        cursor-shape = {
-          insert = "bar";
-          normal = "block";
-          select = "underline";
-        };
-        end-of-line-diagnostics = "hint";
-        inline-diagnostics = {
-          cursor-line = "error";
-        };
-        file-picker = {
-          hidden = false;
-        };
-        line-number = "relative";
-        lsp = {
-          display-inlay-hints = true;
-        };
-        rulers = [ 80 ];
-        soft-wrap = {
-          enable = false;
-          wrap-at-text-width = true;
-        };
-        true-color = true;
-        whitespace.render = "all";
-      };
-      keys = {
-        normal = {
-          space = {
-            m = ":toggle-option soft-wrap.enable";
-            q = ":reflow";
-            f = "file_picker_in_current_directory";
-            F = "file_picker";
-            z = [
-              ":cd ~/src/wiki"
-              "file_picker"
+  config = lib.mkIf config.programs.helix.enable {
+    programs.helix = {
+      # defaultEditor = true;
+      languages = {
+        language = [
+          {
+            name = "elixir";
+            language-servers = [ "expert" ];
+          }
+          {
+            name = "nix";
+            language-servers = [ "nixd" ];
+          }
+          {
+            name = "markdown";
+            language-servers = [ "markdown-oxide" ];
+            comment-tokens = [
+              "-"
+              "+"
+              "*"
+              "1."
+              ">"
+              "- [ ]"
             ];
-          };
+          }
+          {
+            name = "devicetree";
+            file-types = [ "keymap" ];
+          }
+        ];
+        language-server = {
+          nixd.command = "${pkgs.nixd}/bin/nixd";
+          expert.command = "expert --stdio";
+          markdown-oxide.command = "${pkgs.markdown-oxide}/bin/markdown-oxide";
         };
-        select = {
-          space = {
-            q = ":reflow";
+      };
+      settings = {
+        theme = "zenbones_dark";
+        editor = {
+          color-modes = true;
+          cursorline = true;
+          cursor-shape = {
+            insert = "bar";
+            normal = "block";
+            select = "underline";
           };
+          end-of-line-diagnostics = "hint";
+          inline-diagnostics = {
+            cursor-line = "error";
+          };
+          file-picker = {
+            hidden = false;
+          };
+          line-number = "relative";
+          lsp = {
+            display-inlay-hints = true;
+          };
+          rulers = [ 80 ];
+          soft-wrap = {
+            enable = false;
+            wrap-at-text-width = true;
+          };
+          true-color = true;
+          whitespace.render = "all";
         };
-        insert = {
-          C-c = "normal_mode";
-          "C-[" = "normal_mode";
+        keys = {
+          normal = {
+            space = {
+              m = ":toggle-option soft-wrap.enable";
+              q = ":reflow";
+              f = "file_picker_in_current_directory";
+              F = "file_picker";
+              z = [
+                ":cd ~/src/wiki"
+                "file_picker"
+              ];
+            };
+          };
+          select = {
+            space = {
+              q = ":reflow";
+            };
+          };
+          insert = {
+            C-c = "normal_mode";
+            "C-[" = "normal_mode";
+          };
         };
       };
     };

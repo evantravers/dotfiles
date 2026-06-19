@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 let
   gemmaRepo = "unsloth/gemma-4-26B-A4B-it-GGUF";
@@ -136,68 +136,72 @@ let
   '';
 in
 {
-  home.packages = with pkgs; [
-    llama-cpp
-    llama-server-start
-  ];
+  options.programs.llama-cpp.enable = lib.mkEnableOption "llama-cpp configurations";
 
-  home.sessionVariables = {
-    PI_AGENT_DIR = "${config.xdg.configHome}/pi";
-    PI_CODING_AGENT_DIR = "${config.xdg.configHome}/pi/agent/";
-  };
+  config = lib.mkIf config.programs.llama-cpp.enable {
+    home.packages = with pkgs; [
+      llama-cpp
+      llama-server-start
+    ];
 
-  xdg.configFile."pi/agent/models.json".text = ''
-    {
-      "providers": {
-        "llama-cpp": {
-          "baseUrl": "http://localhost:8080/v1",
-          "api": "openai-completions",
-          "apiKey": "local",
-          "authHeader": false,
-          "compat": {
-            "supportsDeveloperRole": false,
-            "supportsReasoningEffort": false
-          },
-          "models": [
-            {
-              "id": "${gemmaModelId}",
-              "name": "Gemma 4 26B-A4B Q4 + MTP",
-              "reasoning": false,
-              "input": ["text", "image"],
-              "contextWindow": 65536,
-              "maxTokens": 8192,
-              "cost": {
-                "input": 0,
-                "output": 0,
-                "cacheRead": 0,
-                "cacheWrite": 0
-              }
+    home.sessionVariables = {
+      PI_AGENT_DIR = "${config.xdg.configHome}/pi";
+      PI_CODING_AGENT_DIR = "${config.xdg.configHome}/pi/agent/";
+    };
+
+    xdg.configFile."pi/agent/models.json".text = ''
+      {
+        "providers": {
+          "llama-cpp": {
+            "baseUrl": "http://localhost:8080/v1",
+            "api": "openai-completions",
+            "apiKey": "local",
+            "authHeader": false,
+            "compat": {
+              "supportsDeveloperRole": false,
+              "supportsReasoningEffort": false
             },
-            {
-              "id": "${qwenModelId}",
-              "name": "Qwen3.6 35B-A3B Q4 + MTP",
-              "reasoning": true,
-              "input": ["text", "image"],
-              "contextWindow": 65536,
-              "maxTokens": 8192,
-              "cost": {
-                "input": 0,
-                "output": 0,
-                "cacheRead": 0,
-                "cacheWrite": 0
+            "models": [
+              {
+                "id": "${gemmaModelId}",
+                "name": "Gemma 4 26B-A4B Q4 + MTP",
+                "reasoning": false,
+                "input": ["text", "image"],
+                "contextWindow": 65536,
+                "maxTokens": 8192,
+                "cost": {
+                  "input": 0,
+                  "output": 0,
+                  "cacheRead": 0,
+                  "cacheWrite": 0
+                }
+              },
+              {
+                "id": "${qwenModelId}",
+                "name": "Qwen3.6 35B-A3B Q4 + MTP",
+                "reasoning": true,
+                "input": ["text", "image"],
+                "contextWindow": 65536,
+                "maxTokens": 8192,
+                "cost": {
+                  "input": 0,
+                  "output": 0,
+                  "cacheRead": 0,
+                  "cacheWrite": 0
+                }
               }
-            }
-          ]
+            ]
+          }
         }
       }
-    }
-  '';
+    '';
 
-  xdg.configFile."pi/agent/settings.json".text = ''
-    {
-      "defaultProvider": "llama-cpp",
-      "defaultModel": "${gemmaModelId}",
-      "defaultThinkingLevel": "minimal"
-    }
-  '';
+    xdg.configFile."pi/agent/settings.json".text = ''
+      {
+        "defaultProvider": "llama-cpp",
+        "defaultModel": "${gemmaModelId}",
+        "defaultThinkingLevel": "minimal"
+      }
+    '';
+  };
 }

@@ -50,6 +50,21 @@
   };
 
   programs = {
+    git.enable = true;
+    helix.enable = true;
+    tiny.enable = true;
+    jujutsu.enable = true;
+    neovim = {
+      enable = true;
+      ai.enable = true;
+      dap.enable = true;
+      prose.enable = true;
+    };
+    starship.enable = true;
+    tmux.enable = true;
+    llama-cpp.enable = true;
+    email.enable = true;
+
     fish = {
       enable = true;
       interactiveShellInit = ''
