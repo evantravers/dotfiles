@@ -65,7 +65,7 @@
       enable = true;
       enableDefaultConfig = false;
       extraConfig = lib.optionalString pkgs.stdenv.isDarwin ''
-        Include ~/.orbstack/ssh/config
+      Include ~/.orbstack/ssh/config
       '';
       settings = {
         "*" = lib.mkIf pkgs.stdenv.isDarwin {
