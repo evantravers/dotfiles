@@ -18,7 +18,7 @@ in
       ui.default-command = "log";
       fix.tools.nixfmt = {
         command = [
-          "${lib.getExe pkgs.nixfmt-rfc-style}"
+          "${lib.getExe pkgs.nixfmt}"
           "--strict"
           "--filename=$path"
         ];
