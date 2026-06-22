@@ -50,4 +50,20 @@
       };
     };
   };
+
+  # Override mini-nvim to v0.18.0 from GitHub.
+  # Named with a prefix so it runs after promote-unstable (which promotes vimPlugins) in alphabetical order.
+  vimPlugins-mini-nvim = final: prev: {
+    vimPlugins = prev.vimPlugins // {
+      mini-nvim = prev.vimPlugins.mini-nvim.overrideAttrs (oldAttrs: {
+        version = "0.18.0";
+        src = final.fetchFromGitHub {
+          owner = "echasnovski";
+          repo = "mini.nvim";
+          rev = "v0.18.0";
+          hash = "sha256-kCcyl4KUEY51UeGYmvuLD1hswWbwKhHGUt/0XLbPuUw=";
+        };
+      });
+    };
+  };
 }
