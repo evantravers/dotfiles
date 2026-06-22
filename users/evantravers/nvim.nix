@@ -147,6 +147,7 @@
             require('mini.bracketed').setup()
             require('mini.snippets').setup()
             require('mini.completion').setup()
+            require('mini.input').setup()
             require('mini.icons').setup()
             require('mini.jump').setup()
             require('mini.jump2d').setup({
