@@ -73,26 +73,19 @@ vim.lsp.config.elixir = {
   }
 }
 
+vim.o.exrc = true
+
 vim.lsp.config.nix = {
-  cmd = { "nil" },
+  cmd = { "nixd" },
   filetypes = { "nix" },
+  root_markers = { "flake.nix", ".git" },
   settings = {
-    nil_lsp = {
+    nixd = {
       nixpkgs = {
         expr = "import <nixpkgs> { }",
       },
-      root_markers = { "flake.nix", ".git" },
-      settings = {
-        formatting = {
-          command = { "nixfmt" },
-        },
-        nix = {
-          flake = {
-            autoArchive = true,
-            autoEvalInputs = true,
-            nixpkgsInputName = "nixpkgs",
-          },
-        },
+      formatting = {
+        command = { "nixfmt" },
       },
     },
   }
