@@ -14,7 +14,7 @@
           config = ''
             local function load_codecompanion()
               vim.cmd.packadd('plenary.nvim')
-              vim.cmd.packadd('codecompanion-nvim')
+              vim.cmd.packadd('codecompanion.nvim')
               vim.cmd.packadd('markview.nvim')
 
               -- required for githubmodels token via gh
