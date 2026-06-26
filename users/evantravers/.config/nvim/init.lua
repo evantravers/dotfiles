@@ -53,6 +53,33 @@ vim.api.nvim_create_autocmd('LspAttach', {
         vim.lsp.buf.format({ bufnr = ev.buf })
       end, { buffer = ev.buf, desc = 'Format with LSP' })
     end
+    if client:supports_method('textDocument/inlayHint') then
+      vim.lsp.inlay_hint.enable(true, { bufnr = ev.buf })
+    end
+    if client:supports_method('textDocument/codeLens') then
+      vim.lsp.codelens.enable(true, { bufnr = ev.buf })
+    end
+    if client:supports_method('textDocument/documentHighlight') then
+      local group = vim.api.nvim_create_augroup('lsp-document-highlight', { clear = false })
+      vim.api.nvim_clear_autocmds({ buffer = ev.buf, group = group })
+      vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+        buffer = ev.buf,
+        group = group,
+        callback = vim.lsp.buf.document_highlight,
+      })
+      vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
+        buffer = ev.buf,
+        group = group,
+        callback = vim.lsp.buf.clear_references,
+      })
+    end
+  end,
+})
+
+vim.api.nvim_create_autocmd('LspDetach', {
+  callback = function(ev)
+    vim.lsp.buf.clear_references()
+    pcall(vim.api.nvim_clear_autocmds, { buffer = ev.buf, group = 'lsp-document-highlight' })
   end,
 })
 

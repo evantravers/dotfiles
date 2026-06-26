@@ -56,6 +56,8 @@
           line-number = "relative";
           lsp = {
             display-inlay-hints = true;
+            display-messages = true;
+            auto-signature-help = true;
           };
           rulers = [ 80 ];
           soft-wrap = {
