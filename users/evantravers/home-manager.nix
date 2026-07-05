@@ -94,7 +94,7 @@
     nh = {
       enable = true;
       clean.enable = true;
-      flake = ../../.;
+      flake = builtins.path { path = ../../.; name = "source"; };
     };
 
     yazi = {
