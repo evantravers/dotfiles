@@ -26,13 +26,13 @@ let
     if darwin then inputs.home-manager.darwinModules else inputs.home-manager.nixosModules;
 in
 systemFunc {
-  inherit system;
-
   modules = [
     # Apply our overlays. Overlays are keyed by system type so we have
     # to go through and apply our system type. We do this first so
     # the overlays are available globally.
     { nixpkgs.overlays = overlays; }
+
+    { nixpkgs.hostPlatform = system; }
 
     # Allow unfree packages.
     { nixpkgs.config.allowUnfree = true; }
