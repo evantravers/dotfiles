@@ -106,5 +106,7 @@
       enable = true;
       enableFishIntegration = true;
     };
+
+    man.generateCaches = false;
   };
 }
