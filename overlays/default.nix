@@ -39,6 +39,19 @@
 
   devenv = inputs.devenv.overlays.default;
 
+  kanata = _final: prev: {
+    kanata = prev.runCommandLocal "kanata-1.12.0" {
+      src = prev.fetchzip {
+        url = "https://github.com/jtroo/kanata/releases/download/v1.12.0/macos-binaries-arm64.zip";
+        hash = "sha256-5WY24+8biyOu+172BWLlIlriSg0gd5C4K9QHhT6rJss=";
+        stripRoot = false;
+      };
+    } ''
+      mkdir -p $out/bin
+      install -m755 "$src/kanata_macos_arm64" "$out/bin/kanata"
+    '';
+  };
+
   # mini.diff source for jj (jujutsu), not in nixpkgs. Hosted on tangled.org.
   # https://tangled.org/ronshavit.com/mini.diff.jj
   mini-diff-jj = final: _prev: {
