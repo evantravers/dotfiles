@@ -32,6 +32,11 @@
     llm-agents = inputs.llm-agents.packages.${prev.stdenv.hostPlatform.system};
   };
 
+  # Pin karabiner-dk driver version for kanata compatibility.
+  karabiner-dk-version = final: prev: {
+    karabiner-dk = prev.karabiner-dk.override { "driver-version" = "6.2.0"; };
+  };
+
   devenv = inputs.devenv.overlays.default;
 
   # mini.diff source for jj (jujutsu), not in nixpkgs. Hosted on tangled.org.
