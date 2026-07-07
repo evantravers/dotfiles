@@ -43,7 +43,7 @@
 
   homebrew = {
     enable = true;
-    # onActivation.cleanup = "zap";
+    onActivation.cleanup = "uninstall";
 
     casks = [
       "1password"
