@@ -12,9 +12,11 @@
 
   imports = [
     ./aerospace.nix
+    ./kanata.nix
     ./orbstack.nix
   ];
 
+  kanata.enable = true;
 
   # Enable fish and zsh
   programs.zsh.enable = true;
@@ -30,8 +32,6 @@
     defaultbrowser
     firefox
     hidden-bar
-    kanata
-    karabiner-dk
     keycastr
     libation
     obsidian
@@ -69,29 +69,6 @@
       "vlc"
       "zoom"
     ];
-  };
-
-  # Activate the Karabiner DriverKit virtual HID driver during system activation.
-  system.activationScripts.postActivation.text = ''
-    MANAGER="${pkgs.karabiner-dk}/Applications/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager"
-    if [ -x "$MANAGER" ]; then
-      echo "activating karabiner-dk driver..."
-      "$MANAGER" forceActivate || true
-    fi
-  '';
-
-  # forceActivate only approves the DriverKit extension; the userspace daemon
-  # that bridges kanata to it needs its own supervised process, which used to
-  # come from the (now removed) Karabiner-Elements.app installer.
-  launchd.daemons.karabiner-vhiddaemon = {
-    serviceConfig = {
-      Label = "org.pqrs.Karabiner-VirtualHIDDevice-Daemon";
-      ProgramArguments = [
-        "${pkgs.karabiner-dk}/Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice/Applications/Karabiner-VirtualHIDDevice-Daemon.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Daemon"
-      ];
-      RunAtLoad = true;
-      KeepAlive = true;
-    };
   };
 
   fonts.packages = [
