@@ -1,0 +1,30 @@
+;; minimal hyper key config — F19 chord + capslock as esc/ctrl, no homerow mods
+
+(defcfg
+  concurrent-tap-hold yes
+  process-unmapped-keys yes
+  macos-dev-names-include (
+    "Apple Internal Keyboard / Trackpad"
+  )
+)
+
+(defsrc
+  lctrl caps a ;
+)
+
+(defvar
+  tap-time 150
+  hold-time 200
+)
+
+(defalias
+  escctrl (tap-hold $tap-time $hold-time esc lctl)
+)
+
+(defchordsv2
+  (a ;) (one-shot 100 f19) 100 all-released ()
+)
+
+(deflayer base
+  f19 @escctrl a ;
+)
