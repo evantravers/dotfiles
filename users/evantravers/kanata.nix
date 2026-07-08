@@ -1,4 +1,23 @@
 { pkgs, lib, config, ... }:
+let
+  home = config.users.users.evantravers.home;
+  activeLink = "${home}/.local/state/kanata/active.kbd";
+
+  kanata-switch = pkgs.writeShellScriptBin "kanata-switch" ''
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    CONFIG_DIR="$HOME/.config/kanata"
+    ACTIVE_LINK="$HOME/.local/state/kanata/active.kbd"
+
+    choice=$(basename -a "$CONFIG_DIR"/*.kbd | gum choose --header "Select kanata layout")
+
+    ln -sfn "$CONFIG_DIR/$choice" "$ACTIVE_LINK"
+    echo "Switched active kanata layout to $choice"
+
+    sudo launchctl kickstart -k system/org.kanata
+  '';
+in
 {
   options.kanata.enable = lib.mkEnableOption "kanata keyboard remapping and the karabiner-dk VirtualHIDDevice driver it depends on";
 
@@ -6,10 +25,21 @@
     environment.systemPackages = [
       pkgs.kanata
       pkgs.karabiner-dk
+      kanata-switch
     ];
 
     # Activate the Karabiner DriverKit virtual HID driver during system activation.
     system.activationScripts.postActivation.text = ''
+      # kanata-switch repoints this symlink to swap layouts at runtime without
+      # a rebuild; seed it here so RunAtLoad has something to point at on a
+      # fresh install.
+      mkdir -p "${home}/.local/state/kanata"
+      chown evantravers:staff "${home}/.local/state/kanata"
+      if [ ! -e "${activeLink}" ]; then
+        ln -sfn "${home}/.config/kanata/macbook.kbd" "${activeLink}"
+        chown -h evantravers:staff "${activeLink}"
+      fi
+
       MANAGER="${pkgs.karabiner-dk}/Applications/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager"
       if [ -x "$MANAGER" ]; then
         echo "activating karabiner-dk driver..."
@@ -55,7 +85,7 @@
         ProgramArguments = [
           "${pkgs.kanata}/bin/kanata"
           "-c"
-          (toString ./.config/kanata/macbook.kbd)
+          activeLink
         ];
         RunAtLoad = true;
         KeepAlive = true;
