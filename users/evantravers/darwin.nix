@@ -16,6 +16,7 @@
     ./orbstack.nix
   ];
 
+  services.aerospace.enable = true;
   kanata.enable = true;
 
   # Enable fish and zsh
