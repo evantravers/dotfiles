@@ -1,13 +1,17 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, config, ... }:
 
 {
-  environment.systemPackages = [ pkgs.orbstack ];
+  options.programs.orbstack.enable = lib.mkEnableOption "OrbStack";
 
-  home-manager.users.evantravers = {
-    programs.ssh = {
-      extraConfig = lib.optionalString pkgs.stdenv.isDarwin ''
-        Include ~/.orbstack/ssh/config
-      '';
+  config = lib.mkIf config.programs.orbstack.enable {
+    environment.systemPackages = [ pkgs.orbstack ];
+
+    home-manager.users.evantravers = {
+      programs.ssh = {
+        extraConfig = lib.optionalString pkgs.stdenv.isDarwin ''
+          Include ~/.orbstack/ssh/config
+        '';
+      };
     };
   };
 }
