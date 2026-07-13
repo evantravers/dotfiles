@@ -18,6 +18,7 @@
 
   services.aerospace.enable = true;
   kanata.enable = true;
+  programs.orbstack.enable = true;
 
   # Enable fish and zsh
   programs.zsh.enable = true;
