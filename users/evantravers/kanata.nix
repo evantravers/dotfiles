@@ -89,6 +89,8 @@ in
         ];
         RunAtLoad = true;
         KeepAlive = true;
+        StandardOutPath = "/var/log/vhiddaemon.log";
+        StandardErrorPath = "/var/log/vhiddaemon.log";
       };
     };
 
