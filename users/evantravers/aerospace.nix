@@ -22,8 +22,8 @@
       mode = {
         main = {
           binding = {
-            alt-y = "layout tiles horizontal vertical";
-            alt-t = "layout accordion horizontal vertical";
+            alt-t = "layout tiles horizontal vertical";
+            alt-y = "layout accordion horizontal vertical";
             alt-h = "focus left";
             alt-j = "focus down";
             alt-k = "focus up";
