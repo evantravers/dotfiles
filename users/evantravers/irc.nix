@@ -12,9 +12,10 @@
             nicks = [ "evantravers" ];
             join = [
               "#elixir"
+              "#lobsters"
+              "#neovim"
               "#nethack"
               "#nixos"
-              "#neovim"
             ];
             sasl = {
               username = "evantravers";
