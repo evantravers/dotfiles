@@ -37,6 +37,7 @@
             alt-ctrl-k = "join-with up";
             alt-ctrl-l = "join-with right";
             alt-p = "resize smart 900";
+            alt-shift-p = "resize smart 500";
             alt-minus = "resize smart -100";
             alt-equal = "resize smart +100";
             alt-1 = "workspace 1";
