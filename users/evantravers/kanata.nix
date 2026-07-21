@@ -2,7 +2,7 @@
 let
   home = config.users.users.evantravers.home;
   activeLink = "${home}/.local/state/kanata/active.kbd";
-  vhiddaemonLink = "${home}/.local/state/kanata/vhiddaemon-bin";
+  vhiddaemonBin = "${pkgs.karabiner-dk}/Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice/Applications/Karabiner-VirtualHIDDevice-Daemon.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Daemon";
 
   kanata-switch = pkgs.writeShellScriptBin "kanata-switch" ''
     #!/usr/bin/env bash
@@ -33,8 +33,16 @@ in
       kanata-switch
     ];
 
-    # Activate the Karabiner DriverKit virtual HID driver during system activation.
-    system.activationScripts.postActivation.text = ''
+    # This machine has FileVault on, so ~evantravers's home directory lives on
+    # the encrypted Data volume and isn't mounted yet when launchd first
+    # loads LaunchDaemons at boot (well before login/unlock). A LaunchDaemon
+    # exec path under the home directory can get caught by launchd's
+    # "Missing executable detected" check during that window, which disables
+    # the job permanently (RunAtLoad/KeepAlive won't revive it). So
+    # ProgramArguments below reference the karabiner-dk store path directly
+    # instead of a home-directory symlink; only activeLink (a config-file
+    # *argument*, not the exec path itself) is safe to keep under home.
+    system.activationScripts.preActivation.text = ''
       # kanata-switch repoints this symlink to swap layouts at runtime without
       # a rebuild; seed it here so RunAtLoad has something to point at on a
       # fresh install.
@@ -44,15 +52,10 @@ in
         ln -sfn "${home}/.config/kanata/macbook.kbd" "${activeLink}"
         chown -h evantravers:staff "${activeLink}"
       fi
+    '';
 
-      # kanata is exposed at the stable /run/current-system/sw/bin/kanata
-      # path for free via environment.systemPackages, but karabiner-dk's
-      # daemon binary lives inside a .app bundle that isn't. Maintain our
-      # own stable symlink to it so the LaunchDaemon's exec path (and thus
-      # its TCC grant) survives karabiner-dk version bumps.
-      ln -sfn "${pkgs.karabiner-dk}/Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice/Applications/Karabiner-VirtualHIDDevice-Daemon.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Daemon" "${vhiddaemonLink}"
-      chown -h evantravers:staff "${vhiddaemonLink}"
-
+    # Activate the Karabiner DriverKit virtual HID driver during system activation.
+    system.activationScripts.postActivation.text = ''
       MANAGER="${pkgs.karabiner-dk}/Applications/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager"
       if [ -x "$MANAGER" ]; then
         echo "activating karabiner-dk driver..."
@@ -71,6 +74,11 @@ in
       echo ""
       echo "  Binary: /run/current-system/sw/bin/kanata"
       echo ""
+      echo "The vhiddaemon binary's path changes on every karabiner-dk version"
+      echo "bump (it's referenced directly from the nix store, not via a stable"
+      echo "symlink -- see the comment above). If key remapping stops working"
+      echo "after a switch, its Input Monitoring grant may need to be redone too:"
+      echo ""
       echo "  Input Monitoring: open 'x-apple.systempreferences:com.apple.preference.security?Privacy_ListenEvent'"
       echo "  Accessibility:    open 'x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility'"
       echo ""
@@ -84,11 +92,21 @@ in
     launchd.daemons.karabiner-vhiddaemon = {
       serviceConfig = {
         Label = "org.pqrs.Karabiner-VirtualHIDDevice-Daemon";
+        # launchd checks that ProgramArguments[0] exists *at job-load time*,
+        # which can be before /nix is mounted this early in boot -- and once
+        # it logs "Missing executable detected" for a job, that job is
+        # disabled for good (RunAtLoad/KeepAlive never revives it). Route
+        # through /bin/bash (always present) so launchd's own check always
+        # passes; the real path is only resolved later, at actual exec time,
+        # by which point /nix has mounted.
         ProgramArguments = [
-          vhiddaemonLink
+          "/bin/bash"
+          "-c"
+          ''exec "${vhiddaemonBin}"''
         ];
         RunAtLoad = true;
         KeepAlive = true;
+        ThrottleInterval = 30;
         StandardOutPath = "/var/log/vhiddaemon.log";
         StandardErrorPath = "/var/log/vhiddaemon.log";
       };
@@ -99,13 +117,28 @@ in
     launchd.daemons.kanata = {
       serviceConfig = {
         Label = "org.kanata";
+        # kanata connects to the vhiddaemon's socket on start and doesn't
+        # retry the connection itself, so a RunAtLoad race where kanata
+        # starts before the daemon is actually accepting connections leaves
+        # it stuck failing forever. Poll for the daemon process before
+        # exec'ing, mirroring the same wait Karabiner-Elements.app used to do.
         ProgramArguments = [
-          "/run/current-system/sw/bin/kanata"
+          "/bin/bash"
           "-c"
-          activeLink
+          ''
+            while ! pgrep -f "Karabiner-VirtualHIDDevice-Daemon" > /dev/null; do
+              sleep 1
+            done
+            exec /run/current-system/sw/bin/kanata -c "${activeLink}"
+          ''
         ];
         RunAtLoad = true;
-        KeepAlive = true;
+        KeepAlive = {
+          OtherJobEnabled = {
+            "org.pqrs.Karabiner-VirtualHIDDevice-Daemon" = true;
+          };
+        };
+        ThrottleInterval = 30;
         StandardOutPath = "/var/log/kanata.log";
         StandardErrorPath = "/var/log/kanata.log";
       };
