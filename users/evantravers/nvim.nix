@@ -201,8 +201,32 @@
             end, opts("File Explorer"))
 
             local function load_pick()
+              local mini_pick = require('mini.pick')
+              local default_win_config = mini_pick.config.window.config
               require('mini.pick').setup({
-                mappings = { choose_marked = '<C-q>' }
+                mappings = { choose_marked = '<C-q>' },
+                window = {
+                  config = function()
+                    -- Small terminal: go basically full screen
+                    if vim.o.lines <= 30 or vim.o.columns <= 80 then
+                      local height = vim.o.lines - 2
+                      local width = vim.o.columns - 2
+                      return {
+                        anchor = 'NW',
+                        height = height,
+                        width = width,
+                        row = math.floor(0.5 * (vim.o.lines - height)),
+                        col = math.floor(0.5 * (vim.o.columns - width)),
+                      }
+                    end
+
+                    -- Large terminal: defer to the plugin's real default
+                    if type(default_win_config) == 'function' then
+                      return default_win_config()
+                    end
+                    return default_win_config
+                  end,
+                },
               })
               require('mini.extra').setup()
               MiniPick.registry.files_root = function(local_opts)
