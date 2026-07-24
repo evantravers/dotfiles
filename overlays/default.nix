@@ -23,6 +23,7 @@
       nh
       obsidian
       rainfrog
+      thunderbird
       tmux
       vimPlugins
       ;
