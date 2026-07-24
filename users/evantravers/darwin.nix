@@ -13,10 +13,11 @@
   imports = [
     ./aerospace.nix
     ./kanata.nix
+    ./omniwm.nix
     ./orbstack.nix
   ];
 
-  services.aerospace.enable = true;
+  services.aerospace.enable = false;
   kanata.enable = true;
   programs.orbstack.enable = true;
 
@@ -24,6 +25,7 @@
   programs.zsh.enable = true;
   programs.fish.enable = true;
   programs._1password.enable = true;
+  programs.omniwm.enable = true;
 
   users.users.evantravers = {
     home = "/Users/evantravers";
@@ -59,8 +61,8 @@
       "ghostty"
       "hammerspoon"
       "homerow"
-      "marked-app"
       "macwhisper"
+      "marked-app"
       "mouseless"
       "obs"
       "pop-app"
