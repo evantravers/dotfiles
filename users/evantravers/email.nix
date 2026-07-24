@@ -31,12 +31,32 @@ in
         host = "smtp.gmail.com";
         tls.enable = true;
       };
+
+      thunderbird = {
+        enable = true;
+        profiles = [ "default" ];
+      };
     };
 
     programs.meli = {
       # enable = true;
       settings = {
         terminal.theme = "dark";
+      };
+    };
+
+    programs.thunderbird = {
+      enable = true;
+
+      profiles.default = {
+        isDefault = true;
+      };
+
+      settings = {
+        # Use system title bar on macOS for a more native feel
+        "mail.tabs.autoHide" = false;
+        # Don't ask to be the default mail client
+        "mail.shell-checkDefaultClient" = false;
       };
     };
   };
