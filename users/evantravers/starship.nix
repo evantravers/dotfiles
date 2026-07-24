@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 {
   config = lib.mkIf config.programs.starship.enable {
-    home.packages = [
+    home.packages = lib.mkIf config.programs.jujutsu.enable [
       pkgs.jj-starship
     ];
 
@@ -22,6 +22,18 @@
           format = "([$all_status$ahead_behind]($style) )";
         };
 
+        elixir.symbol = " ";
+        lua.symbol = "󰢱 ";
+        nix_shell.symbol = " ";
+        ruby.symbol = " ";
+
+        character = {
+          success_symbol = "[❯](dimmed green)";
+          error_symbol = "[❯](dimmed red)";
+        };
+
+        jobs.disabled = true;
+      } // lib.optionalAttrs config.programs.jujutsu.enable {
         # jj-starship module
         # https://github.com/dmmulroy/jj-starship
         custom.jj = {
@@ -32,18 +44,6 @@
 
         # disable git modules when using jj-starship (handles both JJ and Git)
         git_branch.disabled = true;
-
-        elixir.symbol = " ";
-        lua.symbol = "󰢱 ";
-        nix_shell.symbol = " ";
-        ruby.symbol = " ";
-
-        character = {
-          success_symbol = "[❯](dimmed green)";
-          error_symbol = "[❯](dimmed red)";
-        };
-
-        jobs.disabled = true;
       };
     };
   };
