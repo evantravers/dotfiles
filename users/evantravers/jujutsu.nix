@@ -30,7 +30,7 @@ in
       };
     };
 
-    home.packages = [ jjc ] ++ lib.optional config.programs.starship.enable pkgs.jj-starship;
+    home.packages = [ jjc ];
 
     programs.fish = {
       binds = {
