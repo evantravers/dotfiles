@@ -40,6 +40,11 @@
         wsl = true;
       };
 
+      nixosConfigurations.vmware = mkSystem "vmware" {
+        system = "x86_64-linux";
+        user = "evantravers";
+      };
+
       darwinConfigurations.Theseus = mkSystem "macbook-pro" {
         system = "aarch64-darwin";
         user = "evantravers";
