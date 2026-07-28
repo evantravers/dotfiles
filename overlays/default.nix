@@ -33,6 +33,10 @@
     llm-agents = inputs.llm-agents.packages.${prev.stdenv.hostPlatform.system};
   };
 
+  workmux = _final: prev: {
+    workmux = inputs.workmux.packages.${prev.stdenv.hostPlatform.system}.default;
+  };
+
   # Pin karabiner-dk driver version for kanata compatibility.
   karabiner-dk-version = final: prev: {
     karabiner-dk = prev.karabiner-dk.override { "driver-version" = "6.2.0"; };
