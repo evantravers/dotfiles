@@ -11,6 +11,7 @@
     ./nvim.nix
     ./starship.nix
     ./tmux.nix
+    ./workmux.nix
   ];
 
   xdg.enable = true;
@@ -62,6 +63,18 @@
     };
     starship.enable = true;
     tmux.enable = true;
+    workmux = {
+      enable = true;
+      settings = {
+        nerdfont = true;
+        merge_strategy = "rebase";
+        agent = "claude";
+        panes = [
+          { command = "<agent>"; focus = true; }
+          { split = "horizontal"; }
+        ];
+      };
+    };
     llama-cpp.enable = true;
     email.enable = true;
 
