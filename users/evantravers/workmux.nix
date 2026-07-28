@@ -3,11 +3,16 @@ let
   cfg = config.programs.workmux;
   yaml' = pkgs.formats.yaml { };
 
-  mkTmuxBind = key: cmd: "bind-key ${lib.replaceStrings [";"] ["\\;"] key} run-shell \"${cmd}\"";
+  # Generate key table bindings
+  mkTableBind = key: cmd: "bind-key -T workmux ${lib.replaceStrings [";"] ["\\;"] key} run-shell \"${cmd}\"";
 
-  tmuxBindings = lib.concatStringsSep "\n" (
-    lib.mapAttrsToList mkTmuxBind cfg.tmux.keybindings
-  );
+  tmuxConfig = lib.concatStringsSep "\n" ([
+    "# Workmux key table"
+  ] ++ (lib.mapAttrsToList mkTableBind cfg.tmux.keybindings) ++ [
+    ""
+    "# Enter workmux mode"
+    "bind-key ${cfg.tmux.enterKey} switch-client -T workmux"
+  ]);
 in
 {
   options.programs.workmux = {
@@ -42,14 +47,22 @@ in
     };
 
     tmux = {
+      enterKey = lib.mkOption {
+        description = "Key to enter workmux mode (with prefix).";
+        type = lib.types.str;
+        default = "C-w";
+      };
+
       keybindings = lib.mkOption {
-        description = "Tmux keybindings (with prefix) for workmux commands.";
+        description = "Keybindings active in workmux mode (no prefix needed).";
         type = lib.types.attrsOf lib.types.str;
         default = {
-          "W" = "workmux sidebar";
-          ";" = "workmux last-done";
-          "C-n" = "workmux sidebar next";
-          "C-p" = "workmux sidebar prev";
+          "s" = "workmux sidebar";
+          "a" = ''workmux add "$(gum input --placeholder 'Worktree title')"'';
+          "d" = ''tmux display-popup -E -w 80% -h 80% workmux dashboard'';
+          "n" = "workmux sidebar next";
+          "p" = "workmux sidebar prev";
+          "l" = "workmux last-done";
         };
       };
     };
@@ -64,6 +77,6 @@ in
 
     programs.fish.shellAliases = cfg.shellAliases;
 
-    programs.tmux.extraConfig = lib.mkIf config.programs.tmux.enable tmuxBindings;
+    programs.tmux.extraConfig = lib.mkIf config.programs.tmux.enable tmuxConfig;
   };
 }
