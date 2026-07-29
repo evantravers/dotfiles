@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ./ai.nix
     ./email.nix
     ./git.nix
     ./helix.nix
@@ -47,6 +48,43 @@
       rainfrog
       ripgrep
       sesh
+    ];
+  };
+
+  # AI model registry: consumed by nvim-ai.nix (codecompanion adapters),
+  # llama-cpp.nix (local server + pi provider), and pi.nix.
+  ai = {
+    default = "moonshot";
+    models = [
+      {
+        name = "moonshot";
+        label = "Moonshot AI";
+        baseUrl = "https://api.moonshot.ai";
+        model = "kimi-k3";
+        apiKey = "cmd:op read op://Private/Moonshot/credential --no-newline";
+      }
+      {
+        name = "gemma";
+        label = "Gemma 4 26B-A4B";
+        baseUrl = "http://localhost:8080";
+        model = "gemma-4-26B-A4B-it-UD-Q4_K_XL.gguf";
+        llamaCpp = {
+          repo = "unsloth/gemma-4-26B-A4B-it-GGUF";
+          quant = "Q4_K_XL";
+          draftQuant = "Q8_0-MTP";
+        };
+      }
+      {
+        name = "qwen";
+        label = "Qwen 3.6 35B-A3B";
+        baseUrl = "http://localhost:8080";
+        model = "Qwen3.6-35B-A3B-UD-Q4_K_XL.gguf";
+        reasoning = true;
+        llamaCpp = {
+          repo = "unsloth/Qwen3.6-35B-A3B-MTP-GGUF";
+          quant = "Q4_K_XL";
+        };
+      }
     ];
   };
 
@@ -129,28 +167,7 @@
     helix.enable = true;
 
     # AI
-    llama-cpp = {
-      enable = true;
-      models = [
-        {
-          name = "gemma";
-          label = "Gemma 4 26B-A4B";
-          repo = "unsloth/gemma-4-26B-A4B-it-GGUF";
-          quant = "Q4_K_XL";
-          draftQuant = "Q8_0-MTP";
-          modelId = "gemma-4-26B-A4B-it-UD-Q4_K_XL.gguf";
-          reasoning = false;
-        }
-        {
-          name = "qwen";
-          label = "Qwen 3.6 35B-A3B";
-          repo = "unsloth/Qwen3.6-35B-A3B-MTP-GGUF";
-          quant = "Q4_K_XL";
-          modelId = "Qwen3.6-35B-A3B-UD-Q4_K_XL.gguf";
-          reasoning = true;
-        }
-      ];
-    };
+    llama-cpp.enable = true;
 
     pi = {
       enable = true;

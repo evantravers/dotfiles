@@ -1,4 +1,33 @@
 { config, lib, pkgs, ... }:
+
+let
+  # Models are defined centrally in ai.nix; each becomes a codecompanion adapter.
+  aiModels = config.ai.models or [ ];
+  aiDefault = config.ai.default or null;
+
+  defaultStrategy =
+    if aiDefault != null then aiDefault
+    else if aiModels != [ ] then (lib.head aiModels).name
+    else "moonshot";
+
+  httpAdapters = lib.concatMapStringsSep "\n" (m: ''
+    ${m.name} = function()
+      return require("codecompanion.adapters").extend("openai_compatible", {
+        name = "${m.name}",
+        formatted_name = "${m.label}",
+        env = {
+          url = "${m.baseUrl}",
+          api_key = "${if m.apiKey != null then m.apiKey else "none"}",
+        },
+        schema = {
+          model = {
+            default = "${m.model}",
+          },
+        },
+      })
+    end,
+  '') aiModels;
+in
 {
   options.programs.neovim.ai.enable = lib.mkEnableOption "Neovim AI integration";
 
@@ -19,7 +48,7 @@
 
               -- required for githubmodels token via gh
               vim.env["CODECOMPANION_TOKEN_PATH"] = vim.fn.expand("~/.config")
-              local ai_strategy = os.getenv("AI_STRATEGY") or "moonshot"
+              local ai_strategy = os.getenv("AI_STRATEGY") or "${defaultStrategy}"
 
               require("codecompanion").setup({
                 interactions = {
@@ -64,53 +93,7 @@
                   http = {
                     -- hide adapters that I haven't explicitly configured
                     opts = { show_defaults = false, },
-                    anthropic = function()
-                      return require("codecompanion.adapters").extend("anthropic", {
-                        env = {
-                          api_key = "cmd:op read op://Private/Claude/credential --no-newline"
-                        }
-                      })
-                    end,
-                    githubmodels = function()
-                      return require("codecompanion.adapters").extend("githubmodels", {
-                        schema = {
-                          model = {
-                            default = "gpt-4.1",
-                          },
-                        },
-                      })
-                    end,
-                    moonshot = function()
-                      return require("codecompanion.adapters").extend("openai_compatible", {
-                        name = "moonshot",
-                        formatted_name = "Moonshot AI",
-                        env = {
-                          url = "https://api.moonshot.ai",
-                          api_key = "cmd:op read op://Private/Moonshot/credential --no-newline",
-                          chat_url = "/v1/chat/completions",
-                        },
-                        schema = {
-                          model = {
-                            default = "kimi-k2-0905-preview",
-                          },
-                        },
-                      })
-                    end,
-                    llama_cpp = function()
-                      return require("codecompanion.adapters").extend("openai_compatible", {
-                        name = "llama_cpp",
-                        formatted_name = "llama.cpp",
-                        env = {
-                          url = "http://localhost:8080",
-                          api_key = "none",
-                        },
-                        schema = {
-                          model = {
-                            default = "bartowski/Qwen_Qwen3.6-27B-GGUF:Q4_1",
-                          },
-                        },
-                      })
-                    end
+          ${httpAdapters}
                   }
                 },
                 extensions = {

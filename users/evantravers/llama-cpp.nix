@@ -3,6 +3,10 @@
 let
   cfg = config.programs.llama-cpp;
 
+  # Models are defined centrally in ai.nix; llama-cpp serves the ones
+  # carrying Hugging Face GGUF details.
+  models = builtins.filter (m: m.llamaCpp != null) (config.ai.models or [ ]);
+
   zeroCost = {
     input = 0;
     output = 0;
@@ -10,30 +14,30 @@ let
     cacheWrite = 0;
   };
 
-  defaultModel = lib.head cfg.models;
+  defaultModel = lib.head models;
 
-  modelNames = lib.concatMapStringsSep "|" (m: m.name) cfg.models;
+  modelNames = lib.concatMapStringsSep "|" (m: m.name) models;
 
   helpArgs = lib.concatStrings (map (m:
     "  ${m.name}${lib.optionalString (m.name == defaultModel.name) " (default)"}\n" +
     "    Start ${m.label} with image support\n"
-  ) cfg.models);
+  ) models);
 
   caseArgs = lib.concatStrings (map (m:
     "    ${m.name})\n" +
     "      MODEL=\"${m.name}\"\n" +
     "      shift\n" +
     "      ;;\n"
-  ) cfg.models);
+  ) models);
 
   modelVars = lib.concatStrings (map (m:
     "  ${m.name})\n" +
     "    LABEL=\"${m.label}\"\n" +
-    "    REPO=\"${m.repo}\"\n" +
-    "    QUANT=\"${m.quant}\"\n" +
-    "    DRAFT_QUANT=\"${lib.optionalString (m.draftQuant != null) m.draftQuant}\"\n" +
+    "    REPO=\"${m.llamaCpp.repo}\"\n" +
+    "    QUANT=\"${m.llamaCpp.quant}\"\n" +
+    "    DRAFT_QUANT=\"${lib.optionalString (m.llamaCpp.draftQuant != null) m.llamaCpp.draftQuant}\"\n" +
     "    ;;\n"
-  ) cfg.models);
+  ) models);
 
   piProvider = {
     baseUrl = "http://localhost:8080/v1";
@@ -45,14 +49,14 @@ let
       supportsReasoningEffort = false;
     };
     models = map (m: {
-      id = m.modelId;
-      name = "${m.label} ${m.quant} + MTP";
+      id = m.model;
+      name = "${m.label} ${m.llamaCpp.quant} + MTP";
       reasoning = m.reasoning;
       input = [ "text" "image" ];
-      contextWindow = 65536;
-      maxTokens = 8192;
+      contextWindow = m.contextWindow;
+      maxTokens = m.maxTokens;
       cost = zeroCost;
-    }) cfg.models;
+    }) models;
   };
 
   llama-server-start = pkgs.writeShellScriptBin "llama-server-start" ''
@@ -147,53 +151,14 @@ in
 {
   options.programs.llama-cpp = {
     enable = lib.mkEnableOption "llama-cpp configurations";
-
-    models = lib.mkOption {
-      type = lib.types.listOf (lib.types.submodule {
-        options = {
-          name = lib.mkOption {
-            type = lib.types.str;
-            description = "Short CLI identifier for this model (e.g. gemma, qwen).";
-          };
-          label = lib.mkOption {
-            type = lib.types.str;
-            description = "Human-readable label used in status messages.";
-          };
-          repo = lib.mkOption {
-            type = lib.types.str;
-            description = "Hugging Face repository containing the GGUF files.";
-          };
-          quant = lib.mkOption {
-            type = lib.types.str;
-            description = "Quantization variant to fetch from the repo.";
-          };
-          draftQuant = lib.mkOption {
-            type = lib.types.nullOr lib.types.str;
-            default = null;
-            description = "Optional draft model quantization for speculative decoding.";
-          };
-          modelId = lib.mkOption {
-            type = lib.types.str;
-            description = "Model identifier reported by llama-server (the GGUF filename).";
-          };
-          reasoning = lib.mkOption {
-            type = lib.types.bool;
-            default = false;
-            description = "Whether this model supports reasoning.";
-          };
-        };
-      });
-      default = [ ];
-      description = "List of local models to expose via llama-server and pi.";
-    };
   };
 
   config = lib.mkIf cfg.enable (lib.mkMerge [
     {
       assertions = [
         {
-          assertion = cfg.models != [ ];
-          message = "programs.llama-cpp.models must contain at least one model.";
+          assertion = models != [ ];
+          message = "programs.llama-cpp is enabled but no entry in ai.models has llamaCpp GGUF details.";
         }
       ];
 
