@@ -175,6 +175,10 @@
         defaultProvider = "moonshotai";
         defaultModel = "kimi-k3";
       };
+      packages = [
+        "npm:pi-web-access"
+        "npm:pi-mcp-adapter"
+      ];
     };
 
     # Comms
