@@ -25,7 +25,7 @@
   programs.zsh.enable = true;
   programs.fish.enable = true;
   programs._1password.enable = true;
-  programs.omniwm.enable = true;
+  programs.omniwm.enable = false;
 
   users.users.evantravers = {
     home = "/Users/evantravers";

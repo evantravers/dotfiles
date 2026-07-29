@@ -18,6 +18,93 @@ Hyper = spoon.Hyper
 
 Hyper:bindHotKeys({hyperKey = {{}, 'F19'}})
 
+-- MoveWindows: toggle-style window mode on F18, ported from my old
+-- movewindows.lua / MoveWindows.spoon. F18 toggles the mode on/off; while
+-- active, shows the focused app on every screen.
+MoveWindows = hs.hotkey.modal.new({}, nil)
+MoveWindows.isOpen = false
+
+function MoveWindows:entered()
+  self.isOpen = true
+  self.alertUuids = hs.fnutils.map(hs.screen.allScreens(), function(screen)
+    local prompt = string.format("🖥 : %s",
+                                 hs.window.focusedWindow():application():title())
+    return hs.alert.show(prompt, hs.alert.defaultStyle, screen, true)
+  end)
+end
+
+function MoveWindows:exited()
+  self.isOpen = false
+  hs.fnutils.ieach(self.alertUuids, function(uuid)
+    hs.alert.closeSpecific(uuid)
+  end)
+end
+
+function MoveWindows:toggle()
+  if self.isOpen then
+    self:exit()
+  else
+    self:enter()
+  end
+end
+
+hs.window.animationDuration = 0
+
+hs.hotkey.bind({}, 'F18', function() MoveWindows:toggle() end)
+
+MoveWindows.grid = {
+  { key = 'j', unit = hs.geometry.rect(0, 0.5, 1, 0.5) },
+  { key = 'k', unit = hs.geometry.rect(0, 0, 1, 0.5) },
+  { key = 'h', unit = hs.layout.left50 },
+  { key = 'l', unit = hs.layout.right50 },
+
+  { key = 'y', unit = hs.geometry.rect(0, 0, 0.5, 0.5) },
+  { key = 'u', unit = hs.geometry.rect(0.5, 0, 0.5, 0.5) },
+  { key = 'b', unit = hs.geometry.rect(0, 0.5, 0.5, 0.5) },
+  { key = 'n', unit = hs.geometry.rect(0.5, 0.5, 0.5, 0.5) },
+
+  { key = 'r', unit = hs.layout.left70 },
+  { key = 't', unit = hs.layout.right30 },
+
+  { key = 'space', unit = hs.layout.maximized },
+}
+
+hs.fnutils.each(MoveWindows.grid, function(entry)
+  -- shift+key: throw to next display and snap to position
+  MoveWindows:bind({'shift'}, entry.key, function()
+    local win = hs.window.focusedWindow()
+    if win then
+      win:moveToScreen(win:screen():next()):moveToUnit(entry.unit)
+    end
+    MoveWindows:exit()
+  end)
+  MoveWindows:bind({}, entry.key, function()
+    local win = hs.window.focusedWindow()
+    if win then win:moveToUnit(entry.unit) end
+    MoveWindows:exit()
+  end)
+end)
+
+MoveWindows
+  :bind({'ctrl'}, '[', function() MoveWindows:exit() end)
+  :bind({}, 'escape', function() MoveWindows:exit() end)
+  :bind({}, ',', function()
+    hs.window.focusedWindow()
+      :application()
+      :selectMenuItem("Tile Window to Left of Screen")
+    MoveWindows:exit()
+  end)
+  :bind({}, '.', function()
+    hs.window.focusedWindow()
+      :application()
+      :selectMenuItem("Tile Window to Right of Screen")
+    MoveWindows:exit()
+  end)
+  :bind({}, 'tab', function()
+    hs.window.focusedWindow():centerOnScreen()
+    MoveWindows:exit()
+  end)
+
 hs.fnutils.each(Bindings, function(bindingTable)
   local bundleID, globalBind, localBinds = table.unpack(bindingTable)
   if globalBind then
