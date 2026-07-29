@@ -9,6 +9,7 @@
     ./jujutsu.nix
     ./llama-cpp.nix
     ./nvim.nix
+    ./pi.nix
     ./starship.nix
     ./tmux.nix
     ./workmux.nix
@@ -32,7 +33,6 @@
       llm-agents.claude-agent-acp
       llm-agents.opencode
       llm-agents.openspec
-      llm-agents.pi
       llm-agents.showboat
       amber
       devenv
@@ -75,7 +75,35 @@
         ];
       };
     };
-    llama-cpp.enable = true;
+    llama-cpp = {
+      enable = true;
+      models = [
+        {
+          name = "gemma";
+          label = "Gemma 4 26B-A4B";
+          repo = "unsloth/gemma-4-26B-A4B-it-GGUF";
+          quant = "Q4_K_XL";
+          draftQuant = "Q8_0-MTP";
+          modelId = "gemma-4-26B-A4B-it-UD-Q4_K_XL.gguf";
+          reasoning = false;
+        }
+        {
+          name = "qwen";
+          label = "Qwen 3.6 35B-A3B";
+          repo = "unsloth/Qwen3.6-35B-A3B-MTP-GGUF";
+          quant = "Q4_K_XL";
+          modelId = "Qwen3.6-35B-A3B-UD-Q4_K_XL.gguf";
+          reasoning = true;
+        }
+      ];
+    };
+    pi = {
+      enable = true;
+      settings = {
+        defaultProvider = "moonshotai";
+        defaultModel = "kimi-k3";
+      };
+    };
     email.enable = true;
 
     fish = {
