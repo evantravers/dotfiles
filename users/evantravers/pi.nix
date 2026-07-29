@@ -18,6 +18,17 @@ in
       default = { };
       description = "Settings written to pi's settings.json.";
     };
+
+    packages = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [ ];
+      example = [ "npm:pi-web-access" "git:github.com/user/repo@v1" ];
+      description = ''
+        Pi packages to install, written to settings.json.
+        Since settings.json is a read-only nix store symlink, `pi install`
+        cannot persist packages — declare them here instead.
+      '';
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -32,8 +43,10 @@ in
       text = builtins.toJSON { providers = cfg.providers; };
     };
 
-    xdg.configFile."pi/agent/settings.json" = lib.mkIf (cfg.settings != { }) {
-      text = builtins.toJSON cfg.settings;
+    xdg.configFile."pi/agent/settings.json" = lib.mkIf (cfg.settings != { } || cfg.packages != [ ]) {
+      text = builtins.toJSON (cfg.settings // lib.optionalAttrs (cfg.packages != [ ]) {
+        packages = cfg.packages;
+      });
     };
   };
 }
