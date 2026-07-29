@@ -19,7 +19,7 @@
 
               -- required for githubmodels token via gh
               vim.env["CODECOMPANION_TOKEN_PATH"] = vim.fn.expand("~/.config")
-              local ai_strategy = os.getenv("AI_STRATEGY") or "llama_cpp"
+              local ai_strategy = os.getenv("AI_STRATEGY") or "moonshot"
 
               require("codecompanion").setup({
                 interactions = {
@@ -76,6 +76,22 @@
                         schema = {
                           model = {
                             default = "gpt-4.1",
+                          },
+                        },
+                      })
+                    end,
+                    moonshot = function()
+                      return require("codecompanion.adapters").extend("openai_compatible", {
+                        name = "moonshot",
+                        formatted_name = "Moonshot AI",
+                        env = {
+                          url = "https://api.moonshot.ai",
+                          api_key = "cmd:op read op://Private/Moonshot/credential --no-newline",
+                          chat_url = "/v1/chat/completions",
+                        },
+                        schema = {
+                          model = {
+                            default = "kimi-k2-0905-preview",
                           },
                         },
                       })
