@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   cfg = config.programs.pi;
@@ -9,50 +14,59 @@ let
 
   # Remote models (those without llamaCpp GGUF details) get a pi provider entry.
   # Local models are handled by llama-cpp.nix.
-  remoteModels = builtins.filter (m: m.llamaCpp == null) aiModels;
+  # ACP-based models (e.g. opencode) are excluded since they use a different protocol.
+  remoteModels = builtins.filter (m: m.llamaCpp == null && m.acp == null) aiModels;
 
   # Build one pi provider per remote model, keyed by the model's short name.
-  remoteProviders = lib.listToAttrs (map (m: {
-    name = m.name;
-    value = {
-      baseUrl = m.baseUrl + "/v1";
-      api = "openai-completions";
-      apiKey = if m.apiKey != null then m.apiKey else null;
-      authHeader = m.apiKey != null;
-      compat = {
-        supportsDeveloperRole = true;
-        supportsReasoningEffort = m.reasoning or false;
+  remoteProviders = lib.listToAttrs (
+    map (m: {
+      name = m.name;
+      value = {
+        baseUrl = m.baseUrl + "/v1";
+        api = "openai-completions";
+        apiKey = if m.apiKey != null then m.apiKey else null;
+        authHeader = m.apiKey != null;
+        compat = {
+          supportsDeveloperRole = true;
+          supportsReasoningEffort = m.reasoning or false;
+        };
+        models = [
+          {
+            id = m.model;
+            name = m.label;
+            reasoning = m.reasoning or false;
+            input = [ "text" ];
+            contextWindow = m.contextWindow;
+            maxTokens = m.maxTokens;
+          }
+        ];
       };
-      models = [{
-        id = m.model;
-        name = m.label;
-        reasoning = m.reasoning or false;
-        input = [ "text" ];
-        contextWindow = m.contextWindow;
-        maxTokens = m.maxTokens;
-      }];
-    };
-  }) remoteModels);
+    }) remoteModels
+  );
 
   # User-specified and llama-cpp.nix providers take precedence over auto-derived.
   allProviders = remoteProviders // cfg.providers;
 
   # ── Derive default provider and model from ai.default ──────────────────────
-  defaultFromAi = let
-    model = lib.findFirst (m: m.name == aiDefault) null aiModels;
-  in
-    if model != null then {
-      defaultProvider = model.name;
-      defaultModel = model.model;
-    } else
-    null;
+  defaultFromAi =
+    let
+      model = lib.findFirst (m: m.name == aiDefault) null aiModels;
+    in
+    if model != null then
+      {
+        defaultProvider = model.name;
+        defaultModel = model.model;
+      }
+    else
+      null;
 
   # Base defaults from ai.default, overridable via cfg.settings.
   resolvedSettings =
     (lib.optionalAttrs (defaultFromAi != null) {
       defaultProvider = defaultFromAi.defaultProvider;
       defaultModel = defaultFromAi.defaultModel;
-    }) // cfg.settings;
+    })
+    // cfg.settings;
 in
 {
   options.programs.pi = {
@@ -73,7 +87,10 @@ in
     packages = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       default = [ ];
-      example = [ "npm:pi-web-access" "git:github.com/user/repo@v1" ];
+      example = [
+        "npm:pi-web-access"
+        "git:github.com/user/repo@v1"
+      ];
       description = ''
         Pi packages to install, written to settings.json.
         Since settings.json is a read-only nix store symlink, `pi install`
@@ -94,10 +111,15 @@ in
       text = builtins.toJSON { providers = allProviders; };
     };
 
-    xdg.configFile."pi/agent/settings.json" = lib.mkIf (resolvedSettings != { } || cfg.packages != [ ]) {
-      text = builtins.toJSON (resolvedSettings // lib.optionalAttrs (cfg.packages != [ ]) {
-        packages = cfg.packages;
-      });
-    };
+    xdg.configFile."pi/agent/settings.json" =
+      lib.mkIf (resolvedSettings != { } || cfg.packages != [ ])
+        {
+          text = builtins.toJSON (
+            resolvedSettings
+            // lib.optionalAttrs (cfg.packages != [ ]) {
+              packages = cfg.packages;
+            }
+          );
+        };
   };
 }

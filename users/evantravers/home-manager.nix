@@ -64,6 +64,13 @@
         apiKey = "cmd:op read op://Private/Moonshot/credential --no-newline";
       }
       {
+        name = "opencode";
+        label = "OpenCode (free)";
+        acp = {
+          command = "opencode acp";
+        };
+      }
+      {
         name = "gemma";
         label = "Gemma 4 26B-A4B";
         baseUrl = "http://localhost:8080";
@@ -121,7 +128,10 @@
     nh = {
       enable = true;
       clean.enable = true;
-      flake = builtins.path { path = ../../.; name = "source"; };
+      flake = builtins.path {
+        path = ../../.;
+        name = "source";
+      };
     };
 
     yazi = {
@@ -146,7 +156,10 @@
         merge_strategy = "rebase";
         agent = "claude";
         panes = [
-          { command = "<agent>"; focus = true; }
+          {
+            command = "<agent>";
+            focus = true;
+          }
           { split = "horizontal"; }
         ];
       };
