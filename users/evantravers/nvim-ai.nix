@@ -44,7 +44,9 @@ let
         name = "${m.name}",
         formatted_name = "${m.label}",
         commands = {
-          default = { "${m.acp.command}" },
+          default = { ${
+            lib.concatStringsSep ", " (lib.map (arg: "\"${arg}\"") (lib.splitString " " m.acp.command))
+          } },
         },
       })
     end,
@@ -93,18 +95,7 @@ in
                   },
                   adapters = {
                     acp = {
-                      devclarity_claude_code = function()
-                        return require("codecompanion.adapters").extend("claude_code", {
-                          env = {
-                            ANTHROPIC_API_KEY = "cmd:op read op://Private/yy6goxmme5pm5jkhsmspolopme/credential --no-newline"
-                          },
-                          commands = {
-                            default = {
-                              "claude-agent-acp"
-                            }
-                          }
-                        })
-                      end,
+                      opts = { show_defaults = false },
             ${acpAdapters}
                     },
                     http = {
