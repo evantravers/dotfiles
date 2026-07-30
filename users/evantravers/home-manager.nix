@@ -178,6 +178,7 @@
       packages = [
         "npm:pi-web-access"
         "npm:pi-mcp-adapter"
+        "npm:pi-lens"
       ];
     };
 
