@@ -75,7 +75,7 @@
     };
   };
 
-  services.jankyborders = {
+  services.jankyborders = lib.mkIf config.services.aerospace.enable {
     enable = true;
     blur_radius = 5.0;
     hidpi = true;
