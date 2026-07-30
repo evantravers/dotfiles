@@ -171,10 +171,9 @@
 
     pi = {
       enable = true;
-      settings = {
-        defaultProvider = "moonshotai";
-        defaultModel = "kimi-k3";
-      };
+      # defaultProvider/defaultModel fall back to ai.default when not set here.
+      # Explicit settings always win — useful for overriding or when ai.* isn't
+      # imported.
       packages = [
         "npm:pi-web-access"
         "npm:pi-mcp-adapter"
