@@ -7,16 +7,13 @@
 
 let
   # Models are defined centrally in ai.nix; each becomes a codecompanion adapter.
-  aiModels = config.ai.models or [ ];
-  aiDefault = config.ai.default or null;
+  aiModels = config.ai.models;
+  aiDefault = config.ai.default;
 
-  defaultStrategy =
-    if aiDefault != null then
-      aiDefault
-    else if aiModels != [ ] then
-      (lib.head aiModels).name
-    else
-      "moonshot";
+  defaultStrategy = if aiDefault != null then aiDefault else (lib.head aiModels).name;
+
+  # Local llamaCpp models are served by llama-cpp.nix, which owns the port.
+  llamaCppBaseUrl = "http://localhost:${toString config.programs.llama-cpp.port}";
 
   # HTTP-based adapters for models without ACP
   httpAdapters = lib.concatMapStringsSep "\n" (m: ''
@@ -25,7 +22,7 @@ let
         name = "${m.name}",
         formatted_name = "${m.label}",
         env = {
-          url = "${m.baseUrl}",
+          url = "${if m.llamaCpp != null then llamaCppBaseUrl else m.baseUrl}",
           api_key = "${if m.apiKey != null then m.apiKey else "none"}",
         },
         schema = {

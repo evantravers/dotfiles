@@ -5,7 +5,9 @@ let
 
   # Models are defined centrally in ai.nix; llama-cpp serves the ones
   # carrying Hugging Face GGUF details.
-  models = builtins.filter (m: m.llamaCpp != null) (config.ai.models or [ ]);
+  models = builtins.filter (m: m.llamaCpp != null) config.ai.models;
+
+  localBaseUrl = "http://localhost:${toString cfg.port}";
 
   zeroCost = {
     input = 0;
@@ -40,7 +42,7 @@ let
   ) models);
 
   piProvider = {
-    baseUrl = "http://localhost:8080/v1";
+    baseUrl = "${localBaseUrl}/v1";
     api = "openai-completions";
     apiKey = "local";
     authHeader = false;
@@ -126,7 +128,7 @@ if [[ "''${SPEC}" == "true" ]]; then
     -c 65536
     --parallel 1
     --host 127.0.0.1
-    --port 8080
+    --port ${toString cfg.port}
   )
 else
   echo "Starting llama-server with ''${LABEL} + Projector (Speculation disabled, in background tmux)..."
@@ -137,7 +139,7 @@ else
     -c 65536
     --parallel 1
     --host 127.0.0.1
-    --port 8080
+    --port ${toString cfg.port}
   )
 fi
 
@@ -151,6 +153,12 @@ in
 {
   options.programs.llama-cpp = {
     enable = lib.mkEnableOption "llama-cpp configurations";
+
+    port = lib.mkOption {
+      type = lib.types.port;
+      default = 8080;
+      description = "Port the local llama-server listens on.";
+    };
   };
 
   config = lib.mkIf cfg.enable (lib.mkMerge [
@@ -169,7 +177,7 @@ in
     }
 
     (lib.optionalAttrs (options.programs ? pi) {
-      programs.pi.providers = lib.mkIf (config.programs.pi.enable or false) {
+      programs.pi.providers = lib.mkIf config.programs.pi.enable {
         "llama-cpp" = piProvider;
       };
     })

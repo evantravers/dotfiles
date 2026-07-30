@@ -54,10 +54,10 @@
   # AI model registry: consumed by nvim-ai.nix (codecompanion adapters),
   # llama-cpp.nix (local server + pi provider), and pi.nix.
   ai = {
-    default = "moonshot";
+    default = "moonshotai";
     models = [
       {
-        name = "moonshot";
+        name = "moonshotai";
         label = "Moonshot AI";
         baseUrl = "https://api.moonshot.ai";
         model = "kimi-k3";
@@ -73,7 +73,6 @@
       {
         name = "gemma";
         label = "Gemma 4 26B-A4B";
-        baseUrl = "http://localhost:8080";
         model = "gemma-4-26B-A4B-it-UD-Q4_K_XL.gguf";
         llamaCpp = {
           repo = "unsloth/gemma-4-26B-A4B-it-GGUF";
@@ -84,7 +83,6 @@
       {
         name = "qwen";
         label = "Qwen 3.6 35B-A3B";
-        baseUrl = "http://localhost:8080";
         model = "Qwen3.6-35B-A3B-UD-Q4_K_XL.gguf";
         reasoning = true;
         llamaCpp = {
