@@ -9,8 +9,8 @@ let
   cfg = config.programs.pi;
 
   # ── Auto-derive pi providers from the central ai model registry ────────────
-  aiModels = config.ai.models or [ ];
-  aiDefault = config.ai.default or null;
+  aiModels = config.ai.models;
+  aiDefault = config.ai.default;
 
   # Remote models (those without llamaCpp GGUF details) get a pi provider entry.
   # Local models are handled by llama-cpp.nix.
@@ -24,17 +24,17 @@ let
       value = {
         baseUrl = m.baseUrl + "/v1";
         api = "openai-completions";
-        apiKey = if m.apiKey != null then m.apiKey else null;
+        apiKey = m.apiKey;
         authHeader = m.apiKey != null;
         compat = {
           supportsDeveloperRole = true;
-          supportsReasoningEffort = m.reasoning or false;
+          supportsReasoningEffort = m.reasoning;
         };
         models = [
           {
             id = m.model;
             name = m.label;
-            reasoning = m.reasoning or false;
+            reasoning = m.reasoning;
             input = [ "text" ];
             contextWindow = m.contextWindow;
             maxTokens = m.maxTokens;

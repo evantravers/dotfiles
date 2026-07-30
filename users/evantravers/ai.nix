@@ -109,7 +109,7 @@ in
   config = lib.mkIf (cfg.models != [ ]) (
     let
       acpOffenders = builtins.filter (
-        m: m.acp == null && (m.baseUrl == null || m.model == null)
+        m: m.acp == null && ((m.baseUrl == null && m.llamaCpp == null) || m.model == null)
       ) cfg.models;
     in
     {
@@ -121,7 +121,7 @@ in
         {
           assertion = acpOffenders == [ ];
           message =
-            "Every ai.models entry without 'acp' must have 'baseUrl' and 'model' set. Offending entries: "
+            "Every ai.models entry without 'acp' must have 'model' set, and 'baseUrl' unless it has 'llamaCpp' (llama-cpp.nix supplies that). Offending entries: "
             + builtins.concatStringsSep ", " (builtins.map (m: m.name) acpOffenders);
         }
       ];
