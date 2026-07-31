@@ -159,11 +159,6 @@
 
     pi = {
       enable = true;
-      packages = [
-        "npm:pi-web-access"
-        "npm:pi-mcp-adapter"
-        "npm:pi-lens"
-      ];
     };
 
     # Comms
