@@ -29,7 +29,6 @@
 
     packages = with pkgs; [
       llm-agents.antigravity-cli
-      llm-agents.claude-agent-acp
       llm-agents.claude-code
       llm-agents.hunk
       llm-agents.opencode
