@@ -6,24 +6,21 @@
 }:
 
 let
-  # Models are defined centrally in ai.nix; each becomes a codecompanion adapter.
-  aiModels = config.ai.models;
-  aiDefault = config.ai.default;
+  defaultStrategy = "opencode";
 
-  defaultStrategy = if aiDefault != null then aiDefault else (lib.head aiModels).name;
-
-  # Local llamaCpp models are served by llama-cpp.nix, which owns the port.
+  # Local models are served by llama-cpp.nix, which owns the port.
   llamaCppBaseUrl = "http://localhost:${toString config.programs.llama-cpp.port}";
+  localModels = config.programs.llama-cpp.models;
 
-  # HTTP-based adapters for models without ACP
+  # HTTP-based adapters for local llama-cpp models
   httpAdapters = lib.concatMapStringsSep "\n" (m: ''
     ${m.name} = function()
       return require("codecompanion.adapters").extend("openai_compatible", {
         name = "${m.name}",
         formatted_name = "${m.label}",
         env = {
-          url = "${if m.llamaCpp != null then llamaCppBaseUrl else m.baseUrl}",
-          api_key = "${if m.apiKey != null then m.apiKey else "none"}",
+          url = "${llamaCppBaseUrl}",
+          api_key = "none",
         },
         schema = {
           model = {
@@ -32,22 +29,37 @@ let
         },
       })
     end,
-  '') (builtins.filter (m: m.acp == null) aiModels);
+  '') localModels + ''
 
-  # ACP-based adapters (e.g. opencode)
-  acpAdapters = lib.concatMapStringsSep "\n" (m: ''
-    ${m.name} = function()
-      return require("codecompanion.adapters").extend("claude_code", {
-        name = "${m.name}",
-        formatted_name = "${m.label}",
-        commands = {
-          default = { ${
-            lib.concatStringsSep ", " (lib.map (arg: "\"${arg}\"") (lib.splitString " " m.acp.command))
-          } },
+    moonshot = function()
+      return require("codecompanion.adapters").extend("openai_compatible", {
+        name = "moonshot",
+        formatted_name = "Moonshot AI",
+        env = {
+          url = "https://api.moonshot.ai",
+          api_key = "cmd:op read op://Private/Moonshot/credential --no-newline",
+        },
+        schema = {
+          model = {
+            default = "kimi-k3",
+          },
         },
       })
     end,
-  '') (builtins.filter (m: m.acp != null) aiModels);
+  '';
+
+  # ACP-based adapters
+  acpAdapters = ''
+    opencode = function()
+      return require("codecompanion.adapters").extend("claude_code", {
+        name = "opencode",
+        formatted_name = "OpenCode",
+        commands = {
+          default = { "opencode", "acp", "-m", "opencode/big-pickle" },
+        },
+      })
+    end,
+  '';
 in
 {
   options.programs.neovim.ai.enable = lib.mkEnableOption "Neovim AI integration";

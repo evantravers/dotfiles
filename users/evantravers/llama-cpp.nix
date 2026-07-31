@@ -3,9 +3,7 @@
 let
   cfg = config.programs.llama-cpp;
 
-  # Models are defined centrally in ai.nix; llama-cpp serves the ones
-  # carrying Hugging Face GGUF details.
-  models = builtins.filter (m: m.llamaCpp != null) config.ai.models;
+  models = cfg.models;
 
   localBaseUrl = "http://localhost:${toString cfg.port}";
 
@@ -35,9 +33,9 @@ let
   modelVars = lib.concatStrings (map (m:
     "  ${m.name})\n" +
     "    LABEL=\"${m.label}\"\n" +
-    "    REPO=\"${m.llamaCpp.repo}\"\n" +
-    "    QUANT=\"${m.llamaCpp.quant}\"\n" +
-    "    DRAFT_QUANT=\"${lib.optionalString (m.llamaCpp.draftQuant != null) m.llamaCpp.draftQuant}\"\n" +
+    "    REPO=\"${m.repo}\"\n" +
+    "    QUANT=\"${m.quant}\"\n" +
+    "    DRAFT_QUANT=\"${lib.optionalString (m.draftQuant != null) m.draftQuant}\"\n" +
     "    ;;\n"
   ) models);
 
@@ -52,7 +50,7 @@ let
     };
     models = map (m: {
       id = m.model;
-      name = "${m.label} ${m.llamaCpp.quant} + MTP";
+      name = "${m.label} ${m.quant} + MTP";
       reasoning = m.reasoning;
       input = [ "text" "image" ];
       contextWindow = m.contextWindow;
@@ -159,6 +157,57 @@ in
       default = 8080;
       description = "Port the local llama-server listens on.";
     };
+
+    models = lib.mkOption {
+      type = lib.types.listOf (
+        lib.types.submodule {
+          options = {
+            name = lib.mkOption {
+              type = lib.types.str;
+              description = "Short identifier for this model (e.g. gemma, qwen).";
+            };
+            label = lib.mkOption {
+              type = lib.types.str;
+              description = "Human-readable label used in status messages and UIs.";
+            };
+            model = lib.mkOption {
+              type = lib.types.str;
+              description = "GGUF filename sent as the model id to the API.";
+            };
+            reasoning = lib.mkOption {
+              type = lib.types.bool;
+              default = false;
+              description = "Whether this model supports reasoning.";
+            };
+            contextWindow = lib.mkOption {
+              type = lib.types.int;
+              default = 65536;
+              description = "Context window size in tokens.";
+            };
+            maxTokens = lib.mkOption {
+              type = lib.types.int;
+              default = 8192;
+              description = "Maximum output tokens.";
+            };
+            repo = lib.mkOption {
+              type = lib.types.str;
+              description = "Hugging Face repository containing the GGUF files.";
+            };
+            quant = lib.mkOption {
+              type = lib.types.str;
+              description = "Quantization variant to fetch from the repo.";
+            };
+            draftQuant = lib.mkOption {
+              type = lib.types.nullOr lib.types.str;
+              default = null;
+              description = "Optional draft model quantization for speculative decoding.";
+            };
+          };
+        }
+      );
+      default = [ ];
+      description = "Local models served by llama-server, sourced from Hugging Face GGUF files.";
+    };
   };
 
   config = lib.mkIf cfg.enable (lib.mkMerge [
@@ -166,7 +215,7 @@ in
       assertions = [
         {
           assertion = models != [ ];
-          message = "programs.llama-cpp is enabled but no entry in ai.models has llamaCpp GGUF details.";
+          message = "programs.llama-cpp is enabled but programs.llama-cpp.models is empty.";
         }
       ];
 
