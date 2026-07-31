@@ -12,7 +12,6 @@ let
   # providers are configured interactively via `pi /login`.
   allProviders = cfg.providers;
 
-  resolvedSettings = cfg.settings;
 in
 {
   options.programs.pi = {
@@ -24,32 +23,12 @@ in
       description = "Provider definitions written to pi's models.json.";
     };
 
-    settings = lib.mkOption {
-      type = lib.types.attrs;
-      default = { };
-      description = "Settings written to pi's settings.json.";
-    };
-
-    packages = lib.mkOption {
-      type = lib.types.listOf lib.types.str;
-      default = [ ];
-      example = [
-        "npm:pi-web-access"
-        "git:github.com/user/repo@v1"
-      ];
-      description = ''
-        Pi packages to install, written to settings.json.
-        Since settings.json is a read-only nix store symlink, `pi install`
-        cannot persist packages — declare them here instead.
-      '';
-    };
   };
 
   config = lib.mkIf cfg.enable {
     home.packages = [ pkgs.llm-agents.pi ];
 
     home.sessionVariables = {
-      PI_AGENT_DIR = "${config.xdg.configHome}/pi";
       PI_CODING_AGENT_DIR = "${config.xdg.configHome}/pi/agent/";
     };
 
@@ -57,15 +36,5 @@ in
       text = builtins.toJSON { providers = allProviders; };
     };
 
-    xdg.configFile."pi/agent/settings.json" =
-      lib.mkIf (resolvedSettings != { } || cfg.packages != [ ])
-        {
-          text = builtins.toJSON (
-            resolvedSettings
-            // lib.optionalAttrs (cfg.packages != [ ]) {
-              packages = cfg.packages;
-            }
-          );
-        };
   };
 }
