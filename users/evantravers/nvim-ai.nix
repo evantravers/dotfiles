@@ -13,40 +13,42 @@ let
   localModels = config.programs.llama-cpp.models;
 
   # HTTP-based adapters for local llama-cpp models
-  httpAdapters = lib.concatMapStringsSep "\n" (m: ''
-    ${m.name} = function()
-      return require("codecompanion.adapters").extend("openai_compatible", {
-        name = "${m.name}",
-        formatted_name = "${m.label}",
-        env = {
-          url = "${llamaCppBaseUrl}",
-          api_key = "none",
-        },
-        schema = {
-          model = {
-            default = "${m.model}",
+  httpAdapters =
+    lib.concatMapStringsSep "\n" (m: ''
+      ${m.name} = function()
+        return require("codecompanion.adapters").extend("openai_compatible", {
+          name = "${m.name}",
+          formatted_name = "${m.label}",
+          env = {
+            url = "${llamaCppBaseUrl}",
+            api_key = "none",
           },
-        },
-      })
-    end,
-  '') localModels + ''
+          schema = {
+            model = {
+              default = "${m.model}",
+            },
+          },
+        })
+      end,
+    '') localModels
+    + ''
 
-    moonshot = function()
-      return require("codecompanion.adapters").extend("openai_compatible", {
-        name = "moonshot",
-        formatted_name = "Moonshot AI",
-        env = {
-          url = "https://api.moonshot.ai",
-          api_key = "cmd:op read op://Private/Moonshot/credential --no-newline",
-        },
-        schema = {
-          model = {
-            default = "kimi-k3",
+      moonshot = function()
+        return require("codecompanion.adapters").extend("openai_compatible", {
+          name = "moonshot",
+          formatted_name = "Moonshot AI",
+          env = {
+            url = "https://api.moonshot.ai",
+            api_key = "cmd:op read op://Private/Moonshot/credential --no-newline",
           },
-        },
-      })
-    end,
-  '';
+          schema = {
+            model = {
+              default = "kimi-k3",
+            },
+          },
+        })
+      end,
+    '';
 in
 {
   options.programs.neovim.ai.enable = lib.mkEnableOption "Neovim AI integration";
@@ -91,7 +93,7 @@ in
                   },
                   adapters = {
                     acp = {
-                      opts = { show_defaults = false },
+                      opts = { show_presets = false },
                         opencode = function()
                           return require("codecompanion.adapters").extend("opencode", {
                           })
@@ -99,7 +101,7 @@ in
                     },
                     http = {
                       -- hide adapters that I haven't explicitly configured
-                      opts = { show_defaults = false, },
+                      opts = { show_presets = false, },
             ${httpAdapters}
                     }
                   },
