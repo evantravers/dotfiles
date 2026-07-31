@@ -47,19 +47,6 @@ let
       })
     end,
   '';
-
-  # ACP-based adapters
-  acpAdapters = ''
-    opencode = function()
-      return require("codecompanion.adapters").extend("claude_code", {
-        name = "opencode",
-        formatted_name = "OpenCode",
-        commands = {
-          default = { "opencode", "acp" },
-        },
-      })
-    end,
-  '';
 in
 {
   options.programs.neovim.ai.enable = lib.mkEnableOption "Neovim AI integration";
@@ -105,7 +92,10 @@ in
                   adapters = {
                     acp = {
                       opts = { show_defaults = false },
-            ${acpAdapters}
+                        opencode = function()
+                          return require("codecompanion.adapters").extend("opencode", {
+                          })
+                        end,
                     },
                     http = {
                       -- hide adapters that I haven't explicitly configured
