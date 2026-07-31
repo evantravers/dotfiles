@@ -55,7 +55,7 @@ let
         name = "opencode",
         formatted_name = "OpenCode",
         commands = {
-          default = { "opencode", "acp", "-m", "opencode/big-pickle" },
+          default = { "opencode", "acp" },
         },
       })
     end,
