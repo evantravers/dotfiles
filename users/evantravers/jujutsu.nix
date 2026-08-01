@@ -5,7 +5,7 @@
   ...
 }:
 let
-  jjc = pkgs.callPackage ./jjc { };
+  jjc = pkgs.callPackage ./jjc.nix { };
 in
 {
   config = lib.mkIf config.programs.jujutsu.enable {
