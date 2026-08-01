@@ -44,17 +44,34 @@
 
   devenv = inputs.devenv.overlays.default;
 
+  # wiff: terminal-first diff/code-review tool. Not in nixpkgs and upstream
+  # ships no release tags or flake, so build the pinned commit from source.
+  wiff = _final: prev: {
+    wiff = prev.rustPlatform.buildRustPackage {
+      pname = "wiff";
+      version = "0.1.0";
+      src = inputs.wiff;
+      buildAndTestSubdir = "crates/wiff";
+      cargoHash = "sha256-m0gCmZ8ozVjQkuffTaMHmOcaoJAx0aJW5cgKTTi+U6g=";
+      # Integration tests need a git repo/session state not present in the sandbox.
+      doCheck = false;
+    };
+  };
+
   kanata = _final: prev: {
-    kanata = prev.runCommandLocal "kanata-1.12.0" {
-      src = prev.fetchzip {
-        url = "https://github.com/jtroo/kanata/releases/download/v1.12.0/macos-binaries-arm64.zip";
-        hash = "sha256-5WY24+8biyOu+172BWLlIlriSg0gd5C4K9QHhT6rJss=";
-        stripRoot = false;
-      };
-    } ''
-      mkdir -p $out/bin
-      install -m755 "$src/kanata_macos_arm64" "$out/bin/kanata"
-    '';
+    kanata =
+      prev.runCommandLocal "kanata-1.12.0"
+        {
+          src = prev.fetchzip {
+            url = "https://github.com/jtroo/kanata/releases/download/v1.12.0/macos-binaries-arm64.zip";
+            hash = "sha256-5WY24+8biyOu+172BWLlIlriSg0gd5C4K9QHhT6rJss=";
+            stripRoot = false;
+          };
+        }
+        ''
+          mkdir -p $out/bin
+          install -m755 "$src/kanata_macos_arm64" "$out/bin/kanata"
+        '';
   };
 
   # mini.diff source for jj (jujutsu), not in nixpkgs. Hosted on tangled.org.
