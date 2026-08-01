@@ -498,6 +498,7 @@
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs_4",
         "nixpkgs-unstable": "nixpkgs-unstable",
+        "wiff": "wiff",
         "workmux": "workmux"
       }
     },
@@ -577,6 +578,23 @@
       "original": {
         "owner": "numtide",
         "repo": "treefmt-nix",
+        "type": "github"
+      }
+    },
+    "wiff": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1785475197,
+        "narHash": "sha256-O29UU8n4IzmssAD/2L2aNiIeAEI4LkHJmZp4J2hDIiM=",
+        "owner": "wez",
+        "repo": "wiff",
+        "rev": "005ef39240442c3dfc5667babf9b20a1b37f258a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "wez",
+        "repo": "wiff",
+        "rev": "005ef39240442c3dfc5667babf9b20a1b37f258a",
         "type": "github"
       }
     },
