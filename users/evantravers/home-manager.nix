@@ -141,25 +141,17 @@
         {
           name = "gemma";
           label = "Gemma 4 26B-A4B";
-          model = "gemma-4-26B-A4B-it-UD-Q4_K_XL.gguf";
-          repo = "unsloth/gemma-4-26B-A4B-it-GGUF";
-          quant = "Q4_K_XL";
-          draftQuant = "Q8_0-MTP";
+          file = "gemma-4-26B-A4B-it-UD-Q4_K_XL.gguf";
         }
         {
           name = "qwen";
           label = "Qwen 3.6 35B-A3B";
-          model = "Qwen3.6-35B-A3B-UD-Q4_K_XL.gguf";
-          reasoning = true;
-          repo = "unsloth/Qwen3.6-35B-A3B-MTP-GGUF";
-          quant = "Q4_K_XL";
+          file = "Qwen3.6-35B-A3B-UD-Q4_K_XL.gguf";
         }
       ];
     };
 
-    pi = {
-      enable = true;
-    };
+    pi.enable = true;
 
     # Comms
     email.enable = true;

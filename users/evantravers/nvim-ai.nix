@@ -8,7 +8,9 @@
 let
   defaultStrategy = "opencode";
 
-  # Local models are served by llama-cpp.nix, which owns the port.
+  # Local models are served by llama-cpp.nix (programs.llama-cpp), which owns
+  # the port and the model catalog; these only feed the editor adapters below.
+  # The llama.cpp router discovers and downloads the files itself.
   llamaCppBaseUrl = "http://localhost:${toString config.programs.llama-cpp.port}";
   localModels = config.programs.llama-cpp.models;
 
@@ -25,7 +27,7 @@ let
           },
           schema = {
             model = {
-              default = "${m.model}",
+              default = "${m.file}",
             },
           },
         })
