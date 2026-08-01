@@ -47,7 +47,6 @@
       rainfrog
       ripgrep
       sesh
-      wiff
     ];
   };
 
