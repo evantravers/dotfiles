@@ -44,20 +44,6 @@
 
   devenv = inputs.devenv.overlays.default;
 
-  # wiff: terminal-first diff/code-review tool. Not in nixpkgs and upstream
-  # ships no release tags or flake, so build the pinned commit from source.
-  wiff = _final: prev: {
-    wiff = prev.rustPlatform.buildRustPackage {
-      pname = "wiff";
-      version = "0.1.0";
-      src = inputs.wiff;
-      buildAndTestSubdir = "crates/wiff";
-      cargoHash = "sha256-m0gCmZ8ozVjQkuffTaMHmOcaoJAx0aJW5cgKTTi+U6g=";
-      # Integration tests need a git repo/session state not present in the sandbox.
-      doCheck = false;
-    };
-  };
-
   kanata = _final: prev: {
     kanata =
       prev.runCommandLocal "kanata-1.12.0"

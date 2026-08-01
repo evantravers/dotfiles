@@ -26,11 +26,6 @@
     # jujutsu.url = "github:jj-vcs/jj?tag=v0.42.0";
     devenv.url = "github:cachix/devenv";
     workmux.url = "github:raine/workmux";
-    # No releases/tags or flake upstream yet, so pin to a commit and build from source.
-    wiff = {
-      url = "github:wez/wiff/005ef39240442c3dfc5667babf9b20a1b37f258a";
-      flake = false;
-    };
   };
   outputs =
     { nixpkgs, ... }@inputs:
