@@ -5,6 +5,7 @@
     ./email.nix
     ./git.nix
     ./helix.nix
+    ./hunk.nix
     ./irc.nix
     ./jujutsu.nix
     ./llama-cpp.nix
@@ -30,7 +31,6 @@
     packages = with pkgs; [
       llm-agents.antigravity-cli
       llm-agents.claude-code
-      llm-agents.hunk
       llm-agents.opencode
       llm-agents.openspec
       llm-agents.showboat
@@ -117,6 +117,7 @@
 
     # Source control
     git.enable = true;
+    hunk.enable = true;
     jujutsu.enable = true;
 
     # Editors
