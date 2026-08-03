@@ -112,14 +112,6 @@
         base_branch = "auto";
         post_create = [ "workmux-devenv-rebind" ];
         pre_remove = [ "workmux-devenv-unbind" ];
-        agent = "claude";
-        panes = [
-          {
-            command = "<agent>";
-            focus = true;
-          }
-          { split = "horizontal"; }
-        ];
       };
     };
 
