@@ -109,6 +109,7 @@
       settings = {
         nerdfont = true;
         merge_strategy = "rebase";
+        base_branch = "auto";
         agent = "claude";
         panes = [
           {
