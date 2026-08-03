@@ -38,10 +38,17 @@ let
       [ -f "$allowed" ] || exit 0
       command -v devenv >/dev/null || exit 0
 
-      entry=$(jq -c --arg root "$root" 'select(.path == $root and .from != null)' "$allowed" | head -n1)
+      # Latest entry for the main checkout wins, whether it's a plain
+      # auto-activation trust or an out-of-tree (--from) binding
+      entry=$(jq -c --arg root "$root" 'select(.path == $root)' "$allowed" | tail -n1)
       [ -n "$entry" ] || exit 0
 
-      from=$(jq -r '.from' <<<"$entry")
+      from=$(jq -r '.from // empty' <<<"$entry")
+      if [ -z "$from" ]; then
+        # In-tree devenv.nix is checked out in the worktree; just grant trust
+        devenv allow
+        exit 0
+      fi
       case "$from" in
         *:*) ;;                                            # flake ref or path:/abs
         /*)  from="path:$from" ;;                          # absolute path
