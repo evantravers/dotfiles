@@ -4,6 +4,31 @@
     unstable = import inputs.nixpkgs-unstable {
       localSystem.system = final.stdenv.hostPlatform.system;
       config.allowUnfree = true;
+      overlays = [
+        # obsidian 1.13.4 darwin unpack fix (upstream NixOS/nixpkgs c594c220,
+        # not yet on the nixpkgs-unstable branch). The 1.13.4 universal DMG
+        # unpacks via 7z into a volume-named directory
+        # ("Obsidian 1.13.4-universal/Obsidian.app"), so the hardcoded
+        # sourceRoot = "Obsidian.app" breaks the darwin build. Drop sourceRoot
+        # and copy the app out of the auto-detected dir. Remove once upstream
+        # lands on nixpkgs-unstable.
+        (fixfinal: fixprev: {
+          obsidian = if fixfinal.stdenv.hostPlatform.isDarwin then
+            fixprev.obsidian.overrideAttrs (old: {
+              sourceRoot = null;
+              installPhase = ''
+                runHook preInstall
+                mkdir -p $out/{Applications,bin}
+                cp -R ${old.appname}.app $out/Applications
+                makeWrapper $out/Applications/${old.appname}.app/Contents/MacOS/${old.appname} $out/bin/obsidian
+                makeWrapper $out/Applications/${old.appname}.app/Contents/MacOS/obsidian-cli $out/bin/obsidian-cli
+                runHook postInstall
+              '';
+            })
+          else
+            fixprev.obsidian;
+        })
+      ];
     };
   };
 
