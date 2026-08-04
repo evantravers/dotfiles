@@ -13,20 +13,21 @@
         # and copy the app out of the auto-detected dir. Remove once upstream
         # lands on nixpkgs-unstable.
         (fixfinal: fixprev: {
-          obsidian = if fixfinal.stdenv.hostPlatform.isDarwin then
-            fixprev.obsidian.overrideAttrs (old: {
-              sourceRoot = null;
-              installPhase = ''
-                runHook preInstall
-                mkdir -p $out/{Applications,bin}
-                cp -R ${old.appname}.app $out/Applications
-                makeWrapper $out/Applications/${old.appname}.app/Contents/MacOS/${old.appname} $out/bin/obsidian
-                makeWrapper $out/Applications/${old.appname}.app/Contents/MacOS/obsidian-cli $out/bin/obsidian-cli
-                runHook postInstall
-              '';
-            })
-          else
-            fixprev.obsidian;
+          obsidian =
+            if fixfinal.stdenv.hostPlatform.isDarwin then
+              fixprev.obsidian.overrideAttrs (old: {
+                sourceRoot = null;
+                installPhase = ''
+                  runHook preInstall
+                  mkdir -p $out/{Applications,bin}
+                  cp -R ${old.appname}.app $out/Applications
+                  makeWrapper $out/Applications/${old.appname}.app/Contents/MacOS/${old.appname} $out/bin/obsidian
+                  makeWrapper $out/Applications/${old.appname}.app/Contents/MacOS/obsidian-cli $out/bin/obsidian-cli
+                  runHook postInstall
+                '';
+              })
+            else
+              fixprev.obsidian;
         })
       ];
     };
