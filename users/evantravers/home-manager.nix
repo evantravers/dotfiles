@@ -13,6 +13,7 @@
     ./pi.nix
     ./starship.nix
     ./tmux.nix
+    ./tuicr.nix
     ./workmux.nix
   ];
 
@@ -119,6 +120,7 @@
     git.enable = true;
     hunk.enable = true;
     jujutsu.enable = true;
+    tuicr.enable = true;
 
     # Editors
     neovim = {
