@@ -137,30 +137,8 @@ let
     mode_bg = "#88507D";
   };
 
-  renderTheme =
-    t:
-    lib.concatStringsSep "\n" (
-      [ "# Managed by home-manager — see users/evantravers/tuicr.nix." ]
-      ++ lib.mapAttrsToList (key: value: "${key} = \"${value}\"") t
-    );
-
-  # Render one top-level setting as a TOML assignment (strings must be quoted).
-  toToml =
-    value:
-    if lib.isBool value || lib.isInt value then
-      lib.generators.mkValueStringDefault { } value
-    else
-      ''"${toString value}"'';
-
-  settingsLines = lib.mapAttrsToList (key: value: "${key} = ${toToml value}") cfg.settings;
-
-  configText = lib.concatStringsSep "\n" (
-    [
-      "# Managed by home-manager — see users/evantravers/tuicr.nix."
-      "theme = \"${cfg.theme}\""
-    ]
-    ++ settingsLines
-  );
+  # Top-level config (theme + free-form settings), rendered with formats.toml.
+  configValue = cfg.settings // { theme = cfg.theme; };
 in
 {
   options.programs.tuicr = {
@@ -204,9 +182,9 @@ in
     home.packages = [ cfg.package ];
 
     xdg.configFile = {
-      "tuicr/config.toml".text = configText;
-      "tuicr/themes/zenbones-dark.toml".text = renderTheme zenbonesDark;
-      "tuicr/themes/zenbones-light.toml".text = renderTheme zenbonesLight;
+      "tuicr/config.toml".source = (pkgs.formats.toml { }).generate "tuicr-config" configValue;
+      "tuicr/themes/zenbones-dark.toml".source = (pkgs.formats.toml { }).generate "tuicr-theme-dark" zenbonesDark;
+      "tuicr/themes/zenbones-light.toml".source = (pkgs.formats.toml { }).generate "tuicr-theme-light" zenbonesLight;
     };
   };
 }

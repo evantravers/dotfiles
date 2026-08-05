@@ -182,115 +182,58 @@ let
     };
   };
 
-  renderTheme = id: base: t: ''
-        [themes.${id}]
-        base  = "${base}"
-        label = "${t.label}"
+  # Map a role-keyed palette to hunk's flat config keys, then let
+  # pkgs.formats.toml render the whole config — it quotes the dotted TextMate
+  # scope keys and emits the [themes.<id>.syntax_scopes] table correctly.
+  toTheme =
+    base: t:
+    {
+      base = base;
+      label = t.label;
+      background = t.surfaces.background;
+      panel = t.surfaces.panel;
+      panelAlt = t.surfaces.panelAlt;
+      border = t.surfaces.border;
+      text = t.surfaces.text;
+      muted = t.surfaces.muted;
+      accent = t.surfaces.accent;
+      accentMuted = t.surfaces.accentMuted;
+      addedBg = t.diff.addedBg;
+      removedBg = t.diff.removedBg;
+      movedAddedBg = t.diff.movedAddedBg;
+      movedRemovedBg = t.diff.movedRemovedBg;
+      contextBg = t.diff.contextBg;
+      addedContentBg = t.diff.addedContentBg;
+      removedContentBg = t.diff.removedContentBg;
+      contextContentBg = t.diff.contextContentBg;
+      addedSignColor = t.diff.addedSignColor;
+      removedSignColor = t.diff.removedSignColor;
+      lineNumberBg = t.diff.lineNumberBg;
+      lineNumberFg = t.diff.lineNumberFg;
+      selectedHunk = t.diff.selectedHunk;
+      badgeAdded = t.chrome.badgeAdded;
+      badgeRemoved = t.chrome.badgeRemoved;
+      badgeNeutral = t.chrome.badgeNeutral;
+      fileNew = t.chrome.fileNew;
+      fileDeleted = t.chrome.fileDeleted;
+      fileRenamed = t.chrome.fileRenamed;
+      fileModified = t.chrome.fileModified;
+      fileUntracked = t.chrome.fileUntracked;
+      noteBorder = t.chrome.noteBorder;
+      noteBackground = t.chrome.noteBackground;
+      noteTitleBackground = t.chrome.noteTitleBackground;
+      noteTitleText = t.chrome.noteTitleText;
+      syntax_scopes = t.syntax;
+    };
 
-        # Surfaces
-        background   = "${t.surfaces.background}"
-        panel        = "${t.surfaces.panel}"
-        panelAlt     = "${t.surfaces.panelAlt}"
-        border       = "${t.surfaces.border}"
-        text         = "${t.surfaces.text}"
-        muted        = "${t.surfaces.muted}"
-        accent       = "${t.surfaces.accent}"
-        accentMuted  = "${t.surfaces.accentMuted}"
-
-        # Diff lines
-        addedBg          = "${t.diff.addedBg}"
-        removedBg        = "${t.diff.removedBg}"
-        movedAddedBg     = "${t.diff.movedAddedBg}"
-        movedRemovedBg   = "${t.diff.movedRemovedBg}"
-        contextBg        = "${t.diff.contextBg}"
-        addedContentBg   = "${t.diff.addedContentBg}"
-        removedContentBg = "${t.diff.removedContentBg}"
-        contextContentBg = "${t.diff.contextContentBg}"
-
-        # Diff sign gutter (+ / -)
-        addedSignColor   = "${t.diff.addedSignColor}"
-        removedSignColor = "${t.diff.removedSignColor}"
-
-        # Line numbers
-        lineNumberBg = "${t.diff.lineNumberBg}"
-        lineNumberFg = "${t.diff.lineNumberFg}"
-
-        # Selected hunk highlight
-        selectedHunk = "${t.diff.selectedHunk}"
-
-        # Badges
-        badgeAdded   = "${t.chrome.badgeAdded}"
-        badgeRemoved = "${t.chrome.badgeRemoved}"
-        badgeNeutral = "${t.chrome.badgeNeutral}"
-
-        # File status
-        fileNew       = "${t.chrome.fileNew}"
-        fileDeleted   = "${t.chrome.fileDeleted}"
-        fileRenamed   = "${t.chrome.fileRenamed}"
-        fileModified  = "${t.chrome.fileModified}"
-        fileUntracked = "${t.chrome.fileUntracked}"
-
-        # Agent / review notes
-        noteBorder          = "${t.chrome.noteBorder}"
-        noteBackground      = "${t.chrome.noteBackground}"
-        noteTitleBackground = "${t.chrome.noteTitleBackground}"
-        noteTitleText       = "${t.chrome.noteTitleText}"
-
-        [themes.${id}.syntax_scopes]
-    ${renderScopes t.syntax}
-  '';
-
-  # Render one top-level setting as a TOML assignment (strings must be quoted).
-  toToml =
-    value:
-    if lib.isBool value || lib.isInt value then
-      lib.generators.mkValueStringDefault { } value
-    else
-      ''"${toString value}"'';
-
-  # Pre-built lines (avoids multi-line string indent tricks).
-  settingsLines = lib.mapAttrsToList (key: value: "${key} = ${toToml value}") cfg.settings;
-  renderScopes =
-    scopes:
-    lib.concatStringsSep "\n" (
-      lib.mapAttrsToList (scope: color: "    \"${scope}\" = \"${color}\"") scopes
-    );
-
-  # Strip the common leading whitespace from a multi-line string so the theme
-  # blocks render at column 0 in the generated file.
-  dedent =
-    s:
-    let
-      lines = lib.splitString "\n" s;
-      minIndent = lib.foldl' (
-        m: l:
-        if l == "" then
-          m
-        else
-          let
-            spaces = builtins.head (lib.match "( *).*" l);
-          in
-          lib.min m (lib.stringLength spaces)
-      ) 999 lines;
-      strip = l: if l == "" then "" else lib.substring minIndent (lib.stringLength l - minIndent) l;
-    in
-    lib.concatStringsSep "\n" (map strip lines);
-
-  configText = lib.concatStringsSep "\n" (
-    [
-      "# Managed by home-manager — see users/evantravers/hunk.nix."
-      "# Press `t` inside hunk to switch between the registered themes."
-      ""
-      "theme = \"${cfg.theme}\""
-    ]
-    ++ settingsLines
-    ++ [
-      ""
-      (dedent (renderTheme "zenbones-dark" "github-dark-default" zenbonesDark))
-      ""
-      (dedent (renderTheme "zenbones-light" "github-light-default" zenbonesLight))
-    ]
-  );
+  # Explicit theme/themes always win over free-form settings.
+  configValue = cfg.settings // {
+    theme = cfg.theme;
+    themes = {
+      zenbones-dark = toTheme "github-dark-default" zenbonesDark;
+      zenbones-light = toTheme "github-light-default" zenbonesLight;
+    };
+  };
 in
 {
   options.programs.hunk = {
@@ -337,6 +280,7 @@ in
   config = lib.mkIf cfg.enable {
     home.packages = [ cfg.package ];
 
-    xdg.configFile."hunk/config.toml".text = configText;
+    xdg.configFile."hunk/config.toml".source =
+      (pkgs.formats.toml { }).generate "hunk-config" configValue;
   };
 }
