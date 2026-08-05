@@ -7,8 +7,6 @@
     # include NixOS-WSL modules
   ];
 
-  nixpkgs.config.allowUnfree = true;
-
   environment = {
     systemPackages = with pkgs; [
       socat
