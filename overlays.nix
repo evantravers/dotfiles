@@ -10,22 +10,35 @@
         # unpacks via 7z into a volume-named directory
         # ("Obsidian 1.13.4-universal/Obsidian.app"), so the hardcoded
         # sourceRoot = "Obsidian.app" breaks the darwin build. Drop sourceRoot
-        # and copy the app out of the auto-detected dir. Remove once upstream
-        # lands on nixpkgs-unstable.
+        # and copy the app out of the auto-detected dir. The override self-
+        # expires with an evaluation warning once the upstream fix lands on
+        # nixpkgs-unstable (detected by the hardcoded sourceRoot disappearing).
         (fixfinal: fixprev: {
           obsidian =
             if fixfinal.stdenv.hostPlatform.isDarwin then
-              fixprev.obsidian.overrideAttrs (old: {
-                sourceRoot = null;
-                installPhase = ''
-                  runHook preInstall
-                  mkdir -p $out/{Applications,bin}
-                  cp -R ${old.appname}.app $out/Applications
-                  makeWrapper $out/Applications/${old.appname}.app/Contents/MacOS/${old.appname} $out/bin/obsidian
-                  makeWrapper $out/Applications/${old.appname}.app/Contents/MacOS/obsidian-cli $out/bin/obsidian-cli
-                  runHook postInstall
-                '';
-              })
+              let
+                noOverride = (fixprev.obsidian.sourceRoot or null) != "${fixprev.obsidian.appname}.app";
+              in
+              fixprev.lib.warnIf noOverride
+                ''
+                  obsidian's darwin unpack fix is now in nixpkgs; the sourceRoot override can be removed.
+                ''
+                (
+                  if noOverride then
+                    fixprev.obsidian
+                  else
+                    fixprev.obsidian.overrideAttrs (old: {
+                      sourceRoot = null;
+                      installPhase = ''
+                        runHook preInstall
+                        mkdir -p $out/{Applications,bin}
+                        cp -R ${old.appname}.app $out/Applications
+                        makeWrapper $out/Applications/${old.appname}.app/Contents/MacOS/${old.appname} $out/bin/obsidian
+                        makeWrapper $out/Applications/${old.appname}.app/Contents/MacOS/obsidian-cli $out/bin/obsidian-cli
+                        runHook postInstall
+                      '';
+                    })
+                )
             else
               fixprev.obsidian;
         })
@@ -63,9 +76,26 @@
     workmux = inputs.workmux.packages.${prev.stdenv.hostPlatform.system}.default;
   };
 
-  # Pin karabiner-dk driver version for kanata compatibility.
+  # Pin karabiner-dk driver version for kanata compatibility. The pin self-
+  # expires: once kanata's required driver version matches the nixpkgs default,
+  # the override is a no-op and prints an evaluation warning. A changed-but-
+  # not-caught-up requirement prints a warning to update the pin instead.
   karabiner-dk-version = final: prev: {
-    karabiner-dk = prev.karabiner-dk.override { "driver-version" = "6.2.0"; };
+    karabiner-dk =
+      let
+        inherit (prev) lib;
+        default = prev.karabiner-dk;
+        pinned = "6.2.0";
+        need = prev.kanata.darwinDriverVersion;
+        useDefault = need == default.version;
+      in
+      lib.warnIf useDefault
+        "kanata now targets karabiner-dk ${need} (the nixpkgs default); the driver-version pin can be removed."
+        (
+          lib.warnIf (need != pinned && !useDefault)
+            "kanata's driver requirement changed to ${need}; update the karabiner-dk pin from ${pinned}."
+            (if useDefault then default else default.override { "driver-version" = pinned; })
+        );
   };
 
   devenv = inputs.devenv.overlays.default;
@@ -73,17 +103,30 @@
   # mini.diff source for jj (jujutsu), not in nixpkgs. Hosted on tangled.org.
   # https://tangled.org/ronshavit.com/mini.diff.jj
   mini-diff-jj = final: _prev: {
-    mini-diff-jj = final.unstable.vimUtils.buildVimPlugin {
-      pname = "mini-diff-jj";
-      version = "5cb6cc2";
-      # require("mini.diff.jj") pulls in mini.diff, which only exists at runtime
-      # (provided by mini-nvim), so skip the build-time require check for it.
-      nvimSkipModules = [ "mini.diff.jj" ];
-      src = final.fetchgit {
-        url = "https://tangled.org/ronshavit.com/mini.diff.jj";
-        rev = "5cb6cc239394c21b90c4b7848a96c1c023aa6057";
-        hash = "sha256-plEn52ksNmOtCeCFynPtW5ReRdtQSbygx5dtnlpSSsc=";
-      };
-    };
+    mini-diff-jj =
+      let
+        inNixpkgs = final.unstable.vimPlugins ? mini-diff-jj;
+      in
+      final.unstable.lib.warnIf inNixpkgs
+        ''
+          mini-diff-jj is now in nixpkgs vimPlugins; this tangled.org override can be removed.
+        ''
+        (
+          if inNixpkgs then
+            final.unstable.vimPlugins.mini-diff-jj
+          else
+            final.unstable.vimUtils.buildVimPlugin {
+              pname = "mini-diff-jj";
+              version = "5cb6cc2";
+              # require("mini.diff.jj") pulls in mini.diff, which only exists at runtime
+              # (provided by mini-nvim), so skip the build-time require check for it.
+              nvimSkipModules = [ "mini.diff.jj" ];
+              src = final.fetchgit {
+                url = "https://tangled.org/ronshavit.com/mini.diff.jj";
+                rev = "5cb6cc239394c21b90c4b7848a96c1c023aa6057";
+                hash = "sha256-plEn52ksNmOtCeCFynPtW5ReRdtQSbygx5dtnlpSSsc=";
+              };
+            }
+        );
   };
 }
