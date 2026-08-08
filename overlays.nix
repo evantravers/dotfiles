@@ -129,4 +129,71 @@
             }
         );
   };
+
+  # Fork of zenbones-theme/zenbones.nvim from upstream PR #236
+  # (s-cerevisiae/zenbones.nvim @ the `cache` branch). Adds a msgpack colorscheme
+  # cache: colors/palettes are compiled through lush once on first load and cached,
+  # so later loads skip lush entirely (startup ~2ms). Overrides zenbones-nvim in
+  # vimPlugins, which promote-unstable then forwards to top-level pkgs. The override
+  # self-expires with an evaluation warning once nixpkgs' zenbones-nvim carries the
+  # cache (detected by the "bones_no_cache" option in lua/zenbones/util.lua, which
+  # this PR introduced; a plain version check would false-fire since nixpkgs is
+  # already at the same 4.12.0 tag the PR targets).
+  zenbones-cache-fork = final: prev: {
+    # Preserve the rest of `unstable` (overlay results merge shallowly, so a
+    # bare `unstable.vimPlugins = ...` would clobber the whole unstable set).
+    unstable = prev.unstable // {
+      vimPlugins = prev.unstable.vimPlugins // {
+        zenbones-nvim =
+          let
+            inherit (final.unstable) lib;
+            nixpkgsZenbones = prev.unstable.vimPlugins.zenbones-nvim;
+            utilLua = nixpkgsZenbones + "/lua/zenbones/util.lua";
+            inNixpkgs =
+              builtins.pathExists utilLua
+              && builtins.match ".*bones_no_cache.*" (builtins.readFile utilLua) != null;
+          in
+          lib.warnIf inNixpkgs
+            ''
+              zenbones' colorscheme cache (upstream PR #236) is now in nixpkgs vimPlugins; the fork override can be removed.
+            ''
+            (final.unstable.vimUtils.buildVimPlugin {
+              pname = "zenbones.nvim";
+              version = "4.12.0-236";
+              # Same check setup as nixpkgs' zenbones-nvim override
+              # (pkgs/applications/editors/vim/plugins/overrides.nix): lush is
+              # needed at require-check time, and the randombones/shipwright
+              # modules can't be required without globals/setup.
+              checkInputs = [ final.unstable.vimPlugins.lush-nvim ];
+              nvimSkipModules = [
+                # Requires global variable set
+                "randombones"
+                "randombones.palette"
+                "randombones_dark.palette"
+                "randombones_light"
+                "randombones_light.palette"
+                # Optional shipwright
+                "zenbones.shipwright.runners.alacritty"
+                "zenbones.shipwright.runners.foot"
+                "zenbones.shipwright.runners.ghostty"
+                "zenbones.shipwright.runners.iterm"
+                "zenbones.shipwright.runners.kitty"
+                "zenbones.shipwright.runners.lightline"
+                "zenbones.shipwright.runners.lualine"
+                "zenbones.shipwright.runners.tmux"
+                "zenbones.shipwright.runners.vim"
+                "zenbones.shipwright.runners.wezterm"
+                "zenbones.shipwright.runners.windows_terminal"
+                "randombones_dark"
+              ];
+              src = final.fetchFromGitHub {
+                owner = "s-cerevisiae";
+                repo = "zenbones.nvim";
+                rev = "bc982d86126f41c6ef7aadf189c4e70f57ee19bf";
+                hash = "sha256-MiiYxpdz+0LytGLbFhrrN7l0DppBcgIYqS6UIB1NXYc=";
+              };
+            });
+      };
+    };
+  };
 }
