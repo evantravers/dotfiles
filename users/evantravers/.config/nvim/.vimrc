@@ -19,16 +19,22 @@ set termguicolors
 syntax on
 set colorcolumn=80
 set cursorline
-set fillchars=vert:\│
+set fillchars=vert:\│,eob:\ ,fold:·,foldopen:-,foldclose:+,foldsep:│
 set hidden
 set list
-set listchars=tab:»·,trail:·
+set listchars=tab:»·,trail:·,nbsp:␣
 set nofoldenable
 set nowrap
 set number
 set relativenumber
 set ruler
 set scrolloff=3
+set sidescrolloff=5
+set signcolumn=auto:2
+set foldcolumn=auto
+set confirm
+set title
+set shortmess+=cFI
 
 " Tags
 set tags=./tags;/,tags;/
@@ -38,6 +44,7 @@ set backupdir=~/.config/nvim/backups,.
 set directory=~/.config/nvim/swaps,.
 if exists('&undodir')
   set undodir=~/.config/nvim/undo,.
+  set undofile
 endif
 
 let mapleader=','

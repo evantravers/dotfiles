@@ -6,15 +6,11 @@ vim.o.icm = 'split'
 vim.o.cia = 'kind,abbr,menu'
 vim.o.foldtext = 'v:lua.vim.treesitter.foldtext()'
 vim.o.winborder = 'rounded'
+vim.o.pumborder = 'rounded'
 vim.o.cmdheight = 0
 
 vim.opt.foldmethod = "expr"
 vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
-
-vim.fn.sign_define("DiagnosticSignError", {text = "", hl = "DiagnosticSignError", texthl = "DiagnosticSignError", culhl = "DiagnosticSignErrorLine"})
-vim.fn.sign_define("DiagnosticSignWarn", {text = "", hl = "DiagnosticSignWarn", texthl = "DiagnosticSignWarn", culhl = "DiagnosticSignWarnLine"})
-vim.fn.sign_define("DiagnosticSignInfo", {text = "", hl = "DiagnosticSignInfo", texthl = "DiagnosticSignInfo", culhl = "DiagnosticSignInfoLine"})
-vim.fn.sign_define("DiagnosticSignHint", {text = "", hl = "DiagnosticSignHint", texthl = "DiagnosticSignHint", culhl = "DiagnosticSignHintLine"})
 
 -- Built-in undotree and difftool
 vim.cmd.packadd('nvim.undotree')
@@ -83,8 +79,40 @@ vim.api.nvim_create_autocmd('LspDetach', {
   end,
 })
 
--- Diagnostic Virtual lines for only current line
-vim.diagnostic.config({ virtual_lines = { current_line = true, }, })
+vim.diagnostic.config({
+  update_in_insert = true,
+  severity_sort = true,
+  virtual_lines = {
+    current_line = true,
+    severity = { min = vim.diagnostic.severity.WARN },
+  },
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = '',
+      [vim.diagnostic.severity.WARN] = '',
+      [vim.diagnostic.severity.INFO] = '',
+      [vim.diagnostic.severity.HINT] = '',
+    },
+    numhl = {
+      [vim.diagnostic.severity.ERROR] = 'DiagnosticSignError',
+      [vim.diagnostic.severity.WARN] = 'DiagnosticSignWarn',
+      [vim.diagnostic.severity.INFO] = 'DiagnosticSignInfo',
+      [vim.diagnostic.severity.HINT] = 'DiagnosticSignHint',
+    },
+  },
+  float = { border = 'rounded', source = 'if_many', scope = 'cursor' },
+  jump = {
+    on_jump = function(diagnostic, bufnr)
+      if not diagnostic then return end
+      vim.diagnostic.show(
+        diagnostic.namespace,
+        bufnr,
+        { diagnostic },
+        { virtual_lines = { current_line = true }, virtual_text = false }
+      )
+    end,
+  },
+})
 
 -- LSP Configurations
 vim.lsp.config.elixir = {
