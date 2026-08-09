@@ -4,45 +4,6 @@
     unstable = import inputs.nixpkgs-unstable {
       localSystem.system = final.stdenv.hostPlatform.system;
       config.allowUnfree = true;
-      overlays = [
-        # obsidian 1.13.4 darwin unpack fix (upstream NixOS/nixpkgs c594c220,
-        # not yet on the nixpkgs-unstable branch). The 1.13.4 universal DMG
-        # unpacks via 7z into a volume-named directory
-        # ("Obsidian 1.13.4-universal/Obsidian.app"), so the hardcoded
-        # sourceRoot = "Obsidian.app" breaks the darwin build. Drop sourceRoot
-        # and copy the app out of the auto-detected dir. The override self-
-        # expires with an evaluation warning once the upstream fix lands on
-        # nixpkgs-unstable (detected by the hardcoded sourceRoot disappearing).
-        (fixfinal: fixprev: {
-          obsidian =
-            if fixfinal.stdenv.hostPlatform.isDarwin then
-              let
-                noOverride = (fixprev.obsidian.sourceRoot or null) != "${fixprev.obsidian.appname}.app";
-              in
-              fixprev.lib.warnIf noOverride
-                ''
-                  obsidian's darwin unpack fix is now in nixpkgs; the sourceRoot override can be removed.
-                ''
-                (
-                  if noOverride then
-                    fixprev.obsidian
-                  else
-                    fixprev.obsidian.overrideAttrs (old: {
-                      sourceRoot = null;
-                      installPhase = ''
-                        runHook preInstall
-                        mkdir -p $out/{Applications,bin}
-                        cp -R ${old.appname}.app $out/Applications
-                        makeWrapper $out/Applications/${old.appname}.app/Contents/MacOS/${old.appname} $out/bin/obsidian
-                        makeWrapper $out/Applications/${old.appname}.app/Contents/MacOS/obsidian-cli $out/bin/obsidian-cli
-                        runHook postInstall
-                      '';
-                    })
-                )
-            else
-              fixprev.obsidian;
-        })
-      ];
     };
   };
 
@@ -157,42 +118,44 @@
             ''
               zenbones' colorscheme cache (upstream PR #236) is now in nixpkgs vimPlugins; the fork override can be removed.
             ''
-            (final.unstable.vimUtils.buildVimPlugin {
-              pname = "zenbones.nvim";
-              version = "4.12.0-236";
-              # Same check setup as nixpkgs' zenbones-nvim override
-              # (pkgs/applications/editors/vim/plugins/overrides.nix): lush is
-              # needed at require-check time, and the randombones/shipwright
-              # modules can't be required without globals/setup.
-              checkInputs = [ final.unstable.vimPlugins.lush-nvim ];
-              nvimSkipModules = [
-                # Requires global variable set
-                "randombones"
-                "randombones.palette"
-                "randombones_dark.palette"
-                "randombones_light"
-                "randombones_light.palette"
-                # Optional shipwright
-                "zenbones.shipwright.runners.alacritty"
-                "zenbones.shipwright.runners.foot"
-                "zenbones.shipwright.runners.ghostty"
-                "zenbones.shipwright.runners.iterm"
-                "zenbones.shipwright.runners.kitty"
-                "zenbones.shipwright.runners.lightline"
-                "zenbones.shipwright.runners.lualine"
-                "zenbones.shipwright.runners.tmux"
-                "zenbones.shipwright.runners.vim"
-                "zenbones.shipwright.runners.wezterm"
-                "zenbones.shipwright.runners.windows_terminal"
-                "randombones_dark"
-              ];
-              src = final.fetchFromGitHub {
-                owner = "s-cerevisiae";
-                repo = "zenbones.nvim";
-                rev = "bc982d86126f41c6ef7aadf189c4e70f57ee19bf";
-                hash = "sha256-MiiYxpdz+0LytGLbFhrrN7l0DppBcgIYqS6UIB1NXYc=";
-              };
-            });
+            (
+              final.unstable.vimUtils.buildVimPlugin {
+                pname = "zenbones.nvim";
+                version = "4.12.0-236";
+                # Same check setup as nixpkgs' zenbones-nvim override
+                # (pkgs/applications/editors/vim/plugins/overrides.nix): lush is
+                # needed at require-check time, and the randombones/shipwright
+                # modules can't be required without globals/setup.
+                checkInputs = [ final.unstable.vimPlugins.lush-nvim ];
+                nvimSkipModules = [
+                  # Requires global variable set
+                  "randombones"
+                  "randombones.palette"
+                  "randombones_dark.palette"
+                  "randombones_light"
+                  "randombones_light.palette"
+                  # Optional shipwright
+                  "zenbones.shipwright.runners.alacritty"
+                  "zenbones.shipwright.runners.foot"
+                  "zenbones.shipwright.runners.ghostty"
+                  "zenbones.shipwright.runners.iterm"
+                  "zenbones.shipwright.runners.kitty"
+                  "zenbones.shipwright.runners.lightline"
+                  "zenbones.shipwright.runners.lualine"
+                  "zenbones.shipwright.runners.tmux"
+                  "zenbones.shipwright.runners.vim"
+                  "zenbones.shipwright.runners.wezterm"
+                  "zenbones.shipwright.runners.windows_terminal"
+                  "randombones_dark"
+                ];
+                src = final.fetchFromGitHub {
+                  owner = "s-cerevisiae";
+                  repo = "zenbones.nvim";
+                  rev = "bc982d86126f41c6ef7aadf189c4e70f57ee19bf";
+                  hash = "sha256-MiiYxpdz+0LytGLbFhrrN7l0DppBcgIYqS6UIB1NXYc=";
+                };
+              }
+            );
       };
     };
   };
