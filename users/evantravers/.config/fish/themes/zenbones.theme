@@ -1,0 +1,52 @@
+# name: Zenbones
+#
+# zenbones fish theme - built entirely from basic ANSI color names and
+# terminal-default (--reset) markers. No hex/RGB values anywhere.
+#
+# Light/dark adaptation: ghostty runs `theme = light:zenbones,dark:zenbones dark`,
+# so the terminal's default fg and 16-color palette flip between the zenbones
+# light and dark palettes when the system appearance changes. Named colors
+# (red, brblack, ...) and --reset render through that palette, so this one
+# theme tracks both modes with no per-mode branching.
+#
+# Mapping follows the helix zenbones_dark theme
+# (~/.config/helix/themes/zenbones_dark.toml):
+#   --reset   ui.text / keyword / operator - terminal default fg, which is
+#             zenbones' fg in both modes; bold for command/keyword accents
+#   brwhite   dimmer-fg tier - strings, escapes, options (helix constant/string)
+#   brblack   dimmest tier - comments, autosuggestions, separators, selection
+#   red       error/status accent (zenbones error hue in both palettes)
+
+fish_color_normal --reset
+fish_color_command --reset --bold
+fish_color_keyword --reset --bold
+fish_color_param --reset
+fish_color_option brwhite
+fish_color_quote brwhite --italics
+fish_color_redirection --reset --bold
+fish_color_operator --reset --bold
+fish_color_end brblack
+fish_color_comment brblack --italics
+fish_color_escape brwhite --bold
+fish_color_error red
+fish_color_autosuggestion brblack
+fish_color_cancel -r
+fish_color_cwd --reset --bold
+fish_color_cwd_root red
+fish_color_user --reset
+fish_color_host --reset
+fish_color_host_remote --reset --bold
+fish_color_status red
+fish_color_selection --background=brblack
+fish_color_search_match --background=brblack
+fish_color_history_current --bold
+fish_color_valid_path --underline
+
+fish_pager_color_progress brblack
+fish_pager_color_prefix --reset --bold
+fish_pager_color_completion --reset
+fish_pager_color_description brblack --italics
+fish_pager_color_selected_background --background=brblack
+fish_pager_color_selected_prefix --reset --bold
+fish_pager_color_selected_completion --reset
+fish_pager_color_selected_description brblack --italics
