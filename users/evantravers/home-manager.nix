@@ -128,7 +128,7 @@
     git.enable = true;
     hunk.enable = true;
     jujutsu.enable = true;
-    tuicr.enable = true;
+    tuicr.enable = false;
 
     # Editors
     neovim = {
