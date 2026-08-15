@@ -9,11 +9,19 @@ An opinionated setup about how I want my *nix development environment and host m
 - Neovim, BTW
 - tmux
 - fish
+- jujutsu
 
 ## OS Hosts
 
-- OSX: Hammerspoon, Aerospace, Settings
-- WSL: interop, wezterm.terminfo
+- OSX:
+  - Hammerspoon
+  - Kanata
+  - Homebrew
+  - Settings
+- WSL:
+  - interop
+  - wezterm.terminfo
+  - 1Password passthru
 
 ## Bootstrap
 

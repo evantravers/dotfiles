@@ -18,6 +18,8 @@
   ];
 
   services.aerospace.enable = false;
+  programs.omniwm.enable = false;
+
   kanata.enable = true;
   programs.orbstack.enable = true;
 
@@ -25,7 +27,6 @@
   programs.zsh.enable = true;
   programs.fish.enable = true;
   programs._1password.enable = true;
-  programs.omniwm.enable = false;
 
   users.users.evantravers = {
     home = "/Users/evantravers";
