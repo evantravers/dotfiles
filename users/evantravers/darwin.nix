@@ -38,7 +38,6 @@
     firefox
     hidden-bar
     keycastr
-    libation
     obsidian
   ];
 
