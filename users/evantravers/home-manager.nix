@@ -21,13 +21,6 @@
   xdg.configFile."hammerspoon" = lib.mkIf pkgs.stdenv.isDarwin { source = .config/hammerspoon; };
   xdg.configFile."kanata" = lib.mkIf pkgs.stdenv.isDarwin { source = .config/kanata; };
   xdg.configFile."ghostty".source = .config/ghostty;
-  # Zenbones fish theme: basic ANSI colors only (no hex), so it follows the
-  # ghostty zenbones light/dark palette flip automatically. Installed so the
-  # built-in configurator can pick it; activate once (not per shell) with:
-  #   fish_config theme save zenbones
-  # which persists it as universal variables in ~/.config/fish/fish_variables,
-  # loaded automatically by fish at startup. Re-run the save after changing
-  # this file to pick up edits.
   xdg.configFile."fish/themes/zenbones.theme".source = .config/fish/themes/zenbones.theme;
   xdg.configFile."moxide/settings.toml".text = ''
     title_headings = false
