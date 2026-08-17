@@ -1,15 +1,5 @@
 { pkgs, ... }:
 {
-  # Workaround for fish build failure on Apple Silicon due to upstream nixpkgs issue.
-  # See: https://github.com/NixOS/nixpkgs/issues/507531
-  nixpkgs.overlays = [
-    (_final: prev: {
-      fish = prev.fish.overrideAttrs (_old: {
-        NIX_FORCE_LOCAL_REBUILD = "darwin-codesign-fix";
-      });
-    })
-  ];
-
   imports = [
     ./kanata.nix
     ./orbstack.nix
