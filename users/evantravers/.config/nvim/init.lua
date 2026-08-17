@@ -168,7 +168,7 @@ vim.lsp.config.lua = {
 }
 
 vim.lsp.config.ruby = {
-  cmd = { "ruby-lsp" },
+  cmd = vim.fn.executable("ruby-lsp") == 1 and { "ruby-lsp" } or { "solargraph", "stdio" },
   filetypes = { "ruby", "eruby" },
   root_markers = { ".git" },
 }
