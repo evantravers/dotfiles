@@ -59,6 +59,32 @@
         );
   };
 
+  # Workaround for fish build failure on Apple Silicon due to an upstream
+  # nixpkgs issue: the cached fish binary has broken codesigning, so force a
+  # local rebuild instead of substituting it. The pin self-flags: a fish
+  # version bump means new binaries were cached upstream, so the workaround
+  # may no longer be needed and an evaluation warning asks you to re-check.
+  # See: https://github.com/NixOS/nixpkgs/issues/507531
+  fish-darwin-rebuild =
+    final: prev:
+    prev.lib.optionalAttrs prev.stdenv.hostPlatform.isDarwin {
+      fish =
+        let
+          inherit (prev) lib;
+          brokenVersion = "4.7.1";
+          bumped = prev.fish.version != brokenVersion;
+        in
+        lib.warnIf bumped
+          ''
+            fish is now ${prev.fish.version} (was ${brokenVersion} when the darwin codesign workaround was added); re-check nixpkgs#507531 and remove the fish-darwin-rebuild overlay if fixed.
+          ''
+          (
+            prev.fish.overrideAttrs (_old: {
+              NIX_FORCE_LOCAL_REBUILD = "darwin-codesign-fix";
+            })
+          );
+    };
+
   devenv = inputs.devenv.overlays.default;
 
   # mini.diff source for jj (jujutsu), not in nixpkgs. Hosted on tangled.org.
