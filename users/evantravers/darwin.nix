@@ -11,14 +11,9 @@
   ];
 
   imports = [
-    ./aerospace.nix
     ./kanata.nix
-    ./omniwm.nix
     ./orbstack.nix
   ];
-
-  services.aerospace.enable = false;
-  programs.omniwm.enable = false;
 
   kanata.enable = true;
   programs.orbstack.enable = true;
