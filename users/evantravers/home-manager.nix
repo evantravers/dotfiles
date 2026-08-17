@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 
 {
   imports = [
@@ -17,9 +17,6 @@
   ];
 
   xdg.enable = true;
-  # TODO: move this to ./home-manager/modules/darwin or something
-  xdg.configFile."hammerspoon" = lib.mkIf pkgs.stdenv.isDarwin { source = .config/hammerspoon; };
-  xdg.configFile."kanata" = lib.mkIf pkgs.stdenv.isDarwin { source = .config/kanata; };
   xdg.configFile."ghostty".source = .config/ghostty;
   xdg.configFile."fish/themes/zenbones.theme".source = .config/fish/themes/zenbones.theme;
   xdg.configFile."moxide/settings.toml".text = ''
@@ -69,11 +66,6 @@
     ssh = {
       enable = true;
       enableDefaultConfig = false;
-      settings = {
-        "*" = lib.mkIf pkgs.stdenv.isDarwin {
-          IdentityAgent = "\"~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock\"";
-        };
-      };
     };
 
     direnv = {

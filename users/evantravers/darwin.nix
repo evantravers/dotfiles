@@ -28,6 +28,15 @@
     shell = pkgs.fish;
   };
 
+  home-manager.users.evantravers = {
+    xdg.configFile."hammerspoon".source = .config/hammerspoon;
+    xdg.configFile."kanata".source = .config/kanata;
+
+    programs.ssh.settings."*" = {
+      IdentityAgent = "\"~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock\"";
+    };
+  };
+
   environment.systemPackages = with pkgs; [
     defaultbrowser
     firefox
@@ -35,7 +44,6 @@
     keycastr
     obsidian
   ];
-
 
   environment.extraInit = ''
     export SSH_AUTH_SOCK=~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
