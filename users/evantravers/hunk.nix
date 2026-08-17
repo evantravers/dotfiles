@@ -182,47 +182,19 @@ let
     };
   };
 
-  # Map a role-keyed palette to hunk's flat config keys, then let
-  # pkgs.formats.toml render the whole config — it quotes the dotted TextMate
-  # scope keys and emits the [themes.<id>.syntax_scopes] table correctly.
-  toTheme = base: t: {
-    base = base;
-    label = t.label;
-    background = t.surfaces.background;
-    panel = t.surfaces.panel;
-    panelAlt = t.surfaces.panelAlt;
-    border = t.surfaces.border;
-    text = t.surfaces.text;
-    muted = t.surfaces.muted;
-    accent = t.surfaces.accent;
-    accentMuted = t.surfaces.accentMuted;
-    addedBg = t.diff.addedBg;
-    removedBg = t.diff.removedBg;
-    movedAddedBg = t.diff.movedAddedBg;
-    movedRemovedBg = t.diff.movedRemovedBg;
-    contextBg = t.diff.contextBg;
-    addedContentBg = t.diff.addedContentBg;
-    removedContentBg = t.diff.removedContentBg;
-    contextContentBg = t.diff.contextContentBg;
-    addedSignColor = t.diff.addedSignColor;
-    removedSignColor = t.diff.removedSignColor;
-    lineNumberBg = t.diff.lineNumberBg;
-    lineNumberFg = t.diff.lineNumberFg;
-    selectedHunk = t.diff.selectedHunk;
-    badgeAdded = t.chrome.badgeAdded;
-    badgeRemoved = t.chrome.badgeRemoved;
-    badgeNeutral = t.chrome.badgeNeutral;
-    fileNew = t.chrome.fileNew;
-    fileDeleted = t.chrome.fileDeleted;
-    fileRenamed = t.chrome.fileRenamed;
-    fileModified = t.chrome.fileModified;
-    fileUntracked = t.chrome.fileUntracked;
-    noteBorder = t.chrome.noteBorder;
-    noteBackground = t.chrome.noteBackground;
-    noteTitleBackground = t.chrome.noteTitleBackground;
-    noteTitleText = t.chrome.noteTitleText;
-    syntax_scopes = t.syntax;
-  };
+  # Map a role-keyed palette to hunk's flat config keys. The palette's
+  # surfaces/diff/chrome keys already use hunk's flat names, so just merge
+  # them; pkgs.formats.toml quotes the dotted syntax_scopes keys for us.
+  toTheme =
+    base: t:
+    {
+      inherit base;
+      inherit (t) label;
+      syntax_scopes = t.syntax;
+    }
+    // t.surfaces
+    // t.diff
+    // t.chrome;
 
   # Explicit theme/themes always win over free-form settings.
   configValue = cfg.settings // {
@@ -260,10 +232,10 @@ in
       type = lib.types.bool;
       default = true;
       description = ''
-        Symlink hunk's bundled agent skills (hunk-review) into ~/.claude/skills
-        and ~/.config/pi/agent/skills on activation. Targets are resolved with
-        `hunk skill path` so they always point at the currently installed hunk
-        and stay in sync across upgrades.
+        Symlink hunk's bundled agent skills (hunk-review) from the nix store
+        into ~/.claude/skills and ~/.config/pi/agent/skills. The links point
+        at the installed hunk's store path, so they stay in sync across
+        upgrades.
       '';
     };
 
@@ -293,30 +265,19 @@ in
       (pkgs.formats.toml { }).generate "hunk-config"
         configValue;
 
-    # hunk has no agent plugin system; it bundles skills inside the package
-    # and exposes them via `hunk skill path <name>` (prints the SKILL.md
-    # path under <pkg>/skills/<name>/). Re-link on every switch so the
-    # symlinks track the store path of the installed hunk. Guards against
-    # clobbering real directories — only symlinks are replaced.
-    home.activation.hunkSkills = lib.mkIf cfg.linkSkills (
-      lib.hm.dag.entryAfter [ "linkGeneration" ] ''
-        linkHunkSkill() {
-          skill_md="$(${cfg.package}/bin/hunk skill path "$1" 2>/dev/null)" || return 0
-          # `hunk skill path` prints <pkg>/skills/<name>/SKILL.md — link the
-          # whole folder, named after whatever upstream calls it.
-          src="$(dirname "$skill_md")"
-          name="$(basename "$src")"
-          for dir in "$HOME/.claude/skills" "$HOME/.config/pi/agent/skills"; do
-            dest="$dir/$name"
-            if [ -L "$dest" ] || [ ! -e "$dest" ]; then
-              mkdir -p "$dir"
-              ln -sfn "$src" "$dest"
-            fi
-          done
-        }
-
-        linkHunkSkill hunk-review
-      ''
+    # hunk bundles its agent skills inside the package at <pkg>/skills/<name>/
+    # (as printed by `hunk skill path`). The store path is known at eval time,
+    # so plain home.file symlinks suffice — they track upgrades automatically
+    # on every switch, no activation script needed.
+    home.file = lib.mkIf cfg.linkSkills (
+      lib.genAttrs
+        [
+          ".claude/skills/hunk-review"
+          ".config/pi/agent/skills/hunk-review"
+        ]
+        (_: {
+          source = "${cfg.package}/skills/hunk-review";
+        })
     );
   };
 }
