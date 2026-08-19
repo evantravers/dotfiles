@@ -44,6 +44,7 @@
 
     casks = [
       "1password"
+      "bartender"
       "calibre"
       "cardhop"
       "deskpad"
