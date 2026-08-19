@@ -30,7 +30,6 @@
   environment.systemPackages = with pkgs; [
     defaultbrowser
     firefox
-    hidden-bar
     keycastr
     obsidian
   ];
