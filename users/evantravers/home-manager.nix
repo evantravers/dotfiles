@@ -44,7 +44,6 @@
       nixfmt
       rainfrog
       ripgrep
-      sesh
     ];
   };
 
