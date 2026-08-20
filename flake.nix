@@ -22,7 +22,7 @@
 
     # Overlays
     llm-agents.url = "github:numtide/llm-agents.nix";
-    devenv.url = "github:cachix/devenv/v2.2.1";
+    devenv.url = "github:cachix/devenv/v2.2.2";
     workmux.url = "github:raine/workmux";
   };
   outputs =
