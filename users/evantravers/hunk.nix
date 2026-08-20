@@ -196,7 +196,6 @@ let
     // t.diff
     // t.chrome;
 
-  # Explicit theme/themes always win over free-form settings.
   configValue = cfg.settings // {
     theme = cfg.theme;
     themes = {
@@ -240,21 +239,25 @@ in
     };
 
     settings = lib.mkOption {
-      type = lib.types.attrsOf (
-        lib.types.oneOf [
-          lib.types.bool
-          lib.types.str
-          lib.types.int
-        ]
-      );
+      type = lib.types.attrs;
       default = {
         mode = "auto";
         # The config file is read-only (nix store symlink); don't prompt to
         # persist view preferences to it. Declare settings here instead.
         prompt_save_view_preferences = false;
       };
-      defaultText = "{ mode = \"auto\"; prompt_save_view_preferences = false; }";
-      description = "Top-level hunk settings (mode, vcs, line_numbers, ...).";
+      defaultText = ''{ mode = "auto"; prompt_save_view_preferences = false; }'';
+      description = ''
+        Top-level hunk settings (mode, vcs, line_numbers, keybindings, …).
+        Nested attrsets become TOML tables, so keybindings can be declared as
+
+        ```nix
+        settings.keybindings = {
+          "hunk-less-search.find" = "/";
+          "hunk.review.focusFilter" = "F";
+        };
+        ```
+      '';
     };
   };
 
