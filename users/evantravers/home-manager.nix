@@ -109,7 +109,13 @@
 
     # Source control
     git.enable = true;
-    hunk.enable = true;
+    hunk = {
+      enable = true;
+      settings.keybindings = {
+        "hunk-less-search.find" = "/";
+        "hunk.review.focusFilter" = "F";
+      };
+    };
     jujutsu.enable = true;
 
     # Editors
