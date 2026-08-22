@@ -28,7 +28,7 @@ let
   # from the main checkout into a new worktree. Bindings live in
   # ~/.local/share/devenv/allowed keyed by absolute project path, so a
   # worktree (a different path) has no environment without this.
-  devenvRebind = pkgs.writeShellApplication {
+  rebind = pkgs.writeShellApplication {
     name = "workmux-devenv-rebind";
     runtimeInputs = [ pkgs.jq ];
     text = ''
@@ -65,7 +65,7 @@ let
   };
 
   # Drop the worktree's devenv binding when the worktree is removed.
-  devenvUnbind = pkgs.writeShellApplication {
+  unbind = pkgs.writeShellApplication {
     name = "workmux-devenv-unbind";
     runtimeInputs = [ pkgs.jq ];
     text = ''
@@ -139,8 +139,8 @@ in
   config = lib.mkIf cfg.enable {
     home.packages = [
       cfg.package
-      devenvRebind
-      devenvUnbind
+      rebind
+      unbind
     ];
 
     xdg.configFile."workmux/config.yaml" = lib.mkIf (cfg.settings != { }) {
