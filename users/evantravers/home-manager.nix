@@ -35,8 +35,6 @@
       amber
       devenv
       gh
-      gum
-      harper
       lua-language-server
       markdown-oxide
       nil
