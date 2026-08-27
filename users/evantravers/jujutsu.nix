@@ -32,7 +32,7 @@ in
 
     home.packages = [ jjc ];
 
-    programs.fish = {
+    programs.fish = lib.mkIf config.programs.fish.enable {
       binds = {
         "alt-o".command = "jj_desc_wrap";
       };
