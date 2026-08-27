@@ -157,6 +157,53 @@
         );
   };
 
+  # Track mini.nvim's main branch until the next release (> 0.18.0) is tagged
+  # and lands in nixpkgs. Overrides mini-nvim in the unstable vimPlugins set,
+  # which promote-unstable then forwards to top-level pkgs. Uses overrideAttrs
+  # on the nixpkgs derivation so its postInstall cleanup is preserved. The
+  # override self-expires with an evaluation warning once the channel's
+  # mini-nvim is newer than 0.18.0.
+  # NOTE: the name is load-bearing — flake.nix applies overlays in alphabetical
+  # order (builtins.attrValues), and this one must sort after `unstable-packages`
+  # so `prev.unstable` exists (an `unstable-*` prefix here would sort BEFORE it
+  # and silently no-op, since unstable-packages would shadow the attribute).
+  vim-plugins-mini-nvim-main = final: prev: {
+    # Preserve the rest of `unstable` (overlay results merge shallowly, so a
+    # bare `unstable.vimPlugins = ...` would clobber the whole unstable set).
+    unstable = prev.unstable // {
+      vimPlugins = prev.unstable.vimPlugins // {
+        mini-nvim =
+          let
+            inherit (final.unstable) lib;
+            nixpkgsMini = prev.unstable.vimPlugins.mini-nvim;
+            baseVersion = "0.18.0";
+            newRelease = lib.versionOlder baseVersion nixpkgsMini.version;
+          in
+          lib.warnIf newRelease
+            ''
+              nixpkgs mini-nvim is now ${nixpkgsMini.version} (> ${baseVersion}); the main-branch override can be removed.
+            ''
+            (
+              if newRelease then
+                nixpkgsMini
+              else
+                nixpkgsMini.overrideAttrs (_old: {
+                  version = "0.18.0-unstable-2026-08-27";
+                  # buildVimPlugin sets `name` explicitly, so overrideAttrs
+                  # won't recompute it from the new version — set it directly.
+                  name = "vimplugin-mini.nvim-0.18.0-unstable-2026-08-27";
+                  src = final.fetchFromGitHub {
+                    owner = "nvim-mini";
+                    repo = "mini.nvim";
+                    rev = "1098976ddda3cf00f50c1dda5eef10ccf463d9eb";
+                    hash = "sha256-E17upr1MvbmW/VZRDbbbj9qA4EJ3Ieqq687ly2jKDNg=";
+                  };
+                })
+            );
+      };
+    };
+  };
+
   # Fork of zenbones-theme/zenbones.nvim from upstream PR #236
   # (s-cerevisiae/zenbones.nvim @ the `cache` branch). Adds a msgpack colorscheme
   # cache: colors/palettes are compiled through lush once on first load and cached,
