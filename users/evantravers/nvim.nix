@@ -157,6 +157,7 @@
             vim.keymap.set('n', 'gw', function() MiniJump2d.start(MiniJump2d.builtin_opts.word_start) end, opts("Jump to Word"))
             require('mini.pairs').setup()
             require('mini.statusline').setup()
+            require('mini.statuscolumn').setup()
             require('mini.surround').setup()
             require('mini.splitjoin').setup()
 
