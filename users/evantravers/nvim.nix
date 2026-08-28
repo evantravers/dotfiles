@@ -157,7 +157,13 @@
             vim.keymap.set('n', 'gw', function() MiniJump2d.start(MiniJump2d.builtin_opts.word_start) end, opts("Jump to Word"))
             require('mini.pairs').setup()
             require('mini.statusline').setup()
-            require('mini.statuscolumn').setup()
+            require('mini.statuscolumn').setup({
+              content = require('mini.statuscolumn').gen_content.main({
+                { format = "=lfs", sep = "" }, -- no separator line, just a space
+                { ltype = "virt", lnum = "•" }, -- dot in virtual lines
+                { ltype = "wrap", lnum = "↳" }, -- arrow in wrapped lines
+              }),
+            })
             require('mini.surround').setup()
             require('mini.splitjoin').setup()
 
