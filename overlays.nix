@@ -30,45 +30,6 @@
       ;
   };
 
-  # tmux 3.7c requires jemalloc on macOS (to work around a macOS calloc bug)
-  # and configure aborts with "must give --enable-jemalloc or --disable-jemalloc"
-  # if it isn't found, but the nixpkgs-unstable tmux derivation doesn't link
-  # jemalloc yet. Add it here until the nixpkgs fix (already on master) reaches
-  # the unstable channel. The overlay self-expires: once the channel's tmux has
-  # jemalloc in buildInputs, the override is a no-op and prints an evaluation
-  # warning.
-  # See: https://github.com/tmux/tmux/issues/5179
-  # NOTE: the name is load-bearing — flake.nix applies overlays in alphabetical
-  # order (builtins.attrValues), and this one must sort after `unstable-packages`
-  # so `prev.unstable` exists.
-  unstable-tmux-jemalloc =
-    final: prev:
-    prev.lib.optionalAttrs prev.stdenv.hostPlatform.isDarwin {
-      # Preserve the rest of `unstable` (overlay results merge shallowly, so a
-      # bare `unstable.tmux = ...` would clobber the whole unstable set).
-      unstable = prev.unstable // {
-        tmux =
-          let
-            inherit (prev) lib;
-            tmuxUpstream = prev.unstable.tmux;
-            hasJemalloc = lib.any (dep: (dep.pname or "") == "jemalloc") (tmuxUpstream.buildInputs or [ ]);
-          in
-          lib.warnIf hasJemalloc
-            ''
-              nixpkgs-unstable tmux now builds with jemalloc on darwin; the unstable-tmux-jemalloc overlay can be removed.
-            ''
-            (
-              if hasJemalloc then
-                tmuxUpstream
-              else
-                tmuxUpstream.overrideAttrs (old: {
-                  buildInputs = (old.buildInputs or [ ]) ++ [ final.unstable.jemalloc ];
-                  configureFlags = (old.configureFlags or [ ]) ++ [ "--enable-jemalloc" ];
-                })
-            );
-      };
-    };
-
   llm-agents = _final: prev: {
     llm-agents = inputs.llm-agents.packages.${prev.stdenv.hostPlatform.system};
   };
