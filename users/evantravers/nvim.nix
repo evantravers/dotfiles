@@ -32,6 +32,7 @@
             vim.g.zenbones = {
               solid_line_nr    = true,
               solid_vert_split = true,
+              solid_float_border = true,
               darken_noncurrent_window = true,
               lighten_noncurrent_window = true,
             }
