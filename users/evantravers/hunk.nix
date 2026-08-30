@@ -14,7 +14,9 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    home.packages = [ pkgs.llm-agents.hunk ];
+    # pkgs.hunk comes from the upstream modem-dev/hunk flake (see the `hunk`
+    # overlay in overlays.nix), not llm-agents.nix release builds.
+    home.packages = [ pkgs.hunk ];
 
     # link skills
     home.file = 
@@ -24,7 +26,7 @@ in
           ".config/pi/agent/skills/hunk-review"
         ]
         (_: {
-          source = "${pkgs.llm-agents.hunk}/skills/hunk-review";
+          source = "${pkgs.hunk}/skills/hunk-review";
         });
   };
 }
