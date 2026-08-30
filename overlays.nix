@@ -38,6 +38,13 @@
     workmux = inputs.workmux.packages.${prev.stdenv.hostPlatform.system}.default;
   };
 
+  # Hunk straight from the upstream flake (github:modem-dev/hunk, rev pinned
+  # in flake.lock — `nix flake update hunk` to move) instead of llm-agents.nix
+  # release builds, to test freshly-merged features.
+  hunk = _final: prev: {
+    hunk = inputs.hunk.packages.${prev.stdenv.hostPlatform.system}.default;
+  };
+
   # Pin karabiner-dk driver version for kanata compatibility. The pin self-
   # expires: once kanata's required driver version matches the nixpkgs default,
   # the override is a no-op and prints an evaluation warning. A changed-but-
