@@ -157,13 +157,16 @@
             vim.keymap.set('n', 'gw', function() MiniJump2d.start(MiniJump2d.builtin_opts.word_start) end, opts("Jump to Word"))
             require('mini.pairs').setup()
             require('mini.statusline').setup()
-            require('mini.statuscolumn').setup({
-              content = require('mini.statuscolumn').gen_content.main({
-                { format = "=lfs", sep = "" }, -- no separator line, just a space
-                { ltype = "virt", lnum = "•" }, -- dot in virtual lines
-                { ltype = "wrap", lnum = "↳" }, -- arrow in wrapped lines
-              }),
-            })
+            -- Disabled: the gen_content.main API only exists on mini.nvim's
+            -- main branch. Re-enable (along with the vim-plugins-mini-nvim-main
+            -- overlay in overlays.nix) once a release > 0.18.0 is tagged.
+            -- require('mini.statuscolumn').setup({
+            --   content = require('mini.statuscolumn').gen_content.main({
+            --     { format = "=lfs", sep = "" }, -- no separator line, just a space
+            --     { ltype = "virt", lnum = "•" }, -- dot in virtual lines
+            --     { ltype = "wrap", lnum = "↳" }, -- arrow in wrapped lines
+            --   }),
+            -- })
             require('mini.surround').setup()
             require('mini.splitjoin').setup()
 
