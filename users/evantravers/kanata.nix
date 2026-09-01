@@ -2,23 +2,54 @@
 let
   home = config.users.users.evantravers.home;
   activeLink = "${home}/.local/state/kanata/active.kbd";
+
+  # nixpkgs builds kanata without the `cmd` action; disabled.kbd needs it so
+  # its ESC binding can shell out to kanata-switch and restore macbook.kbd.
+  kanata-with-cmd = pkgs.kanata.overrideAttrs (old: {
+    cargoBuildFeatures = (old.cargoBuildFeatures or [ ]) ++ [ "cmd" ];
+  });
   vhiddaemonBin = "${pkgs.karabiner-dk}/Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice/Applications/Karabiner-VirtualHIDDevice-Daemon.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Daemon";
 
   kanata-switch = pkgs.writeShellScriptBin "kanata-switch" ''
     #!/usr/bin/env bash
     set -euo pipefail
 
-    CONFIG_DIR="$HOME/.config/kanata"
-    ACTIVE_LINK="$HOME/.local/state/kanata/active.kbd"
+    # Absolute paths baked in at build time: this script is also invoked by
+    # the root LaunchDaemon (via disabled.kbd's ESC binding), where HOME is
+    # not set at all, so $HOME can't be relied on here.
+    CONFIG_DIR="${home}/.config/kanata"
+    ACTIVE_LINK="${home}/.local/state/kanata/active.kbd"
 
-    choice=$(basename -a "$CONFIG_DIR"/*.kbd | gum choose --header "Select kanata layout")
+    # optional non-interactive use: `kanata-switch macbook.kbd`
+    # (also used by the ESC binding in disabled.kbd to restore the layout)
+    if [ $# -ge 1 ]; then
+      choice="$1"
+      if [ ! -e "$CONFIG_DIR/$choice" ]; then
+        echo "error: no such layout: $CONFIG_DIR/$choice" >&2
+        exit 1
+      fi
+    else
+      choice=$(basename -a "$CONFIG_DIR"/*.kbd | gum choose --header "Select kanata layout")
+    fi
 
     ln -sfn "$CONFIG_DIR/$choice" "$ACTIVE_LINK"
     echo "Switched active kanata layout to $choice"
 
-    # kickstart only restarts an already-loaded daemon; if it was previously
-    # unloaded (e.g. bootout during troubleshooting), fall back to loading
-    # it fresh instead of silently no-op'ing.
+    # Ask the running kanata to live-reload the new config over its TCP
+    # server (started with -p 127.0.0.1:5829). This is near-instant and
+    # avoids launchctl kickstart -k, whose respawn gets held back by the
+    # daemon's ThrottleInterval, leaving the keyboard unremapped for tens
+    # of seconds.
+    resp=$(printf '{"ReloadFile":{"path":"%s","wait":true,"timeout_ms":5000}}\n' "$CONFIG_DIR/$choice" \
+      | nc -w 8 127.0.0.1 5829 2>/dev/null || true)
+    if printf '%s' "$resp" | grep -q '"ok":true'; then
+      exit 0
+    fi
+
+    # Fallback: daemon not running or reload failed. kickstart only restarts
+    # an already-loaded daemon; if it was previously unloaded (e.g. bootout
+    # during troubleshooting), fall back to loading it fresh instead of
+    # silently no-op'ing.
     sudo launchctl kickstart -k system/org.kanata \
       || sudo launchctl bootstrap system /Library/LaunchDaemons/org.kanata.plist
   '';
@@ -28,8 +59,9 @@ in
 
   config = lib.mkIf config.kanata.enable {
     environment.systemPackages = [
-      pkgs.kanata
+      pkgs.kanata-with-cmd
       pkgs.karabiner-dk
+      pkgs.gum
       kanata-switch
     ];
 
@@ -129,7 +161,9 @@ in
             while ! pgrep -f "Karabiner-VirtualHIDDevice-Daemon" > /dev/null; do
               sleep 1
             done
-            exec /run/current-system/sw/bin/kanata -c "${activeLink}"
+            # -p starts kanata's TCP server (localhost only) so kanata-switch
+            # can live-reload layouts without a launchd restart.
+            exec /run/current-system/sw/bin/kanata -c "${activeLink}" -p 127.0.0.1:5829
           ''
         ];
         RunAtLoad = true;

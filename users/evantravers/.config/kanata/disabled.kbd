@@ -1,0 +1,43 @@
+;; Disable the built-in keyboard entirely — useful when an external keyboard
+;; sits on top of the MacBook's keys. Every key is a no-op (XX) except ESC,
+;; which repoints the active layout back to macbook.kbd and restarts the
+;; kanata daemon (via kanata-switch, which the root LaunchDaemon can run).
+;;
+;; Switch to this layout with `kanata-switch` (pick disabled.kbd);
+;; press ESC to get back to macbook.kbd.
+
+(defcfg
+  ;; required for the (cmd ...) action used to restore the macbook layout
+  danger-enable-cmd yes
+  ;; no: only defsrc keys are intercepted, and every key is listed below,
+  ;; so nothing can pass through. (Also silences kanata's defcfg warning.)
+  process-unmapped-keys no
+  macos-dev-names-include (
+    "Apple Internal Keyboard / Trackpad"
+  )
+)
+
+;; the full built-in keyboard, so nothing can slip through
+(defsrc
+  esc f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12
+  grv 1 2 3 4 5 6 7 8 9 0 - = bspc
+  tab q w e r t y u i o p [ ] \
+  caps a s d f g h j k l ; ' ret
+  lsft z x c v b n m , . / rsft
+  fn lctl lalt lmet spc rmet ralt
+  left down up rght
+)
+
+(defalias
+  restore (cmd /run/current-system/sw/bin/kanata-switch macbook.kbd)
+)
+
+(deflayer disabled
+  @restore XX XX XX XX XX XX XX XX XX XX XX XX
+  XX XX XX XX XX XX XX XX XX XX XX XX XX XX
+  XX XX XX XX XX XX XX XX XX XX XX XX XX XX
+  XX XX XX XX XX XX XX XX XX XX XX XX XX
+  XX XX XX XX XX XX XX XX XX XX XX XX
+  XX XX XX XX XX XX XX
+  XX XX XX XX
+)
