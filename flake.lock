@@ -20,15 +20,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1784665499,
-        "narHash": "sha256-9BMxlTxCCDAeoNLtb1a/st7udtTIJep+wpUzquA29VU=",
-        "owner": "nix-community",
+        "lastModified": 1788011267,
+        "narHash": "sha256-mEq2kU+ljompTToZ44Afvm7d/rHJ5iMBl0tjZuyShJs=",
+        "owner": "Mic92",
         "repo": "bun2nix",
-        "rev": "0f2a1f0b6f42cebe3b149bf62d38754c5e0e9729",
+        "rev": "5765b0614591f75ee8ba5596e81ae85c167d1071",
         "type": "github"
       },
       "original": {
-        "owner": "nix-community",
+        "owner": "Mic92",
+        "ref": "fix-structured-attrs-hook",
         "repo": "bun2nix",
         "type": "github"
       }
@@ -274,11 +275,11 @@
         "treefmt-nix": "treefmt-nix_2"
       },
       "locked": {
-        "lastModified": 1788279991,
-        "narHash": "sha256-qhHcbukPxn4FPeURQDtTwrMNpb/6rmZim2dQ2iwsaTA=",
+        "lastModified": 1788293711,
+        "narHash": "sha256-3i1GqfWfePZHEh8xbl5SEkJ9yg2uZsJoSP45hUK0wJw=",
         "owner": "numtide",
         "repo": "llm-agents.nix",
-        "rev": "84ded9f7d2c878065a38bf801fab28b7fda46fe0",
+        "rev": "b8329934bb3a7ad94cc7204253209d5bc119bc49",
         "type": "github"
       },
       "original": {
@@ -444,11 +445,11 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1787424095,
-        "narHash": "sha256-dWLO5AHhKaw6rdWCtTes8hnntT1r0/J5yhQGm0f0ZgU=",
+        "lastModified": 1787814960,
+        "narHash": "sha256-PYZq1qzCJXC2zGI0mH07vrZBsw6DRBAOX0jN1pPtqOQ=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "174eb786fb68e3a13e4e535a3deea479a0c07a6a",
+        "rev": "c27cdad491a991b11ed731760aa2ef8db0cb0410",
         "type": "github"
       },
       "original": {
@@ -586,11 +587,11 @@
         "nixpkgs": "nixpkgs_5"
       },
       "locked": {
-        "lastModified": 1788155442,
-        "narHash": "sha256-kYMdAl7SqSVtvwJDNcillzlMnorOmI/zfwUgyj6MzRU=",
+        "lastModified": 1788292342,
+        "narHash": "sha256-Svn40BBlgwpAWFS4U4r4T1WiBeOqwdeAEayq8/df0ak=",
         "owner": "raine",
         "repo": "workmux",
-        "rev": "1731c66c9b40d559d1842558e33983793d05f3d2",
+        "rev": "25ed3e149e092ceb57ad9b945d8a54c9a75cd173",
         "type": "github"
       },
       "original": {
