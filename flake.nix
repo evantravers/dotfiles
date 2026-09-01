@@ -24,10 +24,6 @@
     llm-agents.url = "github:numtide/llm-agents.nix";
     devenv.url = "github:cachix/devenv/v2.2.2";
     workmux.url = "github:raine/workmux";
-    # Tracks upstream main directly (rev pinned in flake.lock; `nix flake
-    # update hunk` to move) so freshly-merged features can be tested without
-    # waiting for llm-agents.nix releases.
-    hunk.url = "github:modem-dev/hunk";
   };
   outputs =
     { nixpkgs, ... }@inputs:
