@@ -8,7 +8,7 @@ Bindings = {
   {'com.flexibits.cardhop.mac', nil, {'u'}},
   {'com.flexibits.fantastical2.mac', 'y', {'/'}},
   {'com.mitchellh.ghostty', 'j', nil},
-  {'com.toggl.focus.desktop', 'r', nil},
+  {'com.toggl.daneel', 'r', nil},
   {'com.raycast.macos', nil, {'c', 'n', 'space'}},
   {'com.superultra.Homerow', nil, {'return', 'tab', ';'}},
   {'md.obsidian', 'g', nil}
