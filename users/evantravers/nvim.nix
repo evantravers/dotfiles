@@ -297,6 +297,7 @@
                   { mode = 'n', keys = '<Leader>f', desc = '+Fix'}
                 },
               })
+              if vim.fn.has('nvim-0.13') == 1 then pcall(vim.keymap.del, 'n', 'Q') end
             end)
           '';
         }
