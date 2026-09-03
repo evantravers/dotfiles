@@ -17,9 +17,6 @@
       jujutsu
       llama-cpp
       meli
-      # 26.05 stable neovim-unwrapped isn't cached for aarch64-darwin and its
-      # build runs flaky functional tests that crash; unstable is cached.
-      neovim-unwrapped
       nh
       obsidian
       rainfrog
@@ -32,6 +29,30 @@
 
   llm-agents = _final: prev: {
     llm-agents = inputs.llm-agents.packages.${prev.stdenv.hostPlatform.system};
+  };
+
+  # Neovim nightly (0.13.0-dev) from nix-community/neovim-nightly-overlay,
+  # replacing neovim-unwrapped (which promote-unstable would otherwise take
+  # from the unstable channel — note neovim-unwrapped is deliberately absent
+  # from that list). Self-expires: once nixpkgs-unstable ships 0.13, an
+  # evaluation warning fires and the unstable package is used instead.
+  # `nix flake update neovim-nightly` to move the nightly pin.
+  neovim-nightly = final: prev: {
+    neovim-unwrapped =
+      let
+        inherit (final.unstable) lib;
+        inNixpkgs = lib.versionAtLeast final.unstable.neovim-unwrapped.version "0.13";
+      in
+      lib.warnIf inNixpkgs
+        ''
+          neovim 0.13 is now in nixpkgs-unstable; the neovim-nightly overlay and flake input can be removed (re-add neovim-unwrapped to promote-unstable).
+        ''
+        (
+          if inNixpkgs then
+            final.unstable.neovim-unwrapped
+          else
+            inputs.neovim-nightly.packages.${prev.stdenv.hostPlatform.system}.neovim
+        );
   };
 
   workmux = _final: prev: {

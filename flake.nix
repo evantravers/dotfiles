@@ -24,6 +24,10 @@
     llm-agents.url = "github:numtide/llm-agents.nix";
     devenv.url = "github:cachix/devenv/v2.2.2";
     workmux.url = "github:raine/workmux";
+    neovim-nightly = {
+      url = "github:nix-community/neovim-nightly-overlay";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
   };
   outputs =
     { nixpkgs, ... }@inputs:
