@@ -1,7 +1,6 @@
 { config, lib, pkgs, ... }:
 {
   imports = [
-    ./nvim-ai.nix
     ./nvim-dap.nix
     ./nvim-prose.nix
   ];
