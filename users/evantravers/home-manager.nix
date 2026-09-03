@@ -113,7 +113,6 @@
     # Editors
     neovim = {
       enable = true;
-      ai.enable = true;
       dap.enable = true;
       prose.enable = true;
     };

@@ -125,41 +125,6 @@
         );
   };
 
-  # Workaround for codecompanion.nvim failing its build-time require check on
-  # darwin. v19.23.0 renamed the fzf-lua action-palette provider module from
-  # codecompanion.providers.actions.fzf_lua to ...action_palette.fzf_lua, and
-  # nixpkgs' override dropped the stale skip instead of renaming it. Requiring
-  # fzf-lua in the darwin build sandbox fails in serverstart()
-  # (https://github.com/NixOS/nixpkgs/issues/431458). The skip self-expires:
-  # once nixpkgs skips the module under its new name, an evaluation warning
-  # asks you to remove this overlay. The name sorts after `unstable-packages`
-  # (overlays apply in attrValues/alphabetical order) so `prev.unstable` exists.
-  vimPlugins-codecompanion-fzf-lua-skip =
-    _final: prev:
-    prev.lib.optionalAttrs prev.stdenv.hostPlatform.isDarwin {
-      unstable = prev.unstable // {
-        vimPlugins = prev.unstable.vimPlugins // {
-          codecompanion-nvim =
-            let
-              inherit (prev.unstable) lib;
-              cc = prev.unstable.vimPlugins.codecompanion-nvim;
-              module = "codecompanion.providers.action_palette.fzf_lua";
-              fixedUpstream = lib.elem module (cc.nvimSkipModules or [ ]);
-            in
-            lib.warnIf fixedUpstream
-              "nixpkgs now skips ${module} at require-check time; the vimPlugins-codecompanion-fzf-lua-skip overlay can be removed."
-              (
-                if fixedUpstream then
-                  cc
-                else
-                  cc.overrideAttrs (old: {
-                    nvimSkipModules = (old.nvimSkipModules or [ ]) ++ [ module ];
-                  })
-              );
-        };
-      };
-    };
-
   # Fork of zenbones-theme/zenbones.nvim from upstream PR #236
   # (s-cerevisiae/zenbones.nvim @ the `cache` branch). Adds a msgpack colorscheme
   # cache: colors/palettes are compiled through lush once on first load and cached,
