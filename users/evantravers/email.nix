@@ -33,7 +33,7 @@ in
       };
 
       thunderbird = {
-        enable = true;
+        enable = false;
         profiles = [ "default" ];
       };
     };
@@ -46,7 +46,7 @@ in
     };
 
     programs.thunderbird = {
-      enable = true;
+      enable = false;
 
       profiles.default = {
         isDefault = true;
