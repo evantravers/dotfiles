@@ -24,7 +24,6 @@
       obsidian
       rainfrog
       sesh
-      thunderbird
       tmux
       vimPlugins
       ;
