@@ -81,7 +81,7 @@ in
       mkdir -p "${home}/.local/state/kanata"
       chown evantravers:staff "${home}/.local/state/kanata"
       if [ ! -e "${activeLink}" ]; then
-        ln -sfn "${home}/.config/kanata/macbook.kbd" "${activeLink}"
+        ln -sfn "${home}/.config/kanata/hrm-macbook.kbd" "${activeLink}"
         chown -h evantravers:staff "${activeLink}"
       fi
     '';
