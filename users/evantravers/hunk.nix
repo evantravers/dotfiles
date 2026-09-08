@@ -14,8 +14,6 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    # pkgs.hunk comes from the upstream modem-dev/hunk flake (see the `hunk`
-    # overlay in overlays.nix), not llm-agents.nix release builds.
     home.packages = [ pkgs.llm-agents.hunk ];
 
     # link skills
