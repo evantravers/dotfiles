@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
   imports = [
     ./kanata.nix
@@ -28,7 +28,15 @@
   };
 
   environment.systemPackages = with pkgs; [
-    firefox
+    # On macOS 27+, Firefox not signed by Mozilla is denied access to the
+    # default data dir (~/Library/Application Support/Firefox). Point the
+    # wrapper at a new location; existing profiles must be migrated manually:
+    #   mv ~/Library/Application\ Support/Firefox \
+    #      ~/Library/Application\ Support/org.nixos.firefox
+    # https://github.com/NixOS/nixpkgs/pull/556611
+    (firefox.override (old: {
+      appDataDir = "${config.users.users.evantravers.home}/Library/Application Support/org.nixos.firefox";
+    }))
     keycastr
     obsidian
   ];
