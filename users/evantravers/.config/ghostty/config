@@ -9,10 +9,11 @@ cursor-style-blink = true
 
 clipboard-read = "allow"
 
-macos-option-as-alt = true
-macos-non-native-fullscreen = true
 macos-icon = retro
 macos-icon-frame = beige
+macos-non-native-fullscreen = true
+macos-option-as-alt = true
+macos-window-shadow = false
 
 confirm-close-surface = false
 mouse-hide-while-typing = true
