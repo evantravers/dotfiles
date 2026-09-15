@@ -108,6 +108,50 @@
 
   devenv = inputs.devenv.overlays.default;
 
+  # Follow mini.nvim main from GitHub to pick up Neovim 0.13 multicursor
+  # compatibility fixes (nvim-mini/mini.nvim#2546: mini.clue no longer overrides
+  # `Q`, mini.basics adds `<C-c>` for clear) ahead of a release tag — nixpkgs
+  # tracks releases, latest is v0.18.0 which predates the fixes. The override
+  # self-expires: once nixpkgs' mini-nvim carries the mini.clue fix (detected
+  # via the "Previously it was also a problem" NOTE comment that fix added to
+  # lua/mini/clue.lua), an evaluation warning fires and the nixpkgs package is
+  # used instead. `nix flake update mini-nvim` to move the pin.
+  # NOTE: the attribute name must sort after `unstable-packages` (overlays are
+  # applied in attrValues/alphabetical order), otherwise `prev.unstable` doesn't
+  # exist yet and this override is silently discarded — later overlays win on
+  # conflicting attrs and the losing thunk is never forced.
+  vim-plugin-mini-nvim-main = final: prev: {
+    # Preserve the rest of `unstable` (overlay results merge shallowly, so a
+    # bare `unstable.vimPlugins = ...` would clobber the whole unstable set).
+    unstable = prev.unstable // {
+      vimPlugins = prev.unstable.vimPlugins // {
+        mini-nvim =
+          let
+            inherit (final.unstable) lib;
+            nixpkgsMini = prev.unstable.vimPlugins.mini-nvim;
+            clueLua = nixpkgsMini + "/lua/mini/clue.lua";
+            inNixpkgs =
+              builtins.pathExists clueLua
+              && builtins.match ".*Previously it was also a problem.*" (builtins.readFile clueLua) != null;
+          in
+          lib.warnIf inNixpkgs
+            ''
+              mini.nvim's multicursor fixes (nvim-mini/mini.nvim#2546) are now in nixpkgs vimPlugins; the vim-plugin-mini-nvim-main overlay and flake input can be removed.
+            ''
+            (
+              if inNixpkgs then
+                nixpkgsMini
+              else
+                final.unstable.vimUtils.buildVimPlugin {
+                  pname = "mini-nvim";
+                  version = inputs.mini-nvim.shortRev;
+                  src = inputs.mini-nvim;
+                }
+            );
+      };
+    };
+  };
+
   # mini.diff source for jj (jujutsu), not in nixpkgs. Hosted on tangled.org.
   # https://tangled.org/ronshavit.com/mini.diff.jj
   mini-diff-jj = final: _prev: {
