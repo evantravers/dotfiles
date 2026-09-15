@@ -313,6 +313,22 @@
         "type": "github"
       }
     },
+    "mini-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1789305796,
+        "narHash": "sha256-BNqChsnmt2BOzu4CF4WjRLk+stOXeuJkhQQt79IxASw=",
+        "owner": "nvim-mini",
+        "repo": "mini.nvim",
+        "rev": "ac5dffcc52b8378fbb15efeb0497a83e57a0b01c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nvim-mini",
+        "repo": "mini.nvim",
+        "type": "github"
+      }
+    },
     "neovim-nightly": {
       "inputs": {
         "flake-parts": "flake-parts_3",
@@ -544,6 +560,7 @@
         "devenv": "devenv",
         "home-manager": "home-manager",
         "llm-agents": "llm-agents",
+        "mini-nvim": "mini-nvim",
         "neovim-nightly": "neovim-nightly",
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs_3",
