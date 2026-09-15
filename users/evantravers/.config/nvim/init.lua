@@ -262,7 +262,7 @@ vim.keymap.set('n',
   '<Cmd>nohlsearch<Bar>diffupdate'
     .. '<Bar>call nvim_buf_clear_namespace(0, nvim_create_namespace("nvim.multicursor"), 0, -1)'
     .. '<Bar>normal! <C-L><CR>',
-  {noremap = true, silent = true, desc = "Clear cursors, highlight, redraw"})
+  {noremap = true, silent = true, desc = "Clear multicursor"})
 
 -- Covenience macros
 -- fix ellipsis: "..." -> "…"
