@@ -143,7 +143,8 @@
               }
             })
             require('mini.align').setup()
-            require('mini.bracketed').setup()
+            -- Free [c/]c/[C/]C for 0.13's builtin multicursor jumps
+            require('mini.bracketed').setup({ comment = { suffix = "" } })
             require('mini.snippets').setup()
             require('mini.completion').setup()
             require('mini.input').setup()
