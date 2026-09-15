@@ -14,7 +14,7 @@ vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 
 -- Built-in undotree and difftool
 vim.cmd.packadd('nvim.undotree')
-vim.keymap.set('n', '<leader>u', ':Undotree<CR>', { desc = 'Toggle undotree' })
+vim.keymap.set('n', '<space>u', ':Undotree<CR>', { desc = 'Toggle undotree' })
 vim.cmd.packadd('nvim.difftool')
 
 -- New UI opt-in
