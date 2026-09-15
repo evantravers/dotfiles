@@ -193,7 +193,7 @@
                 })
               end,
             })
-            vim.keymap.set('n', '<leader>g', function() MiniDiff.toggle_overlay() end, opts("Toggle Diff Overlay"))
+            vim.keymap.set('n', '<space>d', function() MiniDiff.toggle_overlay() end, opts("Toggle Diff Overlay"))
 
             vim.keymap.set('n', '-', function()
               require('mini.files').setup({
