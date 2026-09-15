@@ -257,6 +257,13 @@ vim.api.nvim_create_autocmd('LspProgress', {
   end,
 })
 
+vim.keymap.set('n',
+  '<leader>q',
+  '<Cmd>nohlsearch<Bar>diffupdate'
+    .. '<Bar>call nvim_buf_clear_namespace(0, nvim_create_namespace("nvim.multicursor"), 0, -1)'
+    .. '<Bar>normal! <C-L><CR>',
+  {noremap = true, silent = true, desc = "Clear cursors, highlight, redraw"})
+
 -- Covenience macros
 -- fix ellipsis: "..." -> "…"
 vim.keymap.set('n',
