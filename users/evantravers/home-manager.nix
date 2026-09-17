@@ -117,7 +117,7 @@
       prose.enable = true;
     };
 
-    helix.enable = true;
+    helix.enable = false;
 
     # AI
     llama-cpp = {
