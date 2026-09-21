@@ -35,6 +35,11 @@
               lighten_noncurrent_window = true,
             }
             vim.cmd.colorscheme "zenbones"
+
+            -- Soften the statuscolumn separator so it reads more like the
+            -- dimmed line numbers of an inactive window.
+            vim.api.nvim_set_hl(0, 'MiniStatuscolumnSep', { link = 'MiniStatuscolumnDim' })
+            vim.api.nvim_set_hl(0, 'MiniStatuscolumnSepCursor', { link = 'MiniStatuscolumnDim' })
           '';
         }
         lush-nvim
