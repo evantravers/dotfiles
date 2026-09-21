@@ -106,6 +106,43 @@
           );
     };
 
+  # Neovim side of pi-nvim: bridge to a running pi coding agent session over
+  # a unix socket — send files, selections, and prompts from Neovim to pi. Not
+  # in nixpkgs. The pi-side extension (index.ts, opens the socket) is installed
+  # separately via pi's settings.json (npm:pi-nvim).
+  # https://github.com/carderne/pi-nvim
+  # NOTE: nixpkgs vimPlugins.pi-nvim is an UNRELATED plugin (lua/pi/, pi.nvim),
+  # so presence of the attr can't be used for the self-expire check — detect
+  # carderne's plugin by its lua/pi-nvim/ module dir instead.
+  pi-nvim = final: _prev: {
+    pi-nvim =
+      let
+        nixpkgsPlugin = final.unstable.vimPlugins.pi-nvim or null;
+        inNixpkgs =
+          nixpkgsPlugin != null
+          && builtins.pathExists (nixpkgsPlugin + "/lua/pi-nvim/init.lua");
+      in
+      final.unstable.lib.warnIf inNixpkgs
+        ''
+          carderne/pi-nvim is now in nixpkgs vimPlugins; this overlay can be removed and pkgs.vimPlugins.pi-nvim used directly.
+        ''
+        (
+          if inNixpkgs then
+            nixpkgsPlugin
+          else
+            final.unstable.vimUtils.buildVimPlugin {
+              pname = "pi-nvim";
+              version = "0.2.5";
+              src = final.fetchFromGitHub {
+                owner = "carderne";
+                repo = "pi-nvim";
+                rev = "3efbe679fdcaac1d643d465eea56826ce335dc4a";
+                hash = "sha256-KGUPVXA/a+nTElSxcjngH9Ij/tttDQ48NrYTVg+FSXk=";
+              };
+            }
+        );
+  };
+
   devenv = inputs.devenv.overlays.default;
 
   # Follow mini.nvim main from GitHub to pick up Neovim 0.13 multicursor

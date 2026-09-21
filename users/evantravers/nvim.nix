@@ -336,6 +336,13 @@
         }
         vim-speeddating # incrementing dates and times
         {
+          plugin = pkgs.pi-nvim; # send files/selections/prompts to a running pi session
+          type = "lua";
+          config = ''
+            require("pi-nvim").setup()
+          '';
+        }
+        {
           plugin = vim-fugitive; # :Git actions
           optional = true;
           type = "lua";
