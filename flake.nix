@@ -20,7 +20,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Overlays
     llm-agents.url = "github:numtide/llm-agents.nix";
     devenv.url = "github:cachix/devenv/v2.3.1";
     workmux.url = "github:raine/workmux";
@@ -28,8 +27,6 @@
       url = "github:nix-community/neovim-nightly-overlay";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
-    # Track mini.nvim main for Neovim 0.13 multicursor compatibility fixes
-    # (nvim-mini/mini.nvim#2546) ahead of a release tag.
     mini-nvim = {
       url = "github:nvim-mini/mini.nvim";
       flake = false;

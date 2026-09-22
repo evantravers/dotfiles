@@ -7,10 +7,6 @@
     };
   };
 
-  # Promote selected packages from the unstable channel to top-level pkgs so
-  # feature modules can use plain `pkgs.<name>` and stay channel-agnostic. This
-  # is the one place the channel decision is made, so two modules using the same
-  # program can't disagree about where it comes from.
   promote-unstable = final: _prev: {
     inherit (final.unstable)
       jj-starship
@@ -30,12 +26,6 @@
     llm-agents = inputs.llm-agents.packages.${prev.stdenv.hostPlatform.system};
   };
 
-  # Neovim nightly (0.13.0-dev) from nix-community/neovim-nightly-overlay,
-  # replacing neovim-unwrapped (which promote-unstable would otherwise take
-  # from the unstable channel — note neovim-unwrapped is deliberately absent
-  # from that list). Self-expires: once nixpkgs-unstable ships 0.13, an
-  # evaluation warning fires and the unstable package is used instead.
-  # `nix flake update neovim-nightly` to move the nightly pin.
   neovim-nightly = final: prev: {
     neovim-unwrapped =
       let
@@ -58,10 +48,6 @@
     workmux = inputs.workmux.packages.${prev.stdenv.hostPlatform.system}.default;
   };
 
-  # Pin karabiner-dk driver version for kanata compatibility. The pin self-
-  # expires: once kanata's required driver version matches the nixpkgs default,
-  # the override is a no-op and prints an evaluation warning. A changed-but-
-  # not-caught-up requirement prints a warning to update the pin instead.
   karabiner-dk-version = final: prev: {
     karabiner-dk =
       let
@@ -80,12 +66,6 @@
         );
   };
 
-  # Workaround for fish build failure on Apple Silicon due to an upstream
-  # nixpkgs issue: the cached fish binary has broken codesigning, so force a
-  # local rebuild instead of substituting it. The pin self-flags: a fish
-  # version bump means new binaries were cached upstream, so the workaround
-  # may no longer be needed and an evaluation warning asks you to re-check.
-  # See: https://github.com/NixOS/nixpkgs/issues/507531
   fish-darwin-rebuild =
     final: prev:
     prev.lib.optionalAttrs prev.stdenv.hostPlatform.isDarwin {
@@ -106,14 +86,6 @@
           );
     };
 
-  # Neovim side of pi-nvim: bridge to a running pi coding agent session over
-  # a unix socket — send files, selections, and prompts from Neovim to pi. Not
-  # in nixpkgs. The pi-side extension (index.ts, opens the socket) is installed
-  # separately via pi's settings.json (npm:pi-nvim).
-  # https://github.com/carderne/pi-nvim
-  # NOTE: nixpkgs vimPlugins.pi-nvim is an UNRELATED plugin (lua/pi/, pi.nvim),
-  # so presence of the attr can't be used for the self-expire check — detect
-  # carderne's plugin by its lua/pi-nvim/ module dir instead.
   pi-nvim = final: _prev: {
     pi-nvim =
       let
@@ -145,21 +117,7 @@
 
   devenv = inputs.devenv.overlays.default;
 
-  # Follow mini.nvim main from GitHub to pick up Neovim 0.13 multicursor
-  # compatibility fixes (nvim-mini/mini.nvim#2546: mini.clue no longer overrides
-  # `Q`, mini.basics adds `<C-c>` for clear) ahead of a release tag — nixpkgs
-  # tracks releases, latest is v0.18.0 which predates the fixes. The override
-  # self-expires: once nixpkgs' mini-nvim carries the mini.clue fix (detected
-  # via the "Previously it was also a problem" NOTE comment that fix added to
-  # lua/mini/clue.lua), an evaluation warning fires and the nixpkgs package is
-  # used instead. `nix flake update mini-nvim` to move the pin.
-  # NOTE: the attribute name must sort after `unstable-packages` (overlays are
-  # applied in attrValues/alphabetical order), otherwise `prev.unstable` doesn't
-  # exist yet and this override is silently discarded — later overlays win on
-  # conflicting attrs and the losing thunk is never forced.
   vim-plugin-mini-nvim-main = final: prev: {
-    # Preserve the rest of `unstable` (overlay results merge shallowly, so a
-    # bare `unstable.vimPlugins = ...` would clobber the whole unstable set).
     unstable = prev.unstable // {
       vimPlugins = prev.unstable.vimPlugins // {
         mini-nvim =
@@ -189,8 +147,6 @@
     };
   };
 
-  # mini.diff source for jj (jujutsu), not in nixpkgs. Hosted on tangled.org.
-  # https://tangled.org/ronshavit.com/mini.diff.jj
   mini-diff-jj = final: _prev: {
     mini-diff-jj =
       let
@@ -219,18 +175,7 @@
         );
   };
 
-  # Fork of zenbones-theme/zenbones.nvim from upstream PR #236
-  # (s-cerevisiae/zenbones.nvim @ the `cache` branch). Adds a msgpack colorscheme
-  # cache: colors/palettes are compiled through lush once on first load and cached,
-  # so later loads skip lush entirely (startup ~2ms). Overrides zenbones-nvim in
-  # vimPlugins, which promote-unstable then forwards to top-level pkgs. The override
-  # self-expires with an evaluation warning once nixpkgs' zenbones-nvim carries the
-  # cache (detected by the "bones_no_cache" option in lua/zenbones/util.lua, which
-  # this PR introduced; a plain version check would false-fire since nixpkgs is
-  # already at the same 4.12.0 tag the PR targets).
   zenbones-cache-fork = final: prev: {
-    # Preserve the rest of `unstable` (overlay results merge shallowly, so a
-    # bare `unstable.vimPlugins = ...` would clobber the whole unstable set).
     unstable = prev.unstable // {
       vimPlugins = prev.unstable.vimPlugins // {
         zenbones-nvim =
