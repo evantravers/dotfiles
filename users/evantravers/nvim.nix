@@ -336,10 +336,12 @@
         }
         vim-speeddating # incrementing dates and times
         {
-          plugin = pkgs.pi-nvim; # send files/selections/prompts to a running pi session
+          plugin = pkgs.pi-nvim; # run pi in a split/float and expose editor state over RPC
           type = "lua";
           config = ''
-            require("pi-nvim").setup()
+            require("pi-nvim").setup({
+              auto_start = false
+            })
           '';
         }
         {

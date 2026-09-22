@@ -87,32 +87,16 @@
     };
 
   pi-nvim = final: _prev: {
-    pi-nvim =
-      let
-        nixpkgsPlugin = final.unstable.vimPlugins.pi-nvim or null;
-        inNixpkgs =
-          nixpkgsPlugin != null
-          && builtins.pathExists (nixpkgsPlugin + "/lua/pi-nvim/init.lua");
-      in
-      final.unstable.lib.warnIf inNixpkgs
-        ''
-          carderne/pi-nvim is now in nixpkgs vimPlugins; this overlay can be removed and pkgs.vimPlugins.pi-nvim used directly.
-        ''
-        (
-          if inNixpkgs then
-            nixpkgsPlugin
-          else
-            final.unstable.vimUtils.buildVimPlugin {
-              pname = "pi-nvim";
-              version = "0.2.5";
-              src = final.fetchFromGitHub {
-                owner = "carderne";
-                repo = "pi-nvim";
-                rev = "3efbe679fdcaac1d643d465eea56826ce335dc4a";
-                hash = "sha256-KGUPVXA/a+nTElSxcjngH9Ij/tttDQ48NrYTVg+FSXk=";
-              };
-            }
-        );
+    pi-nvim = final.unstable.vimUtils.buildVimPlugin {
+      pname = "nvim-pi";
+      version = "0.7.0";
+      src = final.fetchFromGitHub {
+        owner = "aliou";
+        repo = "nvim-pi";
+        rev = "102e087179cfe8e65bd6b9ab2edbb86d64cecf2f";
+        hash = "sha256-DlzwwnkA0h59R1ZXk4OTt/1P9ZgD/HTJfTh0pvy5bgM=";
+      };
+    };
   };
 
   devenv = inputs.devenv.overlays.default;
