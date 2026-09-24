@@ -29,7 +29,7 @@
 )
 
 (defalias
-  restore (cmd /run/current-system/sw/bin/kanata-switch macbook.kbd)
+  restore (cmd /run/current-system/sw/bin/kanata-switch hrm-macbook.kbd)
 )
 
 (deflayer disabled
