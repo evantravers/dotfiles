@@ -23,7 +23,7 @@
                   plugins = {
                     tmux = { enabled = false }
                   },
-                  on_open = function()
+                  on_open = function(win)
                     vim.o.scrolloff = 999
                     vim.o.relativenumber = false
                     vim.o.number = false
@@ -31,25 +31,9 @@
                     vim.o.linebreak = true
                     vim.o.colorcolumn = "0"
 
-                    -- Blend the statuscolumn into the text background.
-                    -- Window-local, so no restore needed: zen-mode discards
-                    -- this window on close. NOTE: must append, not replace --
-                    -- zen-mode sets its own winhighlight (NormalFloat:Normal)
-                    -- to give the floating window the editor background.
-                    local statuscolumn_hl = table.concat({
-                      'LineNr:Normal',
-                      'CursorLineNr:Normal',
-                      'SignColumn:Normal',
-                      'FoldColumn:Normal',
-                      'MiniStatuscolumnSep:Normal',
-                      'MiniStatuscolumnSepCursor:Normal',
-                    }, ',')
-                    local existing = vim.wo.winhighlight
-                    if #existing > 0 then
-                      vim.wo.winhighlight = existing .. ',' .. statuscolumn_hl
-                    else
-                      vim.wo.winhighlight = statuscolumn_hl
-                    end
+                    vim.wo[win].statuscolumn = ""
+                    vim.wo[win].signcolumn = 'no'
+                    vim.wo[win].foldcolumn = '0'
 
                     vim.keymap.set('n', 'j', 'gj', {noremap = true, buffer = true})
                     vim.keymap.set('n', 'k', 'gk', {noremap = true, buffer = true})
