@@ -52,37 +52,50 @@ hs.window.animationDuration = 0
 
 hs.hotkey.bind({}, 'F18', function() MoveWindows:toggle() end)
 
+-- Directional halves with modifier-driven sizing:
+--   (none)      = 50%
+--   shift       = 30%
+--   shift+ctrl  = 70%
+-- Adding alt performs the same snap on the next display.
+MoveWindows.directional = {
+  { key = 'h', side = 'left' },
+  { key = 'l', side = 'right' },
+  { key = 'k', side = 'top' },
+  { key = 'j', side = 'bottom' },
+}
+
+local function unitFor(side, size)
+  if side == 'left'   then return hs.geometry.rect(0, 0, size, 1) end
+  if side == 'right'  then return hs.geometry.rect(1 - size, 0, size, 1) end
+  if side == 'top'    then return hs.geometry.rect(0, 0, 1, size) end
+  if side == 'bottom' then return hs.geometry.rect(0, 1 - size, 1, size) end
+end
+
+local function snap(entry, size, otherMonitor)
+  local win = hs.window.focusedWindow()
+  if win then
+    if otherMonitor then win:moveToScreen(win:screen():next()) end
+    win:moveToUnit(entry.unit or unitFor(entry.side, size))
+  end
+  MoveWindows:exit()
+end
+
+hs.fnutils.each(MoveWindows.directional, function(entry)
+  MoveWindows:bind({}, entry.key, function() snap(entry, 0.5, false) end)
+  MoveWindows:bind({'shift'}, entry.key, function() snap(entry, 0.3, false) end)
+  MoveWindows:bind({'shift', 'ctrl'}, entry.key, function() snap(entry, 0.7, false) end)
+  MoveWindows:bind({'alt'}, entry.key, function() snap(entry, 0.5, true) end)
+  MoveWindows:bind({'alt', 'shift'}, entry.key, function() snap(entry, 0.3, true) end)
+  MoveWindows:bind({'alt', 'shift', 'ctrl'}, entry.key, function() snap(entry, 0.7, true) end)
+end)
+
 MoveWindows.grid = {
-  { key = 'j', unit = hs.geometry.rect(0, 0.5, 1, 0.5) },
-  { key = 'k', unit = hs.geometry.rect(0, 0, 1, 0.5) },
-  { key = 'h', unit = hs.layout.left50 },
-  { key = 'l', unit = hs.layout.right50 },
-
-  { key = 'y', unit = hs.geometry.rect(0, 0, 0.5, 0.5) },
-  { key = 'u', unit = hs.geometry.rect(0.5, 0, 0.5, 0.5) },
-  { key = 'b', unit = hs.geometry.rect(0, 0.5, 0.5, 0.5) },
-  { key = 'n', unit = hs.geometry.rect(0.5, 0.5, 0.5, 0.5) },
-
-  { key = 'r', unit = hs.layout.left70 },
-  { key = 't', unit = hs.layout.right30 },
-
   { key = 'space', unit = hs.layout.maximized },
 }
 
 hs.fnutils.each(MoveWindows.grid, function(entry)
-  -- shift+key: throw to next display and snap to position
-  MoveWindows:bind({'shift'}, entry.key, function()
-    local win = hs.window.focusedWindow()
-    if win then
-      win:moveToScreen(win:screen():next()):moveToUnit(entry.unit)
-    end
-    MoveWindows:exit()
-  end)
-  MoveWindows:bind({}, entry.key, function()
-    local win = hs.window.focusedWindow()
-    if win then win:moveToUnit(entry.unit) end
-    MoveWindows:exit()
-  end)
+  MoveWindows:bind({}, entry.key, function() snap(entry, nil, false) end)
+  MoveWindows:bind({'alt'}, entry.key, function() snap(entry, nil, true) end)
 end)
 
 MoveWindows
@@ -91,13 +104,13 @@ MoveWindows
   :bind({}, ',', function()
     hs.window.focusedWindow()
       :application()
-      :selectMenuItem("Tile Window to Left of Screen")
+      :selectMenuItem("Left of Screen")
     MoveWindows:exit()
   end)
   :bind({}, '.', function()
     hs.window.focusedWindow()
       :application()
-      :selectMenuItem("Tile Window to Right of Screen")
+      :selectMenuItem("Right of Screen")
     MoveWindows:exit()
   end)
   :bind({}, 'tab', function()
@@ -217,9 +230,6 @@ Hyper:bind({'shift'}, 'e', nil, function()
   hs.urlevent.openURL("https://outlook.office365.com/mail/")
 end)
 
-Hyper:bind({'shift'}, 't', nil, function()
-  hs.urlevent.openURL("https://www.notion.so/Trainer-Dashboard-2b642ede473a80d88075ce2e25d3fc4b")
-end)
 Hyper:bind({}, 't', nil, function()
   hs.urlevent.openURL("obsidian://open?vault=wiki&file=templates%2Ftasks%2FToday%20Tasks")
 end)
