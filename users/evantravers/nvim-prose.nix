@@ -24,6 +24,16 @@
                     tmux = { enabled = false }
                   },
                   on_open = function(win)
+                    -- make background transparent so it exactly matches the
+                    -- terminal background; restored in on_close
+                    _G.proseSavedHl = {}
+                    for _, group in ipairs({'Normal', 'NormalNC', 'EndOfBuffer', 'SignColumn', 'FoldColumn', 'NormalFloat', 'ZenBg'}) do
+                      local hl = vim.api.nvim_get_hl(0, { name = group })
+                      hl.link = nil
+                      _G.proseSavedHl[group] = hl
+                      vim.api.nvim_set_hl(0, group, vim.tbl_extend('force', hl, { bg = 'NONE', ctermbg = 'NONE' }))
+                    end
+
                     vim.o.scrolloff = 999
                     vim.o.relativenumber = false
                     vim.o.number = false
@@ -39,6 +49,11 @@
                     vim.keymap.set('n', 'k', 'gk', {noremap = true, buffer = true})
                   end,
                   on_close = function()
+                    for group, hl in pairs(_G.proseSavedHl or {}) do
+                      vim.api.nvim_set_hl(0, group, hl)
+                    end
+                    _G.proseSavedHl = nil
+
                     vim.o.scrolloff = 3
                     vim.o.number = true
                     vim.o.relativenumber = true
