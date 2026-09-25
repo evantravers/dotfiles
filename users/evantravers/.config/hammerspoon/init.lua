@@ -89,6 +89,19 @@ hs.fnutils.each(MoveWindows.directional, function(entry)
   MoveWindows:bind({'alt', 'shift', 'ctrl'}, entry.key, function() snap(entry, 0.7, true) end)
 end)
 
+-- Center the focused window at a fixed ratios
+MoveWindows:bind({}, 'c', function()
+  local win = hs.window.focusedWindow()
+  win:setSize({ w = 1024, h = 768 }):centerOnScreen()
+  MoveWindows:exit()
+end)
+MoveWindows:bind({'shift'}, 'c', function()
+  local win = hs.window.focusedWindow()
+  win:setSize({ w = 1440, h = 900 }):centerOnScreen()
+  MoveWindows:exit()
+end)
+
+
 MoveWindows.grid = {
   { key = 'space', unit = hs.layout.maximized },
 }
