@@ -35,6 +35,7 @@
                     end
 
                     vim.o.scrolloff = 999
+                    vim.o.scrolloffpad = 1
                     vim.o.relativenumber = false
                     vim.o.number = false
                     vim.o.wrap = true
@@ -55,6 +56,7 @@
                     _G.proseSavedHl = nil
 
                     vim.o.scrolloff = 3
+                    vim.o.scrolloffpad = 0
                     vim.o.number = true
                     vim.o.relativenumber = true
                     vim.o.wrap = false

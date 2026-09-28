@@ -4,13 +4,16 @@ vim.cmd([[runtime .vimrc]])
 -- Neovim specific settings
 vim.o.icm = 'split'
 vim.o.cia = 'kind,abbr,menu'
-vim.o.foldtext = 'v:lua.vim.treesitter.foldtext()'
+vim.o.foldtext = vim.treesitter.foldtext
 vim.o.winborder = 'rounded'
 vim.o.pumborder = 'rounded'
 vim.o.cmdheight = 0
+vim.o.autoread = true
+vim.opt.shortmess:append('u')
+vim.o.updatetime = 300
 
 vim.opt.foldmethod = "expr"
-vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+vim.wo.foldexpr = vim.treesitter.foldexpr
 
 -- Built-in undotree and difftool
 vim.cmd.packadd('nvim.undotree')
@@ -256,22 +259,3 @@ vim.api.nvim_create_autocmd('LspProgress', {
     end
   end,
 })
-
-vim.keymap.set('n',
-  '<leader>q',
-  '<Cmd>nohlsearch<Bar>diffupdate'
-    .. '<Bar>call nvim_buf_clear_namespace(0, nvim_create_namespace("nvim.multicursor"), 0, -1)'
-    .. '<Bar>normal! <C-L><CR>',
-  {noremap = true, silent = true, desc = "Clear multicursor"})
-
--- Covenience macros
--- fix ellipsis: "..." -> "…"
-vim.keymap.set('n',
-  '<leader>fe',
-  "mc:%s,\\.\\.\\.,…,g<CR>:nohlsearch<CR>`c",
-  {noremap = true, silent = true, desc = "... -> …"})
--- fix spelling: just an easier finger roll on 40% keyboard
-vim.keymap.set('n',
-  '<leader>fs',
-  '1z=',
-  {noremap = true, silent = true, desc = "Fix spelling under cursor"})

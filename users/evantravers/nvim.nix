@@ -54,7 +54,6 @@
             bash
             comment
             css
-            diff
             dockerfile
             eex
             elixir
@@ -93,7 +92,9 @@
                 local bufnr = ev.buf
                 local ok = pcall(vim.treesitter.start, bufnr)
                 if ok then
-                  vim.bo[bufnr].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+                  vim.bo[bufnr].indentexpr = function()
+                    return require('nvim-treesitter').indentexpr()
+                  end
                 end
               end,
             })
@@ -236,6 +237,7 @@
                 },
               })
               require('mini.extra').setup()
+              vim.ui.select = MiniPick.ui_select
               MiniPick.registry.files_root = function(local_opts)
                 local root_patterns = { ".git" }
                 local root_dir = vim.fs.dirname(vim.fs.find(root_patterns, { upward = true })[1])
