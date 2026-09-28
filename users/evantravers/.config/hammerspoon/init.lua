@@ -2,17 +2,17 @@ hs.loadSpoon('Hyper')
 
 -- bundleID, global, local
 Bindings = {
-  {'com.apple.MobileSMS', 'q', nil},
   {'com.apple.finder', 'f', nil},
   {'com.apple.mail', 'e', nil},
+  {'com.apple.MobileSMS', 'q', nil},
   {'com.flexibits.cardhop.mac', nil, {'u'}},
   {'com.flexibits.fantastical2.mac', 'y', {'/'}},
   {'com.mitchellh.ghostty', 'j', nil},
-  {'com.toggl.daneel', 'r', nil},
   {'com.raycast.macos', nil, {'c', 'n', 'space'}},
   {'com.superultra.Homerow', nil, {'return', 'tab', ';'}},
+  {'com.surteesstudios.Bartender', nil, {'b'}},
+  {'com.toggl.daneel', 'r', nil},
   {'md.obsidian', 'g', nil},
-  {'com.surteesstudios.Bartender', nil, {'b'}}
 }
 
 Hyper = spoon.Hyper
