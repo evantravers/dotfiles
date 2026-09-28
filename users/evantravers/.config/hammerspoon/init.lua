@@ -11,7 +11,8 @@ Bindings = {
   {'com.toggl.daneel', 'r', nil},
   {'com.raycast.macos', nil, {'c', 'n', 'space'}},
   {'com.superultra.Homerow', nil, {'return', 'tab', ';'}},
-  {'md.obsidian', 'g', nil}
+  {'md.obsidian', 'g', nil},
+  {'com.surteesstudios.Bartender', nil, {'b'}}
 }
 
 Hyper = spoon.Hyper
