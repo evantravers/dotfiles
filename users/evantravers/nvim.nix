@@ -1,6 +1,7 @@
 { config, lib, pkgs, ... }:
 {
   imports = [
+    ./nvim-code-ref.nix
     ./nvim-dap.nix
     ./nvim-prose.nix
   ];
