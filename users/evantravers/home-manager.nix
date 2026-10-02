@@ -96,6 +96,7 @@
 
     workmux = {
       enable = true;
+      package = pkgs.llm-agents.workmux;
       settings = {
         nerdfont = true;
         merge_strategy = "rebase";

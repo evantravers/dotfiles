@@ -44,10 +44,6 @@
         );
   };
 
-  workmux = _final: prev: {
-    workmux = inputs.workmux.packages.${prev.stdenv.hostPlatform.system}.default;
-  };
-
   karabiner-dk-version = final: prev: {
     karabiner-dk =
       let
