@@ -1,5 +1,5 @@
 -- Copy a code reference to the clipboard for pasting into an LLM chat.
--- Normal mode: `@path/from/cwd.lua lines:42`
+-- Normal mode: `@path/from/cwd.lua#L42`
 -- Visual mode: also includes the selection as a fenced code block below.
 local function copy_code_ref()
   local bufnr = 0
@@ -22,15 +22,15 @@ local function copy_code_ref()
     end
     local lines = vim.fn.getregion(s, e, { type = mode })
     local header = s[2] == e[2]
-      and string.format('%s lines:%d', file, s[2])
-      or string.format('%s lines:%d-%d', file, s[2], e[2])
+      and string.format('%s#L%d', file, s[2])
+      or string.format('%s#L%d-%d', file, s[2], e[2])
     text = string.format('%s\n\n```%s\n%s\n```', header, vim.bo[bufnr].filetype, table.concat(lines, '\n'))
     summary = header
     -- leave visual mode
     local esc = vim.api.nvim_replace_termcodes('<Esc>', true, false, true)
     vim.api.nvim_feedkeys(esc, 'n', false)
   else
-    text = string.format('%s lines:%d', file, vim.fn.line('.'))
+    text = string.format('%s#L%d', file, vim.fn.line('.'))
     summary = text
   end
 
