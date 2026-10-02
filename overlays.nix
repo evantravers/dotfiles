@@ -82,58 +82,6 @@
           );
     };
 
-  pi-nvim = final: _prev: {
-    pi-nvim = final.unstable.vimUtils.buildVimPlugin {
-      pname = "nvim-pi";
-      version = "0.7.0";
-      src = final.fetchFromGitHub {
-        owner = "aliou";
-        repo = "nvim-pi";
-        rev = "102e087179cfe8e65bd6b9ab2edbb86d64cecf2f";
-        hash = "sha256-DlzwwnkA0h59R1ZXk4OTt/1P9ZgD/HTJfTh0pvy5bgM=";
-      };
-    };
-  };
-
-  # pi 0.99.x's codemode tool fails with "Cannot find module
-  # '/$bunfs/root/src/extensions/codemode/worker.js'" in the llm-agents.nix
-  # build: upstream's scripts/build-binaries.sh passes the codemode worker as
-  # an explicit `bun build --compile` entrypoint (Bun only embeds workers
-  # listed as entrypoints), but packages/pi/package.nix only passes the
-  # image-resize worker. Shim it the same way package.nix shims the
-  # image-resize worker (the npm tarball ships it as a dist chunk).
-  pi-codemode-worker = _final: prev: {
-    llm-agents = prev.llm-agents // {
-      pi = prev.llm-agents.pi.overrideAttrs (old: {
-        preInstall =
-          let
-            inherit (prev) lib;
-            upstreamFixed = lib.hasInfix "codemode/worker" (old.preInstall or "");
-          in
-          lib.warnIf upstreamFixed
-            ''
-              llm-agents.nix's pi package now embeds the codemode worker; the pi-codemode-worker overlay can be removed.
-            ''
-            (
-              if upstreamFixed || (old.preInstall or "") == "" then
-                old.preInstall
-              else
-                ''
-                  # Upstream embeds the worker as ./src/utils/image-resize-worker.ts and
-                  # loads it by that path at runtime; the npm tarball only ships dist/.
-                  mkdir -p src/utils src/modes src/core src/extensions/codemode
-                  echo 'import "../../dist/utils/image-resize-worker.js";' > src/utils/image-resize-worker.ts
-                  echo 'import "../../../dist/bundle/chunks/codemode-worker.js";' > src/extensions/codemode/worker.ts
-                  ln -s ../../dist/modes/interactive src/modes/interactive
-                  ln -s ../../dist/core/export-html src/core/export-html
-
-                  bun build --compile ./dist/bun/cli.js ./src/utils/image-resize-worker.ts ./src/extensions/codemode/worker.ts --outfile dist/pi
-                ''
-            );
-      });
-    };
-  };
-
   devenv = inputs.devenv.overlays.default;
 
   vim-plugin-mini-nvim-main = final: prev: {
