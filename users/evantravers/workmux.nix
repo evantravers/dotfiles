@@ -157,9 +157,13 @@ let
       gnugrep
       gnused
     ];
+    # No errexit: failures must reach fail()/notify, not kill the
+    # detached worker silently
+    bashOptions = [
+      "nounset"
+      "pipefail"
+    ];
     text = ''
-      set -uo pipefail
-
       path=$1
       session=$2
       prompt_file=$3
@@ -252,7 +256,7 @@ let
       branch=$(sed -n "s/.*worktree and tmux window for '\([^']*\)'.*/\1/p" "$log" | tail -1)
       wt_path=$(sed -n 's/^ *Worktree: //p' "$log" | tail -1 | tr -d '[:space:]')
 
-      agent_name=pi
+      agent_name=${lib.escapeShellArg (cfg.settings.agent or "pi")}
       if [ -f .workmux.yaml ]; then
         a=$(sed -n 's/^agent:[[:space:]]*//p' .workmux.yaml | head -1)
         [ -n "$a" ] && agent_name="$a"
