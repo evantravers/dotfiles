@@ -101,6 +101,13 @@
         nerdfont = true;
         merge_strategy = "rebase";
         base_branch = "auto";
+        agent = "pi";
+        # Always name branches with pi: it needs no project-specific env
+        # (unlike claude, which needs e.g. CLAUDE_CONFIG_DIR from the
+        # target project's devenv — unavailable at naming time)
+        auto_name = {
+          command = "pi -p";
+        };
         post_create = [ "workmux-devenv-rebind" ];
         pre_remove = [ "workmux-devenv-unbind" ];
       };
