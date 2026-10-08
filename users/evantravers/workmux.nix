@@ -121,29 +121,82 @@ let
           --char-limit 0 --height 8) || exit 0
       fi
 
-      args=()
-      if [ -n "$prompt" ]; then
-        # Branch name auto-generated from the prompt
-        args=(-A -p "$prompt")
-      else
-        # No task: plain worktree, titled by hand (old `wm add` habit)
+      # Prompt-less launch: fall back to a hand-typed worktree title
+      title=""
+      if [ -z "$prompt" ]; then
         title=$(gum input --placeholder "Worktree title (empty to abort)") || exit 0
         [ -n "$title" ] || exit 0
-        args=("$title")
       fi
 
-      cd "$path"
+      # Everything after this point — branch naming, provisioning, hooks,
+      # agent launch — happens in the background. The user only hears
+      # back via tmux notifications: an issue, or "created".
+      prompt_file=$(mktemp)
+      printf '%s' "$prompt" > "$prompt_file"
 
-      add_args=(--background)
       if [ -n "''${TMUX:-}" ]; then
-        # Panes open as plain shells; wmx launches the agent itself once
-        # the shell is ready. workmux send-keys's pane commands the
-        # instant the window opens, and in devenv projects fish + the
-        # devenv hook take 10s+ to reach a prompt — the keystrokes get
-        # echoed but flushed before fish ever reads them.
-        add_args+=(--no-pane-cmds)
-        [ -n "$prompt" ] && add_args+=(--prompt-file-only)
+        nohup ${wmxCreate}/bin/wmx-create "$path" "$session" "$prompt_file" "$title" \
+          </dev/null >/dev/null 2>&1 &
+        tmux display-message "wmx: creating worktree in the background…"
+      else
+        ${wmxCreate}/bin/wmx-create "$path" "$session" "$prompt_file" "$title"
       fi
+    '';
+  };
+
+  # Detached worker spawned by wmx: runs workmux add (auto-naming via pi,
+  # provisioning, hooks), reports outcome via tmux display-message, and
+  # hands off to wmx-launch for the agent start. Name collisions are
+  # retried with a numeric suffix since there is no user to ask.
+  wmxCreate = pkgs.writeShellApplication {
+    name = "wmx-create";
+    runtimeInputs = with pkgs; [
+      cfg.package
+      tmux
+      coreutils
+      gnugrep
+      gnused
+    ];
+    text = ''
+      set -uo pipefail
+
+      path=$1
+      session=$2
+      prompt_file=$3
+      title=''${4:-}
+
+      trap 'rm -f "$prompt_file"' EXIT
+
+      state_dir="''${XDG_STATE_HOME:-$HOME/.local/state}/wmx"
+      mkdir -p "$state_dir"
+      log="$state_dir/last-create.log"
+      : > "$log"
+
+      notify() {
+        if [ -n "''${TMUX:-}" ]; then
+          tmux display-message -d 8000 "wmx: $1"
+        else
+          echo "wmx: $1"
+        fi
+      }
+
+      fail() {
+        detail=$(grep -m1 -E '^(Error|Caused by:)' "$log" || true)
+        notify "failed: $1 ''${detail:+— $detail}"
+        exit 1
+      }
+
+      cd "$path" || fail "cd $path"
+
+      args=(--background)
+      if [ -n "''${TMUX:-}" ]; then
+        # Panes open as plain shells; wmx-launch delivers the agent
+        # command once the shell is ready (workmux send-keys's pane
+        # commands before fish is initialized and they get flushed)
+        args+=(--no-pane-cmds)
+        [ -s "$prompt_file" ] && args+=(--prompt-file-only)
+      fi
+
       if [ -n "$session" ]; then
         # Another project: the worktree window belongs in that project's
         # sesh session, creating it first if needed.
@@ -151,96 +204,119 @@ let
         # so match exactly against list-sessions instead)
         tmux list-sessions -F '#{session_name}' 2>/dev/null | grep -Fxq "$session" \
           || tmux new-session -d -s "$session" -c "$path"
-        add_args+=(--parent-session "$session")
+        args+=(--parent-session "$session")
         where="session '$session'"
       else
         where="this session"
       fi
 
-      # Stream output live (workmux can ask interactive confirms, e.g.
-      # installing agent status-tracking skills), but also capture it so
-      # name collisions can be detected and retried
-      output_file=$(mktemp)
-      trap 'rm -f "$output_file"' EXIT
+      add_args=()
+      if [ -s "$prompt_file" ]; then
+        # Branch name auto-generated from the prompt (pi; no project env
+        # needed)
+        add_args=(-A -P "$prompt_file")
+      elif [ -n "$title" ]; then
+        add_args=("$title")
+      else
+        fail "no prompt or title"
+      fi
 
-      try_add() {
-        workmux add "''${add_args[@]}" "$@" 2>&1 | tee "$output_file"
+      run_add() {
+        if [ -n "''${TMUX:-}" ]; then
+          workmux add "''${args[@]}" "$@" >>"$log" 2>&1
+        else
+          workmux add "''${args[@]}" "$@" 2>&1 | tee -a "$log"
+        fi
       }
 
-      if ! try_add "''${args[@]}"; then
-        if ! grep -qi 'already exists' "$output_file"; then
-          # Genuine failure: output already shown, exit non-zero (tmux
-          # -EE keeps the popup open so the error stays visible)
-          exit 1
+      suffix_note=""
+      if ! run_add "''${add_args[@]}"; then
+        # Auto-named branch already exists? Retry with numeric suffixes
+        generated=$(sed -n "s/.*A worktree for branch '\([^']*\)' already exists.*/\1/p" "$log" | tail -1)
+        if [ -z "$generated" ] || [ ! -s "$prompt_file" ]; then
+          fail "workmux add"
         fi
-        # The LLM-generated name collided with an existing worktree:
-        # let the user name it explicitly, keeping the prompt
-        gum style --foreground 1 "That name is already taken by another worktree."
-        while :; do
-          title=$(gum input --header "Name it yourself" \
-            --placeholder "branch/worktree name (empty to abort)") || exit 0
-          [ -n "$title" ] || exit 0
-          retry=("$title")
-          [ -n "$prompt" ] && retry+=(-p "$prompt")
-          : > "$output_file"
-          if try_add "''${retry[@]}"; then
+        ok=""
+        for n in 2 3 4 5; do
+          : > "$log"
+          if run_add "$generated-$n" -P "$prompt_file"; then
+            ok="$generated-$n"
             break
-          elif grep -qi 'already exists' "$output_file"; then
-            gum style --foreground 1 "Also taken, try another."
-          else
-            exit 1
           fi
+          grep -q 'already exists' "$log" || break
         done
+        [ -n "$ok" ] || fail "name kept colliding"
+        suffix_note=" (renamed $ok)"
       fi
 
-      # Stay where we are; confirm via the status line (the popup closes
-      # on success, so an echo would never be seen there)
+      branch=$(sed -n "s/.*worktree and tmux window for '\([^']*\)'.*/\1/p" "$log" | tail -1)
+      wt_path=$(sed -n 's/^ *Worktree: //p' "$log" | tail -1 | tr -d '[:space:]')
+
+      agent_name=pi
+      if [ -f .workmux.yaml ]; then
+        a=$(sed -n 's/^agent:[[:space:]]*//p' .workmux.yaml | head -1)
+        [ -n "$a" ] && agent_name="$a"
+      fi
+
       if [ -n "''${TMUX:-}" ]; then
-        tmux display-message "wmx: worktree created in $where, agent starting…"
+        has_prompt=""
+        [ -s "$prompt_file" ] && has_prompt=1
+        nohup ${wmxLaunch}/bin/wmx-launch "$wt_path" "$agent_name" "$branch" "$has_prompt" \
+          </dev/null >/dev/null 2>&1 &
       fi
 
-      # Launch the agent ourselves, now that the window exists. Find the
-      # focused pane of the new window by its cwd, wait for the shell to
-      # reach a prompt, then send the command.
-      if [ -n "''${TMUX:-}" ]; then
-        branch=$(sed -n "s/.*worktree and tmux window for '\([^']*\)'.*/\1/p" "$output_file" | tail -1)
-        wt_path=$(sed -n 's/^ *Worktree: //p' "$output_file" | tail -1 | tr -d '[:space:]')
+      notify "created '$branch' in $where$suffix_note — agent starting"
+    '';
+  };
 
-        agent_name=pi
-        if [ -f .workmux.yaml ]; then
-          a=$(sed -n 's/^agent:[[:space:]]*//p' .workmux.yaml | head -1)
-          [ -n "$a" ] && agent_name="$a"
-        fi
+  # Spawned detached by wmx after the worktree exists: finds the new
+  # window's focused pane, waits for its shell to reach a prompt (fish
+  # init + devenv hook can take 10s+ in devenv projects), then sends the
+  # agent command. Runs in the background so wmx — and its popup — can
+  # exit immediately instead of blocking on worktree setup.
+  wmxLaunch = pkgs.writeShellApplication {
+    name = "wmx-launch";
+    runtimeInputs = with pkgs; [
+      tmux
+      coreutils
+      gnugrep
+      gawk
+    ];
+    text = ''
+      set -euo pipefail
 
-        pane=""
-        for _ in $(seq 1 30); do
-          pane=$(tmux list-panes -a -F '#{pane_id} #{pane_active} #{pane_current_path}' \
-            | awk -v p="$wt_path" '$2 == 1 && $3 == p {print $1; exit}')
-          [ -n "$pane" ] && break
-          sleep 1
-        done
+      wt_path=$1
+      agent_name=$2
+      branch=$3
+      has_prompt=''${4:-}
 
-        if [ -n "$pane" ]; then
-          # Wait for the first prompt (starship ❯) — i.e. fish init and
-          # any devenv hook activation have finished. On timeout, send
-          # anyway: a late command is better than none.
-          for _ in $(seq 1 90); do
-            tmux capture-pane -p -t "$pane" 2>/dev/null | grep -q '❯' && break
-            sleep 2
-          done
+      # The agent pane is the focused one in the new window; find it by cwd
+      pane=""
+      for _ in $(seq 1 30); do
+        pane=$(tmux list-panes -a -F '#{pane_id} #{pane_active} #{pane_current_path}' \
+          | awk -v p="$wt_path" '$2 == 1 && $3 == p {print $1; exit}')
+        [ -n "$pane" ] && break
+        sleep 1
+      done
+      [ -n "$pane" ] || exit 1
 
-          if [ -n "$prompt" ]; then
-            case "$agent_name" in
-              # Match workmux's per-agent prompt-passing conventions
-              claude) launch="wmx-agent claude -- \"\$(cat .workmux/PROMPT-$branch.md)\"" ;;
-              *)      launch="wmx-agent $agent_name \"\$(cat .workmux/PROMPT-$branch.md)\"" ;;
-            esac
-          else
-            launch="wmx-agent $agent_name"
-          fi
-          tmux send-keys -t "$pane" "$launch" Enter
-        fi
+      # Wait for the first prompt (starship ❯). On timeout, send anyway:
+      # a late command is better than none.
+      for _ in $(seq 1 90); do
+        tmux capture-pane -p -t "$pane" 2>/dev/null | grep -q '❯' && break
+        sleep 2
+      done
+
+      if [ -n "$has_prompt" ]; then
+        case "$agent_name" in
+          # Match workmux's per-agent prompt-passing conventions
+          claude) launch="wmx-agent claude -- \"\$(cat .workmux/PROMPT-$branch.md)\"" ;;
+          *)      launch="wmx-agent $agent_name \"\$(cat .workmux/PROMPT-$branch.md)\"" ;;
+        esac
+      else
+        launch="wmx-agent $agent_name"
       fi
+      tmux send-keys -t "$pane" "$launch" Enter
     '';
   };
 
