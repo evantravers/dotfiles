@@ -1,25 +1,26 @@
-;; Cradio/Ferris Sweep inspired Kanata config with home row mods and symbol layer
+;; Cradio/Ferris Sweep layout for the laptop keyboard
+;; ported from zmk-config/config/cradio.keymap and shared.dtsi
 
 (defcfg
   concurrent-tap-hold yes
   process-unmapped-keys yes
+  ;; `_` falls through to the base layer, not the physical key
+  delegate-to-first-layer yes
   macos-dev-names-include (
     "Apple Internal Keyboard / Trackpad"
   )
 )
 
-;; Define the keys to remap - using a full QWERTY layout
+;; physical keys, shifted up two rows
+;;   F row      -> top row
+;;   number row -> home row (f on 5, j on 9)
+;;   qwerty row -> bottom row
+;;   c v m ,    -> thumbs (v and m are the primary thumbs)
 (defsrc
-  3    4    5    6    7         8    9    0    -    =
-  w    e    r    t    y         u    i    o    p    [
-  a    s    d    f    g         j    k    l    ;    '
-                 v    b         m    ,
-)
-
-;; Define hand groups for opposite-hand tap-hold detection
-(defhands
-  (left  3 4 5 6 7 w e r t y a s d f g v b)
-  (right 8 9 0 - = u i o p [ j k l ; ' m ,)
+  f2   f3   f4   f5   f6        f7   f8   f9   f10  f11
+  2    3    4    5    6         8    9    0    -    =
+  q    w    e    r    t         i    o    p    [    ]
+                 c    v         m    ,
 )
 
 ;; define values for tap time and hold time
@@ -30,61 +31,115 @@
 
 ;; alias definitions
 (defalias
-  ;; Layer aliases
-  sym (layer-toggle symbol)
-  
-  ;; Home row mod aliases - left hand
-  a (tap-hold-opposite-hand $hold-time a lmet)
-  s (tap-hold-opposite-hand $hold-time s lalt)
-  d (tap-hold-opposite-hand $hold-time d lctrl)
-  f (tap-hold-opposite-hand $hold-time f lsft)
-  
-  ;; Home row mod aliases - right hand
-  j (tap-hold-opposite-hand $hold-time j rsft)
-  k (tap-hold-opposite-hand $hold-time k rctrl)
-  l (tap-hold-opposite-hand $hold-time l ralt)
-  ; (tap-hold-opposite-hand $hold-time ; rmet)
-  
-  ;; Thumb key aliases - using v, b, m, and , as thumb keys
-  vtb (tap-hold $tap-time $hold-time tab tab)
-  bsp (tap-hold $tap-time $hold-time bspc @sym)
-  msp (tap-hold $tap-time $hold-time spc spc)
-  crt (tap-hold $tap-time $hold-time ret ret)
-  
-  ;; Caps word alias
+  ;; home row mods - left hand
+  a (tap-hold $tap-time $hold-time a lmet)
+  s (tap-hold $tap-time $hold-time s lalt)
+  d (tap-hold $tap-time $hold-time d lctl)
+  f (tap-hold $tap-time $hold-time f lsft)
+
+  ;; home row mods - right hand
+  j (tap-hold $tap-time $hold-time j rsft)
+  k (tap-hold $tap-time $hold-time k rctl)
+  l (tap-hold $tap-time $hold-time l ralt)
+  ; (tap-hold $tap-time $hold-time ; rmet)
+
+  ;; thumbs
+  tab (tap-hold $tap-time $hold-time tab (layer-while-held shortcuts))
+  bsp (tap-hold $tap-time $hold-time bspc (layer-while-held symbol))
+  spc (tap-hold $tap-time $hold-time spc (layer-while-held control))
+  ret (tap-hold $tap-time $hold-time ret (layer-while-held shortcuts))
+
+  ;; conditional layers: symbol + control = mouse, shortcuts + control = adjust
+  spcm (tap-hold $tap-time $hold-time spc (layer-while-held mouse))
+  bspm (tap-hold $tap-time $hold-time bspc (layer-while-held mouse))
+  spca (tap-hold $tap-time $hold-time spc (layer-while-held adjust))
+  taba (tap-hold $tap-time $hold-time tab (layer-while-held adjust))
+  reta (tap-hold $tap-time $hold-time ret (layer-while-held adjust))
+
   cw (caps-word 1000)
+  glb (one-shot 1000 fn)
+  hyp (one-shot 1000 f19)
+
+  ;; tap dances
+  nxpv (tap-dance 200 (next prev))
+  dnmt (tap-dance 120 (vold mute))
+  scrn (tap-dance 200 (M-S-C-4 M-S-4))
+
+  ;; nudge toggle
+  ndg (layer-switch nudge)
+  base (layer-switch base)
+
+  ;; mouse
+  mup (movemouse-accel-up 1 400 1 5)
+  mdn (movemouse-accel-down 1 400 1 5)
+  mlf (movemouse-accel-left 1 400 1 5)
+  mrt (movemouse-accel-right 1 400 1 5)
+  wup (mwheel-up 50 120)
+  wdn (mwheel-down 50 120)
+  wlf (mwheel-left 50 120)
+  wrt (mwheel-right 50 120)
 )
 
-;; define global input chord combinations
+;; combos, base layer only (physical keys)
 (defchordsv2
-  ;; QW = ESC
-  (q w) esc 50 all-released ()
-  
-  ;; L; = ' (apostrophe)
-  (l ;) apo 50 all-released ()
-  
-  ;; ED = SPACE (matches ZMK combo at positions 2,12)
-  (e d) spc 50 all-released ()
-  
-  ;; ZX = RETURN
-  (z x) ret 50 all-released ()
-  
-  ;; A; = HYPER (F19) (matches ZMK combo at positions 10,19)
-  (a ;) f19 50 all-released ()
+  ;; Q+W = esc
+  (f2 f3) esc 50 all-released (symbol control mouse shortcuts nudge adjust)
+  ;; L+; = '
+  (- =) apo 50 all-released (symbol control mouse shortcuts nudge adjust)
+  ;; A+; = hyper (F19)
+  (2 =) @hyp 50 all-released (symbol control mouse shortcuts nudge adjust)
+  ;; E+D = space
+  (f4 4) spc 50 all-released (symbol control mouse shortcuts nudge adjust)
+  ;; Z+X = return
+  (q w) ret 50 all-released (symbol control mouse shortcuts nudge adjust)
 )
 
-;; Base QWERTY layer
 (deflayer base
   q    w    e    r    t         y    u    i    o    p
   @a   @s   @d   @f   g         h    @j   @k   @l   @;
   z    x    c    v    b         n    m    ,    .    /
-  @vtb @bsp @msp @crt
+                 @tab @bsp      @spc @ret
 )
 
-;; Symbol layer - accessed by holding backspace
 (deflayer symbol
-  S-1  S-2  S-[  S-]  S-\       S-apo  S--  S-=  /    @cw
-  S-3  S-4  S-9  S-0  grv       apo    -    =    S-8  S-;
-  S-5  S-6  [    ]    S-grv     S-7    S-/  S-,  S-.  \
-  _ _ _ _
+  S-1  S-2  S-[  S-]  S-\       S-apo S--  S-=  /    @cw
+  S-3  S-4  S-9  S-0  grv       apo   -    =    S-8  S-;
+  S-5  S-6  [    ]    S-grv     S-7   S-/  S-,  S-.  \
+                 _    _         @spcm _
+)
+
+(deflayer control
+  1    2    3    4    5         6     7    8     9     0
+  _    _    _    _    _         left  down up    rght  f18
+  _    _    _    _    home      end   pp   @dnmt volu  @nxpv
+                 @taba @bspm    _     @reta
+)
+
+(deflayer mouse
+  @wlf @wup @mup @wdn @wrt      _    _    _    rmet ralt
+  _    @mlf @mdn @mrt _         _    mlft mrgt mmid rctl
+  _    _    _    _    _         _    _    _    _    rsft
+                 _    _         _    _
+)
+
+(deflayer shortcuts
+  1     2     3    4     5        bspc 7    8    9    M-\
+  M-grv @scrn M-=  M-S-] M-]      0    4    5    6    tab
+  @ndg  _     M--  M-S-[ M-[      .    1    2    3    .
+                 _    @glb      @spca _
+)
+
+(deflayer nudge
+  @base _    up   _    _         _    _    _    _    _
+  lctl  left down rght _         _    _    _    _    _
+  lsft  _    _    _    _         _    _    _    _    _
+                 _    _         _    _
+)
+
+;; bluetooth, output, reset and bootloader keys have no kanata equivalent
+(deflayer adjust
+  f1   f2   f3   f4   f5        f6   f7   f8   f9   f10
+  _    _    _    _    _         XX   _    _    _    _
+  XX   XX   XX   XX   XX        XX   XX   XX   XX   XX
+                 _    _         _    _
 )
