@@ -10,7 +10,20 @@ let
 
   # Generate key table bindings
   mkTableBind =
-    key: cmd: "bind-key -T workmux ${lib.replaceStrings [ ";" ] [ "\\;" ] key} run-shell \"${cmd}\"";
+    key: bind:
+    "bind-key -T workmux ${lib.replaceStrings [ ";" ] [ "\\;" ] key} run-shell \"${bind.command}\"";
+
+  # which-key style "clue" window: render the keybindings as an
+  # interactive display-menu. Letter keys run the command directly from
+  # the popup; "T" drops into the raw key table for chained commands
+  # (e.g. repeating n/p through the sidebar).
+  escMenu = lib.replaceStrings [ "\\" "\"" ] [ "\\\\" "\\\"" ];
+  menuItem =
+    key: bind:
+    "\"${escMenu bind.label}\" ${key} \"run-shell \\\"${escMenu bind.command}\\\"\"";
+  menuBind =
+    "bind-key ${cfg.tmux.enterKey} display-menu -T \" workmux \" "
+    + lib.concatStringsSep " " (lib.mapAttrsToList menuItem cfg.tmux.keybindings);
 
   tmuxConfig = lib.concatStringsSep "\n" (
     [
@@ -20,7 +33,7 @@ let
     ++ [
       ""
       "# Enter workmux mode"
-      "bind-key ${cfg.tmux.enterKey} switch-client -T workmux"
+      (if cfg.tmux.menu then menuBind else "bind-key ${cfg.tmux.enterKey} switch-client -T workmux")
     ]
   );
 
@@ -442,16 +455,68 @@ in
         default = "C-w";
       };
 
+      menu = lib.mkOption {
+        description = ''
+          Show an interactive hint menu (tmux display-menu) listing all
+          workmux commands when pressing enterKey, instead of silently
+          entering the key table. Letter keys run the command directly;
+          "T" enters the raw key table for chained commands.
+        '';
+        type = lib.types.bool;
+        default = true;
+      };
+
       keybindings = lib.mkOption {
-        description = "Keybindings active in workmux mode (no prefix needed).";
-        type = lib.types.attrsOf lib.types.str;
+        description = ''
+          Keybindings active in workmux mode (no prefix needed). Each value
+          is either a command string or { command, label }. The label is
+          shown in the hint menu; it defaults to the command.
+        '';
+        type = lib.types.attrsOf (
+          lib.types.coercedTo lib.types.str (command: { inherit command; }) (
+            lib.types.submodule (
+              { config, ... }:
+              {
+                options = {
+                  command = lib.mkOption {
+                    description = "Shell command to run.";
+                    type = lib.types.str;
+                  };
+                  label = lib.mkOption {
+                    description = "Label shown in the hint menu.";
+                    type = lib.types.str;
+                    default = config.command;
+                  };
+                };
+              }
+            )
+          )
+        );
         default = {
-          "s" = "workmux sidebar";
-          "a" = "tmux display-popup -EE -w 72 -h 20 wmx";
-          "d" = "tmux display-popup -E -w 80% -h 80% workmux dashboard";
-          "n" = "workmux sidebar next";
-          "p" = "workmux sidebar prev";
-          "l" = "workmux last-done";
+          "s" = {
+            command = "workmux sidebar";
+            label = "Toggle sidebar";
+          };
+          "a" = {
+            command = "tmux display-popup -EE -w 72 -h 20 wmx";
+            label = "New agent";
+          };
+          "d" = {
+            command = "tmux display-popup -E -w 80% -h 80% workmux dashboard";
+            label = "Dashboard";
+          };
+          "n" = {
+            command = "workmux sidebar next";
+            label = "Next agent";
+          };
+          "p" = {
+            command = "workmux sidebar prev";
+            label = "Previous agent";
+          };
+          "l" = {
+            command = "workmux last-done";
+            label = "Last finished agent";
+          };
         };
       };
     };
