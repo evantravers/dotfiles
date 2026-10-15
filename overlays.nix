@@ -23,7 +23,25 @@
   };
 
   llm-agents = _final: prev: {
-    llm-agents = inputs.llm-agents.packages.${prev.stdenv.hostPlatform.system};
+    llm-agents =
+      let
+        inherit (prev) lib;
+        packages = inputs.llm-agents.packages.${prev.stdenv.hostPlatform.system};
+        patchedVersion = "0.1.275";
+      in
+      packages
+      // {
+        # In colocated jj repos, `workmux add` creates a jj workspace instead
+        # of a git worktree (no bookmark), and `workmux rm` forgets it.
+        workmux =
+          lib.warnIf (packages.workmux.version != patchedVersion)
+            "workmux is now ${packages.workmux.version} (jj patch written for ${patchedVersion}); if the build fails, rebase patches/workmux-jj.patch."
+            (
+              packages.workmux.overrideAttrs (old: {
+                patches = (old.patches or [ ]) ++ [ ./patches/workmux-jj.patch ];
+              })
+            );
+      };
   };
 
   neovim-nightly = final: prev: {

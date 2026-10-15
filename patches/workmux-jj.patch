@@ -1,0 +1,211 @@
+diff --git i/src/command/remove.rs w/src/command/remove.rs
+index 49368dfc..a5e499fd 100644
+--- i/src/command/remove.rs
++++ w/src/command/remove.rs
+@@ -126,6 +126,7 @@ fn run_specified(
+         // Check unmerged (promptable), only if configured and we're deleting the branch
+         if confirm_unmerged
+             && !keep_branch
++            && !git::is_jj_workspace(&handle)
+             && let Some(base) = is_unmerged(&branch)?
+         {
+             unmerged.push((handle, branch, base));
+@@ -400,7 +401,11 @@ fn collect_bulk_removal_plan(
+             continue;
+         }
+ 
+-        if confirm_unmerged && mode.allow_unmerged_skip() && !force && !keep_branch {
++        let is_jj = path
++            .file_name()
++            .and_then(|n| n.to_str())
++            .is_some_and(git::is_jj_workspace);
++        if confirm_unmerged && mode.allow_unmerged_skip() && !force && !keep_branch && !is_jj {
+             let base = git::get_branch_base(&branch)
+                 .ok()
+                 .unwrap_or_else(|| main_branch.clone());
+@@ -523,6 +528,8 @@ fn remove_worktree(
+     let config = config::Config::load(None)?;
+     let mux = create_backend(detect_backend());
+     let context = WorkflowContext::new(config, mux, None)?;
++    // jj workspaces never delete a branch; bookmarks are the user's to manage.
++    let keep_branch = keep_branch || git::is_jj_workspace(handle);
+ 
+     super::announce_hooks(&context.config, None, super::HookPhase::PreRemove);
+ 
+diff --git i/src/git/worktree.rs w/src/git/worktree.rs
+index 264c6297..30b83a9b 100644
+--- i/src/git/worktree.rs
++++ w/src/git/worktree.rs
+@@ -97,6 +97,56 @@ pub fn create_worktree_in(
+     Ok(())
+ }
+ 
++/// Metadata key recording the branch name workmux assigned to a jj workspace.
++/// jj keeps HEAD detached in its workspaces, so this stands in for the branch.
++pub const JJ_BRANCH_META_KEY: &str = "jj-branch";
++
++/// Whether a worktree handle was created by workmux as a jj workspace.
++pub fn is_jj_workspace(handle: &str) -> bool {
++    get_worktree_meta(handle, JJ_BRANCH_META_KEY).is_some()
++}
++
++/// Whether the repository is a colocated jj repo (has `.jj` next to `.git`).
++pub fn is_jj_repo(main_worktree_root: &Path) -> bool {
++    main_worktree_root.join(".jj").is_dir()
++}
++
++/// Create a jj workspace (which jj also registers as a git worktree).
++/// No bookmark is created; the workspace is identified by its name.
++pub fn create_jj_workspace_in(
++    worktree_path: &Path,
++    name: &str,
++    revision: &str,
++    workdir: &Path,
++) -> Result<()> {
++    let path_str = worktree_path
++        .to_str()
++        .ok_or_else(|| anyhow!("Invalid worktree path"))?;
++
++    // Unlike `git worktree add`, jj does not create missing parent directories.
++    if let Some(parent) = worktree_path.parent() {
++        std::fs::create_dir_all(parent)
++            .with_context(|| format!("Failed to create directory '{}'", parent.display()))?;
++    }
++
++    Cmd::new("jj")
++        .workdir(workdir)
++        .args(&["workspace", "add", "--name", name, "-r", revision, path_str])
++        .run()
++        .context("Failed to create jj workspace")?;
++    Ok(())
++}
++
++/// Forget a jj workspace. Its commits stay visible in the repo.
++pub fn forget_jj_workspace_in(name: &str, repo_root: &Path) -> Result<()> {
++    Cmd::new("jj")
++        .workdir(repo_root)
++        .args(&["workspace", "forget", name])
++        .run()
++        .context("Failed to forget jj workspace")?;
++    Ok(())
++}
++
+ /// Move a registered worktree to a new path using `git worktree move`.
+ ///
+ /// Git updates the worktree admin dir's `gitdir` file and the worktree's
+@@ -340,7 +390,23 @@ pub fn list_worktrees_with_main_in(workdir: Option<&Path>) -> Result<WorktreeLis
+     let list = cmd
+         .run_and_capture_stdout()
+         .context("Failed to list worktrees")?;
+-    parse_worktree_listing(&list)
++    let mut listing = parse_worktree_listing(&list)?;
++
++    // jj workspaces always show as detached; map them back to the branch
++    // name workmux recorded for them, keyed by handle (directory name).
++    if listing.worktrees.iter().any(|(_, b)| b == "(detached)") {
++        let jj_branches = get_all_worktree_meta_key_in(workdir, JJ_BRANCH_META_KEY);
++        for (path, branch) in &mut listing.worktrees {
++            if branch == "(detached)"
++                && let Some(handle) = path.file_name().and_then(|n| n.to_str())
++                && let Some(jj_branch) = jj_branches.get(handle)
++            {
++                *branch = jj_branch.clone();
++            }
++        }
++    }
++
++    Ok(listing)
+ }
+ 
+ /// Store per-worktree metadata in git config.
+diff --git i/src/workflow/cleanup.rs w/src/workflow/cleanup.rs
+index 92e2a64e..0ee772f1 100644
+--- i/src/workflow/cleanup.rs
++++ w/src/workflow/cleanup.rs
+@@ -417,7 +417,20 @@ fn perform_destructive_cleanup(
+             worktree_path.display()
+         );
+     }
+-    if !keep_branch {
++    // jj workspaces own no branch: forget the workspace and leave any
++    // bookmarks (which the user creates by hand) alone.
++    let is_jj_workspace =
++        git::get_worktree_meta_in(handle, git::JJ_BRANCH_META_KEY, Some(git_common_dir)).is_some();
++    if is_jj_workspace {
++        let repo_root = git_common_dir.parent().unwrap_or(git_common_dir);
++        if let Err(error) = git::forget_jj_workspace_in(handle, repo_root) {
++            warn!(handle, error = %format!("{error:#}"), "cleanup:jj workspace forget failed");
++            eprintln!(
++                "warning: could not forget jj workspace '{}'; run 'jj workspace forget {}'",
++                handle, handle
++            );
++        }
++    } else if !keep_branch {
+         git::delete_branch_in(branch_name, force, git_common_dir)
+             .context("Failed to delete local branch")?;
+     }
+diff --git i/src/workflow/create.rs w/src/workflow/create.rs
+index 3787e757..021f358e 100644
+--- i/src/workflow/create.rs
++++ w/src/workflow/create.rs
+@@ -234,6 +234,15 @@ fn create_impl(
+         ));
+     }
+ 
++    // In a colocated jj repo, create a jj workspace instead of a git worktree.
++    let use_jj = git::is_jj_repo(&context.main_worktree_root);
++    if use_jj && remote_branch.is_some() {
++        return Err(anyhow!(
++            "Remote branches and PR checkouts are not supported in jj repos. \
++             Fetch with 'jj git fetch' and use --base <bookmark>@<remote> instead."
++        ));
++    }
++
+     // Auto-detect: create branch if it doesn't exist
+     let branch_exists = git::branch_exists_in(branch_name, Some(&context.execution_dir))?;
+     if branch_exists && remote_branch.is_some() && checkout_ref.is_none() {
+@@ -482,15 +491,35 @@ fn create_impl(
+         );
+     }
+ 
+-    git::create_worktree_in(
+-        &worktree_path,
+-        branch_name,
+-        create_new,
+-        base_branch_for_creation.as_deref(),
+-        track_upstream,
+-        Some(&context.execution_dir),
+-    )
+-    .context("Failed to create git worktree")?;
++    if use_jj {
++        // An existing branch is a bookmark: start the workspace on top of it.
++        // Quoting makes jj read the name as a symbol, not a revset expression.
++        let revision = base_branch_for_creation
++            .clone()
++            .unwrap_or_else(|| format!("\"{}\"", branch_name));
++        git::create_jj_workspace_in(
++            &worktree_path,
++            &current_handle,
++            &revision,
++            &context.execution_dir,
++        )?;
++        git::set_worktree_meta_in(
++            &current_handle,
++            git::JJ_BRANCH_META_KEY,
++            branch_name,
++            Some(&context.execution_dir),
++        )?;
++    } else {
++        git::create_worktree_in(
++            &worktree_path,
++            branch_name,
++            create_new,
++            base_branch_for_creation.as_deref(),
++            track_upstream,
++            Some(&context.execution_dir),
++        )
++        .context("Failed to create git worktree")?;
++    }
+ 
+     if headless {
+         if let Err(error) = git::set_worktree_attachment_in(
