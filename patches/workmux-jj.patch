@@ -1,5 +1,5 @@
 diff --git i/src/command/remove.rs w/src/command/remove.rs
-index 49368dfc..a5e499fd 100644
+index 49368df..a5e499f 100644
 --- i/src/command/remove.rs
 +++ w/src/command/remove.rs
 @@ -126,6 +126,7 @@ fn run_specified(
@@ -33,10 +33,10 @@ index 49368dfc..a5e499fd 100644
      super::announce_hooks(&context.config, None, super::HookPhase::PreRemove);
  
 diff --git i/src/git/worktree.rs w/src/git/worktree.rs
-index 264c6297..30b83a9b 100644
+index 264c629..7246d4f 100644
 --- i/src/git/worktree.rs
 +++ w/src/git/worktree.rs
-@@ -97,6 +97,56 @@ pub fn create_worktree_in(
+@@ -97,6 +97,69 @@ pub fn create_worktree_in(
      Ok(())
  }
  
@@ -77,6 +77,19 @@ index 264c6297..30b83a9b 100644
 +        .args(&["workspace", "add", "--name", name, "-r", revision, path_str])
 +        .run()
 +        .context("Failed to create jj workspace")?;
++
++    // jj links the git worktree with relative paths, which turns on
++    // `extensions.relativeWorktrees`. libgit2 (and so Nix flakes) refuses to
++    // open a repo with that extension, so switch to absolute paths and drop it.
++    Cmd::new("git")
++        .workdir(workdir)
++        .args(&["worktree", "repair", "--no-relative-paths", path_str])
++        .run()
++        .context("Failed to make jj workspace git paths absolute")?;
++    Cmd::new("git")
++        .workdir(workdir)
++        .args(&["config", "--unset", "extensions.relativeWorktrees"])
++        .run_as_check()?;
 +    Ok(())
 +}
 +
@@ -93,7 +106,7 @@ index 264c6297..30b83a9b 100644
  /// Move a registered worktree to a new path using `git worktree move`.
  ///
  /// Git updates the worktree admin dir's `gitdir` file and the worktree's
-@@ -340,7 +390,23 @@ pub fn list_worktrees_with_main_in(workdir: Option<&Path>) -> Result<WorktreeLis
+@@ -340,7 +403,23 @@ pub fn list_worktrees_with_main_in(workdir: Option<&Path>) -> Result<WorktreeLis
      let list = cmd
          .run_and_capture_stdout()
          .context("Failed to list worktrees")?;
@@ -119,7 +132,7 @@ index 264c6297..30b83a9b 100644
  
  /// Store per-worktree metadata in git config.
 diff --git i/src/workflow/cleanup.rs w/src/workflow/cleanup.rs
-index 92e2a64e..0ee772f1 100644
+index 92e2a64..0ee772f 100644
 --- i/src/workflow/cleanup.rs
 +++ w/src/workflow/cleanup.rs
 @@ -417,7 +417,20 @@ fn perform_destructive_cleanup(
@@ -145,7 +158,7 @@ index 92e2a64e..0ee772f1 100644
              .context("Failed to delete local branch")?;
      }
 diff --git i/src/workflow/create.rs w/src/workflow/create.rs
-index 3787e757..021f358e 100644
+index 3787e75..021f358 100644
 --- i/src/workflow/create.rs
 +++ w/src/workflow/create.rs
 @@ -234,6 +234,15 @@ fn create_impl(
