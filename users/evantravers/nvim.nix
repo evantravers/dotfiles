@@ -246,8 +246,8 @@
             end
             local pick_keys = {
               {lhs = '<space>/', cmd = 'Pick grep_live',             desc = "Live Grep"},
-              {lhs = '<space>f', cmd = "Pick files tool='git'",      desc = "Find Files in CWD"},
-              {lhs = '<space>F', cmd = "Pick files_root tool='git'", desc = "Find Files"},
+              {lhs = '<space>f', cmd = 'Pick files tool="git"',      desc = "Find Files in CWD"},
+              {lhs = '<space>F', cmd = 'Pick files_root tool="git"', desc = "Find Files"},
               {lhs = '<space>b', cmd = 'Pick buffers',               desc = "Buffers"},
               {lhs = "<space>'", cmd = 'Pick resume',                desc = "Last Picker"},
               {lhs = '<space>g', cmd = 'Pick git_commits',           desc = "Git Commits"},
