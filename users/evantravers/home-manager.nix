@@ -43,6 +43,10 @@
       rainfrog
       ripgrep
     ];
+
+    sessionVariables = {
+      CLAUDE_CODE_CERT_STORE = "bundled";
+    };
   };
 
   programs = {
