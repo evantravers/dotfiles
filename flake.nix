@@ -30,6 +30,11 @@
       url = "github:nvim-mini/mini.nvim";
       flake = false;
     };
+    # raine/workmux#59: jj support, not yet merged to main
+    workmux-jj = {
+      url = "github:raine/workmux/jj";
+      flake = false;
+    };
   };
   outputs =
     { nixpkgs, ... }@inputs:

@@ -27,19 +27,28 @@
       let
         inherit (prev) lib;
         packages = inputs.llm-agents.packages.${prev.stdenv.hostPlatform.system};
-        patchedVersion = "0.1.275";
+        unpatched = packages.workmux;
+        # src/jj.rs only exists once raine/workmux#59 lands on main
+        jjUpstream = builtins.pathExists (unpatched.src + "/src/jj.rs");
       in
       packages
       // {
-        # In colocated jj repos, `workmux add` creates a jj workspace instead
-        # of a git worktree (no bookmark), and `workmux rm` forgets it.
+        # Build workmux from the `jj` branch: in colocated jj repos,
+        # `workmux add` creates a jj workspace instead of a git worktree.
         workmux =
-          lib.warnIf (packages.workmux.version != patchedVersion)
-            "workmux is now ${packages.workmux.version} (jj patch written for ${patchedVersion}); if the build fails, rebase patches/workmux-jj.patch."
+          lib.warnIf jjUpstream
+            "workmux ${unpatched.version} now ships jj support (raine/workmux#59); the workmux-jj overlay and flake input can be removed."
             (
-              packages.workmux.overrideAttrs (old: {
-                patches = (old.patches or [ ]) ++ [ ./patches/workmux-jj.patch ];
-              })
+              if jjUpstream then
+                unpatched
+              else
+                # The branch tracks the release with identical Cargo.lock, so
+                # the upstream cargoHash still applies. If a lockfile change
+                # breaks the build, override cargoDeps, not cargoHash (the new
+                # fetchCargoVendor ignores overrideAttrs' cargoHash).
+                unpatched.overrideAttrs (_old: {
+                  src = inputs.workmux-jj;
+                })
             );
       };
   };

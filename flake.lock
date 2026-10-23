@@ -548,7 +548,8 @@
         "neovim-nightly": "neovim-nightly",
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs_3",
-        "nixpkgs-unstable": "nixpkgs-unstable"
+        "nixpkgs-unstable": "nixpkgs-unstable",
+        "workmux-jj": "workmux-jj"
       }
     },
     "rust-overlay": {
@@ -627,6 +628,23 @@
       "original": {
         "owner": "numtide",
         "repo": "treefmt-nix",
+        "type": "github"
+      }
+    },
+    "workmux-jj": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1792788052,
+        "narHash": "sha256-tUfXHiCxr3n2FHEggOhTO9oi4qp7DpmxSuqv9eUAZ8E=",
+        "owner": "raine",
+        "repo": "workmux",
+        "rev": "529637c8adeb81fd0082b9081da91e988d53c2a6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "raine",
+        "ref": "jj",
+        "repo": "workmux",
         "type": "github"
       }
     }
