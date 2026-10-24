@@ -42,12 +42,16 @@
               if jjUpstream then
                 unpatched
               else
-                # The branch tracks the release with identical Cargo.lock, so
-                # the upstream cargoHash still applies. If a lockfile change
-                # breaks the build, override cargoDeps, not cargoHash (the new
-                # fetchCargoVendor ignores overrideAttrs' cargoHash).
+                # The jj branch's Cargo.lock has drifted from the release tag,
+                # so its vendor hash no longer matches the upstream cargoHash.
+                # Override cargoDeps, not cargoHash (the new fetchCargoVendor
+                # ignores overrideAttrs' cargoHash).
                 unpatched.overrideAttrs (_old: {
                   src = inputs.workmux-jj;
+                  cargoDeps = prev.rustPlatform.fetchCargoVendor {
+                    src = inputs.workmux-jj;
+                    hash = "sha256-ZJr6hyhQXLgYefCqp/xaBwvNutr4AjEIVwHJNO2TsF4=";
+                  };
                 })
             );
       };
