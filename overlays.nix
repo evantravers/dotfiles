@@ -48,6 +48,7 @@
                 # ignores overrideAttrs' cargoHash).
                 unpatched.overrideAttrs (_old: {
                   src = inputs.workmux-jj;
+                  doInstallCheck = false;
                   cargoDeps = prev.rustPlatform.fetchCargoVendor {
                     src = inputs.workmux-jj;
                     hash = "sha256-ZJr6hyhQXLgYefCqp/xaBwvNutr4AjEIVwHJNO2TsF4=";
