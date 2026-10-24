@@ -22,6 +22,12 @@
 
     llm-agents.url = "github:numtide/llm-agents.nix";
     devenv.url = "github:cachix/devenv/v2.4.0";
+    # nom > 2.2.0 is unreleased: maralorn/nix-output-monitor#321 fixes
+    # "invalid activity type: 10113" parse errors against Determinate Nix >= 3.23
+    nix-output-monitor = {
+      url = "github:maralorn/nix-output-monitor";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
     neovim-nightly = {
       url = "github:nix-community/neovim-nightly-overlay";
       inputs.nixpkgs.follows = "nixpkgs-unstable";

@@ -57,6 +57,33 @@
       };
   };
 
+  # NOTE: the attr name must sort after `promote-unstable` (builtins.attrValues
+  # is alphabetical) so this override beats the unstable nh.
+  unstable-nh-nom-main = final: prev: {
+    nh =
+      let
+        inherit (prev) lib;
+        inherit (prev.stdenv.hostPlatform) system;
+        # nh pipes `nix --log-format internal-json` into nom; nom 2.2.0 can't
+        # parse new activity types from Determinate Nix >= 3.23 (e.g. 10113
+        # CopySourcePath) and spams ParseNixJSONMessageError. Fixed upstream in
+        # maralorn/nix-output-monitor#321 (merged 2026-10-19), unreleased.
+        fixed = lib.versionAtLeast final.unstable.nix-output-monitor.version "2.2.1";
+      in
+      lib.warnIf fixed
+        ''
+          nixpkgs-unstable ships nix-output-monitor ${final.unstable.nix-output-monitor.version}, which includes maralorn/nix-output-monitor#321; the unstable-nh-nom-main overlay and nix-output-monitor flake input can be removed.
+        ''
+        (
+          if fixed then
+            prev.nh
+          else
+            prev.nh.override {
+              nix-output-monitor = inputs.nix-output-monitor.packages.${system}.default;
+            }
+        );
+  };
+
   neovim-nightly = final: prev: {
     neovim-unwrapped =
       let
