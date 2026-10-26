@@ -11,6 +11,7 @@
     ./llama-cpp.nix
     ./nvim.nix
     ./pi.nix
+    ./rex.nix
     ./starship.nix
     ./tmux.nix
     ./workmux.nix
@@ -97,6 +98,9 @@
 
     # Multiplexer
     tmux.enable = true;
+
+    # Trying rex as a tmux replacement; rmx is the wmx port
+    rex.enable = true;
 
     workmux = {
       enable = true;
