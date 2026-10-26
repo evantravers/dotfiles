@@ -10,23 +10,39 @@
 #   rmx [prompt…]     pick a project, describe a task, launch a worktree
 #                     with an agent working on it. With a prompt argument,
 #                     skips the pickers and uses the current repo.
+#   rmx rm [-y] [name]
+#                     remove a worktree/workspace and close its rex window.
+#                     Inside a worktree, removes that one; otherwise picks
+#                     from the current repo's worktrees.
 #
-# Internal subcommands (spawned detached):
-#   rmx __create <path> <session> <prompt_file> [title]
+# Internal subcommands:
+#   rmx __create <path> <session> <prompt_file> [title]   (spawned detached)
+#   rmx __agent [--main DIR] [--prompt FILE] [--] <agent…> (started by the
+#                     agent window: runs the agent in the devenv environment)
+#
+# Environment:
+#   RMX_SHELL   shell for new rex panes (default: fish from PATH; rex's own
+#               default is the macOS account shell)
+#   RMX_FOCUS   set to 1 to focus the new window and show it in the app
 
 set -euo pipefail
 
 if [ "${1:-}" = "-h" ] || [ "${1:-}" = "--help" ]; then
   cat <<'EOF'
 Usage: rmx [prompt…]
+       rmx rm [-y] [name]
 
 Pick a project, describe a task, and launch a worktree with an agent
 working on it in a rex window. With a prompt argument, skips the
 pickers and uses the current repo.
+
+rm removes a worktree and closes its rex window. -y skips the
+confirmation.
 EOF
   exit 0
 fi
 
+self=$(cd "$(dirname "$0")" && pwd)/$(basename "$0")
 state_dir="${XDG_STATE_HOME:-$HOME/.local/state}/rmx"
 mkdir -p "$state_dir"
 log="$state_dir/last-create.log"
@@ -50,45 +66,148 @@ fail() {
   exit 1
 }
 
-# Copy the main checkout's devenv binding (plain auto-activation trust
-# or an out-of-tree --from binding) into the worktree. Bindings live in
-# ~/.local/share/devenv/allowed keyed by absolute path, so a worktree
-# (a different path) has no environment without this. No-op when the
-# main checkout has no binding.
-devenv_rebind() {
-  local root=$1 wt=$2
+# Per-worktree state (the agent's prompt, the rex window it lives in),
+# kept outside the worktree so jj never snapshots it.
+meta_dir() {
+  local wt=$1
+  printf '%s/worktrees/%s__%s' "$state_dir" \
+    "$(basename "$(dirname "$wt")")" "$(basename "$wt")"
+}
+
+# Look up the devenv binding for the first of the given paths that has
+# one. Bindings live in ~/.local/share/devenv/allowed keyed by absolute
+# path; the latest entry for a path wins. On success, devenv_args holds
+# the --from/--profile arguments (empty for plain in-tree trust).
+# Relative --from paths resolve against the main checkout.
+devenv_args=()
+devenv_binding() {
+  local main=$1
+  shift
   local allowed="${XDG_DATA_HOME:-$HOME/.local/share}/devenv/allowed"
+  local entry="" p from profile
 
-  [ -f "$allowed" ] || return 0
-  command -v devenv >/dev/null || return 0
+  [ -f "$allowed" ] || return 1
+  for p in "$@"; do
+    entry=$(jq -c --arg p "$p" 'select(.path == $p)' "$allowed" | tail -n1)
+    [ -n "$entry" ] && break
+  done
+  [ -n "$entry" ] || return 1
 
-  # Latest entry for the main checkout wins
-  local entry from
-  entry=$(jq -c --arg root "$root" 'select(.path == $root)' "$allowed" | tail -n1)
-  [ -n "$entry" ] || return 0
-
+  devenv_args=()
   from=$(jq -r '.from // empty' <<<"$entry")
-  if [ -z "$from" ]; then
-    # In-tree devenv.nix is checked out in the worktree; just grant trust
-    (cd "$wt" && devenv allow)
-    return 0
-  fi
+  [ -n "$from" ] || return 0
   case "$from" in
     *:*) ;;                                        # flake ref or path:/abs
     /*)  from="path:$from" ;;                      # absolute path
-    *)   from="path:$(cd "$root/$from" && pwd)" ;; # relative to main checkout
+    *)   from="path:$(cd "$main/$from" && pwd)" ;; # relative to main checkout
   esac
-
-  local args=(--from "$from")
-  local profile
+  devenv_args=(--from "$from")
   while IFS= read -r profile; do
-    args+=(--profile "$profile")
+    devenv_args+=(--profile "$profile")
   done < <(jq -r '.profiles[]? // empty' <<<"$entry")
+}
 
-  (cd "$wt" && devenv allow "${args[@]}")
+# Copy the main checkout's devenv binding (plain auto-activation trust
+# or an out-of-tree --from binding) into the worktree, which is a
+# different path and so has no environment without this. No-op when
+# the main checkout has no binding.
+devenv_rebind() {
+  local root=$1 wt=$2
+  command -v devenv >/dev/null || return 0
+  devenv_binding "$root" "$root" || return 0
+  (cd "$wt" && devenv allow "${devenv_args[@]}")
+}
+
+# ----------------------------------------------------------------- agent ---
+
+# Run an agent inside the project's devenv environment with `devenv
+# shell --from <source>`. The main checkout's env is already built and
+# trusted, so this is warm (~seconds), and the agent still runs with
+# the worktree as its cwd.
+agent() {
+  local main="" prompt=""
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --main)   main=$2; shift 2 ;;
+      --prompt) prompt=$2; shift 2 ;;
+      --)       shift; break ;;
+      *)        break ;;
+    esac
+  done
+  [ $# -gt 0 ] || { echo "rmx __agent: no agent given" >&2; exit 2; }
+
+  # Main checkout for this worktree/workspace: --main from rmx, else
+  # git's common dir (git worktrees), else this directory
+  if [ -z "$main" ]; then
+    local common
+    common=$(git rev-parse --git-common-dir 2>/dev/null || true)
+    [ -n "$common" ] && main=$(cd "$common/.." && pwd)
+  fi
+  [ -n "$main" ] || main=$PWD
+
+  # The task, using each agent's prompt-passing convention
+  local cmd=("$@")
+  if [ -n "$prompt" ] && [ -s "$prompt" ]; then
+    case "$(basename "$1")" in
+      claude) cmd+=(-- "$(cat "$prompt")") ;;
+      *)      cmd+=("$(cat "$prompt")") ;;
+    esac
+  fi
+
+  # Binding lookup: the worktree itself first (rmx copies bindings into
+  # new worktrees), then the main checkout. Plain in-tree trust reuses
+  # the main checkout's environment.
+  if devenv_binding "$main" "$PWD" "$main"; then
+    [ ${#devenv_args[@]} -gt 0 ] || devenv_args=(--from "path:$main")
+    exec devenv shell "${devenv_args[@]}" -- "${cmd[@]}"
+  fi
+
+  # No binding, but the project has an in-tree devenv: reuse the main
+  # checkout's (already built, already trusted) environment
+  if [ -f "$main/devenv.nix" ] || [ -f "$main/devenv.yaml" ]; then
+    exec devenv shell --from "path:$main" -- "${cmd[@]}"
+  fi
+
+  exec "${cmd[@]}"
 }
 
 # ---------------------------------------------------------------- create ---
+
+# One terminal block for a rex layout: the preferred shell in a
+# directory, optionally running a command first and staying open as an
+# interactive shell afterwards.
+#
+# fish runs the command with --init-command: after its config loads
+# but before the first prompt, so the devenv prompt hook can't swallow
+# it (typed-ahead input, rex's initial_input, gets eaten by the hook).
+# Other shells fall back to initial_input.
+shell_block() {
+  local cwd=$1 run=${2:-}
+  jq -n --arg cwd "$cwd" --arg sh "$shell_bin" --arg run "$run" '{block: {
+    flavor: "com.superlogical.terminal.shell",
+    options: ({cwd: $cwd}
+      + if $run != "" and ($sh | test("(^|/)fish$")) then
+          {shell: "none", command: [$sh, "-l", "-C", $run]}
+        else
+          (if $sh == "" then {} else {shell: $sh} end)
+          + (if $run == "" then {} else {initial_input: ($run + "\n")} end)
+        end)}}'
+}
+
+# Session ID for a label, creating the session (one plain shell window)
+# if it doesn't exist.
+ensure_session() {
+  local label=$1 cwd=$2 id
+  id=$(rex ls --json | jq -r --arg s "$label" \
+    '.sessions[] | select(.label == $s) | .session_id' | head -1)
+  if [ -z "$id" ]; then
+    id=$(rex api call session.create "$(jq -n --arg l "$label" \
+      --argjson layout "$(shell_block "$cwd")" \
+      '{label: $l, initial_windows: [{window_label: "Terminal", layout: $layout}]}')" \
+      2>>"$log" | jq -r '.session_id') || return 1
+  fi
+  [ -n "$id" ] && printf '%s' "$id"
+}
 
 create() {
   local path=$1 session=$2 prompt_file=$3 title=${4:-}
@@ -166,10 +285,15 @@ $(cat "$prompt_file")" 2>>"$log" \
   [ -n "$ok" ] || fail "provision worktree"
   branch=$ok
 
-  # The agent reads its task from the worktree at launch time.
+  # The agent reads its task at launch time from the worktree's state
+  # dir (outside the worktree, so jj never snapshots it).
+  local meta prompt=""
+  meta=$(meta_dir "$wt")
+  rm -rf "$meta"
+  mkdir -p "$meta"
   if [ -s "$prompt_file" ]; then
-    mkdir -p "$wt/.rmx"
-    cp "$prompt_file" "$wt/.rmx/PROMPT.md"
+    prompt="$meta/PROMPT.md"
+    mv "$prompt_file" "$prompt"
   fi
 
   # devenv copy-over: replicate the main checkout's binding if it exists
@@ -182,79 +306,133 @@ $(cat "$prompt_file")" 2>>"$log" \
     [ -n "$a" ] && agent="$a"
   fi
 
+  # Panes run the preferred shell as their shell: rex's default is the
+  # macOS account shell (zsh), and a command after `--` would only run
+  # under that shell's login environment.
+  shell_bin="${RMX_SHELL:-$(command -v fish || true)}"
+
   # Target rex session: the picked project's session (created if
   # missing), else the session rmx is running in, else one named after
-  # the current project. Panes run fish explicitly: rex's default is
-  # the macOS account shell (zsh), not the preferred shell.
-  local target=""
-  local shell_bin="${RMX_SHELL:-fish}"
+  # the current project.
+  local target
   if [ -n "$session" ]; then
-    target=$(rex ls --json | jq -r --arg s "$session" \
-      '.sessions[] | select(.label == $s) | .session_id' | head -1)
-    if [ -z "$target" ]; then
-      target=$(rex new "$session" -c "$path" --window Terminal --json -- "$shell_bin" | jq -r '.session_id') \
-        || fail "rex new $session"
-    fi
+    target=$(ensure_session "$session" "$path") || fail "create rex session $session"
   elif [ -n "${REX_SESSION:-}" ]; then
     target=$REX_SESSION
   else
-    target=$(rex ls --json | jq -r --arg s "$(basename "$path")" \
-      '.sessions[] | select(.label == $s) | .session_id' | head -1)
-    if [ -z "$target" ]; then
-      target=$(rex new "$(basename "$path")" -c "$path" --window Terminal --json -- "$shell_bin" | jq -r '.session_id') \
-        || fail "rex new"
-    fi
+    target=$(ensure_session "$(basename "$path")" "$path") || fail "create rex session"
   fi
 
-  # The agent window: a plain shell in the worktree, in the background.
-  # The agent command is delivered once the shell is ready (fish init +
-  # devenv hook can take 10s+), same as wmx-launch.
-  local created block window_id
-  created=$(rex window new -s "$target" "$branch" -c "$wt" --focus=false --json -- "$shell_bin") \
-    || fail "rex window new"
-  block=$(printf '%s' "$created" | jq -r '.block_ids[0]')
+  # The agent window: a shell in the worktree that starts the agent
+  # itself (see shell_block), so there's no prompt to poll for. The
+  # shell stays open when the agent exits.
+  local launch q
+  printf -v q '%q' "$self"
+  launch="$q __agent"
+  printf -v q '%q' "$path"
+  launch+=" --main $q"
+  if [ -n "$prompt" ]; then
+    printf -v q '%q' "$prompt"
+    launch+=" --prompt $q"
+  fi
+  launch+=" -- $agent"
+
+  local focus=false created window_id
+  [ "${RMX_FOCUS:-}" = 1 ] && focus=true
+  created=$(rex api call -s "$target" session.new_window "$(jq -n \
+    --arg s "$target" --arg l "$branch" --argjson focus "$focus" \
+    --argjson layout "$(shell_block "$wt" "$launch")" \
+    '{session_id: $s, window_label: $l, focus: $focus, layout: $layout}')" 2>>"$log") \
+    || fail "create rex window"
   window_id=$(printf '%s' "$created" | jq -r '.window_id')
+  printf '%s\t%s\n' "$target" "$window_id" >"$meta/window"
 
-  # Wait for the first prompt (starship ❯). On timeout, send anyway:
-  # a late command is better than none.
-  for _ in $(seq 1 90); do
-    rex capture -s "$target" -b "$block" --trim 2>/dev/null | grep -q '❯' && break
-    sleep 2
-  done
-
-  local launch main_q
-  printf -v main_q '%q' "$path"
-  if [ -s "$prompt_file" ]; then
-    case "$agent" in
-      # Match the per-agent prompt-passing conventions
-      claude) launch="RMX_MAIN=$main_q rmx-agent claude -- \"\$(cat .rmx/PROMPT.md)\"" ;;
-      *)      launch="RMX_MAIN=$main_q rmx-agent $agent \"\$(cat .rmx/PROMPT.md)\"" ;;
-    esac
-  else
-    launch="RMX_MAIN=$main_q rmx-agent $agent"
-  fi
-  if ! { rex send -s "$target" -b "$block" "$launch" &&
-    rex send-key -s "$target" -b "$block" enter; }; then
-    fail "send agent command"
-  fi
-
-  # Show the new window in a connected app, if there is one.
-  local client
-  client=$(rex client ls --json 2>/dev/null \
-    | jq -r '[.clients[] | select(.info.kind == "app")] | .[0].client_id // empty')
-  if [ -n "$client" ]; then
-    rex -C "$client" "do" session.select "session_id=$target" "window_id=$window_id" >/dev/null 2>&1 || true
+  # With RMX_FOCUS=1, also show the new window in a connected app.
+  if [ "$focus" = true ]; then
+    local client
+    client=$(rex client ls --json 2>/dev/null \
+      | jq -r '[.clients[] | select(.info.kind == "app")] | .[0].client_id // empty')
+    if [ -n "$client" ]; then
+      rex -C "$client" "do" session.select "session_id=$target" "window_id=$window_id" >/dev/null 2>&1 || true
+    fi
   fi
 
   notify "created '$branch' — agent starting"
 }
 
-# Internal entry point: rmx __create <path> <session> <prompt_file> [title]
-if [ "${1:-}" = "__create" ]; then
-  shift
-  create "$@"
-  exit
-fi
+# ---------------------------------------------------------------- remove ---
+
+remove() {
+  local yes="" name=""
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      -y|--yes) yes=1; shift ;;
+      *)        name=$1; shift ;;
+    esac
+  done
+
+  local root main wt
+  root=$(jj root 2>/dev/null || git rev-parse --show-toplevel 2>/dev/null) \
+    || { echo "rmx rm: not in a repository" >&2; exit 1; }
+
+  # Inside a worktree: <repo>__worktrees/<name> belongs to <repo>
+  case "$(basename "$(dirname "$root")")" in
+    *__worktrees)
+      main="$(dirname "$(dirname "$root")")/$(basename "$(dirname "$root")" | sed 's/__worktrees$//')"
+      [ -n "$name" ] || name=$(basename "$root")
+      ;;
+    *)
+      main=$root
+      ;;
+  esac
+
+  local wts
+  wts="$(dirname "$main")/$(basename "$main")__worktrees"
+  if [ -z "$name" ]; then
+    [ -d "$wts" ] || { echo "rmx rm: no worktrees for $(basename "$main")" >&2; exit 1; }
+    name=$(find "$wts" -mindepth 1 -maxdepth 1 -type d -exec basename {} \; | sort \
+      | gum filter --placeholder "Remove which worktree?") || exit 0
+  fi
+  wt="$wts/$name"
+  [ -d "$wt" ] || { echo "rmx rm: no worktree at $wt" >&2; exit 1; }
+
+  if [ -z "$yes" ]; then
+    gum confirm "Remove worktree '$name' and close its rex window?" || exit 0
+  fi
+
+  # Leave the worktree before deleting it
+  cd "$main"
+
+  if jj root >/dev/null 2>&1; then
+    # Snapshot the workspace first so its last edits are kept in its
+    # change, then drop it; the change itself stays in the repo
+    (cd "$wt" && jj status >/dev/null)
+    jj workspace forget "$name"
+    rm -rf "$wt"
+  else
+    # Refuses when the worktree has uncommitted changes; the branch stays
+    git worktree remove "$wt"
+  fi
+
+  # Close the rex window last: it may be the one running this command
+  local meta session window
+  meta=$(meta_dir "$wt")
+  session=""
+  if [ -f "$meta/window" ]; then
+    IFS=$'\t' read -r session window <"$meta/window"
+  fi
+  rm -rf "$meta"
+  if [ -n "$session" ]; then
+    rex window close -s "$session" "$window" >/dev/null 2>&1 || true
+  fi
+  echo "rmx: removed '$name'"
+}
+
+case "${1:-}" in
+  __create) shift; create "$@"; exit ;;
+  __agent)  shift; agent "$@" ;;
+  rm)       shift; remove "$@"; exit ;;
+esac
 
 # ------------------------------------------------------------------- UI ---
 
@@ -273,10 +451,11 @@ if [ -z "$prompt" ]; then
     "Current project: $current_name" \
     "Pick another project…") || exit 0
   if [ "$choice" = "Pick another project…" ]; then
-    # Session name: authoritative for existing/configured sessions,
-    # directory basename otherwise (matches how sesh names new ones)
-    selection=$(sesh list --json -dH \
-      | jq -r '.[] | (if .Src == "tmux" or .Src == "config" then .Name else (.Path | sub("/$";"") | split("/") | last) end) as $s | "\($s)\t\(.Path)\t\(.Icon // "")"' \
+    # Projects from sesh's config and zoxide (tmux sessions don't exist
+    # under rex). Session name: the configured name, else the directory
+    # basename, which is also how rmx labels the rex sessions it creates.
+    selection=$(sesh list --json -c -z -d \
+      | jq -r '.[] | (if .Src == "config" then .Name else (.Path | sub("/$";"") | split("/") | last) end) as $s | "\($s)\t\(.Path)\t\(.Icon // "")"' \
       | gum filter --placeholder "Pick a project…") || exit 0
     session=$(printf '%s' "$selection" | cut -f1)
     path=$(printf '%s' "$selection" | cut -f2)
@@ -296,12 +475,13 @@ fi
 
 # Everything after this point — branch naming, provisioning, devenv,
 # agent launch — happens in the background. The user only hears back
-# via a notification: an issue, or "created".
-prompt_file=$(mktemp)
+# via a notification: an issue, or "created". The prompt file lives in
+# the state dir so create can move it into the worktree's state.
+prompt_file=$(mktemp "$state_dir/prompt.XXXXXX")
 printf '%s' "$prompt" >"$prompt_file"
 
 if [ -n "${REX_SESSION:-}${TMUX:-}" ]; then
-  nohup "$0" __create "$path" "$session" "$prompt_file" "$title" \
+  nohup "$self" __create "$path" "$session" "$prompt_file" "$title" \
     </dev/null >/dev/null 2>&1 &
   notify "creating worktree in the background…"
 else
