@@ -1,7 +1,7 @@
 # NixOS-WSL specific options are documented on the NixOS-WSL repository:
 # https://github.com/nix-community/NixOS-WSL
 
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   imports = [
     # include NixOS-WSL modules
@@ -18,6 +18,12 @@
       '')
     ];
   };
+
+  home-manager.users.evantravers.programs.fish.interactiveShellInit = lib.mkAfter ''
+    if set -q REX_BIN_DIR; and test -n "$REX_BIN_DIR"
+      fish_add_path -m $REX_BIN_DIR
+    end
+  '';
 
   home-manager.users.evantravers.programs.fish = {
     shellInit = ''

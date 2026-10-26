@@ -7,7 +7,7 @@ Bindings = {
   {'com.apple.MobileSMS', 'q', nil},
   {'com.flexibits.cardhop.mac', nil, {'u'}},
   {'com.flexibits.fantastical2.mac', 'y', {'/'}},
-  {'com.mitchellh.ghostty', 'j', nil},
+  {'com.superlogical.rex', 'j', nil},
   {'com.raycast.macos', nil, {'c', 'n', 'space'}},
   {'com.superultra.Homerow', nil, {'return', 'tab', ';'}},
   {'com.surteesstudios.Bartender', nil, {'b'}},
