@@ -57,7 +57,14 @@ func removeWorktree(name string, yes bool) error {
 	if jj {
 		// Snapshot the workspace first so its last edits are kept in its
 		// change, then drop it; the change itself stays in the repo. The
-		// forget itself needs no snapshot of the main checkout.
+		// forget itself needs no snapshot of the main checkout. A
+		// workspace whose change was squashed or rebased from elsewhere
+		// is stale, and jj status refuses it until it's updated (a no-op
+		// otherwise); edits it never snapshotted land in a recovery
+		// commit of their own.
+		if err := run(command(wt, "jj", "workspace", "update-stale")); err != nil {
+			return err
+		}
 		if err := run(command(wt, "jj", "status")); err != nil {
 			return err
 		}
