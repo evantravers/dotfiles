@@ -60,7 +60,7 @@ func devenvBinding(main string, paths ...string) ([]string, error) {
 			from = "path:" + from
 		default: // relative to the main checkout
 			dir := filepath.Join(main, from)
-			if info, err := os.Stat(dir); err != nil || !info.IsDir() {
+			if !isDir(dir) {
 				return nil, fmt.Errorf("devenv binding source %s is missing", dir)
 			}
 			from = "path:" + dir
@@ -94,29 +94,19 @@ func devenvRebind(root, wt string) error {
 // agent runs an agent inside the project's devenv environment with
 // `devenv shell --from <source>`. The main checkout's env is already
 // built and trusted, so this is warm (~seconds), and the agent still
-// runs with the worktree as its cwd.
+// runs with the worktree as its cwd. The pane starts in the worktree,
+// so the main checkout and the task follow from cwd.
 func agent(args []string) int {
-	main, prompt := "", ""
-loop:
-	for len(args) > 0 {
-		switch {
-		case args[0] == "--main" && len(args) > 1:
-			main, args = args[1], args[2:]
-		case args[0] == "--prompt" && len(args) > 1:
-			prompt, args = args[1], args[2:]
-		case args[0] == "--":
-			args = args[1:]
-			break loop
-		default:
-			break loop
-		}
+	if len(args) > 0 && args[0] == "--" {
+		args = args[1:]
 	}
 	if len(args) == 0 {
 		fmt.Fprintln(os.Stderr, "wt __agent: no agent given")
 		return 2
 	}
 	cwd, _ := os.Getwd()
-	if main == "" {
+	main, ok := mainOf(cwd)
+	if !ok {
 		main = cwd
 	}
 
@@ -128,7 +118,7 @@ loop:
 
 	// The task, using each agent's prompt-passing convention
 	cmd := args
-	if data, err := os.ReadFile(prompt); err == nil && len(data) > 0 {
+	if data, err := os.ReadFile(filepath.Join(metaDir(cwd), "PROMPT.md")); err == nil && len(data) > 0 {
 		if filepath.Base(args[0]) == "claude" {
 			cmd = append(cmd, "--")
 		}
@@ -155,11 +145,6 @@ loop:
 		devenvArgs = []string{"--from", "path:" + main}
 	}
 	return execve(append(append([]string{"devenv", "shell"}, devenvArgs...), append([]string{"--"}, cmd...)...))
-}
-
-func exists(path string) bool {
-	_, err := os.Stat(path)
-	return err == nil
 }
 
 // execve replaces wt with argv, returning only on failure

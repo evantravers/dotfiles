@@ -164,8 +164,7 @@ func paneQuote(s string) string {
 
 // ------------------------------------------------------------- projects ---
 
-// project is one of sesh's config or zoxide entries (tmux sessions
-// don't exist under rex)
+// project is one of sesh's config or zoxide entries
 type project struct {
 	Src, Name, Path, Icon string
 }
