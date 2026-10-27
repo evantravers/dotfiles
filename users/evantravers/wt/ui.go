@@ -163,16 +163,27 @@ func (r *root) finish(ok bool) {
 	r.results <- ok
 }
 
+// Rex can draw a floating layer narrower than the terminal inside it,
+// cutting off the right side, so the margin and step together keep to
+// this many columns
+const maxWidth = 80
+
 // inner is the size inside the margin View draws
 func (r *root) inner() (int, int) {
-	return max(r.w-4, 1), max(r.h-2, 1)
+	return max(min(r.w, maxWidth)-4, 1), max(r.h-2, 1)
+}
+
+// content is the step's view inside its margin, cut to the inner width
+func (r *root) content() string {
+	if r.s == nil {
+		return ""
+	}
+	w, _ := r.inner()
+	return lipgloss.NewStyle().Padding(1, 2).MaxWidth(w + 4).Render(r.s.view())
 }
 
 func (r *root) View() tea.View {
-	content := ""
-	if r.s != nil {
-		content = lipgloss.NewStyle().Padding(1, 2).Render(r.s.view())
-	}
+	content := r.content()
 	bg := r.bg
 	if bg == nil {
 		bg = fallbackBg
