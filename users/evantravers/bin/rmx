@@ -16,7 +16,9 @@
 #                     from the current repo's worktrees.
 #
 # Internal subcommands:
-#   rmx __create <path> <session> <prompt_file> [title]   (spawned detached)
+#   rmx __create <path> <session> <prompt_file> [title] [log]   (spawned detached)
+#   rmx __session <label> <cwd>   rex session ID for a label, created if missing
+#   rmx __client                  first connected rex app client (used by rsesh)
 #   rmx __agent [--main DIR] [--prompt FILE] [--] <agent…> (started by the
 #                     agent window: runs the agent in the devenv environment)
 #
@@ -42,10 +44,38 @@ EOF
   exit 0
 fi
 
+# The login shell rex runs commands through resets PATH (nix-darwin),
+# dropping the rex CLI that rex put at its front
+if [ -n "${REX_BIN_DIR:-}" ]; then
+  export PATH="$REX_BIN_DIR:$PATH"
+fi
+
 self=$(cd "$(dirname "$0")" && pwd)/$(basename "$0")
 state_dir="${XDG_STATE_HOME:-$HOME/.local/state}/rmx"
 mkdir -p "$state_dir"
-log="$state_dir/last-create.log"
+# Each create run gets its own log (see new_log); this one collects
+# everything else
+log="$state_dir/rmx.log"
+
+# Panes run the preferred shell as their shell: rex's default is the
+# macOS account shell (zsh), and a command after `--` would only run
+# under that shell's login environment.
+shell_bin="${RMX_SHELL:-$(command -v fish || true)}"
+
+# A fresh log for one create run, keeping only the newest few
+new_log() {
+  local old
+  # shellcheck disable=SC2012 # mktemp names: no newlines
+  ls -t "$state_dir"/create.* 2>/dev/null | tail -n +10 | while IFS= read -r old; do
+    rm -f "$old"
+  done || true
+  mktemp "$state_dir/create.XXXXXX"
+}
+
+# Lowercase kebab-case, safe as a branch, workspace and directory name
+slugify() {
+  tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g' | sed -E 's/^-+|-+$//g'
+}
 
 notify() {
   # No rex equivalent of tmux display-message; use a macOS notification
@@ -78,13 +108,14 @@ meta_dir() {
 # one. Bindings live in ~/.local/share/devenv/allowed keyed by absolute
 # path; the latest entry for a path wins. On success, devenv_args holds
 # the --from/--profile arguments (empty for plain in-tree trust).
-# Relative --from paths resolve against the main checkout.
+# Relative --from paths resolve against the main checkout. Returns 1
+# when there is no binding, 2 when the binding's source is missing.
 devenv_args=()
 devenv_binding() {
   local main=$1
   shift
   local allowed="${XDG_DATA_HOME:-$HOME/.local/share}/devenv/allowed"
-  local entry="" p from profile
+  local entry="" p from profile dir
 
   [ -f "$allowed" ] || return 1
   for p in "$@"; do
@@ -99,7 +130,13 @@ devenv_binding() {
   case "$from" in
     *:*) ;;                                        # flake ref or path:/abs
     /*)  from="path:$from" ;;                      # absolute path
-    *)   from="path:$(cd "$main/$from" && pwd)" ;; # relative to main checkout
+    *)                                             # relative to main checkout
+      dir=$(cd "$main/$from" 2>/dev/null && pwd) || {
+        echo "rmx: devenv binding source $main/$from is missing" >&2
+        return 2
+      }
+      from="path:$dir"
+      ;;
   esac
   devenv_args=(--from "$from")
   while IFS= read -r profile; do
@@ -114,7 +151,10 @@ devenv_binding() {
 devenv_rebind() {
   local root=$1 wt=$2
   command -v devenv >/dev/null || return 0
-  devenv_binding "$root" "$root" || return 0
+  local rc=0
+  devenv_binding "$root" "$root" || rc=$?
+  [ "$rc" -eq 1 ] && return 0
+  [ "$rc" -eq 0 ] || return "$rc"
   (cd "$wt" && devenv allow "${devenv_args[@]}")
 }
 
@@ -156,11 +196,18 @@ agent() {
 
   # Binding lookup: the worktree itself first (rmx copies bindings into
   # new worktrees), then the main checkout. Plain in-tree trust reuses
-  # the main checkout's environment.
-  if devenv_binding "$main" "$PWD" "$main"; then
-    [ ${#devenv_args[@]} -gt 0 ] || devenv_args=(--from "path:$main")
-    exec devenv shell "${devenv_args[@]}" -- "${cmd[@]}"
-  fi
+  # the main checkout's environment. A broken binding stops here: the
+  # pane stays open, so the error stays visible.
+  local rc=0
+  devenv_binding "$main" "$PWD" "$main" || rc=$?
+  case $rc in
+    0)
+      [ ${#devenv_args[@]} -gt 0 ] || devenv_args=(--from "path:$main")
+      exec devenv shell "${devenv_args[@]}" -- "${cmd[@]}"
+      ;;
+    1) ;;
+    *) exit "$rc" ;;
+  esac
 
   # No binding, but the project has an in-tree devenv: reuse the main
   # checkout's (already built, already trusted) environment
@@ -181,13 +228,20 @@ agent() {
 # but before the first prompt, so the devenv prompt hook can't swallow
 # it (typed-ahead input, rex's initial_input, gets eaten by the hook).
 # Other shells fall back to initial_input.
+#
+# fish only reports its directory to rex (OSC 7) when it draws a
+# prompt, which waits for the command to exit. Until then rex knows no
+# directory for the pane and opens splits and tabs from it in ~, so
+# the command reports the directory first.
 shell_block() {
   local cwd=$1 run=${2:-}
-  jq -n --arg cwd "$cwd" --arg sh "$shell_bin" --arg run "$run" '{block: {
+  # shellcheck disable=SC2016 # fish code, expanded by fish
+  local osc7='printf '\''\e]7;file://%s%s\a'\'' $hostname (string escape --style=url -- $PWD); '
+  jq -n --arg cwd "$cwd" --arg sh "$shell_bin" --arg run "$run" --arg osc7 "$osc7" '{block: {
     flavor: "com.superlogical.terminal.shell",
     options: ({cwd: $cwd}
       + if $run != "" and ($sh | test("(^|/)fish$")) then
-          {shell: "none", command: [$sh, "-l", "-C", $run]}
+          {shell: "none", command: [$sh, "-l", "-C", ($osc7 + $run)]}
         else
           (if $sh == "" then {} else {shell: $sh} end)
           + (if $run == "" then {} else {initial_input: ($run + "\n")} end)
@@ -209,11 +263,31 @@ ensure_session() {
   [ -n "$id" ] && printf '%s' "$id"
 }
 
+# The first connected rex app client, if any
+first_app_client() {
+  rex client ls --json 2>/dev/null \
+    | jq -r '[.clients[] | select(.info.kind == "app")] | .[0].client_id // empty'
+}
+
+# Quote one word for the shell the panes run (see shell_block): fish
+# takes single quotes with only \ and ' escaped; bash's %q can emit
+# $'…', which fish can't parse.
+pane_quote() {
+  local s=$1
+  if [[ $shell_bin =~ (^|/)fish$ ]]; then
+    s=${s//\\/\\\\}
+    s=${s//\'/\\\'}
+    printf "'%s'" "$s"
+  else
+    printf '%q' "$s"
+  fi
+}
+
 create() {
   local path=$1 session=$2 prompt_file=$3 title=${4:-}
+  log=${5:-$log}
 
   trap 'rm -f "${prompt_file:-}"' EXIT
-  : >"$log"
 
   cd "$path" || fail "cd $path"
 
@@ -230,18 +304,19 @@ create() {
 Rules: 2-4 words, kebab-case, all lowercase, no prefix like feature/. Output ONLY the branch name.
 
 $(cat "$prompt_file")" 2>>"$log" \
-      | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g' | sed -E 's/^-+|-+$//g' \
-      | awk -F- 'NF && NF <= 6' | head -1 | cut -c1-50 | sed -E 's/-+$//') || true
+      | slugify | awk -F- 'NF && NF <= 6' | head -1 | cut -c1-50 | sed -E 's/-+$//') || true
     [ -n "${branch:-}" ] || fail "auto-name branch"
   else
+    # Already slugified by the UI
     branch=$title
   fi
 
   # Base: the repo's trunk when there is one (workmux's base_branch =
-  # "auto" behaved this way), otherwise the current checkout.
+  # "auto" behaved this way), otherwise the current checkout. jj's
+  # trunk() falls back to root(), the empty commit, so exclude that.
   local base="" default
   if [ "$vcs" = jj ]; then
-    if jj log --no-graph --limit 1 -r 'trunk()' -T 'commit_id' 2>/dev/null | grep -q .; then
+    if jj log --no-graph --limit 1 -r 'trunk() ~ root()' -T 'commit_id' 2>/dev/null | grep -q .; then
       base='trunk()'
     fi
   else
@@ -306,11 +381,6 @@ $(cat "$prompt_file")" 2>>"$log" \
     [ -n "$a" ] && agent="$a"
   fi
 
-  # Panes run the preferred shell as their shell: rex's default is the
-  # macOS account shell (zsh), and a command after `--` would only run
-  # under that shell's login environment.
-  shell_bin="${RMX_SHELL:-$(command -v fish || true)}"
-
   # Target rex session: the picked project's session (created if
   # missing), else the session rmx is running in, else one named after
   # the current project.
@@ -326,14 +396,11 @@ $(cat "$prompt_file")" 2>>"$log" \
   # The agent window: a shell in the worktree that starts the agent
   # itself (see shell_block), so there's no prompt to poll for. The
   # shell stays open when the agent exits.
-  local launch q
-  printf -v q '%q' "$self"
-  launch="$q __agent"
-  printf -v q '%q' "$path"
-  launch+=" --main $q"
+  # $agent stays unquoted: it may carry arguments.
+  local launch
+  launch="$(pane_quote "$self") __agent --main $(pane_quote "$path")"
   if [ -n "$prompt" ]; then
-    printf -v q '%q' "$prompt"
-    launch+=" --prompt $q"
+    launch+=" --prompt $(pane_quote "$prompt")"
   fi
   launch+=" -- $agent"
 
@@ -350,14 +417,14 @@ $(cat "$prompt_file")" 2>>"$log" \
   # With RMX_FOCUS=1, also show the new window in a connected app.
   if [ "$focus" = true ]; then
     local client
-    client=$(rex client ls --json 2>/dev/null \
-      | jq -r '[.clients[] | select(.info.kind == "app")] | .[0].client_id // empty')
+    client=$(first_app_client)
     if [ -n "$client" ]; then
       rex -C "$client" "do" session.select "session_id=$target" "window_id=$window_id" >/dev/null 2>&1 || true
     fi
   fi
 
   notify "created '$branch' — agent starting"
+  rm -f "$log"
 }
 
 # ---------------------------------------------------------------- remove ---
@@ -429,9 +496,11 @@ remove() {
 }
 
 case "${1:-}" in
-  __create) shift; create "$@"; exit ;;
-  __agent)  shift; agent "$@" ;;
-  rm)       shift; remove "$@"; exit ;;
+  __create)  shift; create "$@"; exit ;;
+  __session) shift; ensure_session "$@"; exit ;;
+  __client)  shift; first_app_client; exit ;;
+  __agent)   shift; agent "$@" ;;
+  rm)        shift; remove "$@"; exit ;;
 esac
 
 # ------------------------------------------------------------------- UI ---
@@ -471,6 +540,10 @@ title=""
 if [ -z "$prompt" ]; then
   title=$(gum input --placeholder "Worktree title (empty to abort)") || exit 0
   [ -n "$title" ] || exit 0
+  # Branch, workspace and directory name: "Fix login bug" → fix-login-bug
+  slug=$(printf '%s' "$title" | slugify | cut -c1-50 | sed -E 's/-+$//')
+  [ -n "$slug" ] || { gum style --foreground 1 "rmx: no usable name in '$title'"; exit 1; }
+  title=$slug
 fi
 
 # Everything after this point — branch naming, provisioning, devenv,
@@ -479,11 +552,12 @@ fi
 # the state dir so create can move it into the worktree's state.
 prompt_file=$(mktemp "$state_dir/prompt.XXXXXX")
 printf '%s' "$prompt" >"$prompt_file"
+run_log=$(new_log)
 
 if [ -n "${REX_SESSION:-}${TMUX:-}" ]; then
-  nohup "$self" __create "$path" "$session" "$prompt_file" "$title" \
+  nohup "$self" __create "$path" "$session" "$prompt_file" "$title" "$run_log" \
     </dev/null >/dev/null 2>&1 &
   notify "creating worktree in the background…"
 else
-  create "$path" "$session" "$prompt_file" "$title"
+  create "$path" "$session" "$prompt_file" "$title" "$run_log"
 fi
