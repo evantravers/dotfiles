@@ -82,7 +82,8 @@ func (u *ui) choose(header string, options []string) (int, bool) {
 	return s.cursor, true
 }
 
-// write takes multi-line text; ctrl+d submits
+// write takes multi-line text; enter submits and ctrl+j adds a newline,
+// like gum write
 func (u *ui) write(header, placeholder string, height int) (string, bool) {
 	s := newWrite(header, placeholder, height)
 	if !u.run(s) {
@@ -359,6 +360,9 @@ func newWrite(header, placeholder string, height int) *writeStep {
 	a.ShowLineNumbers = false
 	a.CharLimit = 0
 	a.SetHeight(height)
+	// enter submits, so newlines move to ctrl+j (and alt+enter where the
+	// terminal can tell it apart)
+	a.KeyMap.InsertNewline.SetKeys("ctrl+j", "alt+enter")
 	st := a.Styles()
 	st.Focused.CursorLine = lipgloss.NewStyle()
 	st.Focused.Placeholder = faintStyle
@@ -371,7 +375,7 @@ func (s *writeStep) init() tea.Cmd   { return s.area.Focus() }
 func (s *writeStep) resize(w, h int) { s.area.SetWidth(w) }
 
 func (s *writeStep) update(msg tea.Msg) (tea.Cmd, bool) {
-	if k, ok := msg.(tea.KeyPressMsg); ok && k.String() == "ctrl+d" {
+	if k, ok := msg.(tea.KeyPressMsg); ok && k.String() == "enter" {
 		return nil, true
 	}
 	var cmd tea.Cmd
@@ -381,7 +385,7 @@ func (s *writeStep) update(msg tea.Msg) (tea.Cmd, bool) {
 
 func (s *writeStep) view() string {
 	return headerStyle.Render(s.header) + "\n" + s.area.View() + "\n" +
-		faintStyle.Render("ctrl+d submit • esc cancel")
+		faintStyle.Render("ctrl+j newline • enter submit • esc cancel")
 }
 
 // ----------------------------------------------------------------- input ---
