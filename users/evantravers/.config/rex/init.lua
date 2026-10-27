@@ -38,8 +38,8 @@ rex.action{
   end,
 }
 
--- wt (rex.nix) from the focused pane's directory, like wmx's tmux
--- popup: pick a project, describe a task, launch an agent worktree.
+-- wt (rex.nix) from the focused pane's directory: pick a project,
+-- describe a task, launch an agent worktree.
 --
 -- It runs in a fish login shell: rex runs commands through the account
 -- shell (zsh), which home-manager doesn't manage, so it misses
