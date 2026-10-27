@@ -36,6 +36,21 @@ let
     ];
     text = builtins.readFile ./bin/rmx;
   };
+
+  # rsesh — sesh picker that switches rex sessions; init.lua binds it
+  # to cmd+p in a split beside the focused pane.
+  rsesh = pkgs.writeShellApplication {
+    name = "rsesh";
+    runtimeInputs = with pkgs; [
+      gum
+      sesh
+      jq
+      coreutils
+      gawk
+      config.programs.fish.package
+    ];
+    text = builtins.readFile ./bin/rsesh;
+  };
 in
 {
   options.programs.rex = {
@@ -46,6 +61,10 @@ in
     # The rex CLI itself is app-managed and expected on PATH.
     home.packages = [
       rmx
+      rsesh
     ];
+
+    # rex reads this on `rex config reload`; it doesn't watch the file
+    xdg.configFile."rex/init.lua".source = ./.config/rex/init.lua;
   };
 }
