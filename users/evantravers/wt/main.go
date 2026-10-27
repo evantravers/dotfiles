@@ -1,9 +1,6 @@
 // wt — git worktrees / jj workspaces + agent, for the rex multiplexer,
 // and wt sesh, a sesh picker that switches rex sessions.
 //
-// Both draw full-screen and paint every cell (paint.go), so they work in
-// rex's floating layers, which have no background of their own.
-//
 // Usage:
 //
 //	wt [prompt…]      pick a project, describe a task, launch a worktree

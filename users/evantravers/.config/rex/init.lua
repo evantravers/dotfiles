@@ -1,10 +1,8 @@
 local terminal = "com.superlogical.terminal"
 
 -- Runs command in a focused floating layer over the active window, like
--- a tmux popup; the layer closes when the command exits. Rex draws
--- floating layers with no background, so wt and wt sesh paint every
--- cell themselves (wt/paint.go). bounds is {x, y, w, h} as fractions
--- of the window.
+-- a tmux popup; the layer closes when the command exits. bounds is
+-- {x, y, w, h} as fractions of the window.
 local function float(ctx, label, command, bounds, cwd)
   local view = rex.call("session.view", { session_id = ctx.session_id })
   local _, err = rex.call("session.new_layer", {

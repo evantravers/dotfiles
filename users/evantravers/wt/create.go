@@ -23,8 +23,6 @@ type task struct {
 // repo) and hands it to create, in the background when running under a
 // multiplexer.
 func launch(prompt string) int {
-	// The UI comes up first, so a floating layer is painted while the
-	// repo is found
 	var u *ui
 	if prompt == "" {
 		u = startUI()
