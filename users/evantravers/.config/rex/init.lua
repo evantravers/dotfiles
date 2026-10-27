@@ -56,3 +56,13 @@ rex.action{
 
 rex.bind("cmd+p", "sesh")
 rex.bind("cmd+shift+a", "agent")
+
+-- Vim-style hjkl mirrors of the default arrow bindings: cmd+alt focuses,
+-- cmd+shift splits, cmd+alt+shift moves. (Not ctrl: ctrl+h is backspace
+-- and alt alone trips readline word-motion in terminals.)
+local directions = { h = "left", j = "down", k = "up", l = "right" }
+for key, direction in pairs(directions) do
+  rex.bind("cmd+alt+" .. key, "pane.focus." .. direction)
+  rex.bind("cmd+shift+" .. key, "pane.split." .. direction)
+  rex.bind("cmd+alt+shift+" .. key, "pane.move." .. direction)
+end
