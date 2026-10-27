@@ -43,7 +43,7 @@ func launch(prompt string) int {
 			return 0
 		}
 	} else if rootErr != nil {
-		fmt.Fprintln(os.Stderr, "rmx:", rootErr)
+		fmt.Fprintln(os.Stderr, "wt:", rootErr)
 		return 1
 	}
 
@@ -58,7 +58,7 @@ func launch(prompt string) int {
 	// the state dir; create moves it into the worktree's state.
 	f, err := os.CreateTemp(stateDir(), "prompt.")
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "rmx:", err)
+		fmt.Fprintln(os.Stderr, "wt:", err)
 		return 1
 	}
 	_, err = f.WriteString(t.prompt)
@@ -66,7 +66,7 @@ func launch(prompt string) int {
 		err = cerr
 	}
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "rmx:", err)
+		fmt.Fprintln(os.Stderr, "wt:", err)
 		return 1
 	}
 	vcs := "git"
@@ -76,7 +76,7 @@ func launch(prompt string) int {
 	cmd := exec.Command(self(), "__create", t.path, vcs, f.Name(), t.title)
 	cmd.SysProcAttr = &syscall.SysProcAttr{Setsid: true}
 	if err := cmd.Start(); err != nil {
-		fmt.Fprintln(os.Stderr, "rmx:", err)
+		fmt.Fprintln(os.Stderr, "wt:", err)
 		return 1
 	}
 	notify("creating worktree in the background…")
@@ -94,13 +94,13 @@ func ask(u *ui, t *task, rootErr error) bool {
 		return false
 	}
 	if choice == 0 && rootErr != nil {
-		u.message("rmx: " + rootErr.Error())
+		u.message("wt: " + rootErr.Error())
 		return false
 	}
 	if choice == 1 {
 		ps, err := projects()
 		if err != nil {
-			u.message("rmx: " + err.Error())
+			u.message("wt: " + err.Error())
 			return false
 		}
 		items := make([]string, len(ps))
@@ -113,7 +113,7 @@ func ask(u *ui, t *task, rootErr error) bool {
 		}
 		root, jj, err := projectRoot(ps[i].Path)
 		if err != nil {
-			u.message("rmx: " + err.Error())
+			u.message("wt: " + err.Error())
 			return false
 		}
 		t.path, t.jj = root, jj
@@ -133,17 +133,17 @@ func ask(u *ui, t *task, rootErr error) bool {
 		return false
 	}
 	if t.title = shorten(slugify(title)); t.title == "" {
-		u.message(fmt.Sprintf("rmx: no usable name in %q", title))
+		u.message(fmt.Sprintf("wt: no usable name in %q", title))
 		return false
 	}
 	return true
 }
 
-// create is `rmx __create <path> <jj|git> <prompt_file> <title>`, with
+// create is `wt __create <path> <jj|git> <prompt_file> <title>`, with
 // the project launch already found
 func create(args []string) int {
 	if len(args) != 4 {
-		fmt.Fprintln(os.Stderr, "usage: rmx __create <path> <jj|git> <prompt_file> <title>")
+		fmt.Fprintln(os.Stderr, "usage: wt __create <path> <jj|git> <prompt_file> <title>")
 		return 2
 	}
 	data, err := os.ReadFile(args[2])
@@ -234,9 +234,9 @@ func (t task) create() (branch string, err error) {
 		return "", err
 	}
 
-	// Don't switch to it by default, matching wmx. With RMX_FOCUS=1,
+	// Don't switch to it by default, matching wmx. With WT_FOCUS=1,
 	// show the new session in a connected app.
-	if os.Getenv("RMX_FOCUS") == "1" {
+	if os.Getenv("WT_FOCUS") == "1" {
 		if client := firstAppClient(); client != "" {
 			_ = selectSession(client, session)
 		}

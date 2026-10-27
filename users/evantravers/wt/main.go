@@ -1,45 +1,43 @@
-// rmx — git worktrees / jj workspaces + agent, for the rex multiplexer,
-// and rsesh, a sesh picker that switches rex sessions.
+// wt — git worktrees / jj workspaces + agent, for the rex multiplexer,
+// and wt sesh, a sesh picker that switches rex sessions.
 //
 // Both draw full-screen and paint every cell (paint.go), so they work in
 // rex's floating layers, which have no background of their own.
 //
 // Usage:
 //
-//	rmx [prompt…]     pick a project, describe a task, launch a worktree
+//	wt [prompt…]      pick a project, describe a task, launch a worktree
 //	                  with an agent working on it. With a prompt argument,
 //	                  skips the pickers and uses the current repo.
-//	rmx rm [-y] [name]
-//	                  remove a worktree/workspace and close its rex session.
+//	wt rm [-y] [name] remove a worktree/workspace and close its rex session.
 //	                  Inside a worktree, removes that one; otherwise picks
 //	                  from the current repo's worktrees.
-//	rsesh [CLIENT]    (or rmx sesh) pick a rex session, sesh config or
-//	                  zoxide entry and switch CLIENT (default: the first
-//	                  connected app) to it, creating the session if needed.
+//	wt sesh [CLIENT]  pick a rex session, sesh config or zoxide entry and
+//	                  switch CLIENT (default: the first connected app) to
+//	                  it, creating the session if needed.
 //
 // Internal subcommands:
 //
-//	rmx __create <path> <jj|git> <prompt_file> <title>    (spawned detached)
-//	rmx __agent [--main DIR] [--prompt FILE] [--] <agent…>     (started by the
+//	wt __create <path> <jj|git> <prompt_file> <title>     (spawned detached)
+//	wt __agent [--main DIR] [--prompt FILE] [--] <agent…>  (started by the
 //	                  agent's window: runs the agent in the devenv environment)
 //
 // Environment:
 //
-//	RMX_SHELL   shell for new rex panes (default: fish from PATH)
-//	RMX_FOCUS   set to 1 to show the new session in the app
-//	RMX_SELF    path panes use to run rmx (rex.nix sets it to the wrapper)
+//	WT_SHELL  shell for new rex panes (default: fish from PATH)
+//	WT_FOCUS  set to 1 to show the new session in the app
+//	WT_SELF   path panes use to run wt (rex.nix sets it to the wrapper)
 package main
 
 import (
 	"fmt"
 	"os"
-	"path/filepath"
 	"strings"
 )
 
-const usage = `Usage: rmx [prompt…]
-       rmx rm [-y] [name]
-       rmx sesh [CLIENT]   (also installed as rsesh)
+const usage = `Usage: wt [prompt…]
+       wt rm [-y] [name]
+       wt sesh [CLIENT]
 
 Pick a project, describe a task, and launch a worktree with an agent
 working on it in a new rex session. With a prompt argument, skips the
@@ -61,9 +59,6 @@ func main() {
 	}
 
 	args := os.Args[1:]
-	if filepath.Base(os.Args[0]) == "rsesh" {
-		args = append([]string{"sesh"}, args...)
-	}
 
 	cmd := ""
 	if len(args) > 0 {
@@ -87,7 +82,7 @@ func main() {
 	default:
 		// An unknown internal subcommand must not become an agent's task
 		if strings.HasPrefix(cmd, "__") {
-			fmt.Fprintf(os.Stderr, "rmx: unknown subcommand %s\n", cmd)
+			fmt.Fprintf(os.Stderr, "wt: unknown subcommand %s\n", cmd)
 			os.Exit(2)
 		}
 		os.Exit(launch(strings.Join(args, " ")))

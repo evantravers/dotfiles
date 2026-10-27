@@ -59,7 +59,7 @@ func TestSlugify(t *testing.T) {
 }
 
 func TestPaneQuoteFish(t *testing.T) {
-	t.Setenv("RMX_SHELL", "/bin/fish")
+	t.Setenv("WT_SHELL", "/bin/fish")
 	for in, want := range map[string]string{
 		"/plain/path": "/plain/path",
 		"it's here":   `'it\'s here'`,

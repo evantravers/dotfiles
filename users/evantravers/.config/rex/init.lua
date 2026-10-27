@@ -2,8 +2,8 @@ local terminal = "com.superlogical.terminal"
 
 -- Runs command in a focused floating layer over the active window, like
 -- a tmux popup; the layer closes when the command exits. Rex draws
--- floating layers with no background, so rmx and rsesh paint every
--- cell themselves (rmx/paint.go). bounds is {x, y, w, h} as fractions
+-- floating layers with no background, so wt and wt sesh paint every
+-- cell themselves (wt/paint.go). bounds is {x, y, w, h} as fractions
 -- of the window.
 local function float(ctx, label, command, bounds, cwd)
   local view = rex.call("session.view", { session_id = ctx.session_id })
@@ -27,30 +27,30 @@ local function cwd_of(block_id)
   return info and ((info.foreground and info.foreground.cwd) or (info.child and info.child.cwd))
 end
 
--- sesh picker, like the tmux C-p popup. rsesh (rex.nix) does the
+-- sesh picker, like the tmux C-p popup. wt sesh (rex.nix) does the
 -- picking and switches this client's session.
 rex.action{
   name  = "sesh",
   title = "Pick a Sesh…",
   keywords = "session repository project zoxide",
   run   = function(ctx, args)
-    float(ctx, "rsesh", { "rsesh", ctx.client_id }, { 0.1, 0.1, 0.8, 0.8 })
+    float(ctx, "wt sesh", { "wt", "sesh", ctx.client_id }, { 0.1, 0.1, 0.8, 0.8 })
   end,
 }
 
--- rmx (rex.nix) from the focused pane's directory, like wmx's tmux
+-- wt (rex.nix) from the focused pane's directory, like wmx's tmux
 -- popup: pick a project, describe a task, launch an agent worktree.
 --
 -- It runs in a fish login shell: rex runs commands through the account
 -- shell (zsh), which home-manager doesn't manage, so it misses
--- home.sessionVariables (pi's PI_CODING_AGENT_DIR, without which rmx's
+-- home.sessionVariables (pi's PI_CODING_AGENT_DIR, without which wt's
 -- `pi -p` branch naming finds no API key).
 rex.action{
   name  = "agent",
   title = "New Agent…",
-  keywords = "rmx worktree workspace agent task",
+  keywords = "wt worktree workspace agent task",
   run   = function(ctx, args)
-    float(ctx, "rmx", { "fish", "-l", "-c", "exec $argv", "rmx" }, { 0.2, 0.2, 0.6, 0.6 }, cwd_of(ctx.block_id))
+    float(ctx, "wt", { "fish", "-l", "-c", "exec $argv", "wt" }, { 0.2, 0.2, 0.6, 0.6 }, cwd_of(ctx.block_id))
   end,
 }
 
