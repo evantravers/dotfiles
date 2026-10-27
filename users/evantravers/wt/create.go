@@ -166,7 +166,8 @@ func (t task) createNotify() int {
 }
 
 // create provisions the worktree and opens a rex session for the agent,
-// labelled "<project>: <name>" and starting in the worktree. It returns the
+// starting in the worktree. The session goes unlabelled: rex names it
+// and the agent renames it once it knows the task. It returns the
 // workspace name (the branch name in a git repo). A failure after the
 // worktree exists removes it again, so a retry doesn't leave an orphan
 // behind.
@@ -224,8 +225,7 @@ func (t task) create() (name string, err error) {
 	}
 	run += " -- " + agentCommand(t.path)
 
-	label := filepath.Base(t.path) + ": " + name
-	session, err = newSession(label, "agent", shellBlock(wt, run))
+	session, err = newSession("", "agent", shellBlock(wt, run))
 	if err != nil {
 		return "", fmt.Errorf("create rex session: %w", err)
 	}
