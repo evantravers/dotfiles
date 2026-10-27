@@ -52,18 +52,22 @@ func rexSessions() ([]rexSession, error) {
 	return ls.Sessions, nil
 }
 
-// newSession creates a session with one window, returning its ID
+// newSession creates a session with one window, returning its ID. An
+// empty label lets rex choose one.
 func newSession(label, window string, layout map[string]any) (string, error) {
 	var created struct {
 		ID string `json:"session_id"`
 	}
-	err := rexCall("session.create", map[string]any{
-		"label": label,
+	input := map[string]any{
 		"initial_windows": []any{map[string]any{
 			"window_label": window,
 			"layout":       layout,
 		}},
-	}, &created)
+	}
+	if label != "" {
+		input["label"] = label
+	}
+	err := rexCall("session.create", input, &created)
 	if err == nil && created.ID == "" {
 		err = fmt.Errorf("session.create returned no session")
 	}
