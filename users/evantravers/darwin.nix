@@ -1,4 +1,4 @@
-{ pkgs, config, lib, ... }:
+{ pkgs, config, ... }:
 {
   imports = [
     ./kanata.nix
@@ -12,12 +12,6 @@
   programs.zsh.enable = true;
   programs.fish.enable = true;
   programs._1password.enable = true;
-
-  programs.fish.interactiveShellInit = lib.mkAfter ''
-    if set -q REX_BIN_DIR; and test -n "$REX_BIN_DIR"
-      fish_add_path -m $REX_BIN_DIR
-    end
-  '';
 
   users.users.evantravers = {
     home = "/Users/evantravers";
