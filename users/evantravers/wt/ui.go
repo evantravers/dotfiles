@@ -11,14 +11,14 @@ import (
 )
 
 // The UI is one full-screen Bubble Tea program for a whole run, so a
-// series of prompts shares one screen. Each
-// prompt is a step: the caller hands it to the program and blocks
+// series of prompts shares one screen. Each prompt is a step: the caller hands it to the program and blocks
 // until the user submits it or backs out with esc or ctrl+c.
 
 // Colours from gum's defaults, as ANSI indexes so they follow the theme
 var (
 	headerStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("99")).Bold(true)
-	accentStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("212"))
+	accent      = lipgloss.Color("212")
+	accentStyle = lipgloss.NewStyle().Foreground(accent)
 	faintStyle  = lipgloss.NewStyle().Foreground(lipgloss.Color("240"))
 	errorStyle  = lipgloss.NewStyle().Foreground(lipgloss.Color("1"))
 )
@@ -132,16 +132,12 @@ func (r *root) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		r.s = msg.s
 		r.s.resize(r.inner())
 		return r, r.s.init()
-	case tea.KeyPressMsg:
-		if r.s == nil {
-			return r, nil
-		}
-		if k := msg.String(); k == "esc" || k == "ctrl+c" {
-			r.finish(false)
-			return r, nil
-		}
 	}
 	if r.s == nil {
+		return r, nil
+	}
+	if k, ok := msg.(tea.KeyPressMsg); ok && (k.String() == "esc" || k.String() == "ctrl+c") {
+		r.finish(false)
 		return r, nil
 	}
 	cmd, done := r.s.update(msg)
@@ -215,10 +211,11 @@ func (s *filterStep) init() tea.Cmd { return s.in.Focus() }
 
 func (s *filterStep) resize(w, h int) {
 	s.in.SetWidth(w - 2)
-	s.rows = max(h-2, 1)
+	rows := h - 2
 	if s.header != "" {
-		s.rows = max(h-3, 1)
+		rows--
 	}
+	s.rows = max(rows, 1)
 }
 
 func (s *filterStep) refilter() {
@@ -440,7 +437,7 @@ func (s *confirmStep) view() string {
 	button := func(label string, on bool) string {
 		st := lipgloss.NewStyle().Padding(0, 2)
 		if on {
-			st = st.Background(lipgloss.Color("212")).Foreground(lipgloss.Color("0"))
+			st = st.Background(accent).Foreground(lipgloss.Color("0"))
 		}
 		return st.Render(label)
 	}
