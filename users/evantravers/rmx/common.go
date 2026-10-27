@@ -10,13 +10,17 @@ import (
 	"strings"
 )
 
+// xdgDir is the XDG base directory in env, else ~/<fallback>
+func xdgDir(env, fallback string) string {
+	if dir := os.Getenv(env); dir != "" {
+		return dir
+	}
+	return filepath.Join(os.Getenv("HOME"), fallback)
+}
+
 // stateDir holds the log and per-worktree state
 func stateDir() string {
-	base := os.Getenv("XDG_STATE_HOME")
-	if base == "" {
-		base = filepath.Join(os.Getenv("HOME"), ".local", "state")
-	}
-	dir := filepath.Join(base, "rmx")
+	dir := filepath.Join(xdgDir("XDG_STATE_HOME", ".local/state"), "rmx")
 	_ = os.MkdirAll(dir, 0o755)
 	return dir
 }
@@ -85,23 +89,29 @@ func shorten(s string) string {
 	return strings.TrimRight(s, "-")
 }
 
-// repoRoot is the repo containing dir: jj's root, else git's
-func repoRoot(dir string) (string, error) {
+// repoRoot is the repo containing dir: jj's root (the usual case, and
+// reported as jj), else git's
+func repoRoot(dir string) (root string, jj bool, err error) {
 	if root, err := output(command(dir, "jj", "root")); err == nil {
-		return root, nil
+		return root, true, nil
 	}
-	return output(command(dir, "git", "rev-parse", "--show-toplevel"))
+	root, err = output(command(dir, "git", "rev-parse", "--show-toplevel"))
+	return root, false, err
 }
 
-// isJJ reports whether dir is in a jj repo (the usual case)
-func isJJ(dir string) bool {
-	return command(dir, "jj", "root").Run() == nil
-}
-
-// worktreesOf is where a checkout's worktrees live, matching workmux's
+// Worktrees live next to their main checkout, matching workmux's
 // layout: <repo>__worktrees/<branch>
+const worktreesSuffix = "__worktrees"
+
+// worktreesOf is where a checkout's worktrees live
 func worktreesOf(checkout string) string {
-	return strings.TrimSuffix(checkout, "/") + "__worktrees"
+	return strings.TrimSuffix(checkout, "/") + worktreesSuffix
+}
+
+// mainOf is the main checkout a worktree belongs to, reporting false
+// when wt isn't in a worktrees directory
+func mainOf(wt string) (string, bool) {
+	return strings.CutSuffix(filepath.Dir(wt), worktreesSuffix)
 }
 
 // metaDir holds a worktree's state (the agent's prompt, the rex session

@@ -69,25 +69,27 @@ func main() {
 	if len(args) > 0 {
 		cmd = args[0]
 	}
-	if cmd == "sesh" && len(args) > 1 && (args[1] == "-h" || args[1] == "--help") {
-		cmd = "--help"
-	}
-	switch {
-	case cmd == "-h" || cmd == "--help":
+	switch cmd {
+	case "-h", "--help":
 		fmt.Print(usage)
-	case cmd == "sesh":
+	case "sesh":
+		if len(args) > 1 && (args[1] == "-h" || args[1] == "--help") {
+			fmt.Print(usage)
+			return
+		}
 		os.Exit(sesh(args[1:]))
-	case cmd == "rm":
+	case "rm":
 		os.Exit(remove(args[1:]))
-	case cmd == "__create":
+	case "__create":
 		os.Exit(create(args[1:]))
-	case cmd == "__agent":
+	case "__agent":
 		os.Exit(agent(args[1:]))
-	case strings.HasPrefix(cmd, "__"):
-		// An unknown internal subcommand must not become an agent's task
-		fmt.Fprintf(os.Stderr, "rmx: unknown subcommand %s\n", cmd)
-		os.Exit(2)
 	default:
+		// An unknown internal subcommand must not become an agent's task
+		if strings.HasPrefix(cmd, "__") {
+			fmt.Fprintf(os.Stderr, "rmx: unknown subcommand %s\n", cmd)
+			os.Exit(2)
+		}
 		os.Exit(launch(strings.Join(args, " ")))
 	}
 }

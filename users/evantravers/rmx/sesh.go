@@ -52,25 +52,35 @@ func pickSesh(u *ui, args []string) error {
 		return nil
 	}
 
+	// seshEntries lists an open session in place of its project, so a
+	// project entry has no session yet
 	e := entries[i]
 	if e.id == "" {
-		if e.id, err = ensureSession(e.label, e.path); err != nil {
+		if e.id, err = newSession(e.label, "Terminal", shellBlock(e.path, "")); err != nil {
 			return fmt.Errorf("couldn't create session %s: %w", e.label, err)
 		}
 	}
-	return selectSession(client, e.id, "")
+	return selectSession(client, e.id)
 }
 
 // seshEntries lists open rex sessions, then projects. A project whose
 // session is already open is listed only once, as the rex session.
 func seshEntries() ([]seshEntry, error) {
+	// Both lists are subprocesses, so load them at the same time
+	var ps []project
+	var perr error
+	loaded := make(chan struct{})
+	go func() {
+		defer close(loaded)
+		ps, perr = projects()
+	}()
 	sessions, err := rexSessions()
+	<-loaded
 	if err != nil {
 		return nil, err
 	}
-	ps, err := projects()
-	if err != nil {
-		return nil, err
+	if perr != nil {
+		return nil, perr
 	}
 
 	var entries []seshEntry
@@ -81,11 +91,12 @@ func seshEntries() ([]seshEntry, error) {
 	}
 	seen := map[string]bool{}
 	for _, p := range ps {
-		if open[p.Label] || seen[p.Path] {
+		label := p.label()
+		if open[label] || seen[p.Path] {
 			continue
 		}
 		seen[p.Path] = true
-		entries = append(entries, seshEntry{display: p.display(), label: p.Label, path: p.Path})
+		entries = append(entries, seshEntry{display: p.display(), label: label, path: p.Path})
 	}
 	if len(entries) == 0 {
 		return nil, fmt.Errorf("nothing to pick from")
