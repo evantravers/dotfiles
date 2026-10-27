@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+	"syscall"
 )
 
 // xdgDir is the XDG base directory in env, else ~/<fallback>
@@ -59,17 +60,22 @@ func run(cmd *exec.Cmd) error {
 
 // notify logs a message and shows it as a macOS notification, since
 // rex has no equivalent of tmux display-message. osascript isn't waited
-// on, so its startup doesn't hold up the caller.
+// on, so its startup doesn't hold up the caller. The script goes in its
+// arguments, so it's complete once Start returns even if the caller
+// exits at once; setsid keeps it alive when a closing float hangs up
+// its process group.
 func notify(msg string) {
 	if f, err := os.OpenFile(filepath.Join(stateDir(), "rmx.log"),
 		os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0o644); err == nil {
 		fmt.Fprintln(f, "rmx: "+msg)
 		f.Close()
 	}
-	cmd := exec.Command("osascript", "-", msg)
-	cmd.Stdin = strings.NewReader(`on run argv
-  display notification (item 1 of argv) with title "rmx"
-end run`)
+	cmd := exec.Command("osascript",
+		"-e", "on run argv",
+		"-e", `display notification (item 1 of argv) with title "rmx"`,
+		"-e", "end run",
+		msg)
+	cmd.SysProcAttr = &syscall.SysProcAttr{Setsid: true}
 	_ = cmd.Start()
 }
 
@@ -102,6 +108,19 @@ func repoRoot(dir string) (root string, jj bool, err error) {
 // Worktrees live next to their main checkout, matching workmux's
 // layout: <repo>__worktrees/<branch>
 const worktreesSuffix = "__worktrees"
+
+// projectRoot is the project dir belongs to: its repo's root, mapped
+// from a worktree back to the main checkout, so a subdirectory or an
+// agent's worktree stands for the project itself
+func projectRoot(dir string) (root string, jj bool, err error) {
+	if root, jj, err = repoRoot(dir); err != nil {
+		return "", false, fmt.Errorf("%s is not in a repository", dir)
+	}
+	if main, ok := mainOf(root); ok {
+		root = main
+	}
+	return root, jj, nil
+}
 
 // worktreesOf is where a checkout's worktrees live
 func worktreesOf(checkout string) string {

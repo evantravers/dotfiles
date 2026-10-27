@@ -19,7 +19,7 @@
 //
 // Internal subcommands:
 //
-//	rmx __create <path> <prompt_file> <title>             (spawned detached)
+//	rmx __create <path> <jj|git> <prompt_file> <title>    (spawned detached)
 //	rmx __agent [--main DIR] [--prompt FILE] [--] <agent…>     (started by the
 //	                  agent's window: runs the agent in the devenv environment)
 //

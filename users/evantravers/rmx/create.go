@@ -14,6 +14,7 @@ import (
 // task is what the UI collects and create works from
 type task struct {
 	path   string // the project's main checkout
+	jj     bool   // path is a jj repo, else git
 	prompt string // the agent's task; "" for a plain worktree named title
 	title  string // slug, used when there is no prompt
 }
@@ -30,16 +31,20 @@ func launch(prompt string) int {
 	}
 	cwd, _ := os.Getwd()
 	t := task{path: cwd, prompt: prompt}
-	if root, _, err := repoRoot(cwd); err == nil {
-		t.path = root
+	root, jj, rootErr := projectRoot(cwd)
+	if rootErr == nil {
+		t.path, t.jj = root, jj
 	}
 	if u != nil {
-		ok := ask(u, &t)
+		ok := ask(u, &t, rootErr)
 		u.close()
 		// User aborts (esc, ctrl+c) are not errors
 		if !ok {
 			return 0
 		}
+	} else if rootErr != nil {
+		fmt.Fprintln(os.Stderr, "rmx:", rootErr)
+		return 1
 	}
 
 	if os.Getenv("REX_SESSION") == "" && os.Getenv("TMUX") == "" {
@@ -64,7 +69,11 @@ func launch(prompt string) int {
 		fmt.Fprintln(os.Stderr, "rmx:", err)
 		return 1
 	}
-	cmd := exec.Command(self(), "__create", t.path, f.Name(), t.title)
+	vcs := "git"
+	if t.jj {
+		vcs = "jj"
+	}
+	cmd := exec.Command(self(), "__create", t.path, vcs, f.Name(), t.title)
 	cmd.SysProcAttr = &syscall.SysProcAttr{Setsid: true}
 	if err := cmd.Start(); err != nil {
 		fmt.Fprintln(os.Stderr, "rmx:", err)
@@ -74,13 +83,18 @@ func launch(prompt string) int {
 	return 0
 }
 
-// ask fills in t from the user, reporting false when they back out
-func ask(u *ui, t *task) bool {
+// ask fills in t from the user, reporting false when they back out.
+// rootErr is why t.path isn't a project, if it isn't.
+func ask(u *ui, t *task, rootErr error) bool {
 	choice, ok := u.choose("Where should the agent work?", []string{
 		"Current project: " + filepath.Base(t.path),
 		"Pick another project…",
 	})
 	if !ok {
+		return false
+	}
+	if choice == 0 && rootErr != nil {
+		u.message("rmx: " + rootErr.Error())
 		return false
 	}
 	if choice == 1 {
@@ -97,7 +111,12 @@ func ask(u *ui, t *task) bool {
 		if !ok {
 			return false
 		}
-		t.path = ps[i].Path
+		root, jj, err := projectRoot(ps[i].Path)
+		if err != nil {
+			u.message("rmx: " + err.Error())
+			return false
+		}
+		t.path, t.jj = root, jj
 	}
 
 	if t.prompt, ok = u.write("Task for the agent", "Describe the task…", 8); !ok {
@@ -120,20 +139,20 @@ func ask(u *ui, t *task) bool {
 	return true
 }
 
-// create is `rmx __create <path> <prompt_file> <title>`
+// create is `rmx __create <path> <jj|git> <prompt_file> <title>`, with
+// the project launch already found
 func create(args []string) int {
-	if len(args) != 3 {
-		fmt.Fprintln(os.Stderr, "usage: rmx __create <path> <prompt_file> <title>")
+	if len(args) != 4 {
+		fmt.Fprintln(os.Stderr, "usage: rmx __create <path> <jj|git> <prompt_file> <title>")
 		return 2
 	}
-	t := task{path: args[0], title: args[2]}
-	data, err := os.ReadFile(args[1])
-	os.Remove(args[1])
+	data, err := os.ReadFile(args[2])
+	os.Remove(args[2])
 	if err != nil {
 		notify("failed: " + err.Error())
 		return 1
 	}
-	t.prompt = string(data)
+	t := task{path: args[0], jj: args[1] == "jj", prompt: string(data), title: args[3]}
 	return t.createNotify()
 }
 
@@ -150,23 +169,30 @@ func (t task) createNotify() int {
 
 // create provisions the worktree and opens a rex session for the agent,
 // labelled "<project>: <branch>" and starting in the worktree. It returns the
-// branch name.
-func (t task) create() (string, error) {
-	_, jj, _ := repoRoot(t.path)
-
-	branch := t.title
+// branch name. A failure after the worktree exists removes it again,
+// so a retry doesn't leave an orphan behind.
+func (t task) create() (branch string, err error) {
+	branch = t.title
 	if t.prompt != "" {
-		var err error
 		if branch, err = branchName(t.path, t.prompt); err != nil {
 			return "", err
 		}
 	}
 
-	wt, err := t.addWorktree(jj, branch)
+	wt, err := t.addWorktree(branch)
 	if err != nil {
 		return "", err
 	}
 	branch = filepath.Base(wt)
+	session := ""
+	defer func() {
+		if err != nil {
+			if session != "" {
+				_, _ = rex("session", "kill", session)
+			}
+			t.discard(wt)
+		}
+	}()
 
 	// The agent reads its task at launch time from the worktree's state
 	// dir (outside the worktree, so jj never snapshots it)
@@ -200,7 +226,7 @@ func (t task) create() (string, error) {
 	run += " -- " + agentCommand(t.path)
 
 	label := filepath.Base(t.path) + ": " + branch
-	session, err := newSession(label, "agent", shellBlock(wt, run))
+	session, err = newSession(label, "agent", shellBlock(wt, run))
 	if err != nil {
 		return "", fmt.Errorf("create rex session: %w", err)
 	}
@@ -216,6 +242,19 @@ func (t task) create() (string, error) {
 		}
 	}
 	return branch, nil
+}
+
+// discard undoes addWorktree and create's state for wt
+func (t task) discard(wt string) {
+	name := filepath.Base(wt)
+	if t.jj {
+		_ = run(command(t.path, "jj", "workspace", "forget", "--ignore-working-copy", name))
+	} else {
+		_ = run(command(t.path, "git", "worktree", "remove", "--force", wt))
+		_ = run(command(t.path, "git", "branch", "-D", name))
+	}
+	os.RemoveAll(wt)
+	os.RemoveAll(metaDir(wt))
 }
 
 // branchName asks pi for a branch name for the task
@@ -239,7 +278,8 @@ func branchName(dir, prompt string) (string, error) {
 // <repo>__worktrees/<branch>, next to the main checkout, and returns its
 // path. A taken name (directory, branch or jj workspace) gets a numeric
 // suffix, since there is no user to ask.
-func (t task) addWorktree(jj bool, branch string) (string, error) {
+func (t task) addWorktree(branch string) (string, error) {
+	jj := t.jj
 	base := baseRevision(jj, t.path)
 
 	var taken []string
