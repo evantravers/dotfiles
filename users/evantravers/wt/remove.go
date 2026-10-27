@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-// remove is `rmx rm [-y] [name]`
+// remove is `wt rm [-y] [name]`
 func remove(args []string) int {
 	yes, name := false, ""
 	for _, a := range args {
@@ -19,7 +19,7 @@ func remove(args []string) int {
 		}
 	}
 	if err := removeWorktree(name, yes); err != nil {
-		fmt.Fprintln(os.Stderr, "rmx rm:", err)
+		fmt.Fprintln(os.Stderr, "wt rm:", err)
 		return 1
 	}
 	return 0
@@ -85,7 +85,7 @@ func removeWorktree(name string, yes bool) error {
 	meta := metaDir(wt)
 	data, _ := os.ReadFile(filepath.Join(meta, "session"))
 	os.RemoveAll(meta)
-	fmt.Printf("rmx: removed '%s'\n", name)
+	fmt.Printf("wt: removed '%s'\n", name)
 	if session := strings.TrimSpace(string(data)); session != "" {
 		_, _ = rex("session", "kill", session)
 	}

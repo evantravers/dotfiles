@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-// sesh is `rsesh [CLIENT]`: list rex sessions, then sesh's config and
+// sesh is `wt sesh [CLIENT]`: list rex sessions, then sesh's config and
 // zoxide entries; picking one switches CLIENT to that session, creating
 // it (a shell in the entry's directory) when it doesn't exist.
 //
@@ -14,7 +14,7 @@ func sesh(args []string) int {
 	u := startUI()
 	defer u.close()
 	if err := pickSesh(u, args); err != nil {
-		u.message("rsesh: " + err.Error())
+		u.message("wt sesh: " + err.Error())
 		return 1
 	}
 	return 0

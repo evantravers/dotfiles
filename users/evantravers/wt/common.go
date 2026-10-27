@@ -21,7 +21,7 @@ func xdgDir(env, fallback string) string {
 
 // stateDir holds the log and per-worktree state
 func stateDir() string {
-	dir := filepath.Join(xdgDir("XDG_STATE_HOME", ".local/state"), "rmx")
+	dir := filepath.Join(xdgDir("XDG_STATE_HOME", ".local/state"), "wt")
 	_ = os.MkdirAll(dir, 0o755)
 	return dir
 }
@@ -65,14 +65,14 @@ func run(cmd *exec.Cmd) error {
 // exits at once; setsid keeps it alive when a closing float hangs up
 // its process group.
 func notify(msg string) {
-	if f, err := os.OpenFile(filepath.Join(stateDir(), "rmx.log"),
+	if f, err := os.OpenFile(filepath.Join(stateDir(), "wt.log"),
 		os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0o644); err == nil {
-		fmt.Fprintln(f, "rmx: "+msg)
+		fmt.Fprintln(f, "wt: "+msg)
 		f.Close()
 	}
 	cmd := exec.Command("osascript",
 		"-e", "on run argv",
-		"-e", `display notification (item 1 of argv) with title "rmx"`,
+		"-e", `display notification (item 1 of argv) with title "wt"`,
 		"-e", "end run",
 		msg)
 	cmd.SysProcAttr = &syscall.SysProcAttr{Setsid: true}
@@ -140,14 +140,14 @@ func metaDir(wt string) string {
 		filepath.Base(filepath.Dir(wt))+"__"+filepath.Base(wt))
 }
 
-// self is the path that runs rmx again: the nix wrapper when there is
-// one (it sets RMX_SELF), so panes get the wrapper's PATH.
+// self is the path that runs wt again: the nix wrapper when there is
+// one (it sets WT_SELF), so panes get the wrapper's PATH.
 func self() string {
-	if s := os.Getenv("RMX_SELF"); s != "" {
+	if s := os.Getenv("WT_SELF"); s != "" {
 		return s
 	}
 	if exe, err := os.Executable(); err == nil {
 		return exe
 	}
-	return "rmx"
+	return "wt"
 }
