@@ -8,9 +8,8 @@ let
   cfg = config.programs.rex;
 
   # wt — worktree + agent launcher for rex, and wt sesh, a sesh picker
-  # that switches rex sessions; see wt/main.go. Both draw full-screen
-  # with every cell painted, so they work in rex's floating layers,
-  # which init.lua opens them in.
+  # that switches rex sessions; see wt/main.go. init.lua opens both
+  # in floating panes.
   wt = pkgs.buildGoModule {
     pname = "wt";
     version = "0.1.0";
