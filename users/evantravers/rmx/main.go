@@ -1,0 +1,93 @@
+// rmx — git worktrees / jj workspaces + agent, for the rex multiplexer,
+// and rsesh, a sesh picker that switches rex sessions.
+//
+// Both draw full-screen and paint every cell (paint.go), so they work in
+// rex's floating layers, which have no background of their own.
+//
+// Usage:
+//
+//	rmx [prompt…]     pick a project, describe a task, launch a worktree
+//	                  with an agent working on it. With a prompt argument,
+//	                  skips the pickers and uses the current repo.
+//	rmx rm [-y] [name]
+//	                  remove a worktree/workspace and close its rex session.
+//	                  Inside a worktree, removes that one; otherwise picks
+//	                  from the current repo's worktrees.
+//	rsesh [CLIENT]    (or rmx sesh) pick a rex session, sesh config or
+//	                  zoxide entry and switch CLIENT (default: the first
+//	                  connected app) to it, creating the session if needed.
+//
+// Internal subcommands:
+//
+//	rmx __create <path> <prompt_file> <title>             (spawned detached)
+//	rmx __agent [--main DIR] [--prompt FILE] [--] <agent…>     (started by the
+//	                  agent's window: runs the agent in the devenv environment)
+//
+// Environment:
+//
+//	RMX_SHELL   shell for new rex panes (default: fish from PATH)
+//	RMX_FOCUS   set to 1 to show the new session in the app
+//	RMX_SELF    path panes use to run rmx (rex.nix sets it to the wrapper)
+package main
+
+import (
+	"fmt"
+	"os"
+	"path/filepath"
+	"strings"
+)
+
+const usage = `Usage: rmx [prompt…]
+       rmx rm [-y] [name]
+       rmx sesh [CLIENT]   (also installed as rsesh)
+
+Pick a project, describe a task, and launch a worktree with an agent
+working on it in a new rex session. With a prompt argument, skips the
+pickers and uses the current repo.
+
+rm removes a worktree and closes its rex session. -y skips the
+confirmation.
+
+sesh picks a rex session, sesh config entry or zoxide directory and
+switches the rex app to it. Switching needs Remote Control on in Rex's
+Settings under Rex Server.
+`
+
+func main() {
+	// The login shell rex runs commands through resets PATH (nix-darwin),
+	// dropping the rex CLI that rex put at its front
+	if dir := os.Getenv("REX_BIN_DIR"); dir != "" {
+		os.Setenv("PATH", dir+string(os.PathListSeparator)+os.Getenv("PATH"))
+	}
+
+	args := os.Args[1:]
+	if filepath.Base(os.Args[0]) == "rsesh" {
+		args = append([]string{"sesh"}, args...)
+	}
+
+	cmd := ""
+	if len(args) > 0 {
+		cmd = args[0]
+	}
+	if cmd == "sesh" && len(args) > 1 && (args[1] == "-h" || args[1] == "--help") {
+		cmd = "--help"
+	}
+	switch {
+	case cmd == "-h" || cmd == "--help":
+		fmt.Print(usage)
+	case cmd == "sesh":
+		os.Exit(sesh(args[1:]))
+	case cmd == "rm":
+		os.Exit(remove(args[1:]))
+	case cmd == "__create":
+		os.Exit(create(args[1:]))
+	case cmd == "__agent":
+		os.Exit(agent(args[1:]))
+	case strings.HasPrefix(cmd, "__"):
+		// An unknown internal subcommand must not become an agent's task
+		fmt.Fprintf(os.Stderr, "rmx: unknown subcommand %s\n", cmd)
+		os.Exit(2)
+	default:
+		os.Exit(launch(strings.Join(args, " ")))
+	}
+}
