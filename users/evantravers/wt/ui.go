@@ -1,7 +1,6 @@
 package main
 
 import (
-	"image/color"
 	"strings"
 
 	"charm.land/bubbles/v2/textarea"
@@ -12,7 +11,7 @@ import (
 )
 
 // The UI is one full-screen Bubble Tea program for a whole run, so a
-// series of prompts shares one opaque screen (see paint.go). Each
+// series of prompts shares one screen. Each
 // prompt is a step: the caller hands it to the program and blocks
 // until the user submits it or backs out with esc or ctrl+c.
 
@@ -23,9 +22,6 @@ var (
 	faintStyle  = lipgloss.NewStyle().Foreground(lipgloss.Color("240"))
 	errorStyle  = lipgloss.NewStyle().Foreground(lipgloss.Color("1"))
 )
-
-// Until the terminal reports its background, paint with a dark grey
-var fallbackBg color.Color = color.RGBA{24, 24, 24, 255}
 
 type step interface {
 	init() tea.Cmd
@@ -119,10 +115,9 @@ type root struct {
 	s       step
 	results chan bool
 	w, h    int
-	bg      color.Color
 }
 
-func (r *root) Init() tea.Cmd { return tea.RequestBackgroundColor }
+func (r *root) Init() tea.Cmd { return nil }
 
 func (r *root) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
@@ -131,9 +126,6 @@ func (r *root) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		if r.s != nil {
 			r.s.resize(r.inner())
 		}
-		return r, nil
-	case tea.BackgroundColorMsg:
-		r.bg = msg.Color
 		return r, nil
 	case showMsg:
 		r.s = msg.s
@@ -183,12 +175,7 @@ func (r *root) content() string {
 }
 
 func (r *root) View() tea.View {
-	content := r.content()
-	bg := r.bg
-	if bg == nil {
-		bg = fallbackBg
-	}
-	v := tea.NewView(paint(fill(content, r.w, r.h), bg))
+	v := tea.NewView(r.content())
 	v.AltScreen = true
 	return v
 }

@@ -9,8 +9,6 @@ import "fmt"
 // CLIENT is the rex client to switch (init.lua's sesh action passes the
 // one that pressed the key); it defaults to the first connected app.
 func sesh(args []string) int {
-	// The UI comes up first, so a floating layer is painted while the
-	// lists load
 	u := startUI()
 	defer u.close()
 	if err := pickSesh(u, args); err != nil {
