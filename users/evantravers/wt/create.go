@@ -256,12 +256,15 @@ func (t task) discard(wt string) {
 	os.RemoveAll(metaDir(wt))
 }
 
-// autoName asks pi for a name for the task
+// autoName asks Apple's on-device model (fm) for a name for the task:
+// no tokens, no API key, so no credential prompts from the background.
 func autoName(dir, prompt string) (string, error) {
-	out, err := output(command(dir, "pi", "-p",
-		"Generate a concise git branch name based on the task description.\n"+
+	out, err := output(command(dir, "fm", "respond", "--no-stream", "--greedy",
+		"--instructions",
+		"Generate a concise git branch name based on the task description. "+
 			"Rules: 2-4 words, kebab-case, all lowercase, no prefix like feature/. "+
-			"Output ONLY the branch name.\n\n"+prompt))
+			"Output ONLY the branch name.",
+		prompt))
 	if err != nil {
 		return "", fmt.Errorf("auto-name: %w", err)
 	}
@@ -270,7 +273,7 @@ func autoName(dir, prompt string) (string, error) {
 			return s, nil
 		}
 	}
-	return "", errors.New("auto-name branch: pi gave no usable name")
+	return "", errors.New("auto-name branch: fm gave no usable name")
 }
 
 // addWorktree adds a jj workspace (or git worktree) named slug at
