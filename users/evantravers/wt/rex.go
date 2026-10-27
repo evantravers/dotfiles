@@ -130,10 +130,10 @@ func shellBlock(cwd, run string) map[string]any {
 	}}
 }
 
-// shellBin is the shell new panes run: RMX_SHELL, else fish from PATH.
+// shellBin is the shell new panes run: WT_SHELL, else fish from PATH.
 // rex's own default is the macOS account shell (zsh).
 func shellBin() string {
-	if sh := os.Getenv("RMX_SHELL"); sh != "" {
+	if sh := os.Getenv("WT_SHELL"); sh != "" {
 		return sh
 	}
 	sh, _ := exec.LookPath("fish")

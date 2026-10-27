@@ -112,7 +112,7 @@ loop:
 		}
 	}
 	if len(args) == 0 {
-		fmt.Fprintln(os.Stderr, "rmx __agent: no agent given")
+		fmt.Fprintln(os.Stderr, "wt __agent: no agent given")
 		return 2
 	}
 	cwd, _ := os.Getwd()
@@ -135,7 +135,7 @@ loop:
 		cmd = append(cmd, string(data))
 	}
 
-	// Binding lookup: the worktree itself first (rmx copies bindings into
+	// Binding lookup: the worktree itself first (wt copies bindings into
 	// new worktrees), then the main checkout. Plain in-tree trust reuses
 	// the main checkout's environment. A broken binding stops here: the
 	// pane stays open, so the error stays visible.
@@ -148,7 +148,7 @@ loop:
 			return execve(cmd)
 		}
 	case err != nil:
-		fmt.Fprintln(os.Stderr, "rmx:", err)
+		fmt.Fprintln(os.Stderr, "wt:", err)
 		return 2
 	}
 	if len(devenvArgs) == 0 {
@@ -162,12 +162,12 @@ func exists(path string) bool {
 	return err == nil
 }
 
-// execve replaces rmx with argv, returning only on failure
+// execve replaces wt with argv, returning only on failure
 func execve(argv []string) int {
 	path, err := exec.LookPath(argv[0])
 	if err == nil {
 		err = syscall.Exec(path, argv, os.Environ())
 	}
-	fmt.Fprintf(os.Stderr, "rmx: %s: %v\n", argv[0], err)
+	fmt.Fprintf(os.Stderr, "wt: %s: %v\n", argv[0], err)
 	return 127
 }
