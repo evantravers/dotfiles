@@ -7,14 +7,8 @@
 let
   cfg = config.programs.rex;
 
-  # rmx — git worktrees / jj workspaces + agent, rex multiplexer edition.
-  #
-  # Port of wmx with no tmux or workmux dependency: same gum UI, same
-  # worktree layout (<repo>__worktrees/<branch>), and the devenv binding
-  # from the main checkout is copied into the new worktree when one
-  # exists. Windows and sessions live in rex. The script is shared
-  # verbatim with users/evantravers/bin/rmx for iteration outside the
-  # nix store.
+  # rmx — worktree + agent launcher for rex; see bin/rmx. The script is
+  # shared verbatim with bin/rmx for iteration outside the nix store.
   rmx = pkgs.writeShellApplication {
     name = "rmx";
     runtimeInputs = with pkgs; [
@@ -43,7 +37,6 @@ let
     name = "rsesh";
     runtimeInputs = with pkgs; [
       gum
-      sesh
       jq
       coreutils
       gawk

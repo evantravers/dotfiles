@@ -19,6 +19,8 @@
 #   rmx __create <path> <session> <prompt_file> [title] [log]   (spawned detached)
 #   rmx __session <label> <cwd>   rex session ID for a label, created if missing
 #   rmx __client                  first connected rex app client (used by rsesh)
+#   rmx __projects                sesh projects as JSON, each with the .Label
+#                                 rmx gives its rex session (used by rsesh)
 #   rmx __agent [--main DIR] [--prompt FILE] [--] <agent…> (started by the
 #                     agent window: runs the agent in the devenv environment)
 #
@@ -77,12 +79,28 @@ slugify() {
   tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g' | sed -E 's/^-+|-+$//g'
 }
 
+# Cap a slug at 50 characters without leaving a trailing hyphen
+shorten() {
+  cut -c1-50 | sed -E 's/-+$//'
+}
+
+# The repo containing the current directory: jj's root, else git's
+repo_root() {
+  jj root 2>/dev/null || git rev-parse --show-toplevel 2>/dev/null
+}
+
+# Where a checkout's worktrees live, matching workmux's layout
+worktrees_of() {
+  printf '%s__worktrees' "${1%/}"
+}
+
 notify() {
   # No rex equivalent of tmux display-message; use a macOS notification
   # so background progress still reaches the user, and always log.
+  # Backgrounded so AppleScript's startup doesn't hold up the caller.
   echo "rmx: $1" >>"$log"
   if command -v osascript >/dev/null 2>&1; then
-    osascript - "$1" <<'OSA' >/dev/null 2>&1 || true
+    osascript - "$1" <<'OSA' >/dev/null 2>&1 &
 on run argv
   display notification (item 1 of argv) with title "rmx"
 end run
@@ -91,6 +109,7 @@ OSA
 }
 
 fail() {
+  local detail
   detail=$(tail -1 "$log" 2>/dev/null || true)
   notify "failed: $1 ${detail:+— $detail}"
   exit 1
@@ -187,7 +206,7 @@ agent() {
 
   # The task, using each agent's prompt-passing convention
   local cmd=("$@")
-  if [ -n "$prompt" ] && [ -s "$prompt" ]; then
+  if [ -s "$prompt" ]; then
     case "$(basename "$1")" in
       claude) cmd+=(-- "$(cat "$prompt")") ;;
       *)      cmd+=("$(cat "$prompt")") ;;
@@ -201,21 +220,16 @@ agent() {
   local rc=0
   devenv_binding "$main" "$PWD" "$main" || rc=$?
   case $rc in
-    0)
-      [ ${#devenv_args[@]} -gt 0 ] || devenv_args=(--from "path:$main")
-      exec devenv shell "${devenv_args[@]}" -- "${cmd[@]}"
+    0) ;;
+    1)
+      # No binding, but the project has an in-tree devenv: reuse the
+      # main checkout's (already built, already trusted) environment
+      [ -f "$main/devenv.nix" ] || [ -f "$main/devenv.yaml" ] || exec "${cmd[@]}"
       ;;
-    1) ;;
     *) exit "$rc" ;;
   esac
-
-  # No binding, but the project has an in-tree devenv: reuse the main
-  # checkout's (already built, already trusted) environment
-  if [ -f "$main/devenv.nix" ] || [ -f "$main/devenv.yaml" ]; then
-    exec devenv shell --from "path:$main" -- "${cmd[@]}"
-  fi
-
-  exec "${cmd[@]}"
+  [ ${#devenv_args[@]} -gt 0 ] || devenv_args=(--from "path:$main")
+  exec devenv shell "${devenv_args[@]}" -- "${cmd[@]}"
 }
 
 # ---------------------------------------------------------------- create ---
@@ -253,7 +267,7 @@ shell_block() {
 ensure_session() {
   local label=$1 cwd=$2 id
   id=$(rex ls --json | jq -r --arg s "$label" \
-    '.sessions[] | select(.label == $s) | .session_id' | head -1)
+    'first(.sessions[] | select(.label == $s) | .session_id) // empty')
   if [ -z "$id" ]; then
     id=$(rex api call session.create "$(jq -n --arg l "$label" \
       --argjson layout "$(shell_block "$cwd")" \
@@ -267,6 +281,14 @@ ensure_session() {
 first_app_client() {
   rex client ls --json 2>/dev/null \
     | jq -r '[.clients[] | select(.info.kind == "app")] | .[0].client_id // empty'
+}
+
+# Projects from sesh's config and zoxide (tmux sessions don't exist
+# under rex), each with the label of its rex session: the configured
+# name, else the directory basename. The one place that naming lives.
+projects() {
+  sesh list --json -c -z -d | jq 'map(. + {Label: (
+    if .Src == "config" then .Name else (.Path | sub("/$";"") | split("/") | last) end)})'
 }
 
 # Quote one word for the shell the panes run (see shell_block): fish
@@ -304,8 +326,8 @@ create() {
 Rules: 2-4 words, kebab-case, all lowercase, no prefix like feature/. Output ONLY the branch name.
 
 $(cat "$prompt_file")" 2>>"$log" \
-      | slugify | awk -F- 'NF && NF <= 6' | head -1 | cut -c1-50 | sed -E 's/-+$//') || true
-    [ -n "${branch:-}" ] || fail "auto-name branch"
+      | slugify | awk -F- 'NF && NF <= 6' | head -1 | shorten) || true
+    [ -n "$branch" ] || fail "auto-name branch"
   else
     # Already slugified by the UI
     branch=$title
@@ -314,51 +336,58 @@ $(cat "$prompt_file")" 2>>"$log" \
   # Base: the repo's trunk when there is one (workmux's base_branch =
   # "auto" behaved this way), otherwise the current checkout. jj's
   # trunk() falls back to root(), the empty commit, so exclude that.
+  # Reading the commit graph needs no working-copy snapshot.
   local base="" default
   if [ "$vcs" = jj ]; then
-    if jj log --no-graph --limit 1 -r 'trunk() ~ root()' -T 'commit_id' 2>/dev/null | grep -q .; then
+    if jj log --ignore-working-copy --no-graph --limit 1 -r 'trunk() ~ root()' -T 'commit_id' 2>/dev/null | grep -q .; then
       base='trunk()'
     fi
   else
     default=$(git symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null \
       | sed 's|^origin/||') || true
-    if [ -n "${default:-}" ] && git show-ref --verify --quiet "refs/heads/$default"; then
+    if [ -n "$default" ] && git show-ref --verify --quiet "refs/heads/$default"; then
       base=$default
     fi
   fi
 
   # Worktree layout matches workmux: <repo>__worktrees/<branch>, next
-  # to the main checkout. Name collisions retry with numeric suffixes
-  # since there is no user to ask.
-  local wt n ok=""
-  provision() {
-    # jj workspace add won't create intermediate directories (git does)
-    mkdir -p "$(dirname "$2")"
-    local args=()
-    if [ "$vcs" = jj ]; then
-      [ -n "$base" ] && args=(--revision "$base")
-      jj workspace add "$2" --name "$1" "${args[@]}" >>"$log" 2>&1
-    else
-      [ -n "$base" ] && args=("$base")
-      git worktree add -b "$1" "$2" "${args[@]}" >>"$log" 2>&1
-    fi
-  }
-  wt="$(dirname "$path")/$(basename "$path")__worktrees/$branch"
-  if provision "$branch" "$wt"; then
-    ok=$branch
-  else
-    for n in 2 3 4 5; do
-      grep -qi 'already exists' "$log" || break
-      : >"$log"
-      wt="$(dirname "$path")/$(basename "$path")__worktrees/$branch-$n"
-      if provision "$branch-$n" "$wt"; then
-        ok="$branch-$n"
-        break
-      fi
-    done
+  # to the main checkout. A taken name (directory, branch or jj
+  # workspace) gets a numeric suffix, since there is no user to ask.
+  local wts wt n name="" taken=""
+  wts=$(worktrees_of "$path")
+  if [ "$vcs" = jj ]; then
+    taken=$(jj workspace list --ignore-working-copy -T 'name ++ "\n"' 2>>"$log") \
+      || fail "list jj workspaces"
   fi
-  [ -n "$ok" ] || fail "provision worktree"
-  branch=$ok
+  name_free() {
+    [ ! -e "$wts/$1" ] || return 1
+    if [ "$vcs" = jj ]; then
+      grep -qxF -- "$1" <<<"$taken" && return 1
+    else
+      git show-ref --verify --quiet "refs/heads/$1" && return 1
+    fi
+    return 0
+  }
+  for n in "" -2 -3 -4 -5; do
+    if name_free "$branch$n"; then
+      name=$branch$n
+      break
+    fi
+  done
+  [ -n "$name" ] || fail "no free worktree name for $branch"
+  branch=$name
+  wt="$wts/$branch"
+
+  # jj workspace add won't create intermediate directories (git does)
+  mkdir -p "$wts"
+  local args=()
+  if [ "$vcs" = jj ]; then
+    [ -n "$base" ] && args=(--revision "$base")
+    jj workspace add "$wt" --name "$branch" "${args[@]}" >>"$log" 2>&1
+  else
+    [ -n "$base" ] && args=("$base")
+    git worktree add -b "$branch" "$wt" "${args[@]}" >>"$log" 2>&1
+  fi || fail "provision worktree"
 
   # The agent reads its task at launch time from the worktree's state
   # dir (outside the worktree, so jj never snapshots it).
@@ -411,7 +440,7 @@ $(cat "$prompt_file")" 2>>"$log" \
     --argjson layout "$(shell_block "$wt" "$launch")" \
     '{session_id: $s, window_label: $l, focus: $focus, layout: $layout}')" 2>>"$log") \
     || fail "create rex window"
-  window_id=$(printf '%s' "$created" | jq -r '.window_id')
+  window_id=$(jq -r '.window_id' <<<"$created")
   printf '%s\t%s\n' "$target" "$window_id" >"$meta/window"
 
   # With RMX_FOCUS=1, also show the new window in a connected app.
@@ -438,14 +467,14 @@ remove() {
     esac
   done
 
-  local root main wt
-  root=$(jj root 2>/dev/null || git rev-parse --show-toplevel 2>/dev/null) \
-    || { echo "rmx rm: not in a repository" >&2; exit 1; }
+  local root parent main wts wt
+  root=$(repo_root) || { echo "rmx rm: not in a repository" >&2; exit 1; }
 
   # Inside a worktree: <repo>__worktrees/<name> belongs to <repo>
-  case "$(basename "$(dirname "$root")")" in
+  parent=$(dirname "$root")
+  case "$parent" in
     *__worktrees)
-      main="$(dirname "$(dirname "$root")")/$(basename "$(dirname "$root")" | sed 's/__worktrees$//')"
+      main=${parent%__worktrees}
       [ -n "$name" ] || name=$(basename "$root")
       ;;
     *)
@@ -453,8 +482,7 @@ remove() {
       ;;
   esac
 
-  local wts
-  wts="$(dirname "$main")/$(basename "$main")__worktrees"
+  wts=$(worktrees_of "$main")
   if [ -z "$name" ]; then
     [ -d "$wts" ] || { echo "rmx rm: no worktrees for $(basename "$main")" >&2; exit 1; }
     name=$(find "$wts" -mindepth 1 -maxdepth 1 -type d -exec basename {} \; | sort \
@@ -472,9 +500,10 @@ remove() {
 
   if jj root >/dev/null 2>&1; then
     # Snapshot the workspace first so its last edits are kept in its
-    # change, then drop it; the change itself stays in the repo
+    # change, then drop it; the change itself stays in the repo. The
+    # forget itself needs no snapshot of the main checkout.
     (cd "$wt" && jj status >/dev/null)
-    jj workspace forget "$name"
+    jj workspace forget --ignore-working-copy "$name"
     rm -rf "$wt"
   else
     # Refuses when the worktree has uncommitted changes; the branch stays
@@ -482,9 +511,8 @@ remove() {
   fi
 
   # Close the rex window last: it may be the one running this command
-  local meta session window
+  local meta session="" window
   meta=$(meta_dir "$wt")
-  session=""
   if [ -f "$meta/window" ]; then
     IFS=$'\t' read -r session window <"$meta/window"
   fi
@@ -496,11 +524,15 @@ remove() {
 }
 
 case "${1:-}" in
-  __create)  shift; create "$@"; exit ;;
-  __session) shift; ensure_session "$@"; exit ;;
-  __client)  shift; first_app_client; exit ;;
-  __agent)   shift; agent "$@" ;;
-  rm)        shift; remove "$@"; exit ;;
+  __create)   shift; create "$@"; exit ;;
+  __session)  shift; ensure_session "$@"; exit ;;
+  __client)   first_app_client; exit ;;
+  __projects) projects; exit ;;
+  __agent)    shift; agent "$@" ;;
+  rm)         shift; remove "$@"; exit ;;
+  # An unknown internal subcommand (say, from a newer rsesh) must not
+  # become an agent's task prompt
+  __*)        echo "rmx: unknown subcommand $1" >&2; exit 2 ;;
 esac
 
 # ------------------------------------------------------------------- UI ---
@@ -508,7 +540,7 @@ esac
 # Non-interactive: `rmx "fix the flaky test"` uses the current repo
 prompt="${*:-}"
 
-current_root=$(jj root 2>/dev/null || git rev-parse --show-toplevel 2>/dev/null || pwd)
+current_root=$(repo_root || pwd)
 current_name=$(basename "$current_root")
 
 path="$current_root"
@@ -520,14 +552,13 @@ if [ -z "$prompt" ]; then
     "Current project: $current_name" \
     "Pick another project…") || exit 0
   if [ "$choice" = "Pick another project…" ]; then
-    # Projects from sesh's config and zoxide (tmux sessions don't exist
-    # under rex). Session name: the configured name, else the directory
-    # basename, which is also how rmx labels the rex sessions it creates.
-    selection=$(sesh list --json -c -z -d \
-      | jq -r '.[] | (if .Src == "config" then .Name else (.Path | sub("/$";"") | split("/") | last) end) as $s | "\($s)\t\(.Path)\t\(.Icon // "")"' \
+    selection=$(projects \
+      | jq -r '.[] | "\(.Label)\t\(.Path)\t\(.Icon // "")"' \
       | gum filter --placeholder "Pick a project…") || exit 0
-    session=$(printf '%s' "$selection" | cut -f1)
-    path=$(printf '%s' "$selection" | cut -f2)
+    # cut, not read: tab is IFS whitespace, so read would merge an empty
+    # field into the next one
+    session=$(cut -f1 <<<"$selection")
+    path=$(cut -f2 <<<"$selection")
   fi
 
   prompt=$(gum write --header "Task for the agent" \
@@ -541,7 +572,7 @@ if [ -z "$prompt" ]; then
   title=$(gum input --placeholder "Worktree title (empty to abort)") || exit 0
   [ -n "$title" ] || exit 0
   # Branch, workspace and directory name: "Fix login bug" → fix-login-bug
-  slug=$(printf '%s' "$title" | slugify | cut -c1-50 | sed -E 's/-+$//')
+  slug=$(printf '%s' "$title" | slugify | shorten)
   [ -n "$slug" ] || { gum style --foreground 1 "rmx: no usable name in '$title'"; exit 1; }
   title=$slug
 fi
