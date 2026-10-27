@@ -58,8 +58,8 @@ func run(cmd *exec.Cmd) error {
 	return err
 }
 
-// notify logs a message and shows it as a macOS notification, since
-// rex has no equivalent of tmux display-message. osascript isn't waited
+// notify logs a message and shows it as a macOS notification.
+// osascript isn't waited
 // on, so its startup doesn't hold up the caller. The script goes in its
 // arguments, so it's complete once Start returns even if the caller
 // exits at once; setsid keeps it alive when a closing float hangs up
@@ -153,4 +153,19 @@ func self() string {
 		return exe
 	}
 	return "wt"
+}
+
+// branchExists reports whether the git repo at dir has a branch name
+func branchExists(dir, name string) bool {
+	return command(dir, "git", "show-ref", "--verify", "--quiet", "refs/heads/"+name).Run() == nil
+}
+
+func exists(path string) bool {
+	_, err := os.Stat(path)
+	return err == nil
+}
+
+func isDir(path string) bool {
+	info, err := os.Stat(path)
+	return err == nil && info.IsDir()
 }

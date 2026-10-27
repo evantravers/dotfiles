@@ -52,26 +52,12 @@ func launch(prompt string) int {
 	// Everything after this point — naming, provisioning, devenv,
 	// agent launch — happens in the background. The user only hears back
 	// via a notification: an issue, or "created". setsid keeps it alive
-	// when the floating layer that started it closes. The prompt waits in
-	// the state dir; create moves it into the worktree's state.
-	f, err := os.CreateTemp(stateDir(), "prompt.")
-	if err != nil {
-		fmt.Fprintln(os.Stderr, "wt:", err)
-		return 1
-	}
-	_, err = f.WriteString(t.prompt)
-	if cerr := f.Close(); err == nil {
-		err = cerr
-	}
-	if err != nil {
-		fmt.Fprintln(os.Stderr, "wt:", err)
-		return 1
-	}
+	// when the floating layer that started it closes.
 	vcs := "git"
 	if t.jj {
 		vcs = "jj"
 	}
-	cmd := exec.Command(self(), "__create", t.path, vcs, f.Name(), t.title)
+	cmd := exec.Command(self(), "__create", t.path, vcs, t.title, t.prompt)
 	cmd.SysProcAttr = &syscall.SysProcAttr{Setsid: true}
 	if err := cmd.Start(); err != nil {
 		fmt.Fprintln(os.Stderr, "wt:", err)
@@ -137,20 +123,14 @@ func ask(u *ui, t *task, rootErr error) bool {
 	return true
 }
 
-// create is `wt __create <path> <jj|git> <prompt_file> <title>`, with
-// the project launch already found
+// create is `wt __create <path> <jj|git> <title> <prompt>`, the
+// background half of launch, which already found the project
 func create(args []string) int {
 	if len(args) != 4 {
-		fmt.Fprintln(os.Stderr, "usage: wt __create <path> <jj|git> <prompt_file> <title>")
+		fmt.Fprintln(os.Stderr, "usage: wt __create <path> <jj|git> <title> <prompt>")
 		return 2
 	}
-	data, err := os.ReadFile(args[2])
-	os.Remove(args[2])
-	if err != nil {
-		notify("failed: " + err.Error())
-		return 1
-	}
-	t := task{path: args[0], jj: args[1] == "jj", prompt: string(data), title: args[3]}
+	t := task{path: args[0], jj: args[1] == "jj", title: args[2], prompt: args[3]}
 	return t.createNotify()
 }
 
@@ -203,10 +183,8 @@ func (t task) create() (name string, err error) {
 	if err := os.MkdirAll(meta, 0o755); err != nil {
 		return "", err
 	}
-	promptFile := ""
 	if t.prompt != "" {
-		promptFile = filepath.Join(meta, "PROMPT.md")
-		if err := os.WriteFile(promptFile, []byte(t.prompt), 0o644); err != nil {
+		if err := os.WriteFile(filepath.Join(meta, "PROMPT.md"), []byte(t.prompt), 0o644); err != nil {
 			return "", err
 		}
 	}
@@ -217,13 +195,10 @@ func (t task) create() (name string, err error) {
 
 	// The agent's window: a shell in the worktree that starts the agent
 	// itself (see shellBlock), so there's no prompt to poll for. The
-	// shell stays open when the agent exits. The agent stays unquoted:
-	// it may carry arguments.
-	run := paneQuote(self()) + " __agent --main " + paneQuote(t.path)
-	if promptFile != "" {
-		run += " --prompt " + paneQuote(promptFile)
-	}
-	run += " -- " + agentCommand(t.path)
+	// shell stays open when the agent exits. __agent finds the main
+	// checkout and PROMPT.md from the worktree. The agent stays
+	// unquoted: it may carry arguments.
+	run := paneQuote(self()) + " __agent -- " + agentCommand(t.path)
 
 	session, err = newSession("", "agent", shellBlock(wt, run))
 	if err != nil {
@@ -281,11 +256,8 @@ func autoName(dir, prompt string) (string, error) {
 // path. A taken name (directory, branch or jj workspace) gets a numeric
 // suffix, since there is no user to ask.
 func (t task) addWorktree(slug string) (string, error) {
-	jj := t.jj
-	base := baseRevision(jj, t.path)
-
 	var taken []string
-	if jj {
+	if t.jj {
 		out, err := output(command(t.path, "jj", "workspace", "list",
 			"--ignore-working-copy", "-T", `name ++ "\n"`))
 		if err != nil {
@@ -298,10 +270,10 @@ func (t task) addWorktree(slug string) (string, error) {
 		if _, err := os.Stat(filepath.Join(wts, name)); err == nil {
 			return false
 		}
-		if jj {
+		if t.jj {
 			return !slices.Contains(taken, name)
 		}
-		return command(t.path, "git", "show-ref", "--verify", "--quiet", "refs/heads/"+name).Run() != nil
+		return !branchExists(t.path, name)
 	}
 	name := ""
 	for _, suffix := range []string{"", "-2", "-3", "-4", "-5"} {
@@ -319,8 +291,9 @@ func (t task) addWorktree(slug string) (string, error) {
 	if err := os.MkdirAll(wts, 0o755); err != nil {
 		return "", err
 	}
+	base := baseRevision(t.jj, t.path)
 	var cmd *exec.Cmd
-	if jj {
+	if t.jj {
 		args := []string{"workspace", "add", wt, "--name", name}
 		if base != "" {
 			args = append(args, "--revision", base)
@@ -341,9 +314,9 @@ func (t task) addWorktree(slug string) (string, error) {
 
 // baseRevision is the repo's trunk when there is one — new work starts
 // from the base branch, not from wherever this checkout happens to be —
-// else "" for the current checkout. jj's trunk() falls back to root(), the empty commit, so
-// that's excluded. Reading the commit graph needs no working-copy
-// snapshot.
+// else "" for the current checkout. jj's trunk() falls back to root(),
+// the empty commit, so that's excluded. Reading the commit graph needs
+// no working-copy snapshot.
 func baseRevision(jj bool, dir string) string {
 	if jj {
 		out, _ := output(command(dir, "jj", "log", "--ignore-working-copy", "--no-graph",
@@ -358,7 +331,7 @@ func baseRevision(jj bool, dir string) string {
 		return ""
 	}
 	def := strings.TrimPrefix(ref, "origin/")
-	if command(dir, "git", "show-ref", "--verify", "--quiet", "refs/heads/"+def).Run() != nil {
+	if !branchExists(dir, def) {
 		return ""
 	}
 	return def

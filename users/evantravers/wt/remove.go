@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"sort"
 	"strings"
 )
 
@@ -40,7 +39,6 @@ func removeWorktree(name string, yes bool) error {
 			name = filepath.Base(root)
 		}
 	}
-	wts := worktreesOf(main)
 
 	// The UI starts only when there's something to ask
 	if name == "" || !yes {
@@ -49,8 +47,8 @@ func removeWorktree(name string, yes bool) error {
 			return err
 		}
 	}
-	wt := filepath.Join(wts, name)
-	if info, err := os.Stat(wt); err != nil || !info.IsDir() {
+	wt := filepath.Join(worktreesOf(main), name)
+	if !isDir(wt) {
 		return fmt.Errorf("no worktree at %s", wt)
 	}
 
@@ -106,7 +104,6 @@ func askRemove(main, name string) (string, bool, error) {
 				names = append(names, e.Name())
 			}
 		}
-		sort.Strings(names)
 	}
 
 	u := startUI()
