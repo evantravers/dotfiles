@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"net/url"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -21,11 +22,7 @@ var errNoBinding = errors.New("no devenv binding")
 // trust), with relative --from paths resolved against main, or
 // errNoBinding.
 func devenvBinding(main string, paths ...string) ([]string, error) {
-	base := os.Getenv("XDG_DATA_HOME")
-	if base == "" {
-		base = filepath.Join(os.Getenv("HOME"), ".local", "share")
-	}
-	f, err := os.Open(filepath.Join(base, "devenv", "allowed"))
+	f, err := os.Open(filepath.Join(xdgDir("XDG_DATA_HOME", ".local/share"), "devenv", "allowed"))
 	if err != nil {
 		return nil, errNoBinding
 	}
@@ -119,20 +116,15 @@ loop:
 		return 2
 	}
 	cwd, _ := os.Getwd()
-
-	// Main checkout for this worktree/workspace: --main from rmx, else
-	// git's common dir (git worktrees), else this directory
-	if main == "" {
-		if common, err := output(command(cwd, "git", "rev-parse", "--git-common-dir")); err == nil && common != "" {
-			if !filepath.IsAbs(common) {
-				common = filepath.Join(cwd, common)
-			}
-			main = filepath.Dir(common)
-		}
-	}
 	if main == "" {
 		main = cwd
 	}
+
+	// Tell rex the pane's directory (OSC 7). The shell only reports it
+	// when it draws a prompt, which waits for the agent to exit; until
+	// then rex opens splits and tabs from the pane in ~.
+	host, _ := os.Hostname()
+	fmt.Printf("\x1b]7;%s\a", &url.URL{Scheme: "file", Host: host, Path: cwd})
 
 	// The task, using each agent's prompt-passing convention
 	cmd := args

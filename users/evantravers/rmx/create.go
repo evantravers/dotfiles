@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"slices"
 	"strings"
 	"syscall"
 )
@@ -21,14 +22,18 @@ type task struct {
 // repo) and hands it to create, in the background when running under a
 // multiplexer.
 func launch(prompt string) int {
+	// The UI comes up first, so a floating layer is painted while the
+	// repo is found
+	var u *ui
+	if prompt == "" {
+		u = startUI()
+	}
 	cwd, _ := os.Getwd()
 	t := task{path: cwd, prompt: prompt}
-	if root, err := repoRoot(cwd); err == nil {
+	if root, _, err := repoRoot(cwd); err == nil {
 		t.path = root
 	}
-
-	if prompt == "" {
-		u := startUI()
+	if u != nil {
 		ok := ask(u, &t)
 		u.close()
 		// User aborts (esc, ctrl+c) are not errors
@@ -37,8 +42,15 @@ func launch(prompt string) int {
 		}
 	}
 
-	// The prompt waits in the state dir; create moves it into the
-	// worktree's state
+	if os.Getenv("REX_SESSION") == "" && os.Getenv("TMUX") == "" {
+		return t.createNotify()
+	}
+
+	// Everything after this point — branch naming, provisioning, devenv,
+	// agent launch — happens in the background. The user only hears back
+	// via a notification: an issue, or "created". setsid keeps it alive
+	// when the floating layer that started it closes. The prompt waits in
+	// the state dir; create moves it into the worktree's state.
 	f, err := os.CreateTemp(stateDir(), "prompt.")
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "rmx:", err)
@@ -52,23 +64,14 @@ func launch(prompt string) int {
 		fmt.Fprintln(os.Stderr, "rmx:", err)
 		return 1
 	}
-	args := []string{t.path, f.Name(), t.title}
-
-	// Everything after this point — branch naming, provisioning, devenv,
-	// agent launch — happens in the background. The user only hears back
-	// via a notification: an issue, or "created". setsid keeps it alive
-	// when the floating layer that started it closes.
-	if os.Getenv("REX_SESSION") != "" || os.Getenv("TMUX") != "" {
-		cmd := exec.Command(self(), append([]string{"__create"}, args...)...)
-		cmd.SysProcAttr = &syscall.SysProcAttr{Setsid: true}
-		if err := cmd.Start(); err != nil {
-			fmt.Fprintln(os.Stderr, "rmx:", err)
-			return 1
-		}
-		notify("creating worktree in the background…")
-		return 0
+	cmd := exec.Command(self(), "__create", t.path, f.Name(), t.title)
+	cmd.SysProcAttr = &syscall.SysProcAttr{Setsid: true}
+	if err := cmd.Start(); err != nil {
+		fmt.Fprintln(os.Stderr, "rmx:", err)
+		return 1
 	}
-	return create(args)
+	notify("creating worktree in the background…")
+	return 0
 }
 
 // ask fills in t from the user, reporting false when they back out
@@ -131,7 +134,11 @@ func create(args []string) int {
 		return 1
 	}
 	t.prompt = string(data)
+	return t.createNotify()
+}
 
+// createNotify runs create and reports how it went in a notification
+func (t task) createNotify() int {
 	branch, err := t.create()
 	if err != nil {
 		notify("failed: " + err.Error())
@@ -145,7 +152,7 @@ func create(args []string) int {
 // labelled "<project>: <branch>" and starting in the worktree. It returns the
 // branch name.
 func (t task) create() (string, error) {
-	jj := isJJ(t.path)
+	_, jj, _ := repoRoot(t.path)
 
 	branch := t.title
 	if t.prompt != "" {
@@ -205,7 +212,7 @@ func (t task) create() (string, error) {
 	// show the new session in a connected app.
 	if os.Getenv("RMX_FOCUS") == "1" {
 		if client := firstAppClient(); client != "" {
-			_ = selectSession(client, session, "")
+			_ = selectSession(client, session)
 		}
 	}
 	return branch, nil
@@ -250,12 +257,7 @@ func (t task) addWorktree(jj bool, branch string) (string, error) {
 			return false
 		}
 		if jj {
-			for _, w := range taken {
-				if w == name {
-					return false
-				}
-			}
-			return true
+			return !slices.Contains(taken, name)
 		}
 		return command(t.path, "git", "show-ref", "--verify", "--quiet", "refs/heads/"+name).Run() != nil
 	}

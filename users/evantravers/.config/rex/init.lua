@@ -5,15 +5,7 @@ local terminal = "com.superlogical.terminal"
 -- floating layers with no background, so rmx and rsesh paint every
 -- cell themselves (rmx/paint.go). bounds is {x, y, w, h} as fractions
 -- of the window.
---
--- The command runs in a fish login shell: rex runs commands through the
--- account shell (zsh), which home-manager doesn't manage, so it misses
--- home.sessionVariables (pi's PI_CODING_AGENT_DIR, without which rmx's
--- `pi -p` branch naming finds no API key).
 local function float(ctx, label, command, bounds, cwd)
-  local wrapped = { "fish", "-l", "-c", "exec $argv" }
-  for _, arg in ipairs(command) do wrapped[#wrapped + 1] = arg end
-  command = wrapped
   local view = rex.call("session.view", { session_id = ctx.session_id })
   local _, err = rex.call("session.new_layer", {
     session_id = ctx.session_id,
@@ -48,12 +40,17 @@ rex.action{
 
 -- rmx (rex.nix) from the focused pane's directory, like wmx's tmux
 -- popup: pick a project, describe a task, launch an agent worktree.
+--
+-- It runs in a fish login shell: rex runs commands through the account
+-- shell (zsh), which home-manager doesn't manage, so it misses
+-- home.sessionVariables (pi's PI_CODING_AGENT_DIR, without which rmx's
+-- `pi -p` branch naming finds no API key).
 rex.action{
   name  = "agent",
   title = "New Agent…",
   keywords = "rmx worktree workspace agent task",
   run   = function(ctx, args)
-    float(ctx, "rmx", { "rmx" }, { 0.2, 0.2, 0.6, 0.6 }, cwd_of(ctx.block_id))
+    float(ctx, "rmx", { "fish", "-l", "-c", "exec $argv", "rmx" }, { 0.2, 0.2, 0.6, 0.6 }, cwd_of(ctx.block_id))
   end,
 }
 
