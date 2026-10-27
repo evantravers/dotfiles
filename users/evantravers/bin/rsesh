@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+# rsesh — sesh picker for rex. Lists rex sessions, then sesh's config
+# and zoxide entries; picking one switches the rex app to that session,
+# creating it (a shell in the entry's directory) when it doesn't exist.
+#
+# Usage: rsesh [CLIENT]
+#
+# CLIENT is the rex client to switch (init.lua's sesh action passes the
+# one that pressed the key); defaults to the first connected app.
+# Switching needs Remote Control on in Rex's Settings under Rex Server.
+set -euo pipefail
+
+# The login shell rex runs commands through resets PATH (nix-darwin),
+# dropping the rex CLI that rex put at its front
+if [ -n "${REX_BIN_DIR:-}" ]; then
+  export PATH="$REX_BIN_DIR:$PATH"
+fi
+
+client=${1:-}
+if [ -z "$client" ]; then
+  client=$(rex client ls --json \
+    | jq -r '[.clients[] | select(.info.kind == "app")] | .[0].client_id // empty')
+fi
+
+# Panes run fish rather than rex's default (the macOS account shell)
+shell_bin="${RSESH_SHELL:-$(command -v fish || true)}"
+
+fail() {
+  gum style --foreground 1 "rsesh: $*"
+  read -r -n 1 -s -p "Press any key to close"
+  exit 1
+}
+
+# One entry per line: display text, tab, kind, tab, target (a session
+# ID for rex sessions, a directory otherwise). Entries whose session
+# already exists in rex are listed only once, as the rex session.
+sessions=$(rex ls --json | jq -c '.sessions')
+entries=$(
+  {
+    jq -r '.[] | "🟢 \(.label)\trex\t\(.session_id)"' <<<"$sessions"
+    sesh list -c -z --json | jq -r --argjson s "$sessions" '
+      ($s | map(.label)) as $open
+      | .[]
+      | (if .Src == "config" then .Name else (.Path | split("/") | last) end) as $label
+      | select($open | index($label) | not)
+      | "\(if (.Icon // "") == "" then "📁" else .Icon end) \(.Name)\t\($label)\t\(.Path)"'
+  } | awk -F'\t' '!seen[$3]++'
+)
+
+pick=$(cut -f1 <<<"$entries" \
+  | gum filter --placeholder 'Pick a sesh' --header '📂 Repositories' --height 30) \
+  || exit 0
+line=$(awk -F'\t' -v p="$pick" '$1 == p { print; exit }' <<<"$entries")
+kind=$(cut -f2 <<<"$line")
+target=$(cut -f3 <<<"$line")
+
+if [ "$kind" = rex ]; then
+  id=$target
+else
+  # kind holds the new session's label; target is its directory
+  id=$(rex api call session.create "$(jq -n \
+    --arg l "$kind" --arg cwd "$target" --arg sh "$shell_bin" '{
+      label: $l,
+      initial_windows: [{
+        window_label: "Terminal",
+        layout: {block: {
+          flavor: "com.superlogical.terminal.shell",
+          options: ({cwd: $cwd} + if $sh == "" then {} else {shell: $sh} end)
+        }}
+      }]
+    }')" | jq -r '.session_id') || fail "couldn't create session $kind"
+fi
+
+[ -n "$client" ] || fail "no rex app is connected"
+err=$(rex -C "$client" "do" session.select "session_id=$id" 2>&1 >/dev/null) \
+  || fail "$err"
