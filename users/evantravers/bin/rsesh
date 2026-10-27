@@ -30,17 +30,17 @@ client=${1:-}
 # One entry per line: display text, tab, kind, tab, target (a session
 # ID for rex sessions, a directory otherwise). Entries whose session
 # already exists in rex are listed only once, as the rex session.
-# Labels match the ones rmx gives the sessions it creates.
+# rmx __projects supplies the labels rmx gives the sessions it creates.
 sessions=$(rex ls --json | jq -c '.sessions')
 entries=$(
   {
     jq -r '.[] | "🟢 \(.label)\trex\t\(.session_id)"' <<<"$sessions"
-    sesh list -c -z --json | jq -r --argjson s "$sessions" '
+    rmx __projects | jq -r --argjson s "$sessions" '
       ($s | map(.label)) as $open
       | .[]
-      | (if .Src == "config" then .Name else (.Path | sub("/$";"") | split("/") | last) end) as $label
+      | .Label as $label
       | select($open | index($label) | not)
-      | "\(if (.Icon // "") == "" then "📁" else .Icon end) \(.Name)\t\($label)\t\(.Path)"'
+      | "\(if (.Icon // "") == "" then "📁" else .Icon end) \(.Name)\t\(.Label)\t\(.Path)"'
   } | awk -F'\t' '!seen[$3]++'
 )
 
