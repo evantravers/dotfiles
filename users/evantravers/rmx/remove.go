@@ -27,15 +27,15 @@ func remove(args []string) int {
 
 func removeWorktree(name string, yes bool) error {
 	cwd, _ := os.Getwd()
-	root, err := repoRoot(cwd)
+	root, jj, err := repoRoot(cwd)
 	if err != nil {
 		return fmt.Errorf("not in a repository")
 	}
 
 	// Inside a worktree: <repo>__worktrees/<name> belongs to <repo>
 	main := root
-	if parent := filepath.Dir(root); strings.HasSuffix(parent, "__worktrees") {
-		main = strings.TrimSuffix(parent, "__worktrees")
+	if m, ok := mainOf(root); ok {
+		main = m
 		if name == "" {
 			name = filepath.Base(root)
 		}
@@ -44,8 +44,8 @@ func removeWorktree(name string, yes bool) error {
 
 	// The UI starts only when there's something to ask
 	if name == "" || !yes {
-		ok, err := askRemove(wts, &name)
-		if err != nil || !ok {
+		var ok bool
+		if name, ok, err = askRemove(main, name); err != nil || !ok {
 			return err
 		}
 	}
@@ -54,7 +54,7 @@ func removeWorktree(name string, yes bool) error {
 		return fmt.Errorf("no worktree at %s", wt)
 	}
 
-	if isJJ(main) {
+	if jj {
 		// Snapshot the workspace first so its last edits are kept in its
 		// change, then drop it; the change itself stays in the repo. The
 		// forget itself needs no snapshot of the main checkout.
@@ -85,14 +85,14 @@ func removeWorktree(name string, yes bool) error {
 	return nil
 }
 
-// askRemove picks a worktree when name is empty, then confirms. It
-// reports false when the user backs out.
-func askRemove(wts string, name *string) (bool, error) {
+// askRemove picks one of main's worktrees when name is empty, then
+// confirms. It reports false when the user backs out.
+func askRemove(main, name string) (string, bool, error) {
 	var names []string
-	if *name == "" {
-		entries, err := os.ReadDir(wts)
+	if name == "" {
+		entries, err := os.ReadDir(worktreesOf(main))
 		if err != nil {
-			return false, fmt.Errorf("no worktrees for %s", filepath.Base(strings.TrimSuffix(wts, "__worktrees")))
+			return "", false, fmt.Errorf("no worktrees for %s", filepath.Base(main))
 		}
 		for _, e := range entries {
 			if e.IsDir() {
@@ -104,12 +104,12 @@ func askRemove(wts string, name *string) (bool, error) {
 
 	u := startUI()
 	defer u.close()
-	if *name == "" {
+	if name == "" {
 		i, ok := u.filter("", "Remove which worktree?", names)
 		if !ok {
-			return false, nil
+			return "", false, nil
 		}
-		*name = names[i]
+		name = names[i]
 	}
-	return u.confirm(fmt.Sprintf("Remove worktree '%s' and close its rex session?", *name)), nil
+	return name, u.confirm(fmt.Sprintf("Remove worktree '%s' and close its rex session?", name)), nil
 }
