@@ -51,7 +51,7 @@ func launch(prompt string) int {
 		return t.createNotify()
 	}
 
-	// Everything after this point — branch naming, provisioning, devenv,
+	// Everything after this point — naming, provisioning, devenv,
 	// agent launch — happens in the background. The user only hears back
 	// via a notification: an issue, or "created". setsid keeps it alive
 	// when the floating layer that started it closes. The prompt waits in
@@ -158,32 +158,33 @@ func create(args []string) int {
 
 // createNotify runs create and reports how it went in a notification
 func (t task) createNotify() int {
-	branch, err := t.create()
+	name, err := t.create()
 	if err != nil {
 		notify("failed: " + err.Error())
 		return 1
 	}
-	notify(fmt.Sprintf("created '%s' — agent starting", branch))
+	notify(fmt.Sprintf("created '%s' — agent starting", name))
 	return 0
 }
 
 // create provisions the worktree and opens a rex session for the agent,
-// labelled "<project>: <branch>" and starting in the worktree. It returns the
-// branch name. A failure after the worktree exists removes it again,
-// so a retry doesn't leave an orphan behind.
-func (t task) create() (branch string, err error) {
-	branch = t.title
+// labelled "<project>: <name>" and starting in the worktree. It returns the
+// workspace name (the branch name in a git repo). A failure after the
+// worktree exists removes it again, so a retry doesn't leave an orphan
+// behind.
+func (t task) create() (name string, err error) {
+	name = t.title
 	if t.prompt != "" {
-		if branch, err = branchName(t.path, t.prompt); err != nil {
+		if name, err = autoName(t.path, t.prompt); err != nil {
 			return "", err
 		}
 	}
 
-	wt, err := t.addWorktree(branch)
+	wt, err := t.addWorktree(name)
 	if err != nil {
 		return "", err
 	}
-	branch = filepath.Base(wt)
+	name = filepath.Base(wt)
 	session := ""
 	defer func() {
 		if err != nil {
@@ -225,7 +226,7 @@ func (t task) create() (branch string, err error) {
 	}
 	run += " -- " + agentCommand(t.path)
 
-	label := filepath.Base(t.path) + ": " + branch
+	label := filepath.Base(t.path) + ": " + name
 	session, err = newSession(label, "agent", shellBlock(wt, run))
 	if err != nil {
 		return "", fmt.Errorf("create rex session: %w", err)
@@ -234,14 +235,14 @@ func (t task) create() (branch string, err error) {
 		return "", err
 	}
 
-	// Don't switch to it by default, matching wmx. With WT_FOCUS=1,
+	// Creation is background work: don't steal focus. With WT_FOCUS=1,
 	// show the new session in a connected app.
 	if os.Getenv("WT_FOCUS") == "1" {
 		if client := firstAppClient(); client != "" {
 			_ = selectSession(client, session)
 		}
 	}
-	return branch, nil
+	return name, nil
 }
 
 // discard undoes addWorktree and create's state for wt
@@ -257,14 +258,14 @@ func (t task) discard(wt string) {
 	os.RemoveAll(metaDir(wt))
 }
 
-// branchName asks pi for a branch name for the task
-func branchName(dir, prompt string) (string, error) {
+// autoName asks pi for a name for the task
+func autoName(dir, prompt string) (string, error) {
 	out, err := output(command(dir, "pi", "-p",
 		"Generate a concise git branch name based on the task description.\n"+
 			"Rules: 2-4 words, kebab-case, all lowercase, no prefix like feature/. "+
 			"Output ONLY the branch name.\n\n"+prompt))
 	if err != nil {
-		return "", fmt.Errorf("auto-name branch: %w", err)
+		return "", fmt.Errorf("auto-name: %w", err)
 	}
 	for _, line := range strings.Split(out, "\n") {
 		if s := shorten(slugify(line)); s != "" && strings.Count(s, "-") < 6 {
@@ -274,11 +275,11 @@ func branchName(dir, prompt string) (string, error) {
 	return "", errors.New("auto-name branch: pi gave no usable name")
 }
 
-// addWorktree adds a jj workspace (or git worktree) for branch at
-// <repo>__worktrees/<branch>, next to the main checkout, and returns its
+// addWorktree adds a jj workspace (or git worktree) named slug at
+// <repo>__worktrees/<slug>, next to the main checkout, and returns its
 // path. A taken name (directory, branch or jj workspace) gets a numeric
 // suffix, since there is no user to ask.
-func (t task) addWorktree(branch string) (string, error) {
+func (t task) addWorktree(slug string) (string, error) {
 	jj := t.jj
 	base := baseRevision(jj, t.path)
 
@@ -303,13 +304,13 @@ func (t task) addWorktree(branch string) (string, error) {
 	}
 	name := ""
 	for _, suffix := range []string{"", "-2", "-3", "-4", "-5"} {
-		if free(branch + suffix) {
-			name = branch + suffix
+		if free(slug + suffix) {
+			name = slug + suffix
 			break
 		}
 	}
 	if name == "" {
-		return "", fmt.Errorf("no free worktree name for %s", branch)
+		return "", fmt.Errorf("no free worktree name for %s", slug)
 	}
 	wt := filepath.Join(wts, name)
 
@@ -337,9 +338,9 @@ func (t task) addWorktree(branch string) (string, error) {
 	return wt, nil
 }
 
-// baseRevision is the repo's trunk when there is one (workmux's
-// base_branch = "auto" behaved this way), else "" for the current
-// checkout. jj's trunk() falls back to root(), the empty commit, so
+// baseRevision is the repo's trunk when there is one — new work starts
+// from the base branch, not from wherever this checkout happens to be —
+// else "" for the current checkout. jj's trunk() falls back to root(), the empty commit, so
 // that's excluded. Reading the commit graph needs no working-copy
 // snapshot.
 func baseRevision(jj bool, dir string) string {
@@ -362,16 +363,20 @@ func baseRevision(jj bool, dir string) string {
 	return def
 }
 
-// agentCommand is the project's agent: .workmux.yaml's agent key, else pi
+// agentCommand is the project's agent: the agent key in .wt.yaml, else
+// pi. .workmux.yaml is read as a fallback while projects still carry
+// workmux config.
 func agentCommand(dir string) string {
-	data, err := os.ReadFile(filepath.Join(dir, ".workmux.yaml"))
-	if err != nil {
-		return "pi"
-	}
-	for _, line := range strings.Split(string(data), "\n") {
-		if rest, ok := strings.CutPrefix(line, "agent:"); ok {
-			if a := strings.TrimSpace(rest); a != "" {
-				return a
+	for _, file := range []string{".wt.yaml", ".workmux.yaml"} {
+		data, err := os.ReadFile(filepath.Join(dir, file))
+		if err != nil {
+			continue
+		}
+		for _, line := range strings.Split(string(data), "\n") {
+			if rest, ok := strings.CutPrefix(line, "agent:"); ok {
+				if a := strings.TrimSpace(rest); a != "" {
+					return a
+				}
 			}
 		}
 	}

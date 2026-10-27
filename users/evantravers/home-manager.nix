@@ -99,7 +99,7 @@
     # Multiplexer
     tmux.enable = true;
 
-    # Trying rex as a tmux replacement; wt is the wmx port
+    # Trying rex as a tmux replacement; wt launches agent worktrees in it
     rex.enable = true;
 
     workmux = {

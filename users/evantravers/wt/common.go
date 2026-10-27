@@ -105,8 +105,11 @@ func repoRoot(dir string) (root string, jj bool, err error) {
 	return root, false, err
 }
 
-// Worktrees live next to their main checkout, matching workmux's
-// layout: <repo>__worktrees/<branch>
+// Worktrees live next to their main checkout: <repo>__worktrees/<name>.
+// Neither git nor jj cares where a worktree sits on disk — git keeps the
+// metadata in the repo's .git/worktrees, jj in its workspace registry —
+// and a sibling directory keeps worktrees out of recursive tools' scans
+// of the checkout.
 const worktreesSuffix = "__worktrees"
 
 // projectRoot is the project dir belongs to: its repo's root, mapped
