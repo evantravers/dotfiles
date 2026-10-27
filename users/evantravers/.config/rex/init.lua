@@ -5,7 +5,15 @@ local terminal = "com.superlogical.terminal"
 -- floating layers with no background, so rmx and rsesh paint every
 -- cell themselves (rmx/paint.go). bounds is {x, y, w, h} as fractions
 -- of the window.
+--
+-- The command runs in a fish login shell: rex runs commands through the
+-- account shell (zsh), which home-manager doesn't manage, so it misses
+-- home.sessionVariables (pi's PI_CODING_AGENT_DIR, without which rmx's
+-- `pi -p` branch naming finds no API key).
 local function float(ctx, label, command, bounds, cwd)
+  local wrapped = { "fish", "-l", "-c", "exec $argv" }
+  for _, arg in ipairs(command) do wrapped[#wrapped + 1] = arg end
+  command = wrapped
   local view = rex.call("session.view", { session_id = ctx.session_id })
   local _, err = rex.call("session.new_layer", {
     session_id = ctx.session_id,
