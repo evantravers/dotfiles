@@ -50,12 +50,18 @@ in
     # rex reads this on `rex config reload`; it doesn't watch the file
     xdg.configFile."rex/init.lua".source = ./.config/rex/init.lua;
 
-    # The login shell rex runs commands through resets PATH (nix-darwin),
-    # dropping the rex CLI that rex put at its front
-    programs.fish.interactiveShellInit = lib.mkAfter ''
-      if set -q REX_BIN_DIR; and test -n "$REX_BIN_DIR"
-        fish_add_path -m $REX_BIN_DIR
-      end
-    '';
+    programs.fish = lib.mkIf config.programs.fish.enable {
+      interactiveShellInit = lib.mkAfter ''
+        # The login shell rex runs commands through resets PATH (nix-darwin),
+        # dropping the rex CLI that rex put at its front
+        if set -q REX_BIN_DIR; and test -n "$REX_BIN_DIR"
+          fish_add_path -m $REX_BIN_DIR
+        end
+      '';
+    };
+
+    xdg.configFile."fish/conf.d/rex.fish" = lib.mkIf config.programs.fish.enable {
+      source = ./.config/fish/conf.d/rex.fish;
+    };
   };
 }
