@@ -81,18 +81,24 @@ local function open_dir(dir)
   rex.client.queue("session.select", { session_id = id })
 end
 
+-- Only projects, ~/src/<host>/<user>/<project>, shown as <user>/<project>.
+local src = home .. "/src/"
 local zoxide = rex.exec{ bin .. "zoxide", "query", "--list" }
 if zoxide and zoxide.ok then
   for dir in zoxide.stdout:gmatch("[^\n]+") do
-    rex.action{
-      -- The palette runs an entry by name, so the name has to stay the
-      -- same for a directory across reloads: hex-encode the path.
-      name     = "dir_" .. dir:gsub(".", function(c) return ("%02x"):format(c:byte()) end),
-      title    = dir:sub(1, #home) == home and "~" .. dir:sub(#home + 1) or dir,
-      category = "Directories",
-      keywords = dir,
-      run      = function() open_dir(dir) end,
-    }
+    local project = dir:sub(1, #src) == src
+      and dir:sub(#src + 1):match("^[^/]+/([^/]+/[^/]+)$")
+    if project then
+      rex.action{
+        -- The palette runs an entry by name, so the name has to stay the
+        -- same for a directory across reloads: hex-encode the path.
+        name     = "dir_" .. dir:gsub(".", function(c) return ("%02x"):format(c:byte()) end),
+        title    = project,
+        category = "Directories",
+        keywords = dir,
+        run      = function() open_dir(dir) end,
+      }
+    end
   end
 end
 
