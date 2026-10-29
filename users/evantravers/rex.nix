@@ -8,8 +8,8 @@ let
   cfg = config.programs.rex;
 
   # wt — worktree + agent launcher for rex, and wt sesh, a sesh picker
-  # that switches rex sessions; see wt/main.go. init.lua opens both
-  # in floating panes.
+  # that switches rex sessions; see wt/main.go. init.lua opens wt in
+  # a floating pane.
   wt = pkgs.buildGoModule {
     pname = "wt";
     version = "0.1.0";
@@ -58,10 +58,6 @@ in
           fish_add_path -m $REX_BIN_DIR
         end
       '';
-    };
-
-    xdg.configFile."fish/conf.d/rex.fish" = lib.mkIf config.programs.fish.enable {
-      source = ./.config/fish/conf.d/rex.fish;
     };
   };
 }

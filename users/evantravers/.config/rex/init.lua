@@ -43,6 +43,59 @@ rex.action{
 
 rex.bind("cmd+shift+a", "agent")
 
+-- zoxide directories in the command palette: one "Directories" action
+-- per entry opens a session there (a fish shell), or switches to it if
+-- it's open. Labels match wt sesh's (the basename). The list is read at
+-- load, so new zoxide entries show up after `rex config reload`.
+--
+-- The rex server's PATH is only /usr/bin:/bin, so use full paths.
+local bin = "/etc/profiles/per-user/" .. os.getenv("USER") .. "/bin/"
+local home = os.getenv("HOME")
+
+local function session_labeled(label)
+  local list, err = rex.call("session.list")
+  if err ~= nil then error(err, 0) end
+  for _, session in ipairs(list.sessions) do
+    if session.label == label then return session.session_id end
+  end
+end
+
+local function open_dir(dir)
+  rex.exec{ bin .. "zoxide", "add", dir }
+  local label = dir:match("([^/]+)/*$") or dir
+  local id = session_labeled(label)
+  if not id then
+    local created, err = rex.call("session.create", {
+      label = label,
+      initial_windows = {{
+        window_label = "Terminal",
+        layout = rex.layout.block{
+          flavor  = terminal .. ".shell",
+          options = { cwd = dir, shell = bin .. "fish" },
+        },
+      }},
+    })
+    if err ~= nil then error(err, 0) end
+    id = created.session_id
+  end
+  rex.client.queue("session.select", { session_id = id })
+end
+
+local zoxide = rex.exec{ bin .. "zoxide", "query", "--list" }
+if zoxide and zoxide.ok then
+  for dir in zoxide.stdout:gmatch("[^\n]+") do
+    rex.action{
+      -- The palette runs an entry by name, so the name has to stay the
+      -- same for a directory across reloads: hex-encode the path.
+      name     = "dir_" .. dir:gsub(".", function(c) return ("%02x"):format(c:byte()) end),
+      title    = dir:sub(1, #home) == home and "~" .. dir:sub(#home + 1) or dir,
+      category = "Directories",
+      keywords = dir,
+      run      = function() open_dir(dir) end,
+    }
+  end
+end
+
 -- Vim-style hjkl mirrors of the default arrow bindings: cmd+alt focuses,
 -- cmd+shift splits, cmd+alt+shift moves. (Not ctrl: ctrl+h is backspace
 -- and alt alone trips readline word-motion in terminals.)
