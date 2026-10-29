@@ -25,17 +25,6 @@ local function cwd_of(block_id)
   return info and ((info.foreground and info.foreground.cwd) or (info.child and info.child.cwd))
 end
 
--- sesh picker, like the tmux C-p popup. wt sesh (rex.nix) does the
--- picking and switches this client's session.
-rex.action{
-  name  = "sesh",
-  title = "Pick a Sesh…",
-  keywords = "session repository project zoxide",
-  run   = function(ctx, args)
-    float(ctx, "wt sesh", { "wt", "sesh", ctx.client_id }, { 0.1, 0.1, 0.8, 0.8 })
-  end,
-}
-
 -- wt (rex.nix) from the focused pane's directory: pick a project,
 -- describe a task, launch an agent worktree.
 --
@@ -52,7 +41,6 @@ rex.action{
   end,
 }
 
-rex.bind("cmd+p", "sesh")
 rex.bind("cmd+shift+a", "agent")
 
 -- Vim-style hjkl mirrors of the default arrow bindings: cmd+alt focuses,
