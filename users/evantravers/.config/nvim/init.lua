@@ -41,36 +41,38 @@ end, { expr = true })
 vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(ev)
     local client = vim.lsp.get_client_by_id(ev.data.client_id)
-    if client:supports_method('textDocument/completion') then
-      vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
-    end
-    if client:supports_method('textDocument/documentColor') then
-      vim.lsp.document_color.enable(true, {bufnr = ev.buf}, { style = "virtual" })
-    end
-    if client:supports_method('textDocument/formatting') then
-      vim.keymap.set({'n', 'v'}, 'grf', function()
-        vim.lsp.buf.format({ bufnr = ev.buf })
-      end, { buffer = ev.buf, desc = 'Format with LSP' })
-    end
-    if client:supports_method('textDocument/inlayHint') then
-      vim.lsp.inlay_hint.enable(true, { bufnr = ev.buf })
-    end
-    if client:supports_method('textDocument/codeLens') then
-      vim.lsp.codelens.enable(true, { bufnr = ev.buf })
-    end
-    if client:supports_method('textDocument/documentHighlight') then
-      local group = vim.api.nvim_create_augroup('lsp-document-highlight', { clear = false })
-      vim.api.nvim_clear_autocmds({ buffer = ev.buf, group = group })
-      vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
-        buffer = ev.buf,
-        group = group,
-        callback = vim.lsp.buf.document_highlight,
-      })
-      vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
-        buffer = ev.buf,
-        group = group,
-        callback = vim.lsp.buf.clear_references,
-      })
+    if client then
+      if client:supports_method('textDocument/completion') then
+        vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
+      end
+      if client:supports_method('textDocument/documentColor') then
+        vim.lsp.document_color.enable(true, {bufnr = ev.buf}, { style = "virtual" })
+      end
+      if client:supports_method('textDocument/formatting') then
+        vim.keymap.set({'n', 'v'}, 'grf', function()
+          vim.lsp.buf.format({ bufnr = ev.buf })
+        end, { buffer = ev.buf, desc = 'Format with LSP' })
+      end
+      if client:supports_method('textDocument/inlayHint') then
+        vim.lsp.inlay_hint.enable(true, { bufnr = ev.buf })
+      end
+      if client:supports_method('textDocument/codeLens') then
+        vim.lsp.codelens.enable(true, { bufnr = ev.buf })
+      end
+      if client:supports_method('textDocument/documentHighlight') then
+        local group = vim.api.nvim_create_augroup('lsp-document-highlight', { clear = false })
+        vim.api.nvim_clear_autocmds({ buffer = ev.buf, group = group })
+        vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+          buffer = ev.buf,
+          group = group,
+          callback = vim.lsp.buf.document_highlight,
+        })
+        vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
+          buffer = ev.buf,
+          group = group,
+          callback = vim.lsp.buf.clear_references,
+        })
+      end
     end
   end,
 })
