@@ -7,6 +7,14 @@
 let
   cfg = config.programs.rex;
 
+  # The rex CLI ships inside the app bundle. Inside rex, REX_BIN_DIR
+  # points at the binary for the running server; elsewhere, fall back
+  # to the installed copy.
+  rex-cli = pkgs.writeShellScriptBin "rex" ''
+    dir="''${REX_BIN_DIR:-$HOME/Library/Application Support/com.superlogical.rex/RexServer/Versions/Current/Rex Server.app/Contents/MacOS}"
+    exec "$dir/rex" "$@"
+  '';
+
   # wt — worktree + agent launcher for rex, and wt sesh, a sesh picker
   # that switches rex sessions; see wt/main.go. init.lua opens wt in
   # a floating pane.
@@ -26,6 +34,7 @@ let
           lib.makeBinPath (
             with pkgs;
             [
+              rex-cli
               sesh
               git
               jujutsu
@@ -44,20 +53,12 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    # The rex CLI itself is app-managed and expected on PATH.
-    home.packages = [ wt ];
+    home.packages = [
+      rex-cli
+      wt
+    ];
 
     # rex reads this on `rex config reload`; it doesn't watch the file
     xdg.configFile."rex/init.lua".source = ./.config/rex/init.lua;
-
-    programs.fish = lib.mkIf config.programs.fish.enable {
-      interactiveShellInit = lib.mkAfter ''
-        # The login shell rex runs commands through resets PATH (nix-darwin),
-        # dropping the rex CLI that rex put at its front
-        if set -q REX_BIN_DIR; and test -n "$REX_BIN_DIR"
-          fish_add_path -m $REX_BIN_DIR
-        end
-      '';
-    };
   };
 }

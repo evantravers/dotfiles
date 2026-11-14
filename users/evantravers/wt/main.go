@@ -49,12 +49,6 @@ Settings under Rex Server.
 `
 
 func main() {
-	// The login shell rex runs commands through resets PATH (nix-darwin),
-	// dropping the rex CLI that rex put at its front
-	if dir := os.Getenv("REX_BIN_DIR"); dir != "" {
-		os.Setenv("PATH", dir+string(os.PathListSeparator)+os.Getenv("PATH"))
-	}
-
 	args := os.Args[1:]
 
 	cmd := ""
