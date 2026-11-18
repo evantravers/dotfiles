@@ -47,8 +47,8 @@ func info(args []string) int {
 	})
 }
 
-// listProjects is `wt __projects`: sesh's config and zoxide entries, one
-// per directory, with the label of each one's rex session
+// listProjects is `wt __projects`: the checkouts under ~/src, each
+// with the label of its rex session
 func listProjects() int {
 	ps, err := projects()
 	if err != nil {
@@ -61,13 +61,8 @@ func listProjects() int {
 		Label string `json:"label"`
 	}
 	out := []entry{}
-	seen := map[string]bool{}
 	for _, p := range ps {
-		if seen[p.Path] {
-			continue
-		}
-		seen[p.Path] = true
-		out = append(out, entry{Path: p.Path, Name: p.Name, Label: p.label()})
+		out = append(out, entry{Path: p.Path, Name: p.Name, Label: p.Name})
 	}
 	return printJSON(out)
 }

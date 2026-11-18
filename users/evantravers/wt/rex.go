@@ -145,28 +145,65 @@ func paneQuote(s string) string {
 
 // ------------------------------------------------------------- projects ---
 
-// project is one of sesh's config or zoxide entries
+// project is a checkout at ~/src/<forge>/<user>/<project>
 type project struct {
-	Src, Name, Path, Icon string
+	Name, Path string
 }
 
+// isRepo reports whether dir is a checkout: git's .git (a directory,
+// or a file in a worktree) or jj's .jj sits inside
+func isRepo(dir string) bool {
+	return exists(filepath.Join(dir, ".git")) || exists(filepath.Join(dir, ".jj"))
+}
+
+// projects lists the checkouts under ~/src: the repositories exactly
+// three levels down (~/src/<forge>/<user>/<project>), named
+// <user>/<project> (the forge level is noise: github.com holds
+// everything that matters). The .git/.jj test keeps wiki folders and
+// wt's own <repo>__worktrees containers out.
 func projects() ([]project, error) {
-	out, err := output(command("", "sesh", "list", "--json", "-c", "-z", "-d"))
+	src := filepath.Join(os.Getenv("HOME"), "src")
+	// dirs is the visible subdirectories of path
+	dirs := func(path string) ([]os.DirEntry, error) {
+		entries, err := os.ReadDir(path)
+		if err != nil {
+			return nil, err
+		}
+		out := entries[:0]
+		for _, e := range entries {
+			if e.IsDir() && !strings.HasPrefix(e.Name(), ".") {
+				out = append(out, e)
+			}
+		}
+		return out, nil
+	}
+	forges, err := dirs(src)
 	if err != nil {
 		return nil, err
 	}
 	var ps []project
-	if err := json.Unmarshal([]byte(out), &ps); err != nil {
-		return nil, err
+	for _, forge := range forges {
+		users, err := dirs(filepath.Join(src, forge.Name()))
+		if err != nil {
+			continue
+		}
+		for _, user := range users {
+			dir := filepath.Join(src, forge.Name(), user.Name())
+			repos, err := dirs(dir)
+			if err != nil {
+				continue
+			}
+			for _, repo := range repos {
+				path := filepath.Join(dir, repo.Name())
+				if !isRepo(path) {
+					continue
+				}
+				ps = append(ps, project{
+					Name: user.Name() + "/" + repo.Name(),
+					Path: path,
+				})
+			}
+		}
 	}
 	return ps, nil
-}
-
-// label is the label of the project's rex session: the configured name,
-// else the directory basename. The one place that naming lives.
-func (p project) label() string {
-	if p.Src == "config" {
-		return p.Name
-	}
-	return filepath.Base(strings.TrimSuffix(p.Path, "/"))
 }

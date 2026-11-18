@@ -19,7 +19,7 @@
 //	wt __agent [--] <agent…>  run the agent in the devenv environment
 //	                  (started by the agent's window)
 //	wt __info <dir>   JSON about dir's project and its worktrees
-//	wt __projects     JSON list of sesh's config and zoxide entries
+//	wt __projects     JSON list of the checkouts under ~/src
 //	wt __notify <msg> show msg as a notification
 //
 // Environment:

@@ -35,7 +35,6 @@ let
             with pkgs;
             [
               rex-cli
-              sesh
               git
               jujutsu
               devenv
