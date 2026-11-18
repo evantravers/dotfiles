@@ -40,6 +40,7 @@ systemFunc {
     # Bring in WSL if this is a WSL build
     (if wsl then inputs.nixos-wsl.nixosModules.wsl else { })
 
+    ../modules/binary-caches.nix
     machineConfig
     userOSConfig
     home-manager.home-manager
