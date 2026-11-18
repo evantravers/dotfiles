@@ -2,7 +2,6 @@ local terminal = "com.superlogical.terminal"
 
 -- The rex server's PATH is only /usr/bin:/bin, so use full paths.
 local bin = "/etc/profiles/per-user/" .. os.getenv("USER") .. "/bin/"
-local home = os.getenv("HOME")
 
 -- The focused pane's working directory, if rex can read it
 local function cwd_of(block_id)
@@ -166,9 +165,8 @@ rex.action{
   end,
 }
 
--- Switch Session: open rex sessions, then sesh's config and zoxide
--- entries. Picking an entry with no session opens one (a fish shell in
--- its directory).
+-- Switch Session: open rex sessions, then wt's projects. Picking a
+-- project with no session opens one (a fish shell in its directory).
 local function session_labeled(label)
   local list, err = rex.call("session.list")
   if err ~= nil then error(err, 0) end
@@ -199,7 +197,7 @@ end
 rex.action{
   name     = "sesh",
   title    = "Switch Session…",
-  keywords = "wt sesh session project zoxide switch",
+  keywords = "wt sesh session project switch",
   run      = function(ctx)
     local list, err = rex.call("session.list")
     if err ~= nil then error(err, 0) end
@@ -237,36 +235,7 @@ rex.action{
     end
   end,
 }
-
--- zoxide directories in the command palette: one "Directories" action
--- per entry opens a session there (a fish shell), or switches to it if
--- it's open. Labels match Switch Session's (the basename). The list is
--- read at load, so new zoxide entries show up after `rex config reload`.
-local function open_dir(dir)
-  rex.exec{ bin .. "zoxide", "add", dir }
-  open_session(dir:match("([^/]+)/*$") or dir, dir)
-end
-
--- Only projects, ~/src/<host>/<user>/<project>, shown as <user>/<project>.
-local src = home .. "/src/"
-local zoxide = rex.exec{ bin .. "zoxide", "query", "--list" }
-if zoxide and zoxide.ok then
-  for dir in zoxide.stdout:gmatch("[^\n]+") do
-    local project = dir:sub(1, #src) == src
-      and dir:sub(#src + 1):match("^[^/]+/([^/]+/[^/]+)$")
-    if project then
-      rex.action{
-        -- The palette runs an entry by name, so the name has to stay the
-        -- same for a directory across reloads: hex-encode the path.
-        name     = "dir_" .. dir:gsub(".", function(c) return ("%02x"):format(c:byte()) end),
-        title    = project,
-        category = "Directories",
-        keywords = dir,
-        run      = function() open_dir(dir) end,
-      }
-    end
-  end
-end
+rex.bind("cmd+alt+p", "sesh")
 
 -- Vim-style hjkl mirrors of the default arrow bindings: cmd+alt focuses,
 -- cmd+shift splits, cmd+alt+shift moves. (Not ctrl: ctrl+h is backspace
