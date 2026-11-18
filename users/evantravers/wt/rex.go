@@ -33,25 +33,6 @@ func rexCall(method string, input, out any) error {
 	return json.Unmarshal(reply, out)
 }
 
-type rexSession struct {
-	ID    string `json:"session_id"`
-	Label string `json:"label"`
-}
-
-func rexSessions() ([]rexSession, error) {
-	out, err := rex("ls", "--json")
-	if err != nil {
-		return nil, err
-	}
-	var ls struct {
-		Sessions []rexSession `json:"sessions"`
-	}
-	if err := json.Unmarshal(out, &ls); err != nil {
-		return nil, err
-	}
-	return ls.Sessions, nil
-}
-
 // newSession creates a session with one window, returning its ID. An
 // empty label lets rex choose one.
 func newSession(label, window string, layout map[string]any) (string, error) {
@@ -188,13 +169,4 @@ func (p project) label() string {
 		return p.Name
 	}
 	return filepath.Base(strings.TrimSuffix(p.Path, "/"))
-}
-
-// display is how pickers show a project
-func (p project) display() string {
-	icon := p.Icon
-	if icon == "" {
-		icon = "📁"
-	}
-	return icon + " " + p.Name
 }

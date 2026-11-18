@@ -19,123 +19,67 @@ type task struct {
 	title  string // slug, used when there is no prompt
 }
 
-// launch collects a task (unless prompt is given, which uses the current
-// repo) and hands it to create, in the background when running under a
-// multiplexer.
+// launch is `wt <prompt…>`: an agent on prompt in a worktree of the
+// current repo. Under a multiplexer the work goes to the background,
+// like the New Agent… action's.
 func launch(prompt string) int {
-	var u *ui
-	if prompt == "" {
-		u = startUI()
-	}
 	cwd, _ := os.Getwd()
-	t := task{path: cwd, prompt: prompt}
-	root, jj, rootErr := projectRoot(cwd)
-	if rootErr == nil {
-		t.path, t.jj = root, jj
-	}
-	if u != nil {
-		ok := ask(u, &t, rootErr)
-		u.close()
-		// User aborts (esc, ctrl+c) are not errors
-		if !ok {
-			return 0
-		}
-	} else if rootErr != nil {
-		fmt.Fprintln(os.Stderr, "wt:", rootErr)
+	t, err := newTask(cwd, "", prompt)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "wt:", err)
 		return 1
 	}
-
 	if os.Getenv("REX_SESSION") == "" && os.Getenv("TMUX") == "" {
 		return t.createNotify()
 	}
 
 	// Everything after this point — naming, provisioning, devenv,
 	// agent launch — happens in the background. The user only hears back
-	// via a notification: an issue, or "created". setsid keeps it alive
-	// when the floating layer that started it closes.
-	vcs := "git"
-	if t.jj {
-		vcs = "jj"
-	}
-	cmd := exec.Command(self(), "__create", t.path, vcs, t.title, t.prompt)
+	// via a notification: an issue, or "created".
+	cmd := exec.Command(self(), "__create", t.path, t.title, t.prompt)
 	cmd.SysProcAttr = &syscall.SysProcAttr{Setsid: true}
 	if err := cmd.Start(); err != nil {
 		fmt.Fprintln(os.Stderr, "wt:", err)
 		return 1
 	}
-	notify("creating worktree in the background…")
 	return 0
 }
 
-// ask fills in t from the user, reporting false when they back out.
-// rootErr is why t.path isn't a project, if it isn't.
-func ask(u *ui, t *task, rootErr error) bool {
-	choice, ok := u.choose("Where should the agent work?", []string{
-		"Current project: " + filepath.Base(t.path),
-		"Pick another project…",
-	})
-	if !ok {
-		return false
+// newTask is a task in dir's project. With no prompt, title names the
+// worktree: "Fix login bug" → fix-login-bug.
+func newTask(dir, title, prompt string) (task, error) {
+	root, jj, err := projectRoot(dir)
+	if err != nil {
+		return task{}, err
 	}
-	if choice == 0 && rootErr != nil {
-		u.message("wt: " + rootErr.Error())
-		return false
-	}
-	if choice == 1 {
-		ps, err := projects()
-		if err != nil {
-			u.message("wt: " + err.Error())
-			return false
+	t := task{path: root, jj: jj, prompt: strings.TrimSpace(prompt)}
+	if t.prompt == "" {
+		if t.title = shorten(slugify(title)); t.title == "" {
+			return task{}, fmt.Errorf("no task, and no usable name in %q", title)
 		}
-		items := make([]string, len(ps))
-		for i, p := range ps {
-			items[i] = p.display()
-		}
-		i, ok := u.filter("📂 Projects", "Pick a project…", items)
-		if !ok {
-			return false
-		}
-		root, jj, err := projectRoot(ps[i].Path)
-		if err != nil {
-			u.message("wt: " + err.Error())
-			return false
-		}
-		t.path, t.jj = root, jj
 	}
-
-	if t.prompt, ok = u.write("Task for the agent", "Describe the task…", 8); !ok {
-		return false
-	}
-	if t.prompt != "" {
-		return true
-	}
-
-	// Prompt-less launch: fall back to a hand-typed worktree title.
-	// Branch, workspace and directory name: "Fix login bug" → fix-login-bug
-	title, ok := u.input("Worktree title (empty to abort)")
-	if !ok || title == "" {
-		return false
-	}
-	if t.title = shorten(slugify(title)); t.title == "" {
-		u.message(fmt.Sprintf("wt: no usable name in %q", title))
-		return false
-	}
-	return true
+	return t, nil
 }
 
-// create is `wt __create <path> <jj|git> <title> <prompt>`, the
-// background half of launch, which already found the project
+// create is `wt __create <dir> <title> <prompt>`, the background half of
+// launch and of init.lua's New Agent… action. Its only output is a
+// notification, since nobody is watching.
 func create(args []string) int {
-	if len(args) != 4 {
-		fmt.Fprintln(os.Stderr, "usage: wt __create <path> <jj|git> <title> <prompt>")
+	if len(args) != 3 {
+		fmt.Fprintln(os.Stderr, "usage: wt __create <dir> <title> <prompt>")
 		return 2
 	}
-	t := task{path: args[0], jj: args[1] == "jj", title: args[2], prompt: args[3]}
+	t, err := newTask(args[0], args[1], args[2])
+	if err != nil {
+		notify("failed: " + err.Error())
+		return 1
+	}
 	return t.createNotify()
 }
 
 // createNotify runs create and reports how it went in a notification
 func (t task) createNotify() int {
+	notify("creating worktree…")
 	name, err := t.create()
 	if err != nil {
 		notify("failed: " + err.Error())

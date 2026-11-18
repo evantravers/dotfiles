@@ -15,14 +15,14 @@ let
     exec "$dir/rex" "$@"
   '';
 
-  # wt — worktree + agent launcher for rex, and wt sesh, a sesh picker
-  # that switches rex sessions; see wt/main.go. init.lua opens wt in
-  # a floating pane.
+  # wt — worktree + agent launcher for rex; see wt/main.go. init.lua's
+  # New Agent…, Remove Worktree… and Switch Session… actions ask in the
+  # command palette (rex.ui) and run wt for the repo work.
   wt = pkgs.buildGoModule {
     pname = "wt";
     version = "0.1.0";
     src = ./wt;
-    vendorHash = "sha256-BZoTxx5/W5DsNJ8fK+buk9eG3ondyY+Sia4GRr+vh74=";
+    vendorHash = null;
     nativeBuildInputs = [ pkgs.makeWrapper ];
     postInstall = ''
       # Panes run wt __agent through WT_SELF, so they get this PATH too.

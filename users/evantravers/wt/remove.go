@@ -1,34 +1,57 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
 )
 
-// remove is `wt rm [-y] [name]`
+// remove is `wt rm [-y] [--notify] [name]`. --notify reports the outcome
+// as a notification, for init.lua, which runs it detached.
 func remove(args []string) int {
-	yes, name := false, ""
+	yes, toNotify, name := false, false, ""
 	for _, a := range args {
-		if a == "-y" || a == "--yes" {
+		switch a {
+		case "-y", "--yes":
 			yes = true
-		} else {
+		case "--notify":
+			toNotify = true
+		default:
 			name = a
 		}
 	}
-	if err := removeWorktree(name, yes); err != nil {
+	removed, session, err := removeWorktree(name, yes)
+	switch {
+	case err != nil && toNotify:
+		notify("rm failed: " + err.Error())
+	case err != nil:
 		fmt.Fprintln(os.Stderr, "wt rm:", err)
+	case removed == "":
+	case toNotify:
+		notify(fmt.Sprintf("removed '%s'", removed))
+	default:
+		fmt.Printf("wt: removed '%s'\n", removed)
+	}
+	// Kill the rex session last: it may be the one running this command
+	if session != "" {
+		_, _ = rex("session", "kill", session)
+	}
+	if err != nil {
 		return 1
 	}
 	return 0
 }
 
-func removeWorktree(name string, yes bool) error {
+// removeWorktree returns the name of the worktree it removed ("" when
+// the user said no) and the rex session it lived in, for the caller to
+// close
+func removeWorktree(name string, yes bool) (removed, session string, err error) {
 	cwd, _ := os.Getwd()
 	root, jj, err := repoRoot(cwd)
 	if err != nil {
-		return fmt.Errorf("not in a repository")
+		return "", "", fmt.Errorf("not in a repository")
 	}
 
 	// Inside a worktree: <repo>__worktrees/<name> belongs to <repo>
@@ -40,16 +63,15 @@ func removeWorktree(name string, yes bool) error {
 		}
 	}
 
-	// The UI starts only when there's something to ask
 	if name == "" || !yes {
 		var ok bool
 		if name, ok, err = askRemove(main, name); err != nil || !ok {
-			return err
+			return "", "", err
 		}
 	}
 	wt := filepath.Join(worktreesOf(main), name)
 	if !isDir(wt) {
-		return fmt.Errorf("no worktree at %s", wt)
+		return "", "", fmt.Errorf("no worktree at %s", wt)
 	}
 
 	if jj {
@@ -61,59 +83,57 @@ func removeWorktree(name string, yes bool) error {
 		// otherwise); edits it never snapshotted land in a recovery
 		// commit of their own.
 		if err := run(command(wt, "jj", "workspace", "update-stale")); err != nil {
-			return err
+			return "", "", err
 		}
 		if err := run(command(wt, "jj", "status")); err != nil {
-			return err
+			return "", "", err
 		}
 		if err := run(command(main, "jj", "workspace", "forget", "--ignore-working-copy", name)); err != nil {
-			return err
+			return "", "", err
 		}
 		if err := os.RemoveAll(wt); err != nil {
-			return err
+			return "", "", err
 		}
 	} else {
 		// Refuses when the worktree has uncommitted changes; the branch stays
 		if err := run(command(main, "git", "worktree", "remove", wt)); err != nil {
-			return err
+			return "", "", err
 		}
 	}
 
-	// Kill the rex session last: it may be the one running this command
 	meta := metaDir(wt)
 	data, _ := os.ReadFile(filepath.Join(meta, "session"))
 	os.RemoveAll(meta)
-	fmt.Printf("wt: removed '%s'\n", name)
-	if session := strings.TrimSpace(string(data)); session != "" {
-		_, _ = rex("session", "kill", session)
-	}
-	return nil
+	return name, strings.TrimSpace(string(data)), nil
 }
 
-// askRemove picks one of main's worktrees when name is empty, then
-// confirms. It reports false when the user backs out.
+// askRemove confirms on the terminal, or lists main's worktrees when
+// there's no name to confirm. It reports false when the user says no.
 func askRemove(main, name string) (string, bool, error) {
-	var names []string
 	if name == "" {
-		entries, err := os.ReadDir(worktreesOf(main))
-		if err != nil {
+		names, err := worktreeNames(main)
+		if err != nil || len(names) == 0 {
 			return "", false, fmt.Errorf("no worktrees for %s", filepath.Base(main))
 		}
-		for _, e := range entries {
-			if e.IsDir() {
-				names = append(names, e.Name())
-			}
-		}
+		return "", false, fmt.Errorf("which worktree? %s", strings.Join(names, ", "))
 	}
+	fmt.Printf("Remove worktree '%s' and close its rex session? [y/N] ", name)
+	answer, _ := bufio.NewReader(os.Stdin).ReadString('\n')
+	answer = strings.ToLower(strings.TrimSpace(answer))
+	return name, answer == "y" || answer == "yes", nil
+}
 
-	u := startUI()
-	defer u.close()
-	if name == "" {
-		i, ok := u.filter("", "Remove which worktree?", names)
-		if !ok {
-			return "", false, nil
-		}
-		name = names[i]
+// worktreeNames lists the worktrees next to main
+func worktreeNames(main string) ([]string, error) {
+	entries, err := os.ReadDir(worktreesOf(main))
+	if err != nil {
+		return nil, err
 	}
-	return name, u.confirm(fmt.Sprintf("Remove worktree '%s' and close its rex session?", name)), nil
+	var names []string
+	for _, e := range entries {
+		if e.IsDir() {
+			names = append(names, e.Name())
+		}
+	}
+	return names, nil
 }

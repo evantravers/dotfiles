@@ -1,23 +1,26 @@
-// wt — git worktrees / jj workspaces + agent, for the rex multiplexer,
-// and wt sesh, a sesh picker that switches rex sessions.
+// wt — git worktrees / jj workspaces + agent, for the rex multiplexer.
+//
+// The prompts live in rex's init.lua, which asks with rex.ui.pick and
+// rex.ui.input in the command palette and calls wt's internal
+// subcommands for the repo work. wt itself has no interactive UI.
 //
 // Usage:
 //
-//	wt [prompt…]      pick a project, describe a task, launch a worktree
-//	                  with an agent working on it. With a prompt argument,
-//	                  skips the pickers and uses the current repo.
+//	wt <prompt…>      launch a worktree in the current repo with an agent
+//	                  working on prompt.
 //	wt rm [-y] [name] remove a worktree/workspace and close its rex session.
-//	                  Inside a worktree, removes that one; otherwise picks
-//	                  from the current repo's worktrees.
-//	wt sesh [CLIENT]  pick a rex session, sesh config or zoxide entry and
-//	                  switch CLIENT (default: the first connected app) to
-//	                  it, creating the session if needed.
+//	                  Inside a worktree, name defaults to that one.
 //
-// Internal subcommands:
+// Internal subcommands (init.lua and rex panes call these):
 //
-//	wt __create <path> <jj|git> <title> <prompt>  (spawned detached)
-//	wt __agent [--] <agent…>  (started by the
-//	                  agent's window: runs the agent in the devenv environment)
+//	wt __create <dir> <title> <prompt>  provision a worktree of dir's
+//	                  project and start its agent (rex starts it detached).
+//	                  title names a prompt-less worktree.
+//	wt __agent [--] <agent…>  run the agent in the devenv environment
+//	                  (started by the agent's window)
+//	wt __info <dir>   JSON about dir's project and its worktrees
+//	wt __projects     JSON list of sesh's config and zoxide entries
+//	wt __notify <msg> show msg as a notification
 //
 // Environment:
 //
@@ -32,20 +35,15 @@ import (
 	"strings"
 )
 
-const usage = `Usage: wt [prompt…]
+const usage = `Usage: wt <prompt…>
        wt rm [-y] [name]
-       wt sesh [CLIENT]
 
-Pick a project, describe a task, and launch a worktree with an agent
-working on it in a new rex session. With a prompt argument, skips the
-pickers and uses the current repo.
+Launch a worktree of the current repo with an agent working on prompt,
+in a new rex session. To pick a project and describe the task in rex's
+command palette, run the New Agent… action instead.
 
 rm removes a worktree and closes its rex session. -y skips the
 confirmation.
-
-sesh picks a rex session, sesh config entry or zoxide directory and
-switches the rex app to it. Switching needs Remote Control on in Rex's
-Settings under Rex Server.
 `
 
 func main() {
@@ -56,20 +54,23 @@ func main() {
 		cmd = args[0]
 	}
 	switch cmd {
-	case "-h", "--help":
+	case "", "-h", "--help":
 		fmt.Print(usage)
-	case "sesh":
-		if len(args) > 1 && (args[1] == "-h" || args[1] == "--help") {
-			fmt.Print(usage)
-			return
+		if cmd == "" {
+			os.Exit(2)
 		}
-		os.Exit(sesh(args[1:]))
 	case "rm":
 		os.Exit(remove(args[1:]))
 	case "__create":
 		os.Exit(create(args[1:]))
 	case "__agent":
 		os.Exit(agent(args[1:]))
+	case "__info":
+		os.Exit(info(args[1:]))
+	case "__projects":
+		os.Exit(listProjects())
+	case "__notify":
+		notify(strings.Join(args[1:], " "))
 	default:
 		// An unknown internal subcommand must not become an agent's task
 		if strings.HasPrefix(cmd, "__") {
