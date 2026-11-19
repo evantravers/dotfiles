@@ -165,7 +165,7 @@ rex.action{
   end,
 }
 
--- Switch Session: open rex sessions, then wt's projects. Picking a
+-- Open Project: open rex sessions, then wt's projects. Picking a
 -- project with no session opens one (a fish shell in its directory).
 local function session_labeled(label)
   local list, err = rex.call("session.list")
@@ -196,7 +196,7 @@ end
 
 rex.action{
   name     = "sesh",
-  title    = "Switch Session…",
+  title    = "Open Project",
   keywords = "wt sesh session project switch",
   run      = function(ctx)
     local list, err = rex.call("session.list")
@@ -218,7 +218,7 @@ rex.action{
     end
 
     local pick = answer(rex.ui.pick{
-      title       = "Switch session",
+      title       = "Open Project",
       placeholder = "Filter sessions and projects",
       items       = items,
     })
