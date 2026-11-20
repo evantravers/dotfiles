@@ -87,11 +87,25 @@ in
     '';
 
     # Activate the Karabiner DriverKit virtual HID driver during system activation.
+    # macOS refuses to activate a system extension unless the app that holds
+    # it lives under /Applications (a symlink into /nix/store is not enough,
+    # since macOS checks the resolved path). So copy the Manager app there
+    # first, then run it from the copy.
     system.activationScripts.postActivation.text = ''
-      MANAGER="${pkgs.karabiner-dk}/Applications/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager"
-      if [ -x "$MANAGER" ]; then
+      SRC_APP="${pkgs.karabiner-dk}/Applications/.Karabiner-VirtualHIDDevice-Manager.app"
+      DEST_DIR="/Applications/.Nix-Karabiner"
+      DEST_APP="$DEST_DIR/.Karabiner-VirtualHIDDevice-Manager.app"
+      STAMP="$DEST_DIR/.source"
+      if [ -d "$SRC_APP" ]; then
+        if [ ! -d "$DEST_APP" ] || [ "$(cat "$STAMP" 2>/dev/null)" != "$SRC_APP" ]; then
+          echo "copying karabiner-dk manager to $DEST_DIR..."
+          mkdir -p "$DEST_DIR"
+          rm -rf "$DEST_APP"
+          /usr/bin/ditto "$SRC_APP" "$DEST_APP"
+          echo "$SRC_APP" > "$STAMP"
+        fi
         echo "activating karabiner-dk driver..."
-        "$MANAGER" forceActivate || true
+        "$DEST_APP/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager" forceActivate || true
       fi
 
       # macOS TCC grants Input Monitoring + Accessibility per binary path.
