@@ -214,6 +214,7 @@ hyperGroup('k', {
   'com.apple.Safari',
   'com.google.Chrome',
   'org.nixos.firefox',
+  'org.ladybird.Ladybird',
 })
 
 hyperGroup('i', {
