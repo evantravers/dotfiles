@@ -70,6 +70,31 @@ in
         PORT="''${PORT:-${toString cfg.port}}"
         CTX="''${CTX:-${toString cfg.contextWindow}}"
 
+        LLAMA_SERVER_CMD=(
+          ${pkgs.llama-cpp}/bin/llama-server
+          --models-dir "$MODELS_DIR"
+          --no-models-autoload
+          --host 127.0.0.1
+          --port "$PORT"
+          -ngl ${toString cfg.gpuLayers}
+          -c "$CTX"
+        )
+
+        if [[ -n "''${REX_SESSION:-}" ]] && command -v rex >/dev/null 2>&1; then
+          existing="$(rex ls --json | ${pkgs.jq}/bin/jq -r '.sessions[]? | select(.label == "llama") | .session_id' | head -n 1)"
+          if [[ -n "$existing" ]]; then
+            echo "llama router already running (rex session 'llama')."
+            echo "  view: select the 'llama' session in the Rex app"
+            echo "  stop: rex kill llama"
+            exit 0
+          fi
+
+          rex new llama --window Server --keep-open -- "''${LLAMA_SERVER_CMD[@]}"
+          echo "Started llama router on http://127.0.0.1:$PORT (rex session 'llama')."
+          echo "  In pi: /login llama.cpp  then /llama to load/unload/download models, /model to select."
+          exit 0
+        fi
+
         if tmux has-session -t llama 2>/dev/null; then
           echo "llama router already running (tmux session 'llama')."
           echo "  attach: tmux attach-session -t llama"
@@ -77,14 +102,8 @@ in
           exit 0
         fi
 
-        tmux new-session -d -s llama \
-          "exec ${pkgs.llama-cpp}/bin/llama-server \
-            --models-dir '$MODELS_DIR' \
-            --no-models-autoload \
-            --host 127.0.0.1 \
-            --port '$PORT' \
-            -ngl ${toString cfg.gpuLayers} \
-            -c '$CTX'"
+        printf -v quoted_cmd '%q ' "''${LLAMA_SERVER_CMD[@]}"
+        tmux new-session -d -s llama "exec $quoted_cmd"
 
         tmux set-option -t llama remain-on-exit on
         echo "Started llama router on http://127.0.0.1:$PORT (tmux session 'llama')."
