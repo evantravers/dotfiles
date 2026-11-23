@@ -183,7 +183,12 @@ local chooseFromGroup = function(choice)
   hs.application.launchOrFocusByBundleID(choice.bundleID)
 end
 
-local hyperGroup = function(key, group)
+local hyperGroup = function(key, group, onChoose)
+  local choose = function(choice)
+    chooseFromGroup(choice)
+    if onChoose then onChoose(choice) end
+  end
+
   Hyper:bind({}, key, nil, function()
     hs.application.launchOrFocusByBundleID(hs.settings.get("hyperGroup." .. key))
   end)
@@ -200,9 +205,9 @@ local hyperGroup = function(key, group)
     end)
 
     if #choices == 1 then
-      chooseFromGroup(choices[1])
+      choose(choices[1])
     else
-      hs.chooser.new(chooseFromGroup)
+      hs.chooser.new(choose)
       :placeholderText("Choose an application for hyper+" .. key .. ":")
       :choices(choices)
       :show()
@@ -215,7 +220,12 @@ hyperGroup('k', {
   'com.google.Chrome',
   'org.nixos.firefox',
   'org.ladybird.Ladybird',
-})
+}, function(choice)
+  -- Also make it the macOS default browser. `defaultbrowser` (nixpkgs) sets
+  -- http+https in one shot; it takes the last bundle ID component, lowercased.
+  local name = choice.bundleID:match('[^.]+$'):lower()
+  hs.task.new('/run/current-system/sw/bin/defaultbrowser', nil, { name }):start()
+end)
 
 hyperGroup('i', {
   'com.microsoft.teams2',

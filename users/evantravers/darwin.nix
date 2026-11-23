@@ -37,6 +37,7 @@
     (firefox.override (old: {
       appDataDir = "${config.users.users.evantravers.home}/Library/Application Support/org.nixos.firefox";
     }))
+    defaultbrowser
     keycastr
     obsidian
   ];
