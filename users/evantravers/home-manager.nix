@@ -32,7 +32,7 @@
       llm-agents.claude-code
       llm-agents.opencode
       llm-agents.openspec
-      llm-agents.showboat
+      llm-agents.agent-browser
       amber
       devenv
       gh
