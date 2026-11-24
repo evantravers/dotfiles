@@ -277,11 +277,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1795308715,
-        "narHash": "sha256-ZPdlKvauJbpbYWTwLOJ4caIP+FOIWyhuLcX0iXEyXYU=",
+        "lastModified": 1795325060,
+        "narHash": "sha256-XYoMPsqRFZ6jOaYI1KAAu8fzqif4tkCX8mhEKrViDXQ=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "8e2c5229332bf2b431da62f26d20e7cda711c07d",
+        "rev": "6480d7d8533b88c78cc6dcda395ab89cd546e450",
         "type": "github"
       },
       "original": {
@@ -300,11 +300,11 @@
         "treefmt-nix": "treefmt-nix_2"
       },
       "locked": {
-        "lastModified": 1795304504,
-        "narHash": "sha256-BHpBHnFKQ6Q0nXUUiVxcgFl9E8boHHSuCHxsUQfviUY=",
+        "lastModified": 1795534330,
+        "narHash": "sha256-HUVg1F7c3btLD++JDjdTsSAwp50NvrciqTMFdCKEfAg=",
         "owner": "numtide",
         "repo": "llm-agents.nix",
-        "rev": "91fde7b18469fbc0938d6ab04566463bc3ba3395",
+        "rev": "d70dfebdbd4616aa852fdb47c16588ec1ba8fc6f",
         "type": "github"
       },
       "original": {
@@ -316,11 +316,11 @@
     "mini-nvim": {
       "flake": false,
       "locked": {
-        "lastModified": 1795176650,
-        "narHash": "sha256-sJCO3GDxcM9krp5AzN+gvK/ICZ3mDj51hb5zYRI4cRM=",
+        "lastModified": 1795358638,
+        "narHash": "sha256-WX+h7Jd7U0pja16S4YjveQLUPcYw6Fr4LJ3+BjbAJ4w=",
         "owner": "nvim-mini",
         "repo": "mini.nvim",
-        "rev": "b8a0af521530f8ee68c738657429eab59de6a2ae",
+        "rev": "24cf4ad5840f0d092e3d8296b17eaf7026bf27f3",
         "type": "github"
       },
       "original": {
@@ -338,11 +338,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1795305755,
-        "narHash": "sha256-cN+FOHj9OVn3H7WD6a083YpuNTNHssLU3+kdnXRSwRM=",
+        "lastModified": 1795478556,
+        "narHash": "sha256-3R27A/N5v7H7kHZw++4EPU0DeVZUjm3j3YrxgxaAFzs=",
         "owner": "nix-community",
         "repo": "neovim-nightly-overlay",
-        "rev": "b7b982998aa2bcfb4d7f3eff90d8add9e08bd359",
+        "rev": "55b2b909ebb0efa4859b3d49d11f97c6c96eb1e3",
         "type": "github"
       },
       "original": {
@@ -354,11 +354,11 @@
     "neovim-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1795304748,
-        "narHash": "sha256-3Xwp0FXl0zYO0uiFhLlVhepLBYeRbxR7dbzeAorNKDQ=",
+        "lastModified": 1795463741,
+        "narHash": "sha256-H3zoKyFhBmV0ld2snJlDEAzY4xl+uKrpiA83YoPtB8w=",
         "owner": "neovim",
         "repo": "neovim",
-        "rev": "6184b150f409f317f363e215a90343ecd61585c5",
+        "rev": "d837f7778997955aa640d68eb137b1e89f1b7fba",
         "type": "github"
       },
       "original": {
@@ -492,11 +492,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1795249095,
-        "narHash": "sha256-8JDgyVvWUZg5m9hNlL8Ge9aT647ng3Ukc8NPMiKNTPQ=",
+        "lastModified": 1795371335,
+        "narHash": "sha256-oa2P5WZer1A4wuhatl92JyHHEjrrOdIyuvTuI5LUi9Q=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "93a9ed0a866099a230ed5146a5bb7d16fd5c9b14",
+        "rev": "619c39f6eac5d1ed6b8f073a9414baf7034b2356",
         "type": "github"
       },
       "original": {
@@ -524,11 +524,11 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1795258312,
-        "narHash": "sha256-IEuDsf80ubivfpidbRsIm30HVo7PZIdZt1stRsbaY4Y=",
+        "lastModified": 1795370043,
+        "narHash": "sha256-s/0jq8usZtLVOolYBwmyUmd3JsfAu7w3FU+a0dgMqSY=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "94c3211b0ee8ba969a3f12eb4aff8ba0f72971dd",
+        "rev": "0dc498bfe49baeb18b0f9891e800b53bb2603193",
         "type": "github"
       },
       "original": {
@@ -634,11 +634,11 @@
     "workmux-jj": {
       "flake": false,
       "locked": {
-        "lastModified": 1795262650,
-        "narHash": "sha256-JD0p5jO00g16/gZ6vykBjHL3iCPjSuiP3zgrCbWaYCU=",
+        "lastModified": 1795513135,
+        "narHash": "sha256-CENQmWXl4U54enBV+6Cbvk4+Lr0uD4OBsntXBz/Ccyc=",
         "owner": "raine",
         "repo": "workmux",
-        "rev": "deba2436ab7a1d6015223f58a2888a8284d6d679",
+        "rev": "597d99313361acc371e7d3f874eed74244a32211",
         "type": "github"
       },
       "original": {
