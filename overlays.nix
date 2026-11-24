@@ -51,7 +51,7 @@
                   doInstallCheck = false;
                   cargoDeps = prev.rustPlatform.fetchCargoVendor {
                     src = inputs.workmux-jj;
-                    hash = "sha256-ZJr6hyhQXLgYefCqp/xaBwvNutr4AjEIVwHJNO2TsF4=";
+                    hash = "sha256-sDWqtgvjedaqn1trzfmrT5rmL7EUXG9d6XNeDi0p7YY=";
                   };
                 })
             );
