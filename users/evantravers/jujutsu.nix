@@ -4,9 +4,6 @@
   config,
   ...
 }:
-let
-  jjc = pkgs.callPackage ./jjc.nix { };
-in
 {
   config = lib.mkIf config.programs.jujutsu.enable {
     programs.jujutsu = {
@@ -30,7 +27,7 @@ in
       };
     };
 
-    home.packages = [ jjc ];
+    home.packages = [ pkgs.jjc ];
 
     programs.fish = lib.mkIf config.programs.fish.enable {
       binds = {

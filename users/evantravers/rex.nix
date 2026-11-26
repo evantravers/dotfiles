@@ -15,15 +15,11 @@ let
     exec "$dir/rex" "$@"
   '';
 
-  # wt — worktree + agent launcher for rex; see wt/main.go. init.lua's
+  # wt — worktree + agent launcher for rex; see pkgs/wt/main.go. init.lua's
   # New Agent…, Remove Worktree… and Switch Session… actions ask in the
   # command palette (rex.ui) and run wt for the repo work.
-  wt = pkgs.buildGoModule {
-    pname = "wt";
-    version = "0.1.0";
-    src = ./wt;
-    vendorHash = null;
-    nativeBuildInputs = [ pkgs.makeWrapper ];
+  wt = pkgs.wt.overrideAttrs (old: {
+    nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkgs.makeWrapper ];
     postInstall = ''
       # Panes run wt __agent through WT_SELF, so they get this PATH too.
       # rex defaults panes to the macOS account shell (zsh); wt makes
@@ -44,7 +40,7 @@ let
           )
         }
     '';
-  };
+  });
 in
 {
   options.programs.rex = {

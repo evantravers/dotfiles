@@ -1,4 +1,10 @@
 { inputs, ... }: {
+  # Packages built from this repo; also exposed as flake `packages`
+  local-packages = final: _prev: {
+    jjc = final.callPackage ./pkgs/jjc.nix { };
+    wt = final.callPackage ./pkgs/wt.nix { };
+  };
+
   unstable-packages = final: _prev: {
     unstable = import inputs.nixpkgs-unstable {
       localSystem.system = final.stdenv.hostPlatform.system;

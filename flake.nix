@@ -38,7 +38,8 @@
   outputs =
     { nixpkgs, ... }@inputs:
     let
-      overlays = builtins.attrValues (import ./overlays.nix { inherit inputs; });
+      overlaySet = import ./overlays.nix { inherit inputs; };
+      overlays = builtins.attrValues overlaySet;
 
       mkSystem = import ./lib/mksystem.nix { inherit overlays nixpkgs inputs; };
 
@@ -48,6 +49,16 @@
       ];
     in
     {
+      packages = forAllSystems (
+        system:
+        let
+          pkgs = nixpkgs.legacyPackages.${system}.extend overlaySet.local-packages;
+        in
+        {
+          inherit (pkgs) jjc wt;
+        }
+      );
+
       # `nix fmt`: same nixfmt settings as `jj fix` (see jujutsu.nix)
       formatter = forAllSystems (
         system:
