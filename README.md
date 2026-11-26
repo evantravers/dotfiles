@@ -32,21 +32,28 @@ WSL:
 
 Darwin:
 - Install [homebrew](https://brew.sh/)
-- `sudo nix run nix-darwin -- switch --flake github:evantravers/dotfiles[#macbook-pro]`
+- `sudo nix run nix-darwin/nix-darwin-26.05#darwin-rebuild -- switch --flake github:evantravers/dotfiles#Theseus`
 
 Use 1Password to configure SSH Agent for host
 
 ## Update
 
+`nh` knows where this checkout lives, so from anywhere:
+
 WSL:
-`sudo nixos-rebuild switch --flake ./`
+`nh os switch`
 OR
-`nh os switch ./`
+`sudo nixos-rebuild switch --flake .`
 
 Darwin:
-`darwin-rebuild switch --flake ./`
+`nh darwin switch`
 OR
-`nh darwin switch ./`
+`sudo darwin-rebuild switch --flake .`
+
+## Development
+
+- `nix fmt` formats every Nix file (same settings as `jj fix`)
+- `nix build .#wt` / `nix build .#jjc` build the packages in `pkgs/` on their own
 
 ## References
 - Mainly copying mitchellm's incredible work, especially mksystem.nix
