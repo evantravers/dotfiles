@@ -2,6 +2,9 @@
 
 ;; un-mapped keys behave as normally
 (defcfg
+  ;; launchd keeps kanata.log open, so newsyslog can't rotate it; don't
+  ;; dump the whole layer into it on every layer change.
+  log-layer-changes no
   concurrent-tap-hold yes
   process-unmapped-keys yes
   macos-dev-names-include (

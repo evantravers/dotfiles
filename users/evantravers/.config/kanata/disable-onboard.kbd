@@ -7,6 +7,9 @@
 ;; press ESC to get back to macbook.kbd.
 
 (defcfg
+  ;; launchd keeps kanata.log open, so newsyslog can't rotate it; don't
+  ;; dump the whole layer into it on every layer change.
+  log-layer-changes no
   ;; required for the (cmd ...) action used to restore the macbook layout
   danger-enable-cmd yes
   ;; no: only defsrc keys are intercepted, and every key is listed below,

@@ -5,7 +5,11 @@
     ./orbstack.nix
   ];
 
-  kanata.enable = true;
+  kanata = {
+    enable = true;
+    # Expires 2027-08-21; renew in Xcode → Settings → Accounts.
+    signingIdentity = "Apple Development: Evan Travers (GV5CYGFU5N)";
+  };
   programs.orbstack.enable = true;
 
   # Enable fish and zsh

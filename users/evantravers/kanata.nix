@@ -1,14 +1,120 @@
 { pkgs, lib, config, ... }:
 let
+  cfg = config.kanata;
   home = config.users.users.evantravers.home;
   activeLink = "${home}/.local/state/kanata/active.kbd";
 
-  # nixpkgs builds kanata without the `cmd` action; disabled.kbd needs it so
-  # its ESC binding can shell out to kanata-switch and restore macbook.kbd.
-  kanata-with-cmd = pkgs.kanata.overrideAttrs (old: {
-    cargoBuildFeatures = (old.cargoBuildFeatures or [ ]) ++ [ "cmd" ];
-  });
-  vhiddaemonBin = "${pkgs.karabiner-dk}/Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice/Applications/Karabiner-VirtualHIDDevice-Daemon.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Daemon";
+  # nixpkgs' kanata-with-cmd has the `cmd` action, which disable-onboard.kbd
+  # needs so its ESC binding can shell out to kanata-switch.
+  kanata = pkgs.kanata-with-cmd;
+
+  # The Karabiner DriverKit build kanata's client was compiled against;
+  # nixpkgs keeps it in step with kanata's vendored crate.
+  driver = kanata.passthru.darwinDriver;
+  vhiddaemonBin = "${driver}/Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice/Applications/Karabiner-VirtualHIDDevice-Daemon.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Daemon";
+
+  # macOS ties Input Monitoring and Accessibility grants for a bare binary
+  # to its code hash, which changes on every rebuild. Running kanata from a
+  # signed app bundle at a fixed path ties the grants to the bundle ID and
+  # signing certificate instead, so they survive rebuilds.
+  bundleId = "org.nixos.kanata";
+  appPath = "/Applications/Kanata.app";
+  appExe = "${appPath}/Contents/MacOS/kanata";
+  stampFile = "/var/db/org.nixos.kanata.source";
+
+  kanataApp = pkgs.runCommand "Kanata.app" { } ''
+    mkdir -p $out/Contents/MacOS
+    cp ${kanata}/bin/kanata $out/Contents/MacOS/kanata
+    cat > $out/Contents/Info.plist <<'PLIST'
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+      <key>CFBundleIdentifier</key><string>${bundleId}</string>
+      <key>CFBundleName</key><string>Kanata</string>
+      <key>CFBundleExecutable</key><string>kanata</string>
+      <key>CFBundlePackageType</key><string>APPL</string>
+      <key>CFBundleShortVersionString</key><string>${kanata.version}</string>
+      <key>LSUIElement</key><true/>
+    </dict>
+    </plist>
+    PLIST
+  '';
+
+  # Installs and signs Kanata.app during activation. Arguments: the
+  # Kanata.app store path, the user whose login keychain holds the signing
+  # certificate, and optionally the certificate's name.
+  installKanataApp = pkgs.writeShellApplication {
+    name = "install-kanata-app";
+    runtimeInputs = [ pkgs.coreutils pkgs.gnused pkgs.gnugrep pkgs.gawk ];
+    # codesign, security, tccutil, launchctl and open are Apple's own tools,
+    # so they are called by their /usr/bin and /bin paths.
+    text = ''
+      app_src=$1
+      kanata_user=$2
+      identity_name=''${3:-}
+      stamp_file=${stampFile}
+      app_path=${appPath}
+      bundle_id=${bundleId}
+
+      kanata_uid="$(id -u "$kanata_user")"
+      # -H so security/codesign find the user's login keychain, not root's.
+      as_user() { /bin/launchctl asuser "$kanata_uid" sudo -H -u "$kanata_user" "$@"; }
+
+      identity=""
+      if [ -n "$identity_name" ]; then
+        identity="$(as_user /usr/bin/security find-identity -v -p codesigning \
+          | grep -F "\"$identity_name\"" \
+          | awk '{ print $2; exit }')" || true
+      fi
+      if [ -n "$identity" ]; then mode=signed; else mode=adhoc; fi
+
+      prev_source="$(sed -n 1p "$stamp_file" 2>/dev/null || true)"
+      prev_mode="$(sed -n 2p "$stamp_file" 2>/dev/null || true)"
+      # Reinstall only when the build or the signing method changed.
+      if [ "$prev_source" = "$app_src" ] && [ "$prev_mode" = "$mode" ]; then
+        exit 0
+      fi
+
+      echo "[kanata] installing $app_path from $app_src ($mode)"
+      tmp="$(as_user /usr/bin/mktemp -d)"
+      cp -R "$app_src" "$tmp/Kanata.app"
+      chown -R "$kanata_user" "$tmp"
+      chmod -R u+w "$tmp"
+
+      if [ "$mode" = signed ] \
+         && as_user /usr/bin/codesign --force --timestamp=none \
+              --sign "$identity" --identifier "$bundle_id" "$tmp/Kanata.app"; then
+        :
+      else
+        if [ "$mode" = signed ]; then
+          echo "[kanata] WARNING: signing with \"$identity_name\" failed (keychain locked?), falling back to ad-hoc"
+          mode=adhoc
+        fi
+        /usr/bin/codesign --force --sign - --identifier "$bundle_id" "$tmp/Kanata.app"
+      fi
+
+      rm -rf "$app_path"
+      cp -R "$tmp/Kanata.app" "$app_path"
+      chown -R root:wheel "$app_path"
+      rm -rf "$tmp"
+      printf '%s\n%s\n' "$app_src" "$mode" > "$stamp_file"
+
+      # The kanata job points at the fixed app path, so launchd won't
+      # restart kanata on its own when only the binary changed.
+      if [ "$mode" = signed ] && [ "$prev_mode" = signed ]; then
+        /bin/launchctl kickstart -k system/org.kanata 2>/dev/null || true
+      else
+        /usr/bin/tccutil reset ListenEvent "$bundle_id" || true
+        /usr/bin/tccutil reset Accessibility "$bundle_id" || true
+        echo "[kanata] *** Grant Input Monitoring and Accessibility to $app_path, then run ***"
+        echo "[kanata] ***   sudo launchctl kickstart -k system/org.kanata                 ***"
+        as_user /usr/bin/open "x-apple.systempreferences:com.apple.preference.security?Privacy_ListenEvent" || true
+        as_user /usr/bin/open "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility" || true
+        as_user /usr/bin/open -R "$app_path" || true
+      fi
+    '';
+  };
 
   kanata-switch = pkgs.writeShellScriptBin "kanata-switch" ''
     #!/usr/bin/env bash
@@ -55,12 +161,25 @@ let
   '';
 in
 {
-  options.kanata.enable = lib.mkEnableOption "kanata keyboard remapping and the karabiner-dk VirtualHIDDevice driver it depends on";
+  options.kanata = {
+    enable = lib.mkEnableOption "kanata keyboard remapping and the karabiner-dk VirtualHIDDevice driver it depends on";
+    signingIdentity = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
+      default = null;
+      example = "Apple Development: Jane Doe (ABCDE12345)";
+      description = ''
+        Name of a code-signing certificate in the primary user's login
+        keychain, as shown by `security find-identity -v -p codesigning`.
+        Kanata.app is signed with it so its Input Monitoring and
+        Accessibility grants survive rebuilds. Without one, the app is
+        signed ad-hoc and must be granted again after every rebuild.
+      '';
+    };
+  };
 
-  config = lib.mkIf config.kanata.enable {
+  config = lib.mkIf cfg.enable {
     environment.systemPackages = [
-      pkgs.kanata-with-cmd
-      pkgs.karabiner-dk
+      kanata
       pkgs.gum
       kanata-switch
     ];
@@ -71,9 +190,9 @@ in
     # exec path under the home directory can get caught by launchd's
     # "Missing executable detected" check during that window, which disables
     # the job permanently (RunAtLoad/KeepAlive won't revive it). So
-    # ProgramArguments below reference the karabiner-dk store path directly
-    # instead of a home-directory symlink; only activeLink (a config-file
-    # *argument*, not the exec path itself) is safe to keep under home.
+    # ProgramArguments below never exec from the home directory; only
+    # activeLink (a config-file *argument*, not the exec path itself) is
+    # kept under home.
     system.activationScripts.preActivation.text = ''
       # kanata-switch repoints this symlink to swap layouts at runtime without
       # a rebuild; seed it here so RunAtLoad has something to point at on a
@@ -84,6 +203,12 @@ in
         ln -sfn "${home}/.config/kanata/hrm-macbook.kbd" "${activeLink}"
         chown -h evantravers:staff "${activeLink}"
       fi
+
+      # Install Kanata.app before launchd reloads the kanata job, which
+      # execs it.
+      ${installKanataApp}/bin/install-kanata-app ${kanataApp} ${config.system.primaryUser} ${
+        lib.escapeShellArg (if cfg.signingIdentity == null then "" else cfg.signingIdentity)
+      }
     '';
 
     # Activate the Karabiner DriverKit virtual HID driver during system activation.
@@ -92,7 +217,7 @@ in
     # since macOS checks the resolved path). So copy the Manager app there
     # first, then run it from the copy.
     system.activationScripts.postActivation.text = ''
-      SRC_APP="${pkgs.karabiner-dk}/Applications/.Karabiner-VirtualHIDDevice-Manager.app"
+      SRC_APP="${driver}/Applications/.Karabiner-VirtualHIDDevice-Manager.app"
       DEST_DIR="/Applications/.Nix-Karabiner"
       DEST_APP="$DEST_DIR/.Karabiner-VirtualHIDDevice-Manager.app"
       STAMP="$DEST_DIR/.source"
@@ -107,29 +232,6 @@ in
         echo "activating karabiner-dk driver..."
         "$DEST_APP/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager" forceActivate || true
       fi
-
-      # macOS TCC grants Input Monitoring + Accessibility per binary path.
-      # kanata now launches via the stable /run/current-system/sw/bin/kanata
-      # path, so a grant here should survive version bumps -- but if the
-      # grant's code identity ever changes anyway, kanata will respawn in a
-      # ~10s loop, first complaining about Input Monitoring, then
-      # Accessibility, until both are (re-)set for this path.
-      echo ""
-      echo "kanata TCC reminder: if it's not remapping keys, (re-)grant these two"
-      echo "permissions for the current binary, removing any stale/greyed-out entry:"
-      echo ""
-      echo "  Binary: /run/current-system/sw/bin/kanata"
-      echo ""
-      echo "The vhiddaemon binary's path changes on every karabiner-dk version"
-      echo "bump (it's referenced directly from the nix store, not via a stable"
-      echo "symlink -- see the comment above). If key remapping stops working"
-      echo "after a switch, its Input Monitoring grant may need to be redone too:"
-      echo ""
-      echo "  Input Monitoring: open 'x-apple.systempreferences:com.apple.preference.security?Privacy_ListenEvent'"
-      echo "  Accessibility:    open 'x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility'"
-      echo ""
-      echo "  Then: sudo launchctl kickstart -k system/org.kanata"
-      echo ""
     '';
 
     # forceActivate only approves the DriverKit extension; the userspace daemon
@@ -152,6 +254,8 @@ in
         ];
         RunAtLoad = true;
         KeepAlive = true;
+        # Latency-sensitive: every remapped key goes through this daemon.
+        ProcessType = "Interactive";
         ThrottleInterval = 30;
         StandardOutPath = "/var/log/vhiddaemon.log";
         StandardErrorPath = "/var/log/vhiddaemon.log";
@@ -168,16 +272,21 @@ in
         # starts before the daemon is actually accepting connections leaves
         # it stuck failing forever. Poll for the daemon process before
         # exec'ing, mirroring the same wait Karabiner-Elements.app used to do.
+        #
+        # Only Apple's shells may sit between launchd and kanata: with a
+        # shell from the Nix store in the exec chain, macOS refuses Input
+        # Monitoring even though Kanata.app holds the grant.
         ProgramArguments = [
           "/bin/bash"
           "-c"
           ''
-            while ! pgrep -f "Karabiner-VirtualHIDDevice-Daemon" > /dev/null; do
+            /bin/wait4path "${appExe}"
+            while ! /usr/bin/pgrep -f "Karabiner-VirtualHIDDevice-Daemon" > /dev/null; do
               sleep 1
             done
             # -p starts kanata's TCP server (localhost only) so kanata-switch
             # can live-reload layouts without a launchd restart.
-            exec /run/current-system/sw/bin/kanata -c "${activeLink}" -p 127.0.0.1:5829
+            exec "${appExe}" -c "${activeLink}" -p 127.0.0.1:5829
           ''
         ];
         RunAtLoad = true;
@@ -186,6 +295,7 @@ in
             "org.pqrs.Karabiner-VirtualHIDDevice-Daemon" = true;
           };
         };
+        ProcessType = "Interactive";
         ThrottleInterval = 30;
         StandardOutPath = "/var/log/kanata.log";
         StandardErrorPath = "/var/log/kanata.log";

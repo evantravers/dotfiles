@@ -76,24 +76,6 @@
         );
   };
 
-  karabiner-dk-version = final: prev: {
-    karabiner-dk =
-      let
-        inherit (prev) lib;
-        default = prev.karabiner-dk;
-        pinned = "6.2.0";
-        need = prev.kanata.darwinDriverVersion;
-        useDefault = need == default.version;
-      in
-      lib.warnIf useDefault
-        "kanata now targets karabiner-dk ${need} (the nixpkgs default); the driver-version pin can be removed."
-        (
-          lib.warnIf (need != pinned && !useDefault)
-            "kanata's driver requirement changed to ${need}; update the karabiner-dk pin from ${pinned}."
-            (if useDefault then default else default.override { "driver-version" = pinned; })
-        );
-  };
-
   fish-darwin-rebuild =
     final: prev:
     prev.lib.optionalAttrs prev.stdenv.hostPlatform.isDarwin {

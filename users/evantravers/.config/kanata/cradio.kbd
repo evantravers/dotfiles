@@ -2,6 +2,9 @@
 ;; ported from zmk-config/config/cradio.keymap and shared.dtsi
 
 (defcfg
+  ;; launchd keeps kanata.log open, so newsyslog can't rotate it; don't
+  ;; dump the whole layer into it on every layer change.
+  log-layer-changes no
   concurrent-tap-hold yes
   process-unmapped-keys yes
   ;; `_` falls through to the base layer, not the physical key
