@@ -9,6 +9,7 @@
 
   promote-unstable = final: _prev: {
     inherit (final.unstable)
+      devenv
       jj-starship
       jujutsu
       llama-cpp
@@ -95,8 +96,6 @@
             })
           );
     };
-
-  devenv = inputs.devenv.overlays.default;
 
   vim-plugin-mini-nvim-main = final: prev: {
     unstable = prev.unstable // {
