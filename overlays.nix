@@ -26,36 +26,28 @@
   llm-agents = _final: prev: {
     llm-agents =
       let
-        inherit (prev) lib;
         packages = inputs.llm-agents.packages.${prev.stdenv.hostPlatform.system};
-        unpatched = packages.workmux;
-        # src/jj.rs only exists once raine/workmux#59 lands on main
-        jjUpstream = builtins.pathExists (unpatched.src + "/src/jj.rs");
       in
       packages
       // {
         # Build workmux from the `jj` branch: in colocated jj repos,
         # `workmux add` creates a jj workspace instead of a git worktree.
-        workmux =
-          lib.warnIf jjUpstream
-            "workmux ${unpatched.version} now ships jj support (raine/workmux#59); the workmux-jj overlay and flake input can be removed."
-            (
-              if jjUpstream then
-                unpatched
-              else
-                # The jj branch's Cargo.lock has drifted from the release tag,
-                # so its vendor hash no longer matches the upstream cargoHash.
-                # Override cargoDeps, not cargoHash (the new fetchCargoVendor
-                # ignores overrideAttrs' cargoHash).
-                unpatched.overrideAttrs (_old: {
-                  src = inputs.workmux-jj;
-                  doInstallCheck = false;
-                  cargoDeps = prev.rustPlatform.fetchCargoVendor {
-                    src = inputs.workmux-jj;
-                    hash = "sha256-sDWqtgvjedaqn1trzfmrT5rmL7EUXG9d6XNeDi0p7YY=";
-                  };
-                })
-            );
+        # Remove this override and the workmux-jj input once jj support
+        # (raine/workmux#59) ships in a release. That can't be detected here
+        # without building the source during evaluation.
+        #
+        # The jj branch's Cargo.lock has drifted from the release tag,
+        # so its vendor hash no longer matches the upstream cargoHash.
+        # Override cargoDeps, not cargoHash (the new fetchCargoVendor
+        # ignores overrideAttrs' cargoHash).
+        workmux = packages.workmux.overrideAttrs (_old: {
+          src = inputs.workmux-jj;
+          doInstallCheck = false;
+          cargoDeps = prev.rustPlatform.fetchCargoVendor {
+            src = inputs.workmux-jj;
+            hash = "sha256-sDWqtgvjedaqn1trzfmrT5rmL7EUXG9d6XNeDi0p7YY=";
+          };
+        });
       };
   };
 
@@ -104,10 +96,9 @@
           let
             inherit (final.unstable) lib;
             nixpkgsMini = prev.unstable.vimPlugins.mini-nvim;
-            clueLua = nixpkgsMini + "/lua/mini/clue.lua";
-            inNixpkgs =
-              builtins.pathExists clueLua
-              && builtins.match ".*Previously it was also a problem.*" (builtins.readFile clueLua) != null;
+            # The fix landed on main after v0.18.0 (2026-10-22), and nixpkgs
+            # tracks mini.nvim releases, so the next release includes it.
+            inNixpkgs = lib.versionAtLeast nixpkgsMini.version "0.19.0";
           in
           lib.warnIf inNixpkgs
             ''
@@ -162,14 +153,13 @@
           let
             inherit (final.unstable) lib;
             nixpkgsZenbones = prev.unstable.vimPlugins.zenbones-nvim;
-            utilLua = nixpkgsZenbones + "/lua/zenbones/util.lua";
-            inNixpkgs =
-              builtins.pathExists utilLua
-              && builtins.match ".*bones_no_cache.*" (builtins.readFile utilLua) != null;
+            # The fork is 4.12.0 plus PR #236 (still open). A newer nixpkgs
+            # version may include it.
+            newerUpstream = lib.versionOlder "4.12.0" nixpkgsZenbones.version;
           in
-          lib.warnIf inNixpkgs
+          lib.warnIf newerUpstream
             ''
-              zenbones' colorscheme cache (upstream PR #236) is now in nixpkgs vimPlugins; the fork override can be removed.
+              zenbones.nvim is now ${nixpkgsZenbones.version} in nixpkgs; if it includes the colorscheme cache (upstream PR #236), the fork override can be removed.
             ''
             (
               final.unstable.vimUtils.buildVimPlugin {
