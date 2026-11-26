@@ -41,8 +41,21 @@
       overlays = builtins.attrValues (import ./overlays.nix { inherit inputs; });
 
       mkSystem = import ./lib/mksystem.nix { inherit overlays nixpkgs inputs; };
+
+      forAllSystems = nixpkgs.lib.genAttrs [
+        "aarch64-darwin"
+        "x86_64-linux"
+      ];
     in
     {
+      # `nix fmt`: same nixfmt settings as `jj fix` (see jujutsu.nix)
+      formatter = forAllSystems (
+        system:
+        nixpkgs.legacyPackages.${system}.nixfmt-tree.override {
+          settings.formatter.nixfmt.options = [ "--strict" ];
+        }
+      );
+
       nixosConfigurations.wsl = mkSystem "wsl" {
         system = "x86_64-linux";
         user = "evantravers";
