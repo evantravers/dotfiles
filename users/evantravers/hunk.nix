@@ -17,12 +17,8 @@ in
     home.packages = [ pkgs.llm-agents.hunk ];
 
     # link skills
-    home.file = 
-      lib.genAttrs
-        [
-          ".claude/skills/hunk-review"
-          ".config/pi/agent/skills/hunk-review"
-        ]
+    home.file =
+      lib.genAttrs [ ".claude/skills/hunk-review" ".config/pi/agent/skills/hunk-review" ]
         (_: {
           source = "${pkgs.llm-agents.hunk}/skills/hunk-review";
         });

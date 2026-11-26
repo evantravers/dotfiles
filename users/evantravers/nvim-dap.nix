@@ -1,11 +1,19 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 {
   options.programs.neovim.dap.enable = lib.mkEnableOption "Neovim DAP support";
 
   config = lib.mkIf (config.programs.neovim.enable && config.programs.neovim.dap.enable) {
     programs.neovim = {
       plugins = with pkgs.vimPlugins; [
-        { plugin = nvim-dap-view; optional = true; }
+        {
+          plugin = nvim-dap-view;
+          optional = true;
+        }
         {
           plugin = nvim-dap;
           optional = true;

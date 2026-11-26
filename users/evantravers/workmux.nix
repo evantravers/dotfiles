@@ -19,16 +19,13 @@ let
   # (e.g. repeating n/p through the sidebar).
   escMenu = lib.replaceStrings [ "\\" "\"" ] [ "\\\\" "\\\"" ];
   menuItem =
-    key: bind:
-    "\"${escMenu bind.label}\" ${key} \"run-shell \\\"${escMenu bind.command}\\\"\"";
+    key: bind: "\"${escMenu bind.label}\" ${key} \"run-shell \\\"${escMenu bind.command}\\\"\"";
   menuBind =
     "bind-key ${cfg.tmux.enterKey} display-menu -T \" workmux \" "
     + lib.concatStringsSep " " (lib.mapAttrsToList menuItem cfg.tmux.keybindings);
 
   tmuxConfig = lib.concatStringsSep "\n" (
-    [
-      "# Workmux key table"
-    ]
+    [ "# Workmux key table" ]
     ++ (lib.mapAttrsToList mkTableBind cfg.tmux.keybindings)
     ++ [
       ""
@@ -545,8 +542,7 @@ in
         type = lib.types.attrsOf (
           lib.types.coercedTo lib.types.str (command: { inherit command; }) (
             lib.types.submodule (
-              { config, ... }:
-              {
+              { config, ... }: {
                 options = {
                   command = lib.mkOption {
                     description = "Shell command to run.";

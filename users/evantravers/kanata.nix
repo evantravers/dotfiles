@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 let
   cfg = config.kanata;
   home = config.users.users.evantravers.home;
@@ -46,7 +51,12 @@ let
   # certificate, and optionally the certificate's name.
   installKanataApp = pkgs.writeShellApplication {
     name = "install-kanata-app";
-    runtimeInputs = [ pkgs.coreutils pkgs.gnused pkgs.gnugrep pkgs.gawk ];
+    runtimeInputs = [
+      pkgs.coreutils
+      pkgs.gnused
+      pkgs.gnugrep
+      pkgs.gawk
+    ];
     # codesign, security, tccutil, launchctl and open are Apple's own tools,
     # so they are called by their /usr/bin and /bin paths.
     text = ''

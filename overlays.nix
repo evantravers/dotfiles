@@ -1,5 +1,4 @@
-{ inputs, ... }:
-{
+{ inputs, ... }: {
   unstable-packages = final: _prev: {
     unstable = import inputs.nixpkgs-unstable {
       localSystem.system = final.stdenv.hostPlatform.system;

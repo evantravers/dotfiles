@@ -1,5 +1,4 @@
-{ config, lib, ... }:
-{
+{ config, lib, ... }: {
   config = lib.mkIf config.programs.git.enable {
     home.file = {
       ".cvsignore".source = .config/git/.cvsignore;

@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 {
   options.programs.neovim.prose.enable = lib.mkEnableOption "Neovim prose mode";
 

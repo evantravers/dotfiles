@@ -6,9 +6,7 @@
 }:
 {
   config = lib.mkIf config.programs.starship.enable {
-    home.packages = lib.mkIf config.programs.jujutsu.enable [
-      pkgs.jj-starship
-    ];
+    home.packages = lib.mkIf config.programs.jujutsu.enable [ pkgs.jj-starship ];
 
     programs.starship = {
       settings = {

@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 {
   imports = [
     ./nvim-code-ref.nix
@@ -50,41 +55,43 @@
         # - nvim-treesitter-context for context breadcrumbs
         # =======================================================================
         {
-          plugin = nvim-treesitter.withPlugins (p: with p; [
-            bash
-            comment
-            css
-            dockerfile
-            eex
-            elixir
-            fish
-            gitcommit
-            gitignore
-            heex
-            html
-            javascript
-            json
-            lua
-            luadoc
-            markdown
-            markdown_inline
-            nix
-            php
-            query
-            regex
-            ruby
-            rust
-            scss
-            svelte
-            toml
-            tsx
-            typescript
-            vim
-            vimdoc
-            vue
-            xml
-            yaml
-          ]);
+          plugin = nvim-treesitter.withPlugins (
+            p: with p; [
+              bash
+              comment
+              css
+              dockerfile
+              eex
+              elixir
+              fish
+              gitcommit
+              gitignore
+              heex
+              html
+              javascript
+              json
+              lua
+              luadoc
+              markdown
+              markdown_inline
+              nix
+              php
+              query
+              regex
+              ruby
+              rust
+              scss
+              svelte
+              toml
+              tsx
+              typescript
+              vim
+              vimdoc
+              vue
+              xml
+              yaml
+            ]
+          );
           type = "lua";
           config = ''
             vim.api.nvim_create_autocmd('FileType', {
