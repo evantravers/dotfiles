@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   imports = [
@@ -78,10 +78,9 @@
     nh = {
       enable = true;
       clean.enable = true;
-      flake = builtins.path {
-        path = ../../.;
-        name = "source";
-      };
+      # The working checkout, not a store copy, so `nh … switch` builds
+      # your current edits.
+      flake = "${config.home.homeDirectory}/src/github.com/evantravers/dotfiles";
     };
 
     yazi = {
