@@ -11,6 +11,9 @@
   programs.fish.enable = true;
   users.defaultUserShell = pkgs.fish;
 
+  # Skip building the NixOS manual and `nixos-help`
+  documentation.nixos.enable = false;
+
   time.timeZone = "America/Chicago";
 
   users.users.evantravers = {

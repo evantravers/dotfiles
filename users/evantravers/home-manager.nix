@@ -17,6 +17,13 @@
     ./workmux.nix
   ];
 
+  # Skip building the home-manager option docs (`man home-configuration.nix`)
+  manual = {
+    manpages.enable = false;
+    html.enable = false;
+    json.enable = false;
+  };
+
   xdg.enable = true;
   xdg.configFile."ghostty".source = .config/ghostty;
   xdg.configFile."fish/themes/zenbones.theme".source = .config/fish/themes/zenbones.theme;

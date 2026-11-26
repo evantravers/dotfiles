@@ -121,5 +121,8 @@
     };
   };
 
+  # Skip building the nix-darwin manual (HTML and `darwin-help`)
+  documentation.doc.enable = false;
+
   security.pam.services.sudo_local.touchIdAuth = true;
 }
