@@ -138,15 +138,24 @@
           else
             final.unstable.vimUtils.buildVimPlugin {
               pname = "mini-diff-jj";
-              version = "0c43dea";
+              version = "593bf6d";
               # require("mini.diff.jj") pulls in mini.diff, which only exists at runtime
               # (provided by mini-nvim), so skip the build-time require check for it.
               nvimSkipModules = [ "mini.diff.jj" ];
-              src = final.fetchgit {
-                url = "https://tangled.org/ronshavit.com/mini.diff.jj";
-                rev = "0c43dea746088ce07c1c60f2b3c50e0aa7ff11c2";
-                hash = "sha256-9UMoEGeW8MtKslQ4PlJXxv28Hx6aKODzXGR35JKishc=";
-              };
+              src = final.runCommand "mini-diff-jj-src"
+                {
+                  nativeBuildInputs = [ final.git final.cacert ];
+                  SSL_CERT_FILE = "${final.cacert}/etc/ssl/certs/ca-bundle.crt";
+                  outputHashMode = "recursive";
+                  outputHashAlgo = "sha256";
+                  outputHash = "sha256-io049uw4g4oN52o7kv2s6reEWQYolCof5tZ+NemZ6zA=";
+                }
+                ''
+                  git clone https://tangled.org/ronshavit.com/mini.diff.jj $out
+                  cd $out
+                  git checkout 593bf6d04c247be9799c4ae57598079cefe538693753134fc66e0d98f4d93808
+                  rm -rf .git
+                '';
             }
         );
   };
